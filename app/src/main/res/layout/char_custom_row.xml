@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal">
+
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/movie_poster"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        app:civ_border_width="0dp"
+        android:layout_gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/movie_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/movie_poster"
+        android:text="Star Trek"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/movie_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/movie_name"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/movie_poster"
+        android:text="2013"
+        />
+
+
+
+</RelativeLayout>

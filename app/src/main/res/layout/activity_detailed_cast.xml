@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primaryColor"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:theme="@style/ThemeOverlay.AppCompat.Light" />
+
+
+        <RelativeLayout
+            android:id="@+id/cast_detail_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/cast_img_small"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                />
+
+
+            <TextView
+                android:id="@+id/actor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/cast_img_small"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
+                 />
+
+
+            <TextView
+                android:id="@+id/birth"
+                android:layout_toRightOf="@id/cast_img_small"
+                android:layout_below="@id/actor"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceMedium"
+                />
+
+            <TextView
+                android:id="@+id/birth_place"
+                android:layout_toRightOf="@id/cast_img_small"
+                android:layout_below="@id/birth"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceMedium"
+                />
+
+            <TextView
+                android:layout_below="@id/cast_img_small"
+                android:id="@+id/desc"
+                android:layout_margin="16dp"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="10"
+                android:ellipsize="end"
+               />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/card_holder"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Movies "
+            android:layout_below="@+id/cast_detail_description"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="8dp"
+            android:id="@+id/character_movies"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/card_holder" />
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

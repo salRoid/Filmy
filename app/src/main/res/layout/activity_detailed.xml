@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/new_main"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:selectableItemBackground"
+>
+
+        <ImageView
+            android:id="@+id/bannu"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:scaleType="centerCrop"
+            android:background="?attr/colorPrimary" />
+        </FrameLayout>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00ffffff"
+            android:layout_marginTop="25dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+       <RelativeLayout
+           android:id="@+id/header"
+           android:layout_below="@id/new_main"
+           android:layout_width="match_parent"
+           android:padding="16dp"
+           android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/detail_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
+                />
+
+            <TextView
+                android:id="@+id/detail_tagline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_title"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceMedium"
+                />
+       </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/movie_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/detail_overview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:maxLines="3"
+                android:ellipsize="end"
+                />
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating : "
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearanceLarge"/>
+
+                <TextView
+                    android:id="@+id/detail_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearanceLarge"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trailor "
+                android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"/>
+
+            <ImageView
+                android:id="@+id/detail_youtube"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_marginTop="16dp"
+                 />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/card_holder"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cast "
+            android:layout_below="@+id/movie_description"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"/>
+
+        <android.support.v7.widget.RecyclerView
+
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:id="@+id/cast_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/card_holder" />
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>
+
+
+
+

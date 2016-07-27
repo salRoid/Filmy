@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tech.salroid.filmy">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".FilmyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.Base">
+        <activity android:name=".Activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Activity.MovieDetailsActivity"
+            android:label=" "
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+        </activity>
+        <activity
+            android:name=".Activity.CharacterDetailsActivity"
+            android:label=" "
+            android:theme="@style/AppTheme.Base"></activity>
+
+
+        <provider
+            android:authorities="tech.salroid.filmy"
+            android:name=".Provider.FilmProvider"
+            ></provider>
+
+    </application>
+
+
+
+
+</manifest>

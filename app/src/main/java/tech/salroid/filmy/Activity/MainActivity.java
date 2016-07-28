@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,SearchActivity.class));
             }
         });
 
@@ -80,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         mainActivityAdapter.setClickListener(this);
 
 
-        recycler_boxoffice = (RecyclerView) findViewById(R.id.recycler);
-        recycler_boxoffice.setLayoutManager(gridLayoutManager);
 
         getData();
 
@@ -107,20 +106,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
 
     private void getData() {
 
-
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images";
+        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=metadata,page=1&limit=25";
 
 
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-
+                        Log.d("webi",response.toString());
                         parseOutput(response.toString());
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -129,9 +126,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
                 Log.e("webi", "Volley Error: " + error.getCause());
 
             }
-         }
+        }
         );
-
 
         requestQueue.add(jsonObjectRequest);
 
@@ -151,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
 
         int id_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("activity",true);
+        intent.putExtra("activity", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
 

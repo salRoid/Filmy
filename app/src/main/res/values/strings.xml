@@ -4,5 +4,6 @@
     <string name="title_activity_detailed__cast">Detailed_Cast</string>
 
     <string name="api_key">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>

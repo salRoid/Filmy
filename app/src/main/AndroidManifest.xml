@@ -21,24 +21,20 @@
         <activity
             android:name=".Activity.MovieDetailsActivity"
             android:label=" "
-            android:theme="@style/AppTheme.NoActionBar">
-
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activity.CharacterDetailsActivity"
             android:label=" "
-            android:theme="@style/AppTheme.Base"></activity>
-
+            android:theme="@style/AppTheme.Base" />
 
         <provider
-            android:authorities="tech.salroid.filmy"
             android:name=".Provider.FilmProvider"
-            ></provider>
+            android:authorities="tech.salroid.filmy" />
 
+        <activity
+            android:name=".Activity.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme.Base"></activity>
     </application>
-
-
-
 
 </manifest>

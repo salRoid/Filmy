@@ -27,6 +27,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     private String query_name;
     private String query_id;
     private String query_poster;
+    private String query_type;
 
 
     public SearchResultAdapter(Context context ,List<SearchData> data) {
@@ -50,6 +51,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         query_name = data.get(position).getMovie();
         query_id=data.get(position).getId();
         query_poster=data.get(position).getPoster();
+        query_type=data.get(position).getType();
 
         holder.movie_name.setText(query_name);
         Glide.with(fro).load(query_poster).into(holder.movie_poster);

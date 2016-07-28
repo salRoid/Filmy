@@ -14,4 +14,25 @@
 
     <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+        <style name="MaterialSearchViewStyle">
+            <!-- Background for the search bar -->
+
+            <item name="searchBackground">@color/white</item>
+
+            <!-- Change voice icon -->
+            <item name="searchVoiceIcon">@drawable/ic_action_voice_search</item>
+
+            <!-- Change clear text icon -->
+            <item name="searchCloseIcon">@drawable/ic_action_navigation_close</item>
+
+            <!-- Change up icon -->
+            <item name="searchBackIcon">@drawable/ic_action_navigation_arrow_back</item>
+
+            <!-- Change icon for the suggestions -->
+            <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>
+
+        </style>
+
+
+    <color name="white">#ffffff</color>
 </resources>

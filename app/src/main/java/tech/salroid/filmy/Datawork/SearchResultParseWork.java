@@ -17,6 +17,7 @@ public class SearchResultParseWork {
 
     private Context context;
     private String result;
+    private String getImage, getId, getString;
 
 
     public SearchResultParseWork(Context context, String result) {
@@ -31,20 +32,34 @@ public class SearchResultParseWork {
 
 
         try {
+
+
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 searchData = new SearchData();
 
+                String type_name, type, id, movie_poster;
 
-                String movie_name= jsonArray.getJSONObject(i).getJSONObject("movie").getString("title");
-                String type=jsonArray.getJSONObject(i).getString("type");
-                String id= jsonArray.getJSONObject(i).getJSONObject("movie").getJSONObject("ids").getString("imdb");
-                String movie_poster=jsonArray.getJSONObject(i).getJSONObject("movie").getJSONObject("images").getJSONObject("poster").getString("thumb");
+                type = jsonArray.getJSONObject(i).getString("type");
+
+
+                if (type.equals("person")) {
+                    getString = "name";
+                    getImage = "headshot";
+                    getId = "trakt";
+                } else {
+                    getString = "title";
+                    getImage = "poster";
+                    getId = "imdb";
+                }
+                type_name = jsonArray.getJSONObject(i).getJSONObject(type).getString(getString);
+                id = jsonArray.getJSONObject(i).getJSONObject(type).getJSONObject("ids").getString(getId);
+                movie_poster = jsonArray.getJSONObject(i).getJSONObject(type).getJSONObject("images").getJSONObject(getImage).getString("thumb");
 
                 searchData.setId(id);
-                searchData.setMovie(movie_name);
+                searchData.setType(type);
+                searchData.setMovie(type_name);
                 searchData.setPoster(movie_poster);
-
                 searchArray.add(searchData);
 
             }

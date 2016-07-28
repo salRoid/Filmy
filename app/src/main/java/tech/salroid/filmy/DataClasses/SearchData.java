@@ -6,30 +6,10 @@ package tech.salroid.filmy.DataClasses;
 public class SearchData {
 
 
-    String movie, poster, id, crew_name, crew_id, crew_profile;
+    String movie, poster, id,type;
 
-    public void setCrew_id(String crew_id) {
-        this.crew_id = crew_id;
-    }
-
-    public void setCrew_name(String crew_name) {
-        this.crew_name = crew_name;
-    }
-
-    public void setCrew_profile(String crew_profile) {
-        this.crew_profile = crew_profile;
-    }
-
-    public String getCrew_id() {
-        return crew_id;
-    }
-
-    public String getCrew_name() {
-        return crew_name;
-    }
-
-    public String getCrew_profile() {
-        return crew_profile;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setId(String id) {
@@ -54,5 +34,9 @@ public class SearchData {
 
     public String getPoster() {
         return poster;
+    }
+
+    public String getType() {
+        return type;
     }
 }

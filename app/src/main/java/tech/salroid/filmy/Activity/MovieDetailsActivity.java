@@ -138,7 +138,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         cast_parseOutput(response.toString());
 
                     }
@@ -209,7 +208,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
                     if (id != -1) {
                         Log.d(LOG_TAG, "Movie row updated with new values.");
-                        Log.d("webi",img_url);
                     }
                 }else{
 
@@ -234,7 +232,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         det_rating.setText(rating);
 
 
-        Log.d("webi","cast"+img_url);
 
         Glide.with(context)
                 .load(banner_profile)

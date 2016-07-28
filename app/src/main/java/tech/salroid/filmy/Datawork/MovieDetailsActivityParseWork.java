@@ -40,7 +40,7 @@ public class MovieDetailsActivityParseWork {
 
                 setterGettercast = new MovieDetailsData();
 
-                String id = (jsonArray.getJSONObject(i)).getJSONObject("person").getJSONObject("ids").getString("imdb");
+                String id = (jsonArray.getJSONObject(i)).getJSONObject("person").getJSONObject("ids").getString("trakt");
                 String character = (jsonArray.getJSONObject(i)).getString("character");
                 String name = (jsonArray.getJSONObject(i)).getJSONObject("person").getString("name");
                 String cast_poster = (jsonArray.getJSONObject(i)).getJSONObject("person").getJSONObject("images").getJSONObject("headshot").getString("thumb");

@@ -32,8 +32,8 @@
             android:authorities="tech.salroid.filmy" />
 
         <activity
-            android:name=".Activity.SearchActivity"
-            android:label="@string/title_activity_search"
+            android:name=".SearchFragment"
+            android:label=" "
             android:theme="@style/AppTheme.Base"></activity>
     </application>
 

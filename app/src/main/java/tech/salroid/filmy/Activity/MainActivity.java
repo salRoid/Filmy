@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("webi",response.toString());
                         parseOutput(response.toString());
                     }
                 }, new Response.ErrorListener() {

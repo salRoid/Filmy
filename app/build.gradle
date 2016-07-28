@@ -29,5 +29,6 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.mikhaellopez:circularimageview:3.0.2'
     compile 'com.android.support:palette-v7:24.0.0'
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
 
 }

@@ -3,6 +3,7 @@ package tech.salroid.filmy.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -12,25 +13,30 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONArray;
+
+import java.util.ArrayList;
 
 import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.Datawork.MainActivityParseWork;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.DataClasses.MovieData;
 import tech.salroid.filmy.Network.VolleySingleton;
+import tech.salroid.filmy.SearchFragment;
 
 
 public class MainActivity extends AppCompatActivity implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
@@ -40,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
     private RecyclerView recycler_boxoffice;
     private static final int MOVIE_LOADER = 1;
     private MainActivityAdapter mainActivityAdapter;
+    private MaterialSearchView materialSearchView;
+    private SearchFragment searchFragment;
+    private FloatingActionButton fab;
 
 
     private static final String[] MOVIE_COLUMNS = {
@@ -64,10 +73,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
 
         getSupportActionBar().setLogo(R.drawable.ic_action_filmy_logo);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
             }
         });
 
@@ -80,13 +90,68 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         mainActivityAdapter.setClickListener(this);
 
 
-        recycler_boxoffice = (RecyclerView) findViewById(R.id.recycler);
-        recycler_boxoffice.setLayoutManager(gridLayoutManager);
+        materialSearchView = (MaterialSearchView) findViewById(R.id.search_view);
+        materialSearchView.setVoiceSearch(true);
+        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //Do some magic
+
+                getSearchedResult(query);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Do some magic
+
+                getSearchedResult(newText);
+
+                return true;
+            }
+        });
+
+        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                //Do some magic
+
+                searchFragment = new SearchFragment();
+                getSupportFragmentManager().
+                        beginTransaction().
+                        replace(R.id.fragment_container, searchFragment)
+                        .commit();
+
+                fab.setVisibility(View.INVISIBLE);
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .remove(searchFragment)
+                            .commit();
+
+                    fab.setVisibility(View.VISIBLE);
+            }
+        });
 
         getData();
 
         getSupportLoaderManager().initLoader(MOVIE_LOADER, null, this);
 
+
+    }
+
+    private void getSearchedResult(String query) {
+
+        if (searchFragment != null) {
+            searchFragment.getSearchedResult(query);
+        }
 
     }
 
@@ -96,31 +161,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
 
 
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        return super.onCreateOptionsMenu(menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        materialSearchView.setMenuItem(item);
+        return true;
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+    
 
     private void getData() {
-
 
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images";
+        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,L,page=1&limit=25";
 
 
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-
                         parseOutput(response.toString());
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -129,9 +188,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
                 Log.e("webi", "Volley Error: " + error.getCause());
 
             }
-         }
+        }
         );
-
 
         requestQueue.add(jsonObjectRequest);
 
@@ -143,6 +201,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if (id == R.id.action_search) {
+
+            startActivity(new Intent(this, SearchFragment.class));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -151,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
 
         int id_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("activity",true);
+        intent.putExtra("activity", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
 
@@ -200,5 +263,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         mainActivityAdapter.swapCursor(null);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
+            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (matches != null && matches.size() > 0) {
+                String searchWrd = matches.get(0);
+                if (!TextUtils.isEmpty(searchWrd)) {
+                    materialSearchView.setQuery(searchWrd, false);
+                }
+            }
+
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (materialSearchView.isSearchOpen()) {
+            materialSearchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 }

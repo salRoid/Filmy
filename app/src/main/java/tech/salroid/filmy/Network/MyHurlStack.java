@@ -22,6 +22,7 @@ public class MyHurlStack extends HurlStack{
         connection.setRequestProperty("trakt-api-version", "2");
         connection.setRequestProperty("trakt-api-key", FilmyApplication.getContext().getString(R.string.api_key));
 
+
         return connection;
     }
 }

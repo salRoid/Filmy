@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
 
     private Toolbar toolbar;
     RecyclerView recycler;
-    private RecyclerView recycler_boxoffice;
     private static final int MOVIE_LOADER = 1;
     private MainActivityAdapter mainActivityAdapter;
     private MaterialSearchView materialSearchView;
@@ -172,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,L,page=1&limit=25";
+        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,page=1&limit=25";
 
 
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,

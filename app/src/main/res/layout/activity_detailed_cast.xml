@@ -29,93 +29,87 @@
             <ImageView
                 android:id="@+id/cast_img_small"
                 android:layout_width="100dp"
-                android:layout_height="120dp"
-                />
+                android:layout_height="120dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/cast_img_small"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/actor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/cast_img_small"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textAppearance="?android:textAppearanceLarge"
-                 />
+                <TextView
+                    android:id="@+id/actor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearanceLarge" />
 
+                <TextView
+                    android:id="@+id/birth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/birth"
-                android:layout_toRightOf="@id/cast_img_small"
-                android:layout_below="@id/actor"
-                android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:textAppearance="?android:textAppearanceMedium"
-                />
-
-            <TextView
-                android:id="@+id/birth_place"
-                android:layout_toRightOf="@id/cast_img_small"
-                android:layout_below="@id/birth"
-                android:layout_marginLeft="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:textAppearance="?android:textAppearanceMedium"
-                />
+                <TextView
+                    android:id="@+id/birth_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearanceMedium" />
+            </LinearLayout>
 
             <TextView
-                android:layout_below="@id/cast_img_small"
                 android:id="@+id/desc"
-                android:layout_margin="16dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textAppearance="?android:textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="10"
+                android:layout_below="@id/cast_img_small"
+                android:layout_margin="16dp"
                 android:ellipsize="end"
-               />
+                android:fontFamily="sans-serif-condensed"
+                android:maxLines="10"
+                android:textAppearance="?android:textAppearanceMedium" />
 
 
         </RelativeLayout>
 
 
         <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="8dp"
             android:id="@+id/character_movies"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/card_holder" />
+            android:layout_below="@+id/card_holder"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/card_holder"
-            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Movies "
-            android:fontFamily="sans-serif-condensed"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_below="@+id/cast_detail_description"
             android:layout_alignParentStart="true"
-             />
+            android:layout_below="@+id/cast_detail_description"
+            android:fontFamily="sans-serif-condensed"
+            android:padding="16dp"
+            android:text="Movies "
+            android:textAppearance="?android:textAppearanceLarge" />
 
         <TextView
-            android:visibility="invisible"
             android:id="@+id/more"
-            android:clickable="true"
-            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/cast_detail_description"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
             android:fontFamily="sans-serif-condensed"
+            android:padding="16dp"
             android:text="More"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@color/colorAccent"
-            android:background="?android:selectableItemBackground"
-            android:layout_below="@+id/cast_detail_description"
-            android:layout_alignParentEnd="true" />
+            android:visibility="invisible" />
 
     </RelativeLayout>
 

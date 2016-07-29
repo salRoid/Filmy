@@ -27,7 +27,8 @@
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/movie_poster"
         android:text="Star Trek"
-        android:textStyle="bold" />
+        android:fontFamily="sans-serif-condensed"
+        android:textAppearance="?android:textAppearanceMedium" />
 
     <TextView
         android:id="@+id/movie_description"
@@ -37,6 +38,8 @@
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/movie_poster"
         android:text="2013"
+        android:fontFamily="sans-serif-condensed"
+        android:textAppearance="?android:textAppearanceSmall"
         />
 
 

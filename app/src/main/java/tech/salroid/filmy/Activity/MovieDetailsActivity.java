@@ -145,12 +145,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         cast_recycler = (RecyclerView) findViewById(R.id.cast_recycler);
         header = (RelativeLayout) findViewById(R.id.header);
         cast_recycler.setLayoutManager(new LinearLayoutManager(MovieDetailsActivity.this));
-
-
-
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(" ");
+        cast_recycler.setNestedScrollingEnabled(false);
 
         getMovieDetails();
 
@@ -248,6 +243,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
             movie_title=title;
 
+            if(certification.equals("null")){
+                certification = "--";
+            }
+
             double roundOff = Math.round(rating * 100.0) / 100.0;
 
             banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString("medium");
@@ -321,7 +320,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         det_overview.setText(overview);
         det_rating.setText(rating);
 
-        det_runtime.setText(runtime);
+        det_runtime.setText(runtime+" mins");
         det_released.setText(released);
         det_certification.setText(certification);
         det_language.setText(language);
@@ -457,7 +456,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             det_overview.setText(overview);
             det_rating.setText(rating);
 
-            det_runtime.setText(runtime);
+            det_runtime.setText(runtime+" mins");
             det_released.setText(released);
             det_certification.setText(certification);
             det_language.setText(language);

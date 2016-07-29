@@ -134,7 +134,7 @@
                             android:id="@+id/detail_youtube"
                             android:layout_width="match_parent"
                             android:layout_height="180dp"
-                            android:scaleType="fitXY"
+                            android:scaleType="centerCrop"
                              />
 
                         <ImageView

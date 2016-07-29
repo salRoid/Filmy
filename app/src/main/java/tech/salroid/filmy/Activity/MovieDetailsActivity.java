@@ -76,6 +76,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private ImageView youtube_play_button;
     private Button more;
     private String cast_json=null,movie_title=null;
+    private boolean trailer_boolean=false;
 
 
     @Override
@@ -116,7 +117,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         trailorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!(trailer.equals(" ")))
+                if ((trailer_boolean))
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer)));
             }
         });
@@ -164,6 +165,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     @Override
                     public void onResponse(JSONObject response) {
 
+                        Log.d("webi",response.toString());
                         parseMovieDetails(response.toString());
 
 
@@ -211,7 +213,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         String title,tagline, overview, banner_profile;
         double rating;
-        String img_url = "http://salroid.tech";
+        String img_url=null;
 
         try {
 
@@ -232,8 +234,23 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
 
             try {
-                String videoId = extractYoutubeId(trailer);
-                img_url = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
+
+                if(!(trailer.equals("null"))) {
+
+                    trailer_boolean=true;
+
+                    String videoId = extractYoutubeId(trailer);
+
+                    img_url = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
+                }
+
+                else{
+
+                    img_url=jsonObject.getJSONObject("images").getJSONObject("poster").getString("medium");
+                }
+
+
+
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -326,6 +343,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
                         youtube_link.setImageBitmap(resource);
+                        if(trailer_boolean)
                         youtube_play_button.setVisibility(View.VISIBLE);
                     }
 
@@ -445,6 +463,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
                             youtube_link.setImageBitmap(resource);
+                            if (trailer_boolean)
                             youtube_play_button.setVisibility(View.VISIBLE);
                         }
 

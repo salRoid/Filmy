@@ -42,6 +42,12 @@ public class FilmContract {
         public static final String MOVIE_TAGLINE = "movie_tagline";
         public static final String MOVIE_TRAILER = "movie_trailer";
         public static final String MOVIE_RATING = "movie_rating";
+        public static final String MOVIE_RUNTIME = "movie_runtime";
+        public static final String MOVIE_RELEASED = "movie_release";
+        public static final String MOVIE_CERTIFICATION = "movie_certification";
+        public static final String MOVIE_LANGUAGE = "movie_language";
+
+
 
 
 

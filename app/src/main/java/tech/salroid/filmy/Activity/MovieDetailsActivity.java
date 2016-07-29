@@ -298,9 +298,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                                 Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                 if (swatch != null) {
+
                                     header.setBackgroundColor( swatch.getRgb());
                                     det_title.setTextColor(swatch.getTitleTextColor());
                                     det_tagline.setTextColor(swatch.getBodyTextColor());
+                                    det_overview.setTextColor(swatch.getBodyTextColor());
 
 
                                 }
@@ -416,9 +418,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                                     Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                     if (swatch != null) {
+
                                         header.setBackgroundColor(swatch.getRgb());
                                         det_title.setTextColor(swatch.getTitleTextColor());
                                         det_tagline.setTextColor(swatch.getBodyTextColor());
+                                        det_overview.setTextColor(swatch.getBodyTextColor());
 
                                     }
                                     if (trailorSwatch!=null){

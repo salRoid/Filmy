@@ -24,10 +24,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     List<SearchData> data = new ArrayList<>();
     Context fro;
     private ClickListener clickListener;
-    private String query_name;
-    private String query_id;
-    private String query_poster;
-    private String query_type;
+    private String query_name,query_type,query_poster, query_id,query_date,query_extra;
 
 
     public SearchResultAdapter(Context context ,List<SearchData> data) {
@@ -52,8 +49,12 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         query_id=data.get(position).getId();
         query_poster=data.get(position).getPoster();
         query_type=data.get(position).getType();
+        query_date=data.get(position).getDate();
+        query_extra=data.get(position).getExtra();
 
         holder.movie_name.setText(query_name);
+        holder.movie_date.setText(query_date);
+        holder.movie_extra.setText(query_extra);
         Glide.with(fro).load(query_poster).into(holder.movie_poster);
 
     }
@@ -68,7 +69,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     class Dh extends RecyclerView.ViewHolder{
 
-        TextView movie_name;
+        TextView movie_name,movie_date,movie_extra;
         ImageView movie_poster;
 
         public Dh(View itemView) {
@@ -79,7 +80,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
             movie_name  = (TextView) itemView.findViewById(R.id.result_title);
             movie_poster=(ImageView)itemView.findViewById(R.id.poster);
-
+            movie_date=(TextView)itemView.findViewById(R.id.result_date);
+            movie_extra=(TextView)itemView.findViewById(R.id.result_extra);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -74,7 +74,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             FilmContract.MoviesEntry.MOVIE_RATING
     };
     private ImageView youtube_play_button;
-    private Button more;
+    private TextView more;
     private String cast_json=null,movie_title=null;
     private boolean trailer_boolean=false;
 
@@ -95,7 +95,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         trailorBackground = (LinearLayout) findViewById(R.id.trailorBackground);
         tvRating = (TextView) findViewById(R.id.tvRating);
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
-        more=(Button)findViewById(R.id.more);
+        more=(TextView)findViewById(R.id.more);
 
 
 
@@ -344,7 +344,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
                         youtube_link.setImageBitmap(resource);
                         if(trailer_boolean)
-                        youtube_play_button.setVisibility(View.VISIBLE);
+                         youtube_play_button.setVisibility(View.VISIBLE);
                     }
 
                 });

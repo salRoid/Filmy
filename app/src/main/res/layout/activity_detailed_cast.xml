@@ -82,31 +82,6 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/card_holder"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Movies "
-            android:layout_below="@+id/cast_detail_description"
-            android:fontFamily="sans-serif-condensed"
-            android:textAppearance="?android:textAppearanceLarge"/>
-
-
-        <Button
-            android:visibility="invisible"
-            android:id="@+id/more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/cast_detail_description"
-            android:text="More"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorAccent"
-            android:background="?android:selectableItemBackground" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="8dp"
@@ -114,6 +89,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/card_holder" />
+
+        <TextView
+            android:id="@+id/card_holder"
+            android:padding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Movies "
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_below="@+id/cast_detail_description"
+            android:layout_alignParentStart="true"
+             />
+
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/more"
+            android:clickable="true"
+            android:padding="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="More"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/colorAccent"
+            android:background="?android:selectableItemBackground"
+            android:layout_below="@+id/cast_detail_description"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 

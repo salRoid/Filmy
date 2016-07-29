@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  **/
 public class FilmDbHelper extends SQLiteOpenHelper {
 
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
     public static final String DB_NAME = "filmy.db";
 
 
@@ -27,6 +27,10 @@ public class FilmDbHelper extends SQLiteOpenHelper {
                 + FilmContract.MoviesEntry.MOVIE_YEAR + " INTEGER(4) NOT NULL ,"
                 + FilmContract.MoviesEntry.MOVIE_POSTER_LINK + " VARCHAR(255) ,"
                 +FilmContract.MoviesEntry.MOVIE_BANNER+ " VARCHAR (255) ,"
+                +FilmContract.MoviesEntry.MOVIE_CERTIFICATION+ " VARCHAR (255) ,"
+                +FilmContract.MoviesEntry.MOVIE_LANGUAGE+ " VARCHAR (255) ,"
+                +FilmContract.MoviesEntry.MOVIE_RELEASED+ " VARCHAR (255) ,"
+                +FilmContract.MoviesEntry.MOVIE_RUNTIME+ " VARCHAR (255) ,"
                 +FilmContract.MoviesEntry.MOVIE_DESCRIPTION+" VARCHAR (255) ,"
                 +FilmContract.MoviesEntry.MOVIE_TAGLINE+ " VARCHAR(255) ,"
                 +FilmContract.MoviesEntry.MOVIE_TRAILER+ " VARCHAR(255) ,"

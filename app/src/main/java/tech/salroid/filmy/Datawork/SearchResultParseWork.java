@@ -48,7 +48,7 @@ public class SearchResultParseWork {
                     getImage = "headshot";
                     getId = "trakt";
                     getDate="birthday";
-                    getExtra="brithplace";
+                    getExtra="birthplace";
                 } else {
                     getString = "title";
                     getImage = "poster";

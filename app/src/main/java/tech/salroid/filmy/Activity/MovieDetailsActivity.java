@@ -55,7 +55,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private boolean fromActivity;
     private RecyclerView cast_recycler;
     private RelativeLayout header;
-    private static TextView det_title, det_tagline, det_overview, det_rating;
+    private static TextView det_title, det_tagline, det_overview, det_rating,det_released,det_certification,det_language,det_runtime;
     private static ImageView youtube_link, banner;
 
     private final String LOG_TAG = MovieDetailsActivity.class.getSimpleName();
@@ -72,7 +72,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             FilmContract.MoviesEntry.MOVIE_DESCRIPTION,
             FilmContract.MoviesEntry.MOVIE_TAGLINE,
             FilmContract.MoviesEntry.MOVIE_TRAILER,
-            FilmContract.MoviesEntry.MOVIE_RATING
+            FilmContract.MoviesEntry.MOVIE_RATING,
+            FilmContract.MoviesEntry.MOVIE_LANGUAGE,
+            FilmContract.MoviesEntry.MOVIE_RELEASED,
+            FilmContract.MoviesEntry.MOVIE_CERTIFICATION,
+            FilmContract.MoviesEntry.MOVIE_RUNTIME,
     };
     private ImageView youtube_play_button;
     private TextView more;
@@ -95,6 +99,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         youtube_play_button=(ImageView)findViewById(R.id.play_button);
         trailorBackground = (LinearLayout) findViewById(R.id.trailorBackground);
         tvRating = (TextView) findViewById(R.id.tvRating);
+        det_released = (TextView) findViewById(R.id.detail_released);
+        det_certification = (TextView) findViewById(R.id.detail_certification);
+        det_runtime = (TextView) findViewById(R.id.detail_runtime);
+        det_language = (TextView) findViewById(R.id.detail_language);
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
         more=(TextView)findViewById(R.id.more);
 
@@ -218,7 +226,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     void parseMovieDetails(String movieDetails) {
 
 
-        String title,tagline, overview, banner_profile;
+        String title,tagline, overview, banner_profile,certification,runtime,language,released;
         double rating;
         String img_url=null;
 
@@ -232,6 +240,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             overview = jsonObject.getString("overview");
             trailer = jsonObject.getString("trailer");
             rating = jsonObject.getDouble("rating");
+            certification=jsonObject.getString("certification");
+            language=jsonObject.getString("language");
+            released=jsonObject.getString("released");
+            runtime=jsonObject.getString("runtime");
+
 
             movie_title=title;
 
@@ -269,6 +282,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE, tagline);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION, overview);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER, img_url);
+                    contentValues.put(FilmContract.MoviesEntry.MOVIE_CERTIFICATION, certification);
+                    contentValues.put(FilmContract.MoviesEntry.MOVIE_LANGUAGE, language);
+                    contentValues.put(FilmContract.MoviesEntry.MOVIE_RUNTIME, runtime);
+                    contentValues.put(FilmContract.MoviesEntry.MOVIE_RELEASED, released);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, String.valueOf(roundOff));
 
                     final String selection =
@@ -283,7 +300,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     }
                 }else{
 
-                    showParsedContent(title,banner_profile,img_url,tagline,overview,String.valueOf(roundOff));
+                    showParsedContent(title,banner_profile,img_url,tagline,overview,String.valueOf(roundOff),runtime,released,certification,language);
 
                 }
 
@@ -295,13 +312,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         }
     }
 
-    private void showParsedContent(String title,String banner_profile,String img_url,String tagline,String overview,String rating) {
+    private void showParsedContent(String title,String banner_profile,String img_url,String tagline,String overview,
+                                   String rating,String runtime,String released,String certification,String language) {
 
 
         det_title.setText(title);
         det_tagline.setText(tagline);
         det_overview.setText(overview);
         det_rating.setText(rating);
+
+        det_runtime.setText(runtime);
+        det_released.setText(released);
+        det_certification.setText(certification);
+        det_language.setText(language);
 
 
 
@@ -412,6 +435,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             int description_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_DESCRIPTION);
             int trailer_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TRAILER);
             int rating_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RATING);
+            int released_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RELEASED);
+            int runtime_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RUNTIME);
+            int language_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_LANGUAGE);
+            int certification_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_CERTIFICATION);
 
             String title = data.getString(title_index);
             String banner_url = data.getString(banner_index);
@@ -419,12 +446,21 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             String overview = data.getString(description_index);
             String trailer = data.getString(trailer_index);
             String rating = data.getString(rating_index);
+            String runtime = data.getString(runtime_index);
+            String released = data.getString(released_index);
+            String certification = data.getString(certification_index);
+            String language = data.getString(language_index);
 
 
             det_title.setText(title);
             det_tagline.setText(tagline);
             det_overview.setText(overview);
             det_rating.setText(rating);
+
+            det_runtime.setText(runtime);
+            det_released.setText(released);
+            det_certification.setText(certification);
+            det_language.setText(language);
 
 
             Glide.with(context)
@@ -493,12 +529,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         if(item.getItemId() == android.R.id.home)
             finish();
+
+
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out);
     }
+
+
 }

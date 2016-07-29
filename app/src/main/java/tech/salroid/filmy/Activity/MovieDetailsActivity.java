@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -15,7 +16,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.android.volley.Request;
@@ -25,7 +31,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BaseTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.MalformedURLException;
@@ -41,7 +50,7 @@ import tech.salroid.filmy.Network.VolleySingleton;
 public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailsActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     Context context = this;
-    private String movie_id;
+    private String movie_id,trailer=null;
     private boolean fromActivity;
     private RecyclerView cast_recycler;
     private RelativeLayout header;
@@ -50,6 +59,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     private final String LOG_TAG = MovieDetailsActivity.class.getSimpleName();
     private final int MOVIE_DETAILS_LOADER = 2;
+    LinearLayout trailorBackground;
+    TextView tvRating;
+    FrameLayout trailorView;
 
 
     private static final String[] GET_MOVIE_COLUMNS = {
@@ -61,6 +73,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             FilmContract.MoviesEntry.MOVIE_TRAILER,
             FilmContract.MoviesEntry.MOVIE_RATING
     };
+    private ImageView youtube_play_button;
+    private Button more;
+    private String cast_json=null,movie_title=null;
 
 
     @Override
@@ -75,6 +90,36 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         det_rating = (TextView) findViewById(R.id.detail_rating);
         youtube_link = (ImageView) findViewById(R.id.detail_youtube);
         banner = (ImageView) findViewById(R.id.bannu);
+        youtube_play_button=(ImageView)findViewById(R.id.play_button);
+        trailorBackground = (LinearLayout) findViewById(R.id.trailorBackground);
+        tvRating = (TextView) findViewById(R.id.tvRating);
+        trailorView = (FrameLayout) findViewById(R.id.trailorView);
+        more=(Button)findViewById(R.id.more);
+
+
+
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!(cast_json.equals(" ")&& movie_title.equals(" "))){
+                    Intent intent = new Intent(MovieDetailsActivity.this, FullCastActivity.class);
+                    intent.putExtra("cast_json",cast_json);
+                    intent.putExtra("toolbar_title",movie_title);
+                    startActivity(intent);
+
+                }
+
+
+            }
+        });
+
+        trailorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!(trailer.equals(" ")))
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer)));
+            }
+        });
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -138,6 +183,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        cast_json=response.toString();
+                        more.setVisibility(View.VISIBLE);
                         cast_parseOutput(response.toString());
 
                     }
@@ -162,7 +209,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     void parseMovieDetails(String movieDetails) {
 
 
-        String title,tagline, overview, trailer, banner_profile;
+        String title,tagline, overview, banner_profile;
         double rating;
         String img_url = "http://salroid.tech";
 
@@ -171,12 +218,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             JSONObject jsonObject = new JSONObject(movieDetails);
 
             ContentValues contentValues = new ContentValues();
-
             title = jsonObject.getString("title");
             tagline = jsonObject.getString("tagline");
             overview = jsonObject.getString("overview");
             trailer = jsonObject.getString("trailer");
             rating = jsonObject.getDouble("rating");
+
+            movie_title=title;
 
             double roundOff = Math.round(rating * 100.0) / 100.0;
 
@@ -233,6 +281,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
 
 
+
         Glide.with(context)
                 .load(banner_profile)
                 .asBitmap()
@@ -245,12 +294,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                         Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                             public void onGenerated(Palette p) {
                                 // Use generated instance
-                                Palette.Swatch swatch = p.getMutedSwatch();
+                                Palette.Swatch swatch = p.getVibrantSwatch();
+                                Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                 if (swatch != null) {
-                                    header.setBackgroundColor(swatch.getRgb());
+                                    header.setBackgroundColor( swatch.getRgb());
                                     det_title.setTextColor(swatch.getTitleTextColor());
                                     det_tagline.setTextColor(swatch.getBodyTextColor());
+
+
+                                }
+                                if (trailorSwatch!=null){
+                                    trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
+                                    tvRating.setTextColor(trailorSwatch.getTitleTextColor());
+                                    det_rating.setTextColor(trailorSwatch.getBodyTextColor());
                                 }
                             }
                         });
@@ -261,9 +318,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         Glide.with(context)
                 .load(img_url)
-                .fitCenter()
-                .into(youtube_link);
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
+                        youtube_link.setImageBitmap(resource);
+                        youtube_play_button.setVisibility(View.VISIBLE);
+                    }
+
+                });
 
     }
 
@@ -280,7 +344,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(this, cast_result);
         List<MovieDetailsData> cast_list = par.parse_cast();
-        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(this, cast_list);
+        Boolean size=true;
+        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(this, cast_list,size);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
 
@@ -348,11 +413,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                                 public void onGenerated(Palette p) {
                                     // Use generated instance
                                     Palette.Swatch swatch = p.getMutedSwatch();
+                                    Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                     if (swatch != null) {
                                         header.setBackgroundColor(swatch.getRgb());
                                         det_title.setTextColor(swatch.getTitleTextColor());
                                         det_tagline.setTextColor(swatch.getBodyTextColor());
+
+                                    }
+                                    if (trailorSwatch!=null){
+                                        trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
+                                        tvRating.setTextColor(trailorSwatch.getTitleTextColor());
+                                        det_rating.setTextColor(trailorSwatch.getBodyTextColor());
                                     }
                                 }
                             });
@@ -363,9 +435,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
             Glide.with(context)
                     .load(trailer)
-                    .fitCenter()
-                    .into(youtube_link);
+                    .asBitmap()
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+
+                            youtube_link.setImageBitmap(resource);
+                            youtube_play_button.setVisibility(View.VISIBLE);
+                        }
+
+                    });
+
+
         }
+
 
 
     }
@@ -375,5 +458,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        if(item.getItemId() == android.R.id.home)
+            finish();
+
+
+        return super.onOptionsItemSelected(item);
+    }
 }

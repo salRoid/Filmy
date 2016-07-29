@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         materialSearchView.setMenuItem(item);
         return true;
     }
-    
+
 
     private void getData() {
 

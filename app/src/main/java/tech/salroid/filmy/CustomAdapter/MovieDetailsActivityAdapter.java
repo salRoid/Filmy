@@ -23,6 +23,7 @@ import tech.salroid.filmy.DataClasses.MovieData;
  */
 public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetailsActivityAdapter.Ho> {
 
+    private final Boolean ret_size;
     String ct_name, ct_desc, ct_profile,ct_id;
     private final LayoutInflater inflater;
     private ClickListener clickListener;
@@ -30,10 +31,11 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
     List<MovieDetailsData> cast = new ArrayList<>();
     Context con;
 
-    public MovieDetailsActivityAdapter(Context context, List<MovieDetailsData> cast) {
+    public MovieDetailsActivityAdapter(Context context, List<MovieDetailsData> cast,Boolean size) {
         inflater = LayoutInflater.from(context);
         con = context;
         this.cast = cast;
+        this.ret_size=size;
     }
 
     @Override
@@ -64,7 +66,11 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
     @Override
     public int getItemCount() {
 
-        return (cast.size()>=7)?7:cast.size();
+        if (ret_size)
+        return (cast.size()>=5)?5:cast.size();
+
+        else
+            return cast.size();
 
     }
 

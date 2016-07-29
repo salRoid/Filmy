@@ -8,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.Request;
@@ -33,6 +35,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     private ImageView character_small;
     Context co=this;
     private RecyclerView char_recycler;
+    private String character_title=null,movie_json=null;
+    private Button more;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,24 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        more=(Button)findViewById(R.id.more);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!(movie_json.equals(" ")&& character_title.equals(" "))){
+                    Intent intent = new Intent(CharacterDetailsActivity.this, FullMovieActivity.class);
+                    intent.putExtra("cast_json",movie_json);
+                    intent.putExtra("toolbar_title",character_title);
+                    startActivity(intent);
+
+                }
+
+
+            }
+        });
 
         char_recycler = (RecyclerView) findViewById(R.id.character_movies);
         char_recycler.setLayoutManager(new LinearLayoutManager(CharacterDetailsActivity.this));
@@ -104,6 +125,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                     @Override
                     public void onResponse(JSONObject response) {
 
+                        movie_json=response.toString();
+                        more.setVisibility(View.VISIBLE);
                         cast_parseOutput(response.toString());
 
                     }
@@ -153,6 +176,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
           String char_birthplace=jsonObject.getString("birthplace");
 
 
+          character_title=char_name;
 
           TextView ch_name = (TextView) findViewById(R.id.actor);
           TextView ch_desc = (TextView) findViewById(R.id.desc);
@@ -185,7 +209,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     private void cast_parseOutput(String cast_result) {
         CharacterDetailActivityParseWork par= new CharacterDetailActivityParseWork(this,cast_result);
         List<CharacterDetailsData> char_list=par.char_parse_cast();
-        CharacterDetailsActivityAdapter char_adapter= new CharacterDetailsActivityAdapter(this,char_list);
+        Boolean size=true;
+        CharacterDetailsActivityAdapter char_adapter= new CharacterDetailsActivityAdapter(this,char_list,size);
         char_adapter.setClickListener(this);
         char_recycler.setAdapter(char_adapter);
 

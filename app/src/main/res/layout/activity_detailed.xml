@@ -56,6 +56,20 @@
                 android:layout_below="@id/detail_title"
                 android:fontFamily="sans-serif-condensed"
                 android:textAppearance="?android:textAppearanceMedium" />
+
+
+            <TextView
+                android:layout_below="@id/detail_tagline"
+                android:id="@+id/detail_overview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-condensed"
+                android:maxLines="4"
+                android:textAppearance="?android:textAppearanceSmall" />
+
+
         </RelativeLayout>
 
         <LinearLayout
@@ -64,20 +78,6 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/header"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/detail_overview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-condensed"
-                android:maxLines="4"
-                android:textAppearance="?android:textAppearanceSmall" />
-
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -163,7 +163,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/movie_description"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="sans-serif-condensed"
             android:text="Cast "
             android:textAppearance="?android:textAppearanceLarge" />
@@ -171,15 +171,16 @@
         <Button
             android:visibility="invisible"
             android:id="@+id/more"
-            android:layout_marginTop="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/movie_description"
             android:text="More"
+            android:textSize="17sp"
+            android:textStyle="bold"
             android:textColor="@color/colorAccent"
-            android:background="@android:color/transparent" />
+            android:background="?android:selectableItemBackground" />
 
         <android.support.v7.widget.RecyclerView
 

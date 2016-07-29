@@ -62,7 +62,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private final int MOVIE_DETAILS_LOADER = 2;
     LinearLayout trailorBackground;
     TextView tvRating;
-    FrameLayout trailorView;
+    FrameLayout trailorView,newMain;
 
 
     private static final String[] GET_MOVIE_COLUMNS = {
@@ -105,6 +105,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         det_language = (TextView) findViewById(R.id.detail_language);
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
         more=(TextView)findViewById(R.id.more);
+        newMain = (FrameLayout) findViewById(R.id.new_main);
 
 
         more.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +123,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             }
         });
 
-        banner.setOnClickListener(new View.OnClickListener() {
+        newMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!(show_centre_img_url.equals(null))){
@@ -156,12 +157,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         cast_recycler = (RecyclerView) findViewById(R.id.cast_recycler);
         header = (RelativeLayout) findViewById(R.id.header);
         cast_recycler.setLayoutManager(new LinearLayoutManager(MovieDetailsActivity.this));
-
-
-
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(" ");
+        cast_recycler.setNestedScrollingEnabled(false);
 
         getMovieDetails();
 
@@ -258,6 +254,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
             movie_title=title;
 
+            if(certification.equals("null")){
+                certification = "--";
+            }
+
             double roundOff = Math.round(rating * 100.0) / 100.0;
 
             banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString("medium");
@@ -332,7 +332,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         det_overview.setText(overview);
         det_rating.setText(rating);
 
-        det_runtime.setText(runtime);
+        det_runtime.setText(runtime+" mins");
         det_released.setText(released);
         det_certification.setText(certification);
         det_language.setText(language);
@@ -469,7 +469,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             det_overview.setText(overview);
             det_rating.setText(rating);
 
-            det_runtime.setText(runtime);
+            det_runtime.setText(runtime+" mins");
             det_released.setText(released);
             det_certification.setText(certification);
             det_language.setText(language);

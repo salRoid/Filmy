@@ -62,7 +62,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private final int MOVIE_DETAILS_LOADER = 2;
     LinearLayout trailorBackground;
     TextView tvRating;
-    FrameLayout trailorView;
+    FrameLayout trailorView,newMain;
 
 
     private static final String[] GET_MOVIE_COLUMNS = {
@@ -105,6 +105,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         det_language = (TextView) findViewById(R.id.detail_language);
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
         more=(TextView)findViewById(R.id.more);
+        newMain = (FrameLayout) findViewById(R.id.new_main);
 
 
         more.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +123,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             }
         });
 
-        banner.setOnClickListener(new View.OnClickListener() {
+        newMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!(show_centre_img_url.equals(null))){

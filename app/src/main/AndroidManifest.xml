@@ -32,10 +32,6 @@
             android:authorities="tech.salroid.filmy" />
 
         <activity
-            android:name=".SearchFragment"
-            android:label=" "
-            android:theme="@style/AppTheme.Base" />
-        <activity
             android:name=".Activity.FullCastActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
@@ -45,8 +41,8 @@
             android:theme="@style/AppTheme.Base" />
         <activity
             android:name=".Activity.FullScreenImage"
-            android:label="@string/title_activity_full_screen_image"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:label=" "
+            android:theme="@style/FullScreenTheme"/>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -19,6 +20,8 @@ public class FullReadFragment extends Fragment implements View.OnClickListener {
     TextView title,desc;
     String titleValue,descValue;
     ImageView crossButton;
+    private int dyn_Value;
+    private RelativeLayout fragment_desc;
 
 
     @Nullable
@@ -29,6 +32,7 @@ public class FullReadFragment extends Fragment implements View.OnClickListener {
         title = (TextView) view.findViewById(R.id.textViewTitle);
         desc = (TextView) view.findViewById(R.id.textViewDesc);
         crossButton = (ImageView) view.findViewById(R.id.cross);
+        fragment_desc=(RelativeLayout)view.findViewById(R.id.fragment_desc);
         crossButton.setOnClickListener(this);
 
         return view;
@@ -41,6 +45,7 @@ public class FullReadFragment extends Fragment implements View.OnClickListener {
 
         titleValue = getArguments().getString("title"," ");
         descValue = getArguments().getString("desc"," ");
+        dyn_Value=getArguments().getInt("dynam",0);
 
     }
 
@@ -50,6 +55,7 @@ public class FullReadFragment extends Fragment implements View.OnClickListener {
 
         title.setText(titleValue);
         desc.setText(descValue);
+        fragment_desc.setBackgroundColor(dyn_Value);
     }
 
     @Override

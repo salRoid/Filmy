@@ -13,14 +13,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.List;
 
 import tech.salroid.filmy.DataClasses.CharacterDetailsData;
@@ -34,9 +37,9 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
     private String character_id;
     private ImageView character_small;
-    Context co=this;
+    Context co = this;
     private RecyclerView char_recycler;
-    private String character_title=null,movie_json=null;
+    private String character_title = null, movie_json = null;
     private TextView more;
 
     @Override
@@ -48,17 +51,17 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        more=(TextView)findViewById(R.id.more);
+        more = (TextView) findViewById(R.id.more);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!(movie_json.equals(" ")&& character_title.equals(" "))){
+                if (!(movie_json.equals(" ") && character_title.equals(" "))) {
                     Intent intent = new Intent(CharacterDetailsActivity.this, FullMovieActivity.class);
-                    intent.putExtra("cast_json",movie_json);
-                    intent.putExtra("toolbar_title",character_title);
+                    intent.putExtra("cast_json", movie_json);
+                    intent.putExtra("toolbar_title", character_title);
                     startActivity(intent);
 
                 }
@@ -77,7 +80,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             character_id = intent.getStringExtra("id");
         }
 
-        character_small=(ImageView)findViewById(R.id.cast_img_small);
+        character_small = (ImageView) findViewById(R.id.cast_img_small);
 
         getDetailedMovieAndCast();
 
@@ -94,15 +97,14 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     private void getDetailedMovieAndCast() {
 
 
-
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
-        RequestQueue requestQueue  = volleySingleton.getRequestQueue();
+        RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
 
-        final String BASE_URL_PERSON_DETAIL = "https://api.trakt.tv/people/"+character_id+"?extended=full,images";
-        final String BASE_URL_PEOPLE_MOVIES = "https://api.trakt.tv/people/"+character_id+"/movies?extended=images,full";
+        final String BASE_URL_PERSON_DETAIL = "https://api.trakt.tv/people/" + character_id + "?extended=full,images";
+        final String BASE_URL_PEOPLE_MOVIES = "https://api.trakt.tv/people/" + character_id + "/movies?extended=images,full";
 
-        JsonObjectRequest personDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PERSON_DETAIL , null,
+        JsonObjectRequest personDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PERSON_DETAIL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -115,18 +117,18 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e("webi", "Volley Error: "+error.getCause());
+                Log.e("webi", "Volley Error: " + error.getCause());
 
             }
         }
         );
 
-        JsonObjectRequest personMovieDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PEOPLE_MOVIES , null,
+        JsonObjectRequest personMovieDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PEOPLE_MOVIES, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        movie_json=response.toString();
+                        movie_json = response.toString();
 
                         cast_parseOutput(response.toString());
 
@@ -135,67 +137,64 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e("webi", "Volley Error: "+error.getCause());
+                Log.e("webi", "Volley Error: " + error.getCause());
 
             }
         }
         );
 
 
-
         requestQueue.add(personDetailRequest);
         requestQueue.add(personMovieDetailRequest);
 
 
-
     }
-
-
 
 
     @Override
     public void itemClicked(CharacterDetailsData setterGetterchar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("id",setterGetterchar.getChar_id());
-        intent.putExtra("activity",false);
+        intent.putExtra("id", setterGetterchar.getChar_id());
+        intent.putExtra("activity", false);
         startActivity(intent);
     }
 
 
-
-  void  personDetailsParsing(String detailsResult){
-
-
-      try {
-          JSONObject jsonObject=new JSONObject(detailsResult);
-
-          String char_name= jsonObject.getString("name");
-          String char_face=jsonObject.getJSONObject("images").getJSONObject("headshot").getString("thumb");
-          String char_desc=jsonObject.getString("biography");
-          String char_birthday=jsonObject.getString("birthday");
-          String char_birthplace=jsonObject.getString("birthplace");
+    void personDetailsParsing(String detailsResult) {
 
 
-          character_title=char_name;
+        try {
+            JSONObject jsonObject = new JSONObject(detailsResult);
+
+            String char_name = jsonObject.getString("name");
+            String char_face = jsonObject.getJSONObject("images").getJSONObject("headshot").getString("thumb");
+            String char_desc = jsonObject.getString("biography");
+            String char_birthday = jsonObject.getString("birthday");
+            String char_birthplace = jsonObject.getString("birthplace");
 
 
-          TextView ch_name = (TextView) findViewById(R.id.actor);
-          TextView ch_desc = (TextView) findViewById(R.id.desc);
-          TextView ch_birth = (TextView) findViewById(R.id.birth);
-          TextView ch_place = (TextView) findViewById(R.id.birth_place);
+            character_title = char_name;
 
 
-          ch_name.setText(char_name);
-          if(char_birthday.equals("null"))
-              ch_birth.setVisibility(View.GONE);
-          else
-          ch_birth.setText(char_birthday);
-            if(char_birthplace.equals("null"))
-          ch_place.setVisibility(View.GONE);
-          else
-          ch_place.setText(char_birthplace);
+            TextView ch_name = (TextView) findViewById(R.id.actor);
+            TextView ch_desc = (TextView) findViewById(R.id.desc);
+            TextView ch_birth = (TextView) findViewById(R.id.birth);
+            TextView ch_place = (TextView) findViewById(R.id.birth_place);
 
-          ch_desc.setText(char_desc);
+
+            ch_name.setText(char_name);
+            if (char_birthday.equals("null"))
+                ch_birth.setVisibility(View.GONE);
+            else
+                ch_birth.setText(char_birthday);
+            if (char_birthplace.equals("null"))
+                ch_place.setVisibility(View.GONE);
+            else
+                ch_place.setText(char_birthplace);
+            if (char_birthplace.equals("null"))
+                ch_desc.setVisibility(View.GONE);
+            else
+                ch_desc.setText(char_desc);
 
 
           /*Glide.with(co)
@@ -203,23 +202,23 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                     .fitCenter()
                   .into(character_banner);*/
 
-          Glide.with(co)
-                  .load(char_face)
-                  .fitCenter()
-                  .into(character_small);
+            Glide.with(co)
+                    .load(char_face)
+                    .fitCenter()
+                    .into(character_small);
 
-      } catch (JSONException e) {
-          e.printStackTrace();
-      }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
     private void cast_parseOutput(String cast_result) {
 
-        CharacterDetailActivityParseWork par= new CharacterDetailActivityParseWork(this,cast_result);
-        List<CharacterDetailsData> char_list=par.char_parse_cast();
-        Boolean size=true;
-        CharacterDetailsActivityAdapter char_adapter= new CharacterDetailsActivityAdapter(this,char_list,size);
+        CharacterDetailActivityParseWork par = new CharacterDetailActivityParseWork(this, cast_result);
+        List<CharacterDetailsData> char_list = par.char_parse_cast();
+        Boolean size = true;
+        CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, size);
         char_adapter.setClickListener(this);
         char_recycler.setAdapter(char_adapter);
         more.setVisibility(View.VISIBLE);

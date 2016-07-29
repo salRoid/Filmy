@@ -126,7 +126,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                     public void onResponse(JSONObject response) {
 
                         movie_json=response.toString();
-                        more.setVisibility(View.VISIBLE);
+
                         cast_parseOutput(response.toString());
 
                     }
@@ -170,13 +170,13 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
           String char_name= jsonObject.getString("name");
           String char_face=jsonObject.getJSONObject("images").getJSONObject("headshot").getString("thumb");
-          //String char_banner=jsonObject.getJSONObject("images").getJSONObject("poster").getString("medium");
           String char_desc=jsonObject.getString("biography");
           String char_birthday=jsonObject.getString("birthday");
           String char_birthplace=jsonObject.getString("birthplace");
 
 
           character_title=char_name;
+
 
           TextView ch_name = (TextView) findViewById(R.id.actor);
           TextView ch_desc = (TextView) findViewById(R.id.desc);
@@ -185,9 +185,17 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
 
           ch_name.setText(char_name);
+          if(char_birthday.equals("null"))
+              ch_birth.setVisibility(View.GONE);
+          else
           ch_birth.setText(char_birthday);
-          ch_desc.setText(char_desc);
+            if(char_birthplace.equals("null"))
+          ch_place.setVisibility(View.GONE);
+          else
           ch_place.setText(char_birthplace);
+
+          ch_desc.setText(char_desc);
+
 
           /*Glide.with(co)
                   .load(char_banner)
@@ -205,14 +213,15 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     }
 
 
-
     private void cast_parseOutput(String cast_result) {
+
         CharacterDetailActivityParseWork par= new CharacterDetailActivityParseWork(this,cast_result);
         List<CharacterDetailsData> char_list=par.char_parse_cast();
         Boolean size=true;
         CharacterDetailsActivityAdapter char_adapter= new CharacterDetailsActivityAdapter(this,char_list,size);
         char_adapter.setClickListener(this);
         char_recycler.setAdapter(char_adapter);
+        more.setVisibility(View.VISIBLE);
 
 
     }

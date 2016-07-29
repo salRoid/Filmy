@@ -7,5 +7,6 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_full_cast">FullCastActivity</string>
     <string name="title_activity_full_movie">FullMovieActivity</string>
+    <string name="title_activity_full_screen_image">FullScreenImage</string>
 
 </resources>

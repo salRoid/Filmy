@@ -80,7 +80,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     };
     private ImageView youtube_play_button;
     private TextView more;
-    private String cast_json=null,movie_title=null;
+    private String cast_json=null,movie_title=null, show_centre_img_url=null;
     private boolean trailer_boolean=false;
 
 
@@ -119,6 +119,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                 }
 
 
+            }
+        });
+
+        banner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!(show_centre_img_url.equals(null))){
+                    Intent intent = new Intent(MovieDetailsActivity.this, FullScreenImage.class);
+                    intent.putExtra("img_url",show_centre_img_url);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -201,7 +212,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     @Override
                     public void onResponse(JSONObject response) {
                         cast_json=response.toString();
-                        more.setVisibility(View.VISIBLE);
                         cast_parseOutput(response.toString());
 
                     }
@@ -252,6 +262,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
             banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString("medium");
 
+            show_centre_img_url=banner_profile;
 
             try {
 
@@ -398,6 +409,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(this, cast_list,size);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
+        more.setVisibility(View.VISIBLE);
 
 
     }

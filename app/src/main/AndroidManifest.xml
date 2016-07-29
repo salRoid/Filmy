@@ -42,7 +42,11 @@
         <activity
             android:name=".Activity.FullMovieActivity"
             android:label="@string/title_activity_full_movie"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".Activity.FullScreenImage"
+            android:label="@string/title_activity_full_screen_image"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>

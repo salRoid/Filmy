@@ -64,13 +64,15 @@ public class SearchResultParseWork {
                 extra = jsonArray.getJSONObject(i).getJSONObject(type).getString(getExtra);
 
 
-                searchData.setId(id);
-                searchData.setExtra(extra);
-                searchData.setDate(date);
-                searchData.setType(type);
-                searchData.setMovie(type_name);
-                searchData.setPoster(movie_poster);
-                searchArray.add(searchData);
+                if(!(movie_poster.equals("null")&&date.equals("null")&&extra.equals("null"))) {
+                    searchData.setId(id);
+                    searchData.setExtra(extra);
+                    searchData.setDate(date);
+                    searchData.setType(type);
+                    searchData.setMovie(type_name);
+                    searchData.setPoster(movie_poster);
+                    searchArray.add(searchData);
+                }
 
             }
         } catch (JSONException e) {

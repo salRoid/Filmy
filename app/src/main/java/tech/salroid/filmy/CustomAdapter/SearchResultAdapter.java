@@ -53,8 +53,16 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         query_extra=data.get(position).getExtra();
 
         holder.movie_name.setText(query_name);
+
+        if (query_date.equals("null"))
+            holder.movie_date.setVisibility(View.GONE);
+        else
         holder.movie_date.setText(query_date);
+        if (query_extra.equals("null"))
+            holder.movie_date.setVisibility(View.GONE);
+        else
         holder.movie_extra.setText(query_extra);
+
         Glide.with(fro).load(query_poster).into(holder.movie_poster);
 
     }

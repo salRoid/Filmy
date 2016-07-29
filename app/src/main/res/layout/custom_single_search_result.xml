@@ -14,31 +14,35 @@
         android:layout_marginRight="1dp"
         android:layout_marginTop="2dp"
         android:scaleType="fitXY" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_toRightOf="@+id/poster">
 
     <TextView
         android:id="@+id/result_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_margin="16dp"
-        android:layout_toRightOf="@+id/poster"
+        android:layout_margin="4dp"
         android:fontFamily="sans-serif-condensed"
         android:text="Star Trek"
         android:textAppearance="?android:textAppearanceMedium" />
 
     <TextView
         android:id="@+id/result_date"
+        android:layout_margin="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/result_title"
-        android:layout_toRightOf="@+id/poster" />
+        />
 
     <TextView
+        android:layout_margin="4dp"
         android:id="@+id/result_extra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/result_date"
-        android:layout_toRightOf="@+id/poster" />
-
+        />
+</LinearLayout>
 
 </RelativeLayout>

@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -19,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,10 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.BaseTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.MalformedURLException;
@@ -45,13 +40,14 @@ import tech.salroid.filmy.DataClasses.MovieDetailsData;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.Datawork.MovieDetailsActivityParseWork;
 import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
+import tech.salroid.filmy.FullReadFragment;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.Network.VolleySingleton;
 
 public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailsActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     Context context = this;
-    private String movie_id,trailer=null;
+    private String movie_id,trailer=null,movie_desc;
     private boolean fromActivity;
     private RecyclerView cast_recycler;
     private RelativeLayout header;
@@ -63,6 +59,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     LinearLayout trailorBackground;
     TextView tvRating;
     FrameLayout trailorView,newMain;
+    FullReadFragment fullReadFragment;
 
 
     private static final String[] GET_MOVIE_COLUMNS = {
@@ -106,7 +103,28 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
         more=(TextView)findViewById(R.id.more);
         newMain = (FrameLayout) findViewById(R.id.new_main);
+        header = (RelativeLayout) findViewById(R.id.header);
 
+
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(movie_title!=null && movie_desc!=null){
+
+                    fullReadFragment = new FullReadFragment();
+                    Bundle args = new Bundle();
+                    args.putString("title",movie_title);
+                    args.putString("desc",movie_desc);
+                    fullReadFragment.setArguments(args);
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.all_details_container,fullReadFragment).commit();
+                }
+
+
+            }
+        });
 
         more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +173,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         cast_recycler = (RecyclerView) findViewById(R.id.cast_recycler);
-        header = (RelativeLayout) findViewById(R.id.header);
         cast_recycler.setLayoutManager(new LinearLayoutManager(MovieDetailsActivity.this));
         cast_recycler.setNestedScrollingEnabled(false);
 
@@ -164,6 +181,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         if (fromActivity)
           getSupportLoaderManager().initLoader(MOVIE_DETAILS_LOADER, null, this);
+
 
 
     }
@@ -251,6 +269,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             released=jsonObject.getString("released");
             runtime=jsonObject.getString("runtime");
 
+            movie_desc = overview;
 
             movie_title=title;
 
@@ -549,8 +568,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out);
+
+        if(fullReadFragment!=null){
+
+            getSupportFragmentManager().beginTransaction()
+                    .remove(fullReadFragment).commit();
+
+        }else{
+            super.onBackPressed();
+            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out);
+        }
+
     }
 
 

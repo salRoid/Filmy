@@ -10,7 +10,6 @@
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="00dp"
         >
 
         <FrameLayout
@@ -24,8 +23,8 @@
                 android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
                 android:padding="0dp"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:theme="@style/ThemeOverlay.AppCompat" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
             <com.miguelcatalan.materialsearchview.MaterialSearchView
                 android:id="@+id/search_view"
@@ -40,19 +39,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorPrimary"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"
@@ -65,6 +57,12 @@
                 android:visibility="invisible"
                 app:borderWidth="2dp"
                 app:fabSize="normal" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </FrameLayout>
 
     </RelativeLayout>

@@ -1,31 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
     android:orientation="horizontal"
-    >
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/poster"
-        android:layout_width="120dp"
-        android:layout_height="180dp"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
         android:layout_gravity="center"
         android:layout_marginLeft="1dp"
         android:layout_marginRight="1dp"
         android:layout_marginTop="2dp"
-        android:scaleType="fitXY"
-        />
+        android:scaleType="fitXY" />
 
     <TextView
         android:id="@+id/result_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="Star Trek"
         android:layout_margin="16dp"
+        android:layout_toRightOf="@+id/poster"
         android:fontFamily="sans-serif-condensed"
+        android:text="Star Trek"
         android:textAppearance="?android:textAppearanceMedium" />
 
+    <TextView
+        android:id="@+id/result_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_title"
+        android:layout_toRightOf="@+id/poster" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/result_extra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/result_date"
+        android:layout_toRightOf="@+id/poster" />
+
+
+</RelativeLayout>

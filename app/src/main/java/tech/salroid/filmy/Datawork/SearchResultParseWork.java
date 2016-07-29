@@ -17,7 +17,7 @@ public class SearchResultParseWork {
 
     private Context context;
     private String result;
-    private String getImage, getId, getString;
+    private String getImage, getId, getString,getDate,getExtra;
 
 
     public SearchResultParseWork(Context context, String result) {
@@ -38,7 +38,7 @@ public class SearchResultParseWork {
             for (int i = 0; i < jsonArray.length(); i++) {
                 searchData = new SearchData();
 
-                String type_name, type, id, movie_poster;
+                String type_name, type, id, movie_poster,date,extra;
 
                 type = jsonArray.getJSONObject(i).getString("type");
 
@@ -47,16 +47,26 @@ public class SearchResultParseWork {
                     getString = "name";
                     getImage = "headshot";
                     getId = "trakt";
+                    getDate="birthday";
+                    getExtra="brithplace";
                 } else {
                     getString = "title";
                     getImage = "poster";
                     getId = "imdb";
+                    getDate="released";
+                    getExtra="tagline";
                 }
+
                 type_name = jsonArray.getJSONObject(i).getJSONObject(type).getString(getString);
                 id = jsonArray.getJSONObject(i).getJSONObject(type).getJSONObject("ids").getString(getId);
                 movie_poster = jsonArray.getJSONObject(i).getJSONObject(type).getJSONObject("images").getJSONObject(getImage).getString("thumb");
+                date = jsonArray.getJSONObject(i).getJSONObject(type).getString(getDate);
+                extra = jsonArray.getJSONObject(i).getJSONObject(type).getString(getExtra);
+
 
                 searchData.setId(id);
+                searchData.setExtra(extra);
+                searchData.setDate(date);
                 searchData.setType(type);
                 searchData.setMovie(type_name);
                 searchData.setPoster(movie_poster);

@@ -6,10 +6,19 @@ package tech.salroid.filmy.DataClasses;
 public class SearchData {
 
 
-    String movie, poster, id,type;
+    String movie, poster, id, type, date, extra;
+
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public void setId(String id) {
@@ -30,6 +39,14 @@ public class SearchData {
 
     public String getMovie() {
         return movie;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getExtra() {
+        return extra;
     }
 
     public String getPoster() {

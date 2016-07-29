@@ -486,8 +486,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         if(item.getItemId() == android.R.id.home)
             finish();
-
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out);
     }
 }

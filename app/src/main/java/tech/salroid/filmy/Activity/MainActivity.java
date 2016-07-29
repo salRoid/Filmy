@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(" ");
 
-        getSupportActionBar().setTitle("Filmy");
 
-        //getSupportActionBar().setLogo(R.drawable.ic_action_filmy_logo);
+        getSupportActionBar().setLogo(R.drawable.ic_action_filmy_logo);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +216,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         intent.putExtra("activity", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_nothing);
 
     }
 

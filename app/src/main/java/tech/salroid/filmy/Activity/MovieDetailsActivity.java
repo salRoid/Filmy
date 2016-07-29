@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -43,6 +44,7 @@ import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
 import tech.salroid.filmy.FullReadFragment;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.Network.VolleySingleton;
+import tech.salroid.filmy.SearchFragment;
 
 public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailsActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -77,8 +79,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     };
     private ImageView youtube_play_button;
     private TextView more;
-    private String cast_json=null,movie_title=null, show_centre_img_url=null;
+    private String cast_json=null,movie_title=null,movie_tagline=null,movie_rating=null, show_centre_img_url=null;
     private boolean trailer_boolean=false;
+    private int dynam_color;
 
 
     @Override
@@ -116,6 +119,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     Bundle args = new Bundle();
                     args.putString("title",movie_title);
                     args.putString("desc",movie_desc);
+                    args.putInt("dynam",dynam_color);
                     fullReadFragment.setArguments(args);
 
                     getSupportFragmentManager().beginTransaction()
@@ -125,6 +129,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
             }
         });
+
 
         more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,12 +277,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             movie_desc = overview;
 
             movie_title=title;
+            movie_tagline=tagline;
+
+
 
             if(certification.equals("null")){
                 certification = "--";
             }
 
             double roundOff = Math.round(rating * 100.0) / 100.0;
+
+            movie_rating=String.valueOf(roundOff);
 
             banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString("medium");
 
@@ -375,7 +385,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                                 Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                 if (swatch != null) {
-
+                                        dynam_color=swatch.getRgb();
                                     header.setBackgroundColor( swatch.getRgb());
                                     det_title.setTextColor(swatch.getTitleTextColor());
                                     det_tagline.setTextColor(swatch.getBodyTextColor());
@@ -561,6 +571,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         if(item.getItemId() == android.R.id.home)
             finish();
 
+        if (item.getItemId() == R.id.action_search) {
+            if(!(movie_title.equals(" ")&& movie_rating.equals(" ")&&movie_tagline.equals(" "))) {
+                Intent myIntent = new Intent(Intent.ACTION_SEND);
+                myIntent.setType("text/plain");
+                myIntent.putExtra(Intent.EXTRA_TEXT,"*"+movie_title+"*"+"\n"+movie_tagline+"\n"+movie_rating+"\n");
+                startActivity(Intent.createChooser(myIntent, "Share with"));
+            }
+
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -576,9 +596,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         }else{
             super.onBackPressed();
-            overridePendingTransition(R.anim.slide_nothing, R.anim.slide_out);
         }
 
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.movie_detail_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        return true;
     }
 
 

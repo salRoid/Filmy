@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/ic_action_action_search2"
+        android:icon="@drawable/ic_share_white_24dp"
         android:orderInCategory="100"
-        android:title="@string/abc_search_hint"
+        android:title="share"
         app:showAsAction="always" />
-
-    <item
-        android:title="Settings"
-        android:id="@+id/ic_setting"
-        app:showAsAction="never"
-        />
-
 </menu>

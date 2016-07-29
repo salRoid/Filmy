@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -223,7 +224,15 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         char_recycler.setAdapter(char_adapter);
         more.setVisibility(View.VISIBLE);
 
-
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == android.R.id.home){
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

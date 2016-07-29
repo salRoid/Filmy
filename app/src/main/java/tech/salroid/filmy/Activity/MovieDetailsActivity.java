@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -98,7 +99,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         more=(TextView)findViewById(R.id.more);
 
 
-
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,9 +123,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         });
 
         Intent intent = getIntent();
+
         if (intent != null) {
             fromActivity = intent.getBooleanExtra("activity",false);
             movie_id = intent.getStringExtra("id");
+            movie_title = intent.getStringExtra("title");
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -135,7 +137,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         cast_recycler = (RecyclerView) findViewById(R.id.cast_recycler);
         header = (RelativeLayout) findViewById(R.id.header);
         cast_recycler.setLayoutManager(new LinearLayoutManager(MovieDetailsActivity.this));
-        cast_recycler.setNestedScrollingEnabled(false);
+
+
+
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(" ");
 
         getMovieDetails();
 

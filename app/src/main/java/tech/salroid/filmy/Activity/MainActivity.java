@@ -209,7 +209,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
     public void itemClicked(Cursor cursor) {
 
         int id_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
+        int title_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
+
         Intent intent = new Intent(this, MovieDetailsActivity.class);
+        intent.putExtra("title",cursor.getString(title_index));
         intent.putExtra("activity", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);

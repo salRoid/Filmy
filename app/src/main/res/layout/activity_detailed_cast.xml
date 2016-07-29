@@ -93,6 +93,20 @@
             android:fontFamily="sans-serif-condensed"
             android:textAppearance="?android:textAppearanceLarge"/>
 
+
+        <Button
+            android:visibility="invisible"
+            android:id="@+id/more"
+            android:layout_marginTop="7dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/cast_detail_description"
+            android:text="More"
+            android:textColor="@color/colorAccent"
+            android:background="@android:color/transparent" />
+
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="8dp"
             android:id="@+id/character_movies"

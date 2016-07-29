@@ -21,7 +21,7 @@
         <activity
             android:name=".Activity.MovieDetailsActivity"
             android:label=" "
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.CharacterDetailsActivity"
             android:label=" "
@@ -34,6 +34,14 @@
         <activity
             android:name=".SearchFragment"
             android:label=" "
+            android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".Activity.FullCastActivity"
+            android:label=" "
+            android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".Activity.FullMovieActivity"
+            android:label="@string/title_activity_full_movie"
             android:theme="@style/AppTheme.Base"></activity>
     </application>
 

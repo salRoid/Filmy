@@ -122,8 +122,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
                         replace(R.id.fragment_container, searchFragment)
                         .commit();
 
-                fab.setVisibility(View.INVISIBLE);
-
             }
 
             @Override
@@ -135,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
                             .remove(searchFragment)
                             .commit();
 
-                    fab.setVisibility(View.VISIBLE);
             }
         });
 
@@ -216,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         intent.putExtra("activity", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_nothing);
 
     }
 

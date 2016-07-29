@@ -40,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/new_main"
+            android:background="#f5f5f5"
             android:padding="16dp">
 
             <TextView
@@ -59,10 +60,10 @@
 
 
             <TextView
-                android:layout_below="@id/detail_tagline"
                 android:id="@+id/detail_overview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/detail_tagline"
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-condensed"
@@ -81,23 +82,26 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="0dp"
+                >
 
                 <LinearLayout
                     android:id="@+id/trailorBackground"
-                    android:weightSum="10"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="#e0e0e0"
+                    android:weightSum="10">
 
 
                     <RelativeLayout
-                        android:layout_weight="3"
-                        android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginBottom="16dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
+                        android:layout_weight="3"
                         android:orientation="horizontal">
 
                         <TextView
@@ -110,11 +114,11 @@
                             android:textAppearance="?android:textAppearanceLarge" />
 
                         <TextView
-                            android:layout_below="@id/tvRating"
-                            android:layout_centerHorizontal="true"
                             android:id="@+id/detail_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_below="@id/tvRating"
+                            android:layout_centerHorizontal="true"
                             android:fontFamily="sans-serif-condensed"
                             android:textAppearance="?android:textAppearanceLarge" />
 
@@ -122,20 +126,20 @@
 
                     <FrameLayout
                         android:id="@+id/trailorView"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:layout_weight="7"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:foreground="?android:selectableItemBackground"
-                        >
+                        android:layout_weight="7"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:selectableItemBackground">
+
 
                         <ImageView
                             android:id="@+id/detail_youtube"
                             android:layout_width="match_parent"
                             android:layout_height="180dp"
-                            android:scaleType="centerCrop"
-                             />
+                            android:scaleType="centerCrop" />
+
 
                         <ImageView
                             android:id="@+id/play_button"
@@ -149,7 +153,6 @@
                     </FrameLayout>
 
 
-
                 </LinearLayout>
 
 
@@ -157,39 +160,52 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/card_holder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/movie_description"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="12dp"
-            android:fontFamily="sans-serif-condensed"
-            android:text="Cast "
-            android:textAppearance="?android:textAppearanceLarge" />
-
-        <Button
-            android:visibility="invisible"
-            android:id="@+id/more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/movie_description"
-            android:text="More"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorAccent"
-            android:background="?android:selectableItemBackground" />
-
-        <android.support.v7.widget.RecyclerView
-
-            android:id="@+id/cast_recycler"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/card_holder"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp" />
+            android:layout_below="@id/movie_description"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="0dp"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:id="@+id/card_holder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:padding="16dp"
+                    android:text="Cast "
+                    android:textStyle="bold"
+                    android:textAppearance="?android:textAppearanceMedium" />
+
+                <android.support.v7.widget.RecyclerView
+
+                    android:id="@+id/cast_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/card_holder"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp" />
+
+                <TextView
+                    android:id="@+id/more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="?android:selectableItemBackground"
+                    android:fontFamily="sans-serif-condensed"
+                    android:padding="16dp"
+                    android:text="More"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 

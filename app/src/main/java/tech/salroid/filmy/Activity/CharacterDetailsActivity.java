@@ -36,7 +36,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     Context co=this;
     private RecyclerView char_recycler;
     private String character_title=null,movie_json=null;
-    private Button more;
+    private TextView more;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        more=(Button)findViewById(R.id.more);
+        more=(TextView)findViewById(R.id.more);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

@@ -8,6 +8,7 @@
     tools:context=".Activity.MainActivity"
     >
 
+
     <FrameLayout
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
@@ -29,6 +30,12 @@
             android:layout_height="wrap_content" />
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_below="@id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
@@ -40,19 +47,13 @@
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_gravity="right|bottom"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
         android:src="@drawable/ic_filter_list_white_24dp"
         app:borderWidth="2dp"
         app:fabSize="normal"
         />
-
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_below="@id/toolbar_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    </FrameLayout>
 
 </RelativeLayout>

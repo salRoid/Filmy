@@ -4,14 +4,13 @@
     android:layout_height="wrap_content"
     android:paddingRight="16dp"
     android:paddingLeft="16dp"
-    android:paddingBottom="8dp"
-    android:paddingTop="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/selectableItemBackground"
     >
 
 
     <com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_marginTop="16dp"
         android:id="@+id/cast_poster"
         android:layout_width="42dp"
         android:layout_height="42dp"
@@ -21,6 +20,7 @@
 
 
     <TextView
+        android:layout_marginTop="16dp"
         android:id="@+id/cast_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,6 +40,15 @@
         android:text="2013"
         />
 
+    <View
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_below="@id/cast_poster"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f5f5f5"
+
+        />
 
 
 </RelativeLayout>

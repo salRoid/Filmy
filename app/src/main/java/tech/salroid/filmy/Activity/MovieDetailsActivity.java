@@ -79,9 +79,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     };
     private ImageView youtube_play_button;
     private TextView more;
-    private String cast_json=null,movie_title=null,movie_tagline=null,movie_rating=null, show_centre_img_url=null;
+    private String cast_json=null,movie_title=null,movie_tagline=null,movie_rating=null, show_centre_img_url=null,movie_trailer=null;
     private boolean trailer_boolean=false;
-    private int dynam_color;
+
 
 
     @Override
@@ -119,7 +119,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     Bundle args = new Bundle();
                     args.putString("title",movie_title);
                     args.putString("desc",movie_desc);
-                    args.putInt("dynam",dynam_color);
+
                     fullReadFragment.setArguments(args);
 
                     getSupportFragmentManager().beginTransaction()
@@ -170,6 +170,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         if (intent != null) {
             fromActivity = intent.getBooleanExtra("activity",false);
             movie_id = intent.getStringExtra("id");
+            movie_trailer="http://www.imdb.com/title/"+movie_id;
             movie_title = intent.getStringExtra("title");
         }
 
@@ -302,11 +303,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     String videoId = extractYoutubeId(trailer);
 
                     img_url = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
+
+                  //  movie_trailer=trailer;
                 }
 
                 else{
 
                     img_url=jsonObject.getJSONObject("images").getJSONObject("poster").getString("medium");
+
                 }
 
 
@@ -385,7 +389,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                                 Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                 if (swatch != null) {
-                                        dynam_color=swatch.getRgb();
                                     header.setBackgroundColor( swatch.getRgb());
                                     det_title.setTextColor(swatch.getTitleTextColor());
                                     det_tagline.setTextColor(swatch.getBodyTextColor());
@@ -575,7 +578,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             if(!(movie_title.equals(" ")&& movie_rating.equals(" ")&&movie_tagline.equals(" "))) {
                 Intent myIntent = new Intent(Intent.ACTION_SEND);
                 myIntent.setType("text/plain");
-                myIntent.putExtra(Intent.EXTRA_TEXT,"*"+movie_title+"*"+"\n"+movie_tagline+"\n"+movie_rating+"\n");
+                myIntent.putExtra(Intent.EXTRA_TEXT,"*"+movie_title+"*\n"+movie_tagline+"\nRating: "+movie_rating+" / 10\n"+movie_trailer+"\n");
                 startActivity(Intent.createChooser(myIntent, "Share with"));
             }
 

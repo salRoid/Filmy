@@ -1,116 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/main"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/primaryColor"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:theme="@style/ThemeOverlay.AppCompat.Light" />
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primaryColor"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:theme="@style/ThemeOverlay.AppCompat.Light" />
 
 
-        <RelativeLayout
-            android:id="@+id/cast_detail_description"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/cast_img_small"
-                android:layout_width="100dp"
-                android:layout_height="120dp" />
-
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/cast_detail_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/cast_img_small"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/toolbar"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/actor"
+                <ImageView
+                    android:id="@+id/cast_img_small"
+                    android:layout_width="100dp"
+                    android:layout_height="120dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/cast_img_small"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/actor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textAppearance="?android:textAppearanceLarge" />
+
+                    <TextView
+                        android:id="@+id/birth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/birth_place"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textAppearance="?android:textAppearanceMedium" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/header_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textAppearance="?android:textAppearanceLarge" />
+                    android:layout_below="@id/cast_img_small"
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:foreground="?android:selectableItemBackground"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/birth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textAppearance="?android:textAppearanceMedium" />
+                    <TextView
+                        android:id="@+id/desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-condensed"
+                        android:maxLines="6"
+                        android:textAppearance="?android:textAppearanceSmall" />
+                </FrameLayout>
 
-                <TextView
-                    android:id="@+id/birth_place"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textAppearance="?android:textAppearanceMedium" />
-            </LinearLayout>
 
-            <TextView
-                android:id="@+id/desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cast_img_small"
-                android:layout_margin="16dp"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-condensed"
-                android:maxLines="10"
-                android:textAppearance="?android:textAppearanceMedium" />
+            </RelativeLayout>
 
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/cast_detail_description"
+                app:cardCornerRadius="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/card_holder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:fontFamily="sans-serif-condensed"
+                        android:padding="16dp"
+                        android:text="Movies "
+                        android:textAppearance="?android:textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="?android:selectableItemBackground"
+                        android:clickable="true"
+                        android:fontFamily="sans-serif-condensed"
+                        android:padding="16dp"
+                        android:text="More"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textColor="@color/colorAccent"
+                        android:visibility="invisible" />
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/character_movies"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/card_holder" />
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
 
         </RelativeLayout>
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/character_movies"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/card_holder"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/card_holder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/cast_detail_description"
-            android:fontFamily="sans-serif-condensed"
-            android:padding="16dp"
-            android:text="Movies "
-            android:textAppearance="?android:textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/cast_detail_description"
-            android:background="?android:selectableItemBackground"
-            android:clickable="true"
-            android:fontFamily="sans-serif-condensed"
-            android:padding="16dp"
-            android:text="More"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:textColor="@color/colorAccent"
-            android:visibility="invisible" />
-
-    </RelativeLayout>
-
-</android.support.v4.widget.NestedScrollView>
+    </ScrollView>
+</FrameLayout>

@@ -103,9 +103,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                //Do some magic
 
-                getSearchedResult(newText);
+                 getSearchedResult(newText);
 
                 return true;
             }
@@ -139,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         getData();
 
         getSupportLoaderManager().initLoader(MOVIE_LOADER, null, this);
-
 
     }
 
@@ -287,4 +285,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         }
     }
 
+    /*@Override
+    public void onSuggestionReady(String[] suggestionArray) {
+        materialSearchView.setSuggestions(suggestionArray);
+    }*/
 }

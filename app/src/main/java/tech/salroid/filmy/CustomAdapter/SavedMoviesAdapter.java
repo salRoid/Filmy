@@ -1,5 +1,9 @@
 package tech.salroid.filmy.CustomAdapter;
 
+/**
+ * Created by Home on 7/30/2016.
+ */
+
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
@@ -12,25 +16,23 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import tech.salroid.filmy.Activity.MainActivity;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.DataClasses.MovieData;
+
+
 
 /**
  * Created by Home on 7/20/2016.
  */
-public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.Vh> {
+public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.Vh> {
 
     private final LayoutInflater inflater;
     Context context;
     private ClickListener clickListener;
     private Cursor dataCursor;
+    private LongClickListener longclickListener;
 
-    public MainActivityAdapter(Context context, Cursor cursor) {
+    public SavedMoviesAdapter(Context context, Cursor cursor) {
 
         inflater = LayoutInflater.from(context);
         this.context = context;
@@ -53,15 +55,12 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         String movie_title, imdb_id, movie_poster;
         int movie_year;
 
-
-
         dataCursor.moveToPosition(position);
 
-
-        int id_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
-        int title_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
-        int poster_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_POSTER_LINK);
-        int year_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_YEAR);
+        int id_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID);
+        int title_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
+        int poster_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_POSTER_LINK);
+        int year_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_YEAR);
 
 
         movie_title = dataCursor.getString(title_index);
@@ -122,14 +121,40 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
                 }
             });
+
+            main.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    dataCursor.moveToPosition(getPosition());
+
+
+                    if (longclickListener != null) {
+                        longclickListener.itemLongClicked(dataCursor,getPosition());
+                    }
+
+                    return true;
+                }
+            });
+
+            }
         }
-    }
+
 
 
     public interface ClickListener {
 
         public void itemClicked(Cursor cursor);
 
+    }
+
+    public interface LongClickListener{
+        public void itemLongClicked(Cursor cursor,int position);
+
+    }
+
+    public void setLongClickListener(LongClickListener longclickListener) {
+        this.longclickListener = longclickListener;
     }
 
     public void setClickListener(ClickListener clickListener) {

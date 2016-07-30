@@ -12,11 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
         <activity android:name=".Activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activity.MovieDetailsActivity"
@@ -51,6 +47,19 @@
             android:name=".Activity.SavedMovies"
             android:label="@string/title_activity_saved_movies"
             android:theme="@style/AppTheme.Base"></activity>
+
+        <activity
+            android:name=".Activity.ProgressCheck"
+            android:label=" "
+            android:theme="@style/AppTheme.Base">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
     </application>
 
 </manifest>

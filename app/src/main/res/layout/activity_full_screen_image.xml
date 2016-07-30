@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.MainActivity"
     android:background="#000000"
-    >
+    tools:context=".Activity.MainActivity">
 
     <ImageView
         android:id="@+id/cen_img"
-        android:layout_centerInParent="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
 
-  </RelativeLayout>
+</RelativeLayout>

@@ -24,18 +24,18 @@ import tech.salroid.filmy.DataClasses.MovieData;
 public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetailsActivityAdapter.Ho> {
 
     private final Boolean ret_size;
-    String ct_name, ct_desc, ct_profile,ct_id;
+    String ct_name, ct_desc, ct_profile, ct_id;
     private final LayoutInflater inflater;
     private ClickListener clickListener;
 
     List<MovieDetailsData> cast = new ArrayList<>();
     Context con;
 
-    public MovieDetailsActivityAdapter(Context context, List<MovieDetailsData> cast,Boolean size) {
+    public MovieDetailsActivityAdapter(Context context, List<MovieDetailsData> cast, Boolean size) {
         inflater = LayoutInflater.from(context);
         con = context;
         this.cast = cast;
-        this.ret_size=size;
+        this.ret_size = size;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
         ct_name = cast.get(position).getCast_name();
         ct_desc = cast.get(position).getCast_character();
         ct_profile = cast.get(position).getCast_profile();
-        ct_id=cast.get(position).getCast_id();
+        ct_id = cast.get(position).getCast_id();
 
         holder.cast_name.setText(ct_name);
         holder.cast_description.setText(ct_desc);
@@ -67,7 +67,7 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
     public int getItemCount() {
 
         if (ret_size)
-        return (cast.size()>=5)?5:cast.size();
+            return (cast.size() >= 5) ? 5 : cast.size();
 
         else
             return cast.size();
@@ -76,7 +76,7 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
 
     class Ho extends RecyclerView.ViewHolder {
 
-        TextView cast_name,cast_description;
+        TextView cast_name, cast_description;
         CircularImageView cast_poster;
 
         public Ho(View itemView) {

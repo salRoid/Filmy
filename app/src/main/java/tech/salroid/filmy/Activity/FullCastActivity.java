@@ -44,14 +44,12 @@ public class FullCastActivity extends AppCompatActivity implements MovieDetailsA
         }
 
 
-
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(this, cast_result);
         List<MovieDetailsData> cast_list = par.parse_cast();
-        Boolean size=false;
-        MovieDetailsActivityAdapter full_cast_adapter = new MovieDetailsActivityAdapter(this, cast_list,size);
+        Boolean size = false;
+        MovieDetailsActivityAdapter full_cast_adapter = new MovieDetailsActivityAdapter(this, cast_list, size);
         full_cast_adapter.setClickListener(this);
         full_cast_recycler.setAdapter(full_cast_adapter);
-
 
 
     }

@@ -228,7 +228,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
 

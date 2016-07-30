@@ -43,21 +43,18 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     private Intent intent;
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.fragment_search,container,false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         recycler = (RecyclerView) view.findViewById(R.id.search_results_recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
-
-
 
 
     @Override
@@ -78,7 +75,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.trakt.tv/search/movie,person?query="+query+"&extended=images,full";
+        final String BASE_URL = "https://api.trakt.tv/search/movie,person?query=" + query + "&extended=images,full";
 
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
                 new Response.Listener<JSONArray>() {
@@ -111,9 +108,6 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         recycler.setAdapter(sadapter);
 
     }
-
-
-
 
 
 }

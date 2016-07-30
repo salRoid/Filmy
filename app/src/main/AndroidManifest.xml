@@ -42,7 +42,7 @@
         <activity
             android:name=".Activity.FullScreenImage"
             android:label=" "
-            android:theme="@style/FullScreenTheme"/>
+            android:theme="@style/FullScreenTheme" />
     </application>
 
 </manifest>

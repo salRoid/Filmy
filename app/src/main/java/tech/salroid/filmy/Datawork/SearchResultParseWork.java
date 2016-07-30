@@ -17,7 +17,7 @@ public class SearchResultParseWork {
 
     private Context context;
     private String result;
-    private String getImage, getId, getString,getDate,getExtra;
+    private String getImage, getId, getString, getDate, getExtra;
 
 
     public SearchResultParseWork(Context context, String result) {
@@ -38,7 +38,7 @@ public class SearchResultParseWork {
             for (int i = 0; i < jsonArray.length(); i++) {
                 searchData = new SearchData();
 
-                String type_name, type, id, movie_poster,date,extra;
+                String type_name, type, id, movie_poster, date, extra;
 
                 type = jsonArray.getJSONObject(i).getString("type");
 
@@ -47,14 +47,14 @@ public class SearchResultParseWork {
                     getString = "name";
                     getImage = "headshot";
                     getId = "trakt";
-                    getDate="birthday";
-                    getExtra="birthplace";
+                    getDate = "birthday";
+                    getExtra = "birthplace";
                 } else {
                     getString = "title";
                     getImage = "poster";
                     getId = "imdb";
-                    getDate="released";
-                    getExtra="tagline";
+                    getDate = "released";
+                    getExtra = "tagline";
                 }
 
                 type_name = jsonArray.getJSONObject(i).getJSONObject(type).getString(getString);
@@ -64,7 +64,7 @@ public class SearchResultParseWork {
                 extra = jsonArray.getJSONObject(i).getJSONObject(type).getString(getExtra);
 
 
-                if(!(movie_poster.equals("null")&&date.equals("null")&&extra.equals("null"))) {
+                if (!(movie_poster.equals("null") && date.equals("null") && extra.equals("null"))) {
                     searchData.setId(id);
                     searchData.setExtra(extra);
                     searchData.setDate(date);

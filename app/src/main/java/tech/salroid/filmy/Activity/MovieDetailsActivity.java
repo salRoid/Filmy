@@ -49,18 +49,18 @@ import tech.salroid.filmy.SearchFragment;
 public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailsActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     Context context = this;
-    private String movie_id,trailer=null,movie_desc;
+    private String movie_id, trailer = null, movie_desc;
     private boolean fromActivity;
     private RecyclerView cast_recycler;
     private RelativeLayout header;
-    private static TextView det_title, det_tagline, det_overview, det_rating,det_released,det_certification,det_language,det_runtime;
+    private static TextView det_title, det_tagline, det_overview, det_rating, det_released, det_certification, det_language, det_runtime;
     private static ImageView youtube_link, banner;
 
     private final String LOG_TAG = MovieDetailsActivity.class.getSimpleName();
     private final int MOVIE_DETAILS_LOADER = 2;
     LinearLayout trailorBackground;
     TextView tvRating;
-    FrameLayout trailorView,newMain;
+    FrameLayout trailorView, newMain,headerContainer;
     FullReadFragment fullReadFragment;
 
 
@@ -107,9 +107,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         more=(TextView)findViewById(R.id.more);
         newMain = (FrameLayout) findViewById(R.id.new_main);
         header = (RelativeLayout) findViewById(R.id.header);
+        headerContainer = (FrameLayout) findViewById(R.id.header_container);
 
 
-        header.setOnClickListener(new View.OnClickListener() {
+        headerContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -123,7 +124,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     fullReadFragment.setArguments(args);
 
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.all_details_container,fullReadFragment).commit();
+                            .replace(R.id.all_details_container,fullReadFragment,"DESC").commit();
                 }
 
 
@@ -592,14 +593,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     @Override
     public void onBackPressed() {
 
-        if(fullReadFragment!=null){
-
-            getSupportFragmentManager().beginTransaction()
-                    .remove(fullReadFragment).commit();
-
-        }else{
+        FullReadFragment fragment = (FullReadFragment) getSupportFragmentManager().findFragmentByTag("DESC");
+        if (fragment != null && fragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction().remove(fullReadFragment).commit();
+        }
+        else {
             super.onBackPressed();
         }
+
 
     }
 

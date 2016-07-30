@@ -10,8 +10,10 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.test.AndroidTestCase;
+
 import java.util.Map;
 import java.util.Set;
+
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.Database.FilmDbHelper;
 import tech.salroid.filmy.utils.PollingCheck;
@@ -19,7 +21,7 @@ import tech.salroid.filmy.utils.PollingCheck;
 /**
  * Created by Home on 7/24/2016.
  */
-public class TestUtilities extends AndroidTestCase{
+public class TestUtilities extends AndroidTestCase {
 
     static void validateCursor(String error, Cursor valueCursor, ContentValues expectedValues) {
         assertTrue("Empty cursor returned. " + error, valueCursor.moveToFirst());
@@ -58,38 +60,37 @@ public class TestUtilities extends AndroidTestCase{
 
     public static ContentValues createMovieTestValues() {
 
-            String testMovieId = "t1234";
-            String testMovieTitle = "XXX - RISING";
-            int testMovieYear = 2013;
-            String testLink = "http://www.webianks.com/logo.png";
-
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_ID, testMovieId);
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, testMovieTitle);
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, testMovieYear);
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, testLink);
-
-            return contentValues;
-    }
-
-    public static ContentValues createMovieTestUpdateValues() {
-
-        double testMovieRating=6.6;
-        String testMovieDescription="this is Vin diesel best Upcoming";
-        String testMovieTagline="The retun of xander cage";
-        String testMovieBanner="http://www.webianks.com/logo.png";
-        String testMovieTrailer="http://www.webianks.com/logo.png";
+        String testMovieId = "t1234";
+        String testMovieTitle = "XXX - RISING";
+        int testMovieYear = 2013;
+        String testLink = "http://www.webianks.com/logo.png";
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_BANNER,testMovieBanner);
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION,testMovieDescription);
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE,testMovieTagline);
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER,testMovieTrailer);
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING,String.valueOf(testMovieRating));
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_ID, testMovieId);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, testMovieTitle);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, testMovieYear);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, testLink);
 
         return contentValues;
     }
 
+    public static ContentValues createMovieTestUpdateValues() {
+
+        double testMovieRating = 6.6;
+        String testMovieDescription = "this is Vin diesel best Upcoming";
+        String testMovieTagline = "The retun of xander cage";
+        String testMovieBanner = "http://www.webianks.com/logo.png";
+        String testMovieTrailer = "http://www.webianks.com/logo.png";
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_BANNER, testMovieBanner);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION, testMovieDescription);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE, testMovieTagline);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER, testMovieTrailer);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, String.valueOf(testMovieRating));
+
+        return contentValues;
+    }
 
 
     public static ContentValues createCastValues() {
@@ -242,8 +243,6 @@ public class TestUtilities extends AndroidTestCase{
     static TestContentObserver getTestContentObserver() {
         return TestContentObserver.getTestContentObserver();
     }
-
-
 
 
 }

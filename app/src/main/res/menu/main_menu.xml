@@ -10,9 +10,8 @@
         app:showAsAction="always" />
 
     <item
-        android:title="Settings"
         android:id="@+id/ic_setting"
-        app:showAsAction="never"
-        />
+        android:title="Settings"
+        app:showAsAction="never" />
 
 </menu>

@@ -26,15 +26,15 @@ public class FilmDbHelper extends SQLiteOpenHelper {
                 + FilmContract.MoviesEntry.MOVIE_TITLE + " VARCHAR(255) NOT NULL,"
                 + FilmContract.MoviesEntry.MOVIE_YEAR + " INTEGER(4) NOT NULL ,"
                 + FilmContract.MoviesEntry.MOVIE_POSTER_LINK + " VARCHAR(255) ,"
-                +FilmContract.MoviesEntry.MOVIE_BANNER+ " VARCHAR (255) ,"
-                +FilmContract.MoviesEntry.MOVIE_CERTIFICATION+ " VARCHAR (255) ,"
-                +FilmContract.MoviesEntry.MOVIE_LANGUAGE+ " VARCHAR (255) ,"
-                +FilmContract.MoviesEntry.MOVIE_RELEASED+ " VARCHAR (255) ,"
-                +FilmContract.MoviesEntry.MOVIE_RUNTIME+ " VARCHAR (255) ,"
-                +FilmContract.MoviesEntry.MOVIE_DESCRIPTION+" VARCHAR (255) ,"
-                +FilmContract.MoviesEntry.MOVIE_TAGLINE+ " VARCHAR(255) ,"
-                +FilmContract.MoviesEntry.MOVIE_TRAILER+ " VARCHAR(255) ,"
-                +FilmContract.MoviesEntry.MOVIE_RATING+ " VARCHAR (255));";
+                + FilmContract.MoviesEntry.MOVIE_BANNER + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_CERTIFICATION + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_LANGUAGE + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_RELEASED + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_RUNTIME + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_DESCRIPTION + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_TAGLINE + " VARCHAR(255) ,"
+                + FilmContract.MoviesEntry.MOVIE_TRAILER + " VARCHAR(255) ,"
+                + FilmContract.MoviesEntry.MOVIE_RATING + " VARCHAR (255));";
 
 
         final String SQL_CREATE_CAST_TABLE = "CREATE TABLE " + FilmContract.CastEntry.TABLE_NAME

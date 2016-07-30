@@ -152,8 +152,6 @@ public class DatabaseTest extends AndroidTestCase {
         );
 
 
-
-
         // Move the cursor to a valid database row
 
         assertTrue(cursor.moveToFirst());
@@ -188,7 +186,6 @@ public class DatabaseTest extends AndroidTestCase {
         );
 
 
-
         assertTrue(cursor.moveToFirst());
 
         cursor.close();
@@ -217,22 +214,22 @@ public class DatabaseTest extends AndroidTestCase {
         String testMovieTitle = "XXX - RISING";
         int testMovieYear = 2013;
         String testLink = "http://www.webianks.com/logo.png";
-        double testMovieRating=6.6;
-        String testMovieDescription="This is Vin diesel best Upcoming";
-        String testMovieTagline="The return of xander cage";
-        String testMovieBanner="http://www.webianks.com/logo.png";
-        String testMovieTrailer="http://www.webianks.com/logo.png";
+        double testMovieRating = 6.6;
+        String testMovieDescription = "This is Vin diesel best Upcoming";
+        String testMovieTagline = "The return of xander cage";
+        String testMovieBanner = "http://www.webianks.com/logo.png";
+        String testMovieTrailer = "http://www.webianks.com/logo.png";
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(FilmContract.MoviesEntry.MOVIE_ID, testMovieId);
         contentValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, testMovieTitle);
         contentValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, testMovieYear);
         contentValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, testLink);
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_BANNER,testMovieBanner);
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION,testMovieDescription);
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE,testMovieTagline);
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER,testMovieTrailer);
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING,String.valueOf(testMovieRating));
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_BANNER, testMovieBanner);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION, testMovieDescription);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE, testMovieTagline);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER, testMovieTrailer);
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, String.valueOf(testMovieRating));
 
         return contentValues;
     }

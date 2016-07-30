@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <RelativeLayout
             android:id="@+id/main"
             android:layout_width="match_parent"
@@ -30,58 +31,57 @@
                     android:scaleType="centerCrop" />
             </FrameLayout>
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:background="#00ffffff"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-            <RelativeLayout
-                android:id="@+id/header"
+            <FrameLayout
+                android:id="@+id/header_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/new_main"
-                android:background="#ffffff"
-                android:padding="16dp">
+                android:clickable="true"
+                android:foreground="?android:selectableItemBackground">
 
-                <TextView
-                    android:id="@+id/detail_title"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textAppearance="?android:textAppearanceLarge" />
+                    android:background="#ffffff"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/detail_tagline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/detail_title"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textAppearance="?android:textAppearanceMedium" />
+                    <TextView
+                        android:id="@+id/detail_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textAppearance="?android:textAppearanceLarge" />
 
-
-                <TextView
-                    android:id="@+id/detail_overview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/detail_tagline"
-                    android:layout_marginTop="8dp"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-condensed"
-                    android:maxLines="4"
-                    android:textAppearance="?android:textAppearanceSmall" />
+                    <TextView
+                        android:id="@+id/detail_tagline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/detail_title"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textAppearance="?android:textAppearanceMedium" />
 
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/detail_overview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/detail_tagline"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-condensed"
+                        android:maxLines="4"
+                        android:textAppearance="?android:textAppearanceSmall" />
+
+
+                </RelativeLayout>
+            </FrameLayout>
 
             <LinearLayout
                 android:id="@+id/movie_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/header"
+                android:layout_below="@+id/header_container"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
@@ -198,7 +198,7 @@
                         android:id="@+id/more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:background="?android:selectableItemBackground"
                         android:fontFamily="sans-serif-condensed"
                         android:padding="16dp"
@@ -212,8 +212,18 @@
 
         </RelativeLayout>
 
-
     </ScrollView>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:background="#00ffffff"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
 </FrameLayout>
 
 

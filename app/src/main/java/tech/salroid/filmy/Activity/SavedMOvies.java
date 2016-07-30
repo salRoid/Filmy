@@ -5,24 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
-
-import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
 import tech.salroid.filmy.CustomAdapter.SavedMoviesAdapter;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.R;
@@ -93,11 +85,34 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
         int id_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID);
         int title_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
+        int tagline_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TAGLINE);
+        int over_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_DESCRIPTION);
+        int rating_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING);
+        int certification_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_CERTIFICATION);
+        int lang_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_LANGUAGE);
+        int released_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_RELEASED);
+        int banner_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_BANNER);
+        int runtime_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_RUNTIME);
+        int trailer_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TRAILER);
 
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("title", cursor.getString(title_index));
-        intent.putExtra("activity", true);
         intent.putExtra("id", cursor.getString(id_index));
+
+        Bundle bundle = new Bundle();
+        bundle.putString("title",cursor.getString(title_index));
+        bundle.putString("tagline", cursor.getString(tagline_index));
+        bundle.putString("overview",cursor.getString(over_index) );
+        bundle.putString("rating",cursor.getString(rating_index)  );
+        bundle.putString("certification",cursor.getString(certification_index));
+        bundle.putString("language",cursor.getString(lang_index) );
+        bundle.putString("released",cursor.getString(released_index) );
+        bundle.putString("runtime", cursor.getString(runtime_index));
+        bundle.putString("banner",cursor.getString(banner_index) );
+        bundle.putString("trailer",cursor.getString(trailer_index) );
+
+        intent.putExtra("bundle",bundle);
+
         startActivity(intent);
 
     }
@@ -109,7 +124,8 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         AlertDialog.Builder adb = new AlertDialog.Builder(SavedMovies.this);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SavedMovies.this, android.R.layout.simple_list_item_1);
 
-        arrayAdapter.add("");
+        arrayAdapter.add("Remove");
+
 
         final Context context=this;
 

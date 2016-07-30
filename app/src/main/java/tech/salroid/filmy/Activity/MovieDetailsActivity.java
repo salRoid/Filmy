@@ -653,47 +653,52 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
             if (alreadyCursor.moveToFirst()) {
                 //Already present in databse
-                Log.d(LOG_TAG, "Already present in database");
-            }
+                Log.d(LOG_TAG, "Already present in database "+alreadyCursor.getPosition());
 
-
-            else {
+            } else {
 
                 Cursor returnedCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, null, null, null);
 
-                Log.d(LOG_TAG, "Row"+returnedCursor.getCount());
 
-                if (returnedCursor.moveToFirst() && returnedCursor.getCount()==10) {
+
+                Log.d(LOG_TAG, "No of rows present in save database. " + returnedCursor.getCount());
+
+                if (returnedCursor.moveToFirst() && returnedCursor.getCount() == 10) {
                     //No space to fill more. Have to delete oldest entry to save this Agree?
-                    Log.d(LOG_TAG, "no more space in table u have to delete one and then insert"+ returnedCursor.getCount());
+                    Log.d(LOG_TAG, "no more space in table u have to delete one and then insert" + returnedCursor.getCount());
 
                     final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry._ID + " = ? ";
-                    final String[] deletionArgs = {"0"};
+
+                    returnedCursor.moveToLast();
+
+                    Log.d(LOG_TAG, "This is the last index value which is going to be deleted "+returnedCursor.getInt(0));
+
+                    final String[] deletionArgs = {String.valueOf(returnedCursor.getInt(0))};
+
 
                     long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
 
                     if (deletion_id != -1) {
 
-                        Log.d(LOG_TAG, "we deleted this row" + deletion_id);
+                        Log.d(LOG_TAG, "We deleted this row" + deletion_id);
 
-                        Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.buildMovieUri(9), saveValues);
+                        Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
 
                         long movieRowId = ContentUris.parseId(uri);
 
                         if (movieRowId != -1) {
-                            Log.d(LOG_TAG,"row Inserted in database"+movieRowId);
-                        }
-
-                        else {
+                            Log.d(LOG_TAG, "row Inserted in database at id " + movieRowId);
+                        } else {
                             Log.d(LOG_TAG, "row not Inserted in database");
                         }
 
                     } else {
                         //delete was unsuccessful
-                        Log.d(LOG_TAG,"delete was unsuccessful");
+                        Log.d(LOG_TAG, "delete was unsuccessful");
                     }
 
                 } else {
+
                     Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
 
                     long movieRowId = ContentUris.parseId(uri);

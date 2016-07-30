@@ -46,6 +46,10 @@
         <activity
             android:name=".Activity.SettingsActivity"
             android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".Activity.SavedMovies"
+            android:label="@string/title_activity_saved_movies"
             android:theme="@style/AppTheme.Base"></activity>
     </application>
 

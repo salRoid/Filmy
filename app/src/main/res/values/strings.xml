@@ -9,5 +9,6 @@
     <string name="title_activity_full_movie">FullMovieActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_saved_movies">SavedMovies</string>
 
 </resources>

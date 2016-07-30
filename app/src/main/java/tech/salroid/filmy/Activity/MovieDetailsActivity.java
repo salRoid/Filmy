@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,7 +36,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -83,21 +83,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             FilmContract.MoviesEntry.MOVIE_RELEASED,
             FilmContract.MoviesEntry.MOVIE_CERTIFICATION,
             FilmContract.MoviesEntry.MOVIE_RUNTIME,
-    };
-
-
-    private static final String[] GET_SAVE_COLUMNS = {
-
-            FilmContract.SaveEntry.SAVE_TITLE,
-            FilmContract.SaveEntry.SAVE_BANNER,
-            FilmContract.SaveEntry.SAVE_DESCRIPTION,
-            FilmContract.SaveEntry.SAVE_TAGLINE,
-            FilmContract.SaveEntry.SAVE_TRAILER,
-            FilmContract.SaveEntry.SAVE_RATING,
-            FilmContract.SaveEntry.SAVE_LANGUAGE,
-            FilmContract.SaveEntry.SAVE_RELEASED,
-            FilmContract.SaveEntry.SAVE_CERTIFICATION,
-            FilmContract.SaveEntry.SAVE_RUNTIME,
     };
 
 
@@ -234,7 +219,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        Log.d("webi", response.toString());
+                        // Log.d("webi", response.toString());
                         parseMovieDetails(response.toString());
 
 
@@ -279,7 +264,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     void parseMovieDetails(String movieDetails) {
 
 
-        String title, tagline, overview, banner_profile, certification, runtime, language, released;
+        String title, tagline, overview, banner_profile, certification, runtime, language, released, poster;
         double rating;
         String img_url = null;
 
@@ -298,6 +283,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             language = jsonObject.getString("language");
             released = jsonObject.getString("released");
             runtime = jsonObject.getString("runtime");
+
 
             double roundOff = Math.round(rating * 100.0) / 100.0;
 
@@ -326,8 +312,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
 
             banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString("medium");
+            poster = jsonObject.getJSONObject("images").getJSONObject("poster").getString("thumb");
 
             movieMap.put("banner", banner_profile);
+            movieMap.put("poster", poster);
 
             show_centre_img_url = banner_profile;
 
@@ -637,11 +625,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             saveValues.put(FilmContract.SaveEntry.SAVE_TRAILER, movieMap.get("trailor"));
             saveValues.put(FilmContract.SaveEntry.SAVE_RATING, movieMap.get("rating"));
             saveValues.put(FilmContract.SaveEntry.SAVE_YEAR, movieMap.get("year"));
-
+            saveValues.put(FilmContract.SaveEntry.SAVE_POSTER_LINK, movieMap.get("poster"));
             saveValues.put(FilmContract.SaveEntry.SAVE_RUNTIME, movieMap.get("runtime"));
             saveValues.put(FilmContract.SaveEntry.SAVE_CERTIFICATION, movieMap.get("certification"));
             saveValues.put(FilmContract.SaveEntry.SAVE_LANGUAGE, movieMap.get("language"));
             saveValues.put(FilmContract.SaveEntry.SAVE_RELEASED, movieMap.get("released"));
+
 
             final String selection =
                     FilmContract.SaveEntry.TABLE_NAME +
@@ -653,25 +642,28 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
             if (alreadyCursor.moveToFirst()) {
                 //Already present in databse
-                Log.d(LOG_TAG, "Already present in database "+alreadyCursor.getPosition());
+                //Log.d(LOG_TAG, "Already present in database "+alreadyCursor.getPosition());
+                Toast.makeText(MovieDetailsActivity.this, "Already Present in database", Toast.LENGTH_SHORT).show();
 
             } else {
 
                 Cursor returnedCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, null, null, null);
 
 
-
-                Log.d(LOG_TAG, "No of rows present in save database. " + returnedCursor.getCount());
+                //  Log.d(LOG_TAG, "No of rows present in save database. " + returnedCursor.getCount());
 
                 if (returnedCursor.moveToFirst() && returnedCursor.getCount() == 10) {
                     //No space to fill more. Have to delete oldest entry to save this Agree?
-                    Log.d(LOG_TAG, "no more space in table u have to delete one and then insert" + returnedCursor.getCount());
+
+                    // Log.d(LOG_TAG, "no more space in table u have to delete one and then insert" + returnedCursor.getCount());
+
+                    //Toast.makeText(MovieDetailsActivity.this,"No more in database",Toast.LENGTH_SHORT).show();
 
                     final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry._ID + " = ? ";
 
-                    returnedCursor.moveToLast();
+                    returnedCursor.moveToFirst();
 
-                    Log.d(LOG_TAG, "This is the last index value which is going to be deleted "+returnedCursor.getInt(0));
+                    //Log.d(LOG_TAG, "This is the last index value which is going to be deleted "+returnedCursor.getInt(0));
 
                     final String[] deletionArgs = {String.valueOf(returnedCursor.getInt(0))};
 
@@ -680,16 +672,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
                     if (deletion_id != -1) {
 
-                        Log.d(LOG_TAG, "We deleted this row" + deletion_id);
+                        // Log.d(LOG_TAG, "We deleted this row" + deletion_id);
 
                         Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
 
                         long movieRowId = ContentUris.parseId(uri);
 
                         if (movieRowId != -1) {
-                            Log.d(LOG_TAG, "row Inserted in database at id " + movieRowId);
+                            Toast.makeText(MovieDetailsActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                            // Log.d(LOG_TAG, "row Inserted in database at id " + movieRowId);
                         } else {
-                            Log.d(LOG_TAG, "row not Inserted in database");
+                            // Log.d(LOG_TAG, "row not Inserted in database");
                         }
 
                     } else {
@@ -706,7 +699,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     if (movieRowId != -1) {
 
                         //finaaly inserted
-                        Log.d(LOG_TAG, "Inserted in db was empty not 10");
+                        // Log.d(LOG_TAG, "Inserted in db was empty not 10");
+                        Toast.makeText(MovieDetailsActivity.this, "Inserted", Toast.LENGTH_SHORT).show();
                     } else {
                         //not inserted
                         Log.d(LOG_TAG, "Not Inserted in db");

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:defaultValue=""
+        android:key=""
+        android:summary=""
+        android:title="About"></EditTextPreference>
+
+
+    <SwitchPreference
+        android:defaultValue=""
+        android:key=""
+        android:summaryOff=""
+        android:summaryOn=""
+        android:title="pref_enable_notifications_label" />
+
+
+
+</PreferenceScreen>

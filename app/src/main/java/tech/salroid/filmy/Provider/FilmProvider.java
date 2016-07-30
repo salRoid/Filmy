@@ -26,6 +26,8 @@ public class FilmProvider extends ContentProvider {
     static final int MOVIE_DETAILS_WITH_MOVIE_ID = 101;
     static final int CAST_WITH_MOVIE_ID = 102;
     static final int CAST = 300;
+    static final int SAVE = 200;
+    static final int SAVE_DETAILS_WITH_MOVIE_ID = 201;
 
     private static final String sMovieIdSelection =
             FilmContract.MoviesEntry.TABLE_NAME +
@@ -85,6 +87,19 @@ public class FilmProvider extends ContentProvider {
                 break;
             }
 
+            case SAVE: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        FilmContract.SaveEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -131,6 +146,25 @@ public class FilmProvider extends ContentProvider {
 
     }
 
+    private Cursor getSaveByMovieID(Uri uri, String[] projection, String sortOrder) {
+
+        String movieId = FilmContract.SaveEntry.getMovieIdFromUri(uri);
+
+        String selection = sMovieIdSelection;
+        String[] selectionArgs = new String[]{movieId};
+
+        return mOpenHelper.getReadableDatabase().query(
+                FilmContract.SaveEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+    }
+
 
     @Nullable
     @Override
@@ -149,6 +183,10 @@ public class FilmProvider extends ContentProvider {
                 return FilmContract.MoviesEntry.CONTENT_TYPE;
             case CAST:
                 return FilmContract.CastEntry.CONTENT_TYPE;
+            case SAVE:
+                return FilmContract.SaveEntry.CONTENT_TYPE;
+            case SAVE_DETAILS_WITH_MOVIE_ID:
+                return FilmContract.SaveEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -174,6 +212,7 @@ public class FilmProvider extends ContentProvider {
 
 
             }
+
             case CAST: {
 
                 long _id = db.insert(FilmContract.CastEntry.TABLE_NAME, null, contentValues);
@@ -182,6 +221,18 @@ public class FilmProvider extends ContentProvider {
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
+            }
+
+            case SAVE: {
+
+                long _id = db.insert(FilmContract.SaveEntry.TABLE_NAME, null, contentValues);
+                if (_id > 0)
+                    returnUri = FilmContract.SaveEntry.buildMovieUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+
+
             }
 
             default:
@@ -215,6 +266,12 @@ public class FilmProvider extends ContentProvider {
                 rowsDeleted = db.delete(FilmContract.CastEntry.TABLE_NAME, selection, selectionArgs);
 
                 break;
+            case SAVE:
+
+                rowsDeleted = db.delete(FilmContract.SaveEntry.TABLE_NAME, selection, selectionArgs);
+
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri = " + uri);
         }
@@ -237,6 +294,11 @@ public class FilmProvider extends ContentProvider {
 
             case MOVIE_DETAILS_WITH_MOVIE_ID:
                 rowsUpdated = db.update(FilmContract.MoviesEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+
+                break;
+
+            case SAVE_DETAILS_WITH_MOVIE_ID:
+                rowsUpdated = db.update(FilmContract.SaveEntry.TABLE_NAME, contentValues, selection, selectionArgs);
 
                 break;
             default:
@@ -263,6 +325,8 @@ public class FilmProvider extends ContentProvider {
         uriMatcher.addURI(authority, FilmContract.PATH_MOVIE + "/*", MOVIE_DETAILS_WITH_MOVIE_ID);
         uriMatcher.addURI(authority, FilmContract.PATH_CAST + "/*", CAST_WITH_MOVIE_ID);
         uriMatcher.addURI(authority, FilmContract.PATH_CAST, CAST);
+        uriMatcher.addURI(authority, FilmContract.PATH_SAVE, SAVE);
+        uriMatcher.addURI(authority, FilmContract.PATH_SAVE + "/*", SAVE_DETAILS_WITH_MOVIE_ID);
 
         // 3) Return the new matcher!
 
@@ -291,6 +355,24 @@ public class FilmProvider extends ContentProvider {
                 }
                 getContext().getContentResolver().notifyChange(uri, null);
                 return returnCount;
+
+            case SAVE:
+                db.beginTransaction();
+                int SaveReturnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(FilmContract.SaveEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            SaveReturnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return SaveReturnCount;
+
             default:
                 return super.bulkInsert(uri, values);
         }

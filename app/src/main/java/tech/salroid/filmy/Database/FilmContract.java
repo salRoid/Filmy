@@ -27,6 +27,7 @@ public class FilmContract {
 
     public static final String PATH_MOVIE = "movie";
     public static final String PATH_CAST = "cast";
+    public static final String PATH_SAVE = "save";
 
 
     public static final class MoviesEntry implements BaseColumns {
@@ -113,4 +114,53 @@ public class FilmContract {
 
     }
 
+
+    public static final class SaveEntry implements BaseColumns {
+
+        public static final String TABLE_NAME = "save";
+        public static final String SAVE_ID = "save_id";
+        public static final String SAVE_YEAR = "save_year";
+        public static final String SAVE_POSTER_LINK = "save_poster";
+        public static final String SAVE_TITLE = "save_title";
+        public static final String SAVE_BANNER = "save_banner";
+        public static final String SAVE_DESCRIPTION = "save_description";
+        public static final String SAVE_TAGLINE = "save_tagline";
+        public static final String SAVE_TRAILER = "save_trailer";
+        public static final String SAVE_RATING = "save_rating";
+        public static final String SAVE_RUNTIME = "save_runtime";
+        public static final String SAVE_RELEASED = "save_release";
+        public static final String SAVE_CERTIFICATION = "save_certification";
+        public static final String SAVE_LANGUAGE = "save_language";
+
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SAVE).build();
+
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SAVE;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SAVE;
+
+
+        public static Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildMovieByTag(String movieTag) {
+            return CONTENT_URI.buildUpon().appendPath(movieTag).build();
+        }
+
+        public static Uri buildMovieUriWithMovieId(String movieId) {
+            return CONTENT_URI.buildUpon().appendQueryParameter(SAVE_ID, movieId).build();
+        }
+
+        public static Uri buildMovieWithMovieId(String movieId) {
+            return CONTENT_URI.buildUpon().appendPath(movieId).build();
+        }
+
+        public static String getMovieIdFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+    }
 }

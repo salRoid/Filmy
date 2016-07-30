@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  **/
 public class FilmDbHelper extends SQLiteOpenHelper {
 
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 6;
     public static final String DB_NAME = "filmy.db";
 
 
@@ -46,8 +46,29 @@ public class FilmDbHelper extends SQLiteOpenHelper {
                 + FilmContract.CastEntry.CAST_ROLE + " VARCHAR(255));";
 
 
+
+        final String SQL_CREATE_SAVE_TABLE = "CREATE TABLE " + FilmContract.SaveEntry.TABLE_NAME
+                + "(" + FilmContract.SaveEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
+                + FilmContract.SaveEntry.SAVE_ID + " VARCHAR(255) NOT NULL ,"
+                + FilmContract.SaveEntry.SAVE_TITLE + " VARCHAR(255) NOT NULL,"
+                + FilmContract.SaveEntry.SAVE_YEAR + " INTEGER(4),"
+                + FilmContract.SaveEntry.SAVE_POSTER_LINK + " VARCHAR(255) ,"
+                + FilmContract.SaveEntry.SAVE_BANNER + " VARCHAR (255) ,"
+                + FilmContract.SaveEntry.SAVE_CERTIFICATION + " VARCHAR (255) ,"
+                + FilmContract.SaveEntry.SAVE_LANGUAGE + " VARCHAR (255) ,"
+                + FilmContract.SaveEntry.SAVE_RELEASED + " VARCHAR (255) ,"
+                + FilmContract.SaveEntry.SAVE_RUNTIME + " VARCHAR (255) ,"
+                + FilmContract.SaveEntry.SAVE_DESCRIPTION + " VARCHAR (255) ,"
+                + FilmContract.SaveEntry.SAVE_TAGLINE + " VARCHAR(255) ,"
+                + FilmContract.SaveEntry.SAVE_TRAILER + " VARCHAR(255) ,"
+                + FilmContract.SaveEntry.SAVE_RATING + " VARCHAR (255));";
+
+
+
+
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_CAST_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_SAVE_TABLE);
 
 
     }
@@ -57,6 +78,7 @@ public class FilmDbHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FilmContract.MoviesEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FilmContract.CastEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FilmContract.SaveEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
 
     }

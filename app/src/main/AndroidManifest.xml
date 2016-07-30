@@ -43,6 +43,10 @@
             android:name=".Activity.FullScreenImage"
             android:label=" "
             android:theme="@style/FullScreenTheme" />
+        <activity
+            android:name=".Activity.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.Base"></activity>
     </application>
 
 </manifest>

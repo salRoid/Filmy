@@ -24,7 +24,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.CharacterDetailsActivity"
-            android:label=" "
+            android:label="Details"
             android:theme="@style/AppTheme.Base" />
 
         <provider

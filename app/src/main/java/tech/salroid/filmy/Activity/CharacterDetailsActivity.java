@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +31,7 @@ import java.util.List;
 import tech.salroid.filmy.DataClasses.CharacterDetailsData;
 import tech.salroid.filmy.Datawork.CharacterDetailActivityParseWork;
 import tech.salroid.filmy.CustomAdapter.CharacterDetailsActivityAdapter;
+import tech.salroid.filmy.FullReadFragment;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.DataClasses.MovieData;
 import tech.salroid.filmy.Network.VolleySingleton;
@@ -41,6 +44,9 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     private RecyclerView char_recycler;
     private String character_title = null, movie_json = null;
     private TextView more;
+    FrameLayout headerContainer;
+    private String character_bio;
+    private FullReadFragment fullReadFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (!(movie_json.equals(" ") && character_title.equals(" "))) {
                     Intent intent = new Intent(CharacterDetailsActivity.this, FullMovieActivity.class);
                     intent.putExtra("cast_json", movie_json);
@@ -73,6 +80,28 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         char_recycler = (RecyclerView) findViewById(R.id.character_movies);
         char_recycler.setLayoutManager(new LinearLayoutManager(CharacterDetailsActivity.this));
         char_recycler.setNestedScrollingEnabled(false);
+
+        headerContainer = (FrameLayout) findViewById(R.id.header_container);
+        headerContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                if(character_title!=null && character_bio!=null){
+
+                    fullReadFragment = new FullReadFragment();
+                    Bundle args = new Bundle();
+                    args.putString("title",character_title);
+                    args.putString("desc",character_bio);
+
+                    fullReadFragment.setArguments(args);
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.main,fullReadFragment,"DESC").commit();
+                }
+
+            }
+        });
 
 
         Intent intent = getIntent();
@@ -174,7 +203,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
 
             character_title = char_name;
-
+            character_bio = char_desc;
 
             TextView ch_name = (TextView) findViewById(R.id.actor);
             TextView ch_desc = (TextView) findViewById(R.id.desc);
@@ -194,7 +223,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             if (char_birthplace.equals("null"))
                 ch_desc.setVisibility(View.GONE);
             else
-                ch_desc.setText(char_desc);
+                ch_desc.setText(Html.fromHtml(char_desc));
 
 
           /*Glide.with(co)
@@ -234,4 +263,20 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    @Override
+    public void onBackPressed() {
+
+        FullReadFragment fragment = (FullReadFragment) getSupportFragmentManager().findFragmentByTag("DESC");
+        if (fragment != null && fragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction().remove(fullReadFragment).commit();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+
 }

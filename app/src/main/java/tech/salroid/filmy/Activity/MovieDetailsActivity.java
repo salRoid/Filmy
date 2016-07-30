@@ -601,7 +601,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             super.onBackPressed();
         }
 
-
     }
 
 

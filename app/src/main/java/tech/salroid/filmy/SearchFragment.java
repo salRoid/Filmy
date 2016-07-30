@@ -29,6 +29,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import tech.salroid.filmy.Activity.CharacterDetailsActivity;
 import tech.salroid.filmy.Activity.MovieDetailsActivity;
@@ -41,7 +42,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
     private RecyclerView recycler;
     private Intent intent;
-
+/*    SearchFragmentCommunication searchFragmentCommunication;*/
 
     @Nullable
     @Override
@@ -72,10 +73,14 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
     public void getSearchedResult(String query) {
 
+
+        String trimmedQuery = query.trim();
+        String finalQuery = trimmedQuery.replace(" ","-");
+
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.trakt.tv/search/movie,person?query=" + query + "&extended=images,full";
+        final String BASE_URL = "https://api.trakt.tv/search/movie,person?query=" + finalQuery + "&extended=images,full";
 
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
                 new Response.Listener<JSONArray>() {
@@ -107,7 +112,27 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         sadapter.setClickListener(this);
         recycler.setAdapter(sadapter);
 
+    /*    String[] titles = new String[list.size()];
+
+        for (int i=0;i<list.size();i++){
+            titles[i]= list.get(i).getMovie();
+        }
+
+        if (searchFragmentCommunication!=null)
+             searchFragmentCommunication.onSuggestionReady(titles)*/;
     }
+
+
+    /*public void setSuggestionListener(SearchFragmentCommunication listener) {
+        searchFragmentCommunication = listener;
+    }*/
+
+
+    /*public interface SearchFragmentCommunication{
+        public void onSuggestionReady(String[] suggestionArray);
+    }*/
+
+
 
 
 }

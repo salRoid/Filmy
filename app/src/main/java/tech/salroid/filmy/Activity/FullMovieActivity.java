@@ -46,11 +46,10 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         }
 
 
-
-        CharacterDetailActivityParseWork par= new CharacterDetailActivityParseWork(this,movie_result);
-        List<CharacterDetailsData> char_list=par.char_parse_cast();
-        Boolean size=false;
-        CharacterDetailsActivityAdapter char_adapter= new CharacterDetailsActivityAdapter(this,char_list,size);
+        CharacterDetailActivityParseWork par = new CharacterDetailActivityParseWork(this, movie_result);
+        List<CharacterDetailsData> char_list = par.char_parse_cast();
+        Boolean size = false;
+        CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, size);
         char_adapter.setClickListener(this);
         full_movie_recycler.setAdapter(char_adapter);
 
@@ -59,8 +58,8 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
     @Override
     public void itemClicked(CharacterDetailsData setterGetterChar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("id",setterGetterChar.getChar_id());
-        intent.putExtra("activity",false);
+        intent.putExtra("id", setterGetterChar.getChar_id());
+        intent.putExtra("activity", false);
         startActivity(intent);
 
     }

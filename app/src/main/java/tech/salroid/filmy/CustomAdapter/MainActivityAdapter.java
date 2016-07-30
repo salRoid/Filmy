@@ -65,7 +65,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
         movie_title = dataCursor.getString(title_index);
         movie_poster = dataCursor.getString(poster_index);
-        imdb_id =  dataCursor.getString(id_index);
+        imdb_id = dataCursor.getString(id_index);
         movie_year = dataCursor.getInt(year_index);
 
 
@@ -74,7 +74,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
 
     }
-
 
 
     @Override
@@ -93,7 +92,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         }
         return oldCursor;
     }
-
 
 
     class Vh extends RecyclerView.ViewHolder {

@@ -23,7 +23,7 @@ public class FullScreenImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_image);
 
-        centreimg=(ImageView)findViewById(R.id.cen_img);
+        centreimg = (ImageView) findViewById(R.id.cen_img);
 
         Intent intent = getIntent();
         if (intent != null) {

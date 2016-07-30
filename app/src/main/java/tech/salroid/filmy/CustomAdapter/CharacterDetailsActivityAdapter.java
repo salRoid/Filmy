@@ -29,11 +29,11 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
     List<CharacterDetailsData> ch = new ArrayList<>();
 
-    public CharacterDetailsActivityAdapter(Context context, List<CharacterDetailsData> ch,Boolean size) {
+    public CharacterDetailsActivityAdapter(Context context, List<CharacterDetailsData> ch, Boolean size) {
         inflater = LayoutInflater.from(context);
         con = context;
         this.ch = ch;
-        this.ret_size=size;
+        this.ret_size = size;
 
     }
 
@@ -56,7 +56,7 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
         m_desc = ch.get(position).getChar_role();
         m_id = ch.get(position).getChar_id();
 
-       // Log.d("webi","charAdapter"+m_id);
+        // Log.d("webi","charAdapter"+m_id);
 
         holder.mov_name.setText(m_name);
         holder.mov_char.setText(m_desc);
@@ -67,7 +67,7 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
     @Override
     public int getItemCount() {
         if (ret_size)
-            return (ch.size()>=5)?5:ch.size();
+            return (ch.size() >= 5) ? 5 : ch.size();
 
         else
             return ch.size();

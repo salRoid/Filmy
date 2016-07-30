@@ -48,10 +48,6 @@ public class FilmContract {
         public static final String MOVIE_LANGUAGE = "movie_language";
 
 
-
-
-
-
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
 
 
@@ -70,14 +66,15 @@ public class FilmContract {
         }
 
         public static Uri buildMovieUriWithMovieId(String movieId) {
-            return CONTENT_URI.buildUpon().appendQueryParameter(MOVIE_ID,movieId).build();
+            return CONTENT_URI.buildUpon().appendQueryParameter(MOVIE_ID, movieId).build();
         }
+
         public static Uri buildMovieWithMovieId(String movieId) {
             return CONTENT_URI.buildUpon().appendPath(movieId).build();
         }
 
         public static String getMovieIdFromUri(Uri uri) {
-                return uri.getPathSegments().get(1);
+            return uri.getPathSegments().get(1);
         }
     }
 
@@ -101,14 +98,13 @@ public class FilmContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CAST;
 
 
-
         public static Uri buildCastUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
 
         public static Uri buildCastUriByMovieId(String movieId) {
-            return CONTENT_URI.buildUpon().appendQueryParameter(CAST_MOVIE_ID,movieId).build();
+            return CONTENT_URI.buildUpon().appendQueryParameter(CAST_MOVIE_ID, movieId).build();
         }
 
         public static String getMovieIdFromUri(Uri uri) {

@@ -3,9 +3,12 @@ package tech.salroid.filmy.Datawork;
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
+
 import java.util.Vector;
+
 import tech.salroid.filmy.Database.FilmContract;
 
 
@@ -63,19 +66,18 @@ public class MainActivityParseWork {
                 cVVector.add(movieValues);
 
             }
-                int inserted = 0;
-                // add to database
-                if (cVVector.size() > 0) {
-                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                    cVVector.toArray(cvArray);
+            int inserted = 0;
+            // add to database
+            if (cVVector.size() > 0) {
+                ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                cVVector.toArray(cvArray);
 
-                    context.getContentResolver().delete(FilmContract.MoviesEntry.CONTENT_URI,null,null);
-                    inserted = context.getContentResolver().bulkInsert(FilmContract.MoviesEntry.CONTENT_URI, cvArray);
+                context.getContentResolver().delete(FilmContract.MoviesEntry.CONTENT_URI, null, null);
+                inserted = context.getContentResolver().bulkInsert(FilmContract.MoviesEntry.CONTENT_URI, cvArray);
 
-                }
+            }
 
-                Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
-
+            Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {

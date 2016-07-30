@@ -10,19 +10,19 @@ import tech.salroid.filmy.FilmyApplication;
  */
 public class VolleySingleton {
 
-    public static VolleySingleton instance=null;
+    public static VolleySingleton instance = null;
     private RequestQueue requestQueue;
 
 
-    private VolleySingleton(){
-        requestQueue= Volley.newRequestQueue(FilmyApplication.getContext(),new MyHurlStack());
+    private VolleySingleton() {
+        requestQueue = Volley.newRequestQueue(FilmyApplication.getContext(), new MyHurlStack());
     }
 
 
     public static VolleySingleton getInstance() {
 
-        if(instance==null){
-            instance=new VolleySingleton();
+        if (instance == null) {
+            instance = new VolleySingleton();
         }
 
 
@@ -30,7 +30,7 @@ public class VolleySingleton {
     }
 
 
-    public RequestQueue getRequestQueue(){
+    public RequestQueue getRequestQueue() {
         return requestQueue;
     }
 }

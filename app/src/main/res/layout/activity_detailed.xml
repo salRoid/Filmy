@@ -223,6 +223,14 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <tech.salroid.filmy.Custom.BreathingProgress
+
+        android:layout_gravity="center"
+        android:id="@+id/breathingProgress"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
 </FrameLayout>
 

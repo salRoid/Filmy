@@ -313,7 +313,7 @@ public class FilmProvider extends ContentProvider {
 
     static UriMatcher buildUriMatcher() {
         // 1) The code passed into the constructor represents the code to return for the root
-        // URI.  It's common to use NO_MATCH as the code for this case. Add the constructor below.
+        // URI.  It'FilmyAuthenticator common to use NO_MATCH as the code for this case. Add the constructor below.
 
         final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = FilmContract.CONTENT_AUTHORITY;

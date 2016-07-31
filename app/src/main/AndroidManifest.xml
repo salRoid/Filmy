@@ -4,6 +4,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    !-- Permissions required by the sync adapter -->
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
     <application
         android:name=".FilmyApplication"
         android:allowBackup="true"
@@ -29,7 +37,9 @@
 
         <provider
             android:name=".Provider.FilmProvider"
-            android:authorities="tech.salroid.filmy" />
+            android:syncable="true"
+            android:exported="false"
+            android:authorities="@string/content_authority" />
 
         <activity
             android:name=".Activity.FullCastActivity"
@@ -51,6 +61,36 @@
             android:name=".Activity.SavedMovies"
             android:label="@string/title_activity_saved_movies"
             android:theme="@style/AppTheme.Base"></activity>
+
+        <!--<service android:name=".Service.FilmyService"/>
+        <receiver android:name=".Service.FilmyService$AlarmReciever"/>-->
+
+
+        <!-- SyncAdapter's dummy authentication service -->
+        <service android:name=".Sync.FilmyAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- The SyncAdapter service -->
+        <service
+            android:name=".Sync.FilmySyncService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
+
+
 
     </application>
 

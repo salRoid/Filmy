@@ -146,7 +146,7 @@ public class TestUtilities extends AndroidTestCase {
         // Verify we got a row back.
         assertTrue(movieRowId != -1);
 
-        // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
+        // Data'FilmyAuthenticator inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
         // the round trip.
 
         // A cursor is your primary interface to the query results.
@@ -227,7 +227,7 @@ public class TestUtilities extends AndroidTestCase {
 
         public void waitForNotificationOrFail() {
             // Note: The PollingCheck class is taken from the Android CTS (Compatibility Test Suite).
-            // It's useful to look at the Android CTS source for ideas on how to test your Android
+            // It'FilmyAuthenticator useful to look at the Android CTS source for ideas on how to test your Android
             // applications.  The reason that PollingCheck works is that, by default, the JUnit
             // testing framework is not running on the main Android application thread.
             new PollingCheck(5000) {

@@ -13,12 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.MenuItem;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import tech.salroid.filmy.CustomAdapter.SavedMoviesAdapter;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.R;
+
 
 public class SavedMovies extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
 
@@ -45,6 +49,7 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     };
 
     private SavedMoviesAdapter mainActivityAdapter;
+    LinearLayout emptyContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +57,6 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         setContentView(R.layout.activity_saved_movies);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         my_saved_movies_recycler = (RecyclerView) findViewById(R.id.my_saved_recycler);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
@@ -78,12 +81,19 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-            mainActivityAdapter.swapCursor(cursor);
+
+            if(cursor!=null && cursor.getCount()>0)
+               mainActivityAdapter.swapCursor(cursor);
+           else
+                emptyContainer.setVisibility(View.VISIBLE);
+
+
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mainActivityAdapter.swapCursor(null);
+        emptyContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -132,9 +142,7 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
         adb.show();
 
-
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

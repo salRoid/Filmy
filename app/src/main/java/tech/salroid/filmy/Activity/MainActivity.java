@@ -1,5 +1,7 @@
 package tech.salroid.filmy.Activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -37,6 +39,8 @@ import tech.salroid.filmy.Datawork.MainActivityParseWork;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.Network.VolleySingleton;
 import tech.salroid.filmy.SearchFragment;
+import tech.salroid.filmy.Service.FilmyService;
+import tech.salroid.filmy.Sync.FilmySyncAdapter;
 
 
 public class MainActivity extends AppCompatActivity implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
@@ -135,8 +139,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
             }
         });
 
-        getData();
+/*
 
+        Intent alarmIntent = new Intent(this, FilmyService.AlarmReciever.class);
+
+        PendingIntent pi  = PendingIntent.getBroadcast(this,0,alarmIntent,PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+5000,pi);
+*/
+
+
+        FilmySyncAdapter.initializeSyncAdapter(this);
         getSupportLoaderManager().initLoader(MOVIE_LOADER, null, this);
 
     }
@@ -160,35 +174,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         return true;
     }
 
-
-    private void getData() {
-
-        VolleySingleton volleySingleton = VolleySingleton.getInstance();
-        RequestQueue requestQueue = volleySingleton.getRequestQueue();
-
-        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,page=1&limit=30";
-
-
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        parseOutput(response.toString());
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.e("webi", "Volley Error: " + error.getCause());
-
-            }
-        }
-        );
-
-        requestQueue.add(jsonObjectRequest);
-
-
-    }
 
 
     @Override
@@ -221,19 +206,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
 
-    }
-
-    private void parseOutput(String result) {
-
-
-        MainActivityParseWork pa = new MainActivityParseWork(this, result);
-        pa.parse();
-
-   /*     List<MovieData> list = pa.parse();
-        MainActivityAdapter adapter = new MainActivityAdapter(this, list);
-        adapter.setClickListener(this);
-        recycler.setAdapter(adapter);
-        */
     }
 
 

@@ -199,7 +199,7 @@ public class ProviderTest extends AndroidTestCase {
         // Verify we got a row back.
         assertTrue(movieRowId != -1);
 
-        // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
+        // Data'FilmyAuthenticator inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
         // the round trip.
 
         // A cursor is your primary interface to the query results.
@@ -298,7 +298,7 @@ public class ProviderTest extends AndroidTestCase {
 
 
     public void testBulkInsertInMovie() {
-       /* // first, let's create a location value
+       /* // first, let'FilmyAuthenticator create a location value
         ContentValues testValues = TestUtilities.createMovieTestValues();
         Uri locationUri = mContext.getContentResolver().insert(LocationEntry.CONTENT_URI, testValues);
         long locationRowId = ContentUris.parseId(locationUri);
@@ -306,7 +306,7 @@ public class ProviderTest extends AndroidTestCase {
         // Verify we got a row back.
         assertTrue(locationRowId != -1);
 
-        // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
+        // Data'FilmyAuthenticator inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
         // the round trip.
 
         // A cursor is your primary interface to the query results.
@@ -352,7 +352,7 @@ public class ProviderTest extends AndroidTestCase {
         // we should have as many records in the database as we've inserted
         assertEquals(cursor.getCount(), BULK_INSERT_RECORDS_TO_INSERT);
 
-        // and let's make sure they match the ones we created
+        // and let'FilmyAuthenticator make sure they match the ones we created
         cursor.moveToFirst();
         for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++, cursor.moveToNext()) {
             TestUtilities.validateCurrentRecord("testBulkInsert.  Error validating WeatherEntry " + i,

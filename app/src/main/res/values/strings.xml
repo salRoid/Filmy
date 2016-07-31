@@ -11,4 +11,9 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_saved_movies">SavedMovies</string>
 
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">filmy.example.com</string>
+    <string name="content_authority">tech.salroid.filmy</string>
+
 </resources>

@@ -21,6 +21,7 @@ import tech.salroid.filmy.CustomAdapter.SavedMoviesAdapter;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.R;
 
+
 public class SavedMovies extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
 
     private static final int SAVED_DETAILS_LOADER = 3;

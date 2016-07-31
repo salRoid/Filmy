@@ -90,7 +90,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private TextView more;
     private String cast_json = null, movie_title = null, movie_tagline = null, movie_rating = null, show_centre_img_url = null, movie_trailer = null;
     private boolean trailer_boolean = false;
-    private String cursor;
     private Bundle bundle;
 
 
@@ -223,26 +222,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        if (bundle == null)
-                            parseMovieDetails(response.toString());
-                        else
-                            showParsedContent(bundle.getString("title"),
-                                    bundle.getString("banner"),
-                                    bundle.getString("trailer"),
-                                    bundle.getString("tagline"),
-                                    bundle.getString("overview"),
-                                    bundle.getString("rating"),
-                                    bundle.getString("runtime"),
-                                    bundle.getString("released"),
-                                    bundle.getString("certification"),
-                                    bundle.getString("language"));
+                        parseMovieDetails(response.toString());
 
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                parseMovieDetails(null);
                 Log.e("webi", "Volley Error: " + error.getCause());
 
             }
@@ -285,53 +272,73 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         try {
 
+
+
             JSONObject jsonObject = new JSONObject(movieDetails);
 
             ContentValues contentValues = new ContentValues();
 
-            title = jsonObject.getString("title");
-            tagline = jsonObject.getString("tagline");
-            overview = jsonObject.getString("overview");
-            trailer = jsonObject.getString("trailer");
-            rating = jsonObject.getDouble("rating");
-            certification = jsonObject.getString("certification");
-            language = jsonObject.getString("language");
-            released = jsonObject.getString("released");
-            runtime = jsonObject.getString("runtime");
+            if (bundle == null) {
 
-            if (certification.equals("null")) {
-                certification = "--";
+                title = jsonObject.getString("title");
+                tagline = jsonObject.getString("tagline");
+                overview = jsonObject.getString("overview");
+                trailer = jsonObject.getString("trailer");
+                rating = jsonObject.getDouble("rating");
+                certification = jsonObject.getString("certification");
+                language = jsonObject.getString("language");
+                released = jsonObject.getString("released");
+                runtime = jsonObject.getString("runtime");
+
+                if (certification.equals("null")) {
+                    certification = "--";
+                }
+
+                double roundOff = Math.round(rating * 100.0) / 100.0;
+
+                movie_rating = String.valueOf(roundOff);
+
+                banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString("medium");
+                poster = jsonObject.getJSONObject("images").getJSONObject("poster").getString("thumb");
+
+                movie_desc = overview;
+                movie_title = title;
+                movie_tagline = tagline;
+                show_centre_img_url = banner_profile;
+
+                movieMap = new HashMap<String, String>();
+                movieMap.put("title", title);
+                movieMap.put("tagline", tagline);
+                movieMap.put("overview", overview);
+                movieMap.put("rating", movie_rating);
+                movieMap.put("certification", certification);
+                movieMap.put("language", language);
+                movieMap.put("year", "0");
+                movieMap.put("released", released);
+                movieMap.put("runtime", runtime);
+                movieMap.put("trailer", trailer);
+                movieMap.put("banner", banner_profile);
+                movieMap.put("poster", poster);
             }
 
-            double roundOff = Math.round(rating * 100.0) / 100.0;
+             else {
 
-            movie_rating = String.valueOf(roundOff);
+                title = bundle.getString("title");
+                banner_profile = bundle.getString("banner");
+                tagline = bundle.getString("tagline");
+                overview = bundle.getString("overview");
+                certification = bundle.getString("certification");
+                runtime = bundle.getString("runtime");
+                language = bundle.getString("language");
+                released = bundle.getString("released");
+                trailer = bundle.getString("trailer");
+                movie_rating = bundle.getString("rating");
 
-            movieMap = new HashMap<String, String>();
-
-            movieMap.put("title", title);
-            movieMap.put("tagline", tagline);
-            movieMap.put("overview", overview);
-            movieMap.put("rating", movie_rating);
-            movieMap.put("certification", certification);
-            movieMap.put("language", language);
-            movieMap.put("year", "0");
-            movieMap.put("released", released);
-            movieMap.put("runtime", runtime);
-            movieMap.put("trailor", trailer);
-
-            movie_desc = overview;
-            movie_title = title;
-            movie_tagline = tagline;
-
-
-            banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString("medium");
-            poster = jsonObject.getJSONObject("images").getJSONObject("poster").getString("thumb");
-
-            movieMap.put("banner", banner_profile);
-            movieMap.put("poster", poster);
-
-            show_centre_img_url = banner_profile;
+                movie_desc = overview;
+                movie_title = title;
+                movie_tagline = tagline;
+                show_centre_img_url = banner_profile;
+            }
 
             try {
 
@@ -350,14 +357,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
                 }
 
-
-
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } finally {
 
-                if (fromActivity) {
+                if (fromActivity && bundle == null) {
 
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_BANNER, banner_profile);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE, tagline);
@@ -367,7 +371,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_LANGUAGE, language);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RUNTIME, runtime);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RELEASED, released);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, String.valueOf(roundOff));
+                    contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, movie_rating);
 
                     final String selection =
                             FilmContract.MoviesEntry.TABLE_NAME +
@@ -380,7 +384,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                         //  Log.d(LOG_TAG, "Movie row updated with new values.");
                     }
                 } else {
-                    showParsedContent(title, banner_profile, img_url, tagline, overview, String.valueOf(roundOff), runtime, released, certification, language);
+                    showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, certification, language);
 
                 }
 
@@ -635,7 +639,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             saveValues.put(FilmContract.SaveEntry.SAVE_TAGLINE, movieMap.get("tagline"));
             saveValues.put(FilmContract.SaveEntry.SAVE_DESCRIPTION, movieMap.get("overview"));
             saveValues.put(FilmContract.SaveEntry.SAVE_BANNER, movieMap.get("banner"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_TRAILER, movieMap.get("trailor"));
+            saveValues.put(FilmContract.SaveEntry.SAVE_TRAILER, movieMap.get("trailer"));
             saveValues.put(FilmContract.SaveEntry.SAVE_RATING, movieMap.get("rating"));
             saveValues.put(FilmContract.SaveEntry.SAVE_YEAR, movieMap.get("year"));
             saveValues.put(FilmContract.SaveEntry.SAVE_POSTER_LINK, movieMap.get("poster"));
@@ -650,7 +654,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                             "." + FilmContract.SaveEntry.SAVE_ID + " = ? ";
             final String[] selectionArgs = {movie_id};
 
-            boolean deletePermission = false;
+            //  boolean deletePermission = false;
             Cursor alreadyCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, selection, selectionArgs, null);
 
             if (alreadyCursor.moveToFirst()) {

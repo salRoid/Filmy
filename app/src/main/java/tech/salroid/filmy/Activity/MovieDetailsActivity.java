@@ -90,6 +90,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private TextView more;
     private String cast_json = null, movie_title = null, movie_tagline = null, movie_rating = null, show_centre_img_url = null, movie_trailer = null;
     private boolean trailer_boolean = false;
+    private String cursor;
+    private Bundle bundle;
 
 
     @Override
@@ -181,6 +183,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             movie_id = intent.getStringExtra("id");
             movie_trailer = "http://www.imdb.com/title/" + movie_id;
             movie_title = intent.getStringExtra("title");
+            bundle = intent.getBundleExtra("bundle");
+
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -219,8 +223,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        // Log.d("webi", response.toString());
-                        parseMovieDetails(response.toString());
+                        if (bundle == null)
+                            parseMovieDetails(response.toString());
+                        else
+                            showParsedContent(bundle.getString("title"),
+                                    bundle.getString("banner"),
+                                    bundle.getString("trailer"),
+                                    bundle.getString("tagline"),
+                                    bundle.getString("overview"),
+                                    bundle.getString("rating"),
+                                    bundle.getString("runtime"),
+                                    bundle.getString("released"),
+                                    bundle.getString("certification"),
+                                    bundle.getString("language"));
 
 
                     }
@@ -284,6 +299,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             released = jsonObject.getString("released");
             runtime = jsonObject.getString("runtime");
 
+            if (certification.equals("null")) {
+                certification = "--";
+            }
 
             double roundOff = Math.round(rating * 100.0) / 100.0;
 
@@ -300,15 +318,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             movieMap.put("year", "0");
             movieMap.put("released", released);
             movieMap.put("runtime", runtime);
+            movieMap.put("trailor", trailer);
 
             movie_desc = overview;
             movie_title = title;
             movie_tagline = tagline;
-
-
-            if (certification.equals("null")) {
-                certification = "--";
-            }
 
 
             banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString("medium");
@@ -336,7 +350,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
                 }
 
-                movieMap.put("trailor", img_url);
+
 
 
             } catch (MalformedURLException e) {
@@ -366,7 +380,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
                         //  Log.d(LOG_TAG, "Movie row updated with new values.");
                     }
                 } else {
-
                     showParsedContent(title, banner_profile, img_url, tagline, overview, String.valueOf(roundOff), runtime, released, certification, language);
 
                 }

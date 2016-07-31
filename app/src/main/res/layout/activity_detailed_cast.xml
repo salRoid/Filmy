@@ -110,6 +110,7 @@
                         android:fontFamily="sans-serif-condensed"
                         android:padding="16dp"
                         android:text="Movies "
+                        android:textStyle="bold"
                         android:textAppearance="?android:textAppearanceMedium" />
 
                     <TextView
@@ -122,6 +123,7 @@
                         android:fontFamily="sans-serif-condensed"
                         android:padding="16dp"
                         android:text="More"
+                        android:textStyle="bold"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:textColor="@color/colorAccent"
                         android:visibility="invisible" />

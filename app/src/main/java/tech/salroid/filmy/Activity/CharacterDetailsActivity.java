@@ -184,6 +184,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     public void itemClicked(CharacterDetailsData setterGetterchar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("id", setterGetterchar.getChar_id());
+        intent.putExtra("network_applicable",true);
         intent.putExtra("activity", false);
         startActivity(intent);
     }

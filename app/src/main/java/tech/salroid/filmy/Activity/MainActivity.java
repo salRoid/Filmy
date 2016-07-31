@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,page=1&limit=25";
+        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,page=1&limit=30";
 
 
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
@@ -216,6 +216,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("title", cursor.getString(title_index));
         intent.putExtra("activity", true);
+        intent.putExtra("database_applicable",true);
+        intent.putExtra("network_applicable",true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
 

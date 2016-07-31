@@ -155,5 +155,4 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
         return super.onOptionsItemSelected(item);
     }
-
 }

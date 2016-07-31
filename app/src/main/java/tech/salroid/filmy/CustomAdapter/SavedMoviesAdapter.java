@@ -115,8 +115,11 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
                     dataCursor.moveToPosition(getPosition());
 
+                    int movie_id_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID);
+                    int movie_title_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
+
                     if (clickListener != null) {
-                        clickListener.itemClicked(dataCursor);
+                        clickListener.itemClicked(dataCursor.getString(movie_id_index),dataCursor.getString(movie_title_index));
                     }
 
                 }
@@ -144,7 +147,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
     public interface ClickListener {
 
-        public void itemClicked(Cursor cursor);
+        public void itemClicked(String id,String title);
 
     }
 

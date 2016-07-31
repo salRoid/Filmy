@@ -26,6 +26,7 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
 
     private static final String[] GET_SAVE_COLUMNS = {
+
             FilmContract.SaveEntry.SAVE_ID,
             FilmContract.SaveEntry.SAVE_TITLE,
             FilmContract.SaveEntry.SAVE_BANNER,
@@ -41,6 +42,7 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
             FilmContract.SaveEntry.SAVE_RUNTIME,
             FilmContract.SaveEntry.SAVE_POSTER_LINK,
     };
+
     private SavedMoviesAdapter mainActivityAdapter;
 
     @Override
@@ -59,7 +61,9 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         mainActivityAdapter.setClickListener(this);
         mainActivityAdapter.setLongClickListener(this);
 
+
         getSupportLoaderManager().initLoader(SAVED_DETAILS_LOADER, null, this);
+
     }
 
     @Override
@@ -71,7 +75,6 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
-            Log.d("webi", String.valueOf(cursor.getCount()));
             mainActivityAdapter.swapCursor(cursor);
     }
 
@@ -81,37 +84,14 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     }
 
     @Override
-    public void itemClicked(Cursor cursor) {
+    public void itemClicked(String movieId,String title) {
 
-        int id_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID);
-        int title_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
-        int tagline_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TAGLINE);
-        int over_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_DESCRIPTION);
-        int rating_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING);
-        int certification_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_CERTIFICATION);
-        int lang_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_LANGUAGE);
-        int released_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_RELEASED);
-        int banner_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_BANNER);
-        int runtime_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_RUNTIME);
-        int trailer_index = cursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TRAILER);
 
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("title", cursor.getString(title_index));
-        intent.putExtra("id", cursor.getString(id_index));
 
-        Bundle bundle = new Bundle();
-        bundle.putString("title",cursor.getString(title_index));
-        bundle.putString("tagline", cursor.getString(tagline_index));
-        bundle.putString("overview",cursor.getString(over_index) );
-        bundle.putString("rating",cursor.getString(rating_index)  );
-        bundle.putString("certification",cursor.getString(certification_index));
-        bundle.putString("language",cursor.getString(lang_index) );
-        bundle.putString("released",cursor.getString(released_index) );
-        bundle.putString("runtime", cursor.getString(runtime_index));
-        bundle.putString("banner",cursor.getString(banner_index) );
-        bundle.putString("trailer",cursor.getString(trailer_index) );
-
-        intent.putExtra("bundle",bundle);
+        intent.putExtra("saved_database_applicable",true);
+        intent.putExtra("title",title);
+        intent.putExtra("id", movieId);
 
         startActivity(intent);
 

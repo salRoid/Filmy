@@ -60,10 +60,15 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
     @Override
     public void itemClicked(SearchData setterGetter, int position) {
+
         if (setterGetter.getType().equals("person"))
             intent = new Intent(getActivity(), CharacterDetailsActivity.class);
-        else
+        else{
             intent = new Intent(getActivity(), MovieDetailsActivity.class);
+            intent.putExtra("network_applicable",true);
+        }
+
+
         intent.putExtra("id", setterGetter.getId());
         intent.putExtra("activity", false);
 

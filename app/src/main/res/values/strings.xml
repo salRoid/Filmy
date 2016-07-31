@@ -9,7 +9,9 @@
     <string name="title_activity_full_movie">FullMovieActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
     <string name="title_activity_settings">SettingsActivity</string>
-    <string name="title_activity_saved_movies">SavedMovies</string>
+    <string name="title_activity_saved_movies">Saved Movies</string>
+
+
     <!-- SyncAdapter related -->
     <string name="sync_account_type">filmy.example.com</string>
     <string name="content_authority">tech.salroid.filmy</string>

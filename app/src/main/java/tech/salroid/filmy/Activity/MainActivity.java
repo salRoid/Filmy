@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
             startActivity(new Intent(this, SearchFragment.class));
         }
 
-        if(id==R.id.ic_setting){
+        if(id==R.id.ic_collection){
             startActivity(new Intent(this,SavedMovies.class));
         }
 

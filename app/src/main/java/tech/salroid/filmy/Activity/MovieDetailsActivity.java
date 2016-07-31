@@ -53,6 +53,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
+import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.DataClasses.MovieDetailsData;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.Datawork.MovieDetailsActivityParseWork;
@@ -66,7 +67,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     Context context = this;
     private String movie_id, trailer = null, movie_desc;
     private RecyclerView cast_recycler;
-    private RelativeLayout header;
+    private RelativeLayout header,main;
+    BreathingProgress breathingProgress;
 
     private RequestQueue requestQueue;
 
@@ -152,6 +154,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         det_language = (TextView) findViewById(R.id.detail_language);
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
         more = (TextView) findViewById(R.id.more);
+
+        breathingProgress  = (BreathingProgress) findViewById(R.id.breathingProgress);
+
+        main = (RelativeLayout) findViewById(R.id.main);
         newMain = (FrameLayout) findViewById(R.id.new_main);
         main_content = (FrameLayout) findViewById(R.id.all_details_container);
         header = (RelativeLayout) findViewById(R.id.header);
@@ -186,6 +192,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         if (savedDatabaseApplicable)
             getSupportLoaderManager().initLoader(SAVED_MOVIE_DETAILS_LOADER, null, this);
+
+        if (!databaseApplicable && !savedDatabaseApplicable){
+
+            main.setVisibility(View.INVISIBLE);
+            breathingProgress.setVisibility(View.VISIBLE);
+
+        }
 
 
     }
@@ -454,6 +467,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     }
 
                 });
+
+        main.setVisibility(View.VISIBLE);
+        breathingProgress.setVisibility(View.INVISIBLE);
 
     }
 

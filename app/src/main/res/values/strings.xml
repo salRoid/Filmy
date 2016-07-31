@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Filmy</string>
+    <string name="title_activity_detailed">DetailedActivity</string>
+    <string name="title_activity_detailed__cast">Detailed_Cast</string>
+
+    <string name="api_key">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_full_cast">FullCastActivity</string>
+    <string name="title_activity_full_movie">FullMovieActivity</string>
+    <string name="title_activity_full_screen_image">FullScreenImage</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_saved_movies">SavedMovies</string>
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">filmy.example.com</string>
+    <string name="content_authority">tech.salroid.filmy</string>
+
+</resources>

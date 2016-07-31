@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/ic_collection"
+        android:title="Saved Movies"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_action_book"
+
+        />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_action_search2"
+        android:orderInCategory="100"
+        android:title="@string/abc_search_hint"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/ic_setting"
+        android:title="Settings"
+        app:showAsAction="never" />
+
+</menu>

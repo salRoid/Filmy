@@ -1,13 +1,18 @@
 package tech.salroid.filmy.Activity;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -22,6 +27,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,18 +71,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private RequestQueue requestQueue;
 
 
-    private static TextView det_title, det_tagline, det_overview, det_rating, det_released, det_certification, det_language, det_runtime;
-    private static ImageView youtube_link, banner;
+    private static TextView det_title, det_tagline, det_overview,
+                            det_rating, det_released, det_certification,
+                            det_language, det_runtime;
 
+    private static ImageView youtube_link, banner;
     private final String LOG_TAG = MovieDetailsActivity.class.getSimpleName();
-    private final int MOVIE_DETAILS_LOADER = 2;
-    private final int SAVED_MOVIE_DETAILS_LOADER = 5;
+    private final int MOVIE_DETAILS_LOADER = 2,SAVED_MOVIE_DETAILS_LOADER = 5;
     LinearLayout trailorBackground;
     TextView tvRating;
     FrameLayout trailorView, newMain, headerContainer;
     FullReadFragment fullReadFragment;
     HashMap<String, String> movieMap;
-    boolean networkApplicable = false, databaseApplicable = false, savedDatabaseApplicable=false;
+    boolean networkApplicable = false, databaseApplicable = false, savedDatabaseApplicable = false;
 
 
     private static final String[] GET_MOVIE_COLUMNS = {
@@ -116,6 +124,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private TextView more;
     private String cast_json = null, movie_title = null, movie_tagline = null, movie_rating = null, show_centre_img_url = null, movie_trailer = null;
     private boolean trailer_boolean = false;
+    private FrameLayout main_content;
 
 
     @Override
@@ -144,6 +153,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
         more = (TextView) findViewById(R.id.more);
         newMain = (FrameLayout) findViewById(R.id.new_main);
+        main_content = (FrameLayout) findViewById(R.id.all_details_container);
         header = (RelativeLayout) findViewById(R.id.header);
         headerContainer = (FrameLayout) findViewById(R.id.header_container);
 
@@ -174,7 +184,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             getSupportLoaderManager().initLoader(MOVIE_DETAILS_LOADER, null, this);
 
 
-        if(savedDatabaseApplicable)
+        if (savedDatabaseApplicable)
             getSupportLoaderManager().initLoader(SAVED_MOVIE_DETAILS_LOADER, null, this);
 
 
@@ -245,7 +255,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     public void onResponse(JSONObject response) {
 
                         cast_json = response.toString();
-
                         cast_parseOutput(response.toString());
 
                     }
@@ -259,9 +268,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
         );
 
-        if (requestQueue!=null)
-          requestQueue.add(jsonObjectRequestForMovieCastDetails);
-        else{
+        if (requestQueue != null)
+            requestQueue.add(jsonObjectRequestForMovieCastDetails);
+        else {
             VolleySingleton volleySingleton = VolleySingleton.getInstance();
             requestQueue = volleySingleton.getRequestQueue();
             requestQueue.add(jsonObjectRequestForMovieCastDetails);
@@ -334,6 +343,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     img_url = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
 
                     //  movie_trailer=trailer;
+
                 } else {
 
                     img_url = jsonObject.getJSONObject("images").getJSONObject("poster").getString("medium");
@@ -380,8 +390,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void showParsedContent(String title, String banner_profile, String img_url, String tagline, String overview,
-                                   String rating, String runtime, String released, String certification, String language) {
+    private void showParsedContent(String title, String banner_profile, String img_url, String tagline,
+                                   String overview, String rating, String runtime,
+                                   String released, String certification, String language) {
 
 
         det_title.setText(title);
@@ -485,16 +496,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        CursorLoader cursorloader=null;
+        CursorLoader cursorloader = null;
 
-        if(id == MOVIE_DETAILS_LOADER ){
+        if (id == MOVIE_DETAILS_LOADER) {
 
             cursorloader = new CursorLoader(this, FilmContract.MoviesEntry.buildMovieWithMovieId(movie_id), GET_MOVIE_COLUMNS, null, null, null);
 
-        }else if (id == SAVED_MOVIE_DETAILS_LOADER ){
+        } else if (id == SAVED_MOVIE_DETAILS_LOADER) {
 
             final String selection = FilmContract.SaveEntry.TABLE_NAME +
-                            "." + FilmContract.SaveEntry.SAVE_ID + " = ? ";
+                    "." + FilmContract.SaveEntry.SAVE_ID + " = ? ";
             String[] selectionArgs = {movie_id};
 
             cursorloader = new CursorLoader(this, FilmContract.SaveEntry.CONTENT_URI, GET_SAVE_COLUMNS, selection, selectionArgs, null);
@@ -510,11 +521,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         int id = loader.getId();
 
-        if(id ==  MOVIE_DETAILS_LOADER){
+        if (id == MOVIE_DETAILS_LOADER) {
 
             fetchMovieDetailsFromCursor(data);
 
-        }else if(id == SAVED_MOVIE_DETAILS_LOADER){
+        } else if (id == SAVED_MOVIE_DETAILS_LOADER) {
 
             fetchSavedMovieDetailsFromCursor(data);
         }
@@ -564,7 +575,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             det_certification.setText(certification);
             det_language.setText(language);
 
-            movie_desc  = overview;
+            movie_desc = overview;
             show_centre_img_url = banner_url;
 
 
@@ -605,27 +616,25 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             String thumbNail = null;
 
-            if(!trailer.equals("null")){
+            if (!trailer.equals("null")) {
 
                 trailer_boolean = true;
 
-                try{
+                try {
 
                     String videoId = extractYoutubeId(trailer);
                     thumbNail = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
 
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
 
-            }else{
+            } else {
                 thumbNail = posterLink;
             }
 
 
-
-            Toast.makeText(this,thumbNail,Toast.LENGTH_LONG).show();
-
+            Toast.makeText(this, thumbNail, Toast.LENGTH_LONG).show();
 
 
             Glide.with(context)
@@ -750,7 +759,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
 
             case android.R.id.home:
@@ -783,14 +792,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-
-
     private void saveMovie() {
 
         if (movieMap != null && !movieMap.isEmpty()) {
 
 
-            ContentValues saveValues = new ContentValues();
+            final ContentValues saveValues = new ContentValues();
 
             saveValues.put(FilmContract.SaveEntry.SAVE_ID, movie_id);
             saveValues.put(FilmContract.SaveEntry.SAVE_TITLE, movieMap.get("title"));
@@ -817,55 +824,86 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             if (alreadyCursor.moveToFirst()) {
                 //Already present in databse
-                //Log.d(LOG_TAG, "Already present in database "+alreadyCursor.getPosition());
-                Toast.makeText(MovieDetailsActivity.this, "Already Present in database", Toast.LENGTH_SHORT).show();
+                Snackbar.make(main_content,"Already present in database",Snackbar.LENGTH_SHORT).show();
 
             } else {
 
-                Cursor returnedCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, null, null, null);
+                final Cursor returnedCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, null, null, null);
 
-
-                //  Log.d(LOG_TAG, "No of rows present in save database. " + returnedCursor.getCount());
 
                 if (returnedCursor.moveToFirst() && returnedCursor.getCount() == 10) {
                     //No space to fill more. Have to delete oldest entry to save this Agree?
 
-                    // Log.d(LOG_TAG, "no more space in table u have to delete one and then insert" + returnedCursor.getCount());
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                    alertDialog.setTitle("Remove");
+                    alertDialog.setIcon(R.drawable.ic_delete_sweep_black_24dp);
 
-                    //Toast.makeText(MovieDetailsActivity.this,"No more in database",Toast.LENGTH_SHORT).show();
+                    final TextView input = new TextView(context);
+                    FrameLayout container = new FrameLayout(context);
+                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(96,48,96,48);
+                    input.setLayoutParams(params);
 
-                    final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry._ID + " = ? ";
+                    input.setText("Save Limit reached , want to remove the oldest movie and save this one ?");
+                    input.setTextColor(Color.parseColor("#303030"));
 
-                    returnedCursor.moveToFirst();
-
-                    //Log.d(LOG_TAG, "This is the last index value which is going to be deleted "+returnedCursor.getInt(0));
-
-                    final String[] deletionArgs = {String.valueOf(returnedCursor.getInt(0))};
+                    container.addView(input);
 
 
-                    long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
+                    alertDialog.setView(container);
+                    alertDialog.setPositiveButton("Okay",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
 
-                    if (deletion_id != -1) {
+                                    final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry._ID + " = ? ";
 
-                        // Log.d(LOG_TAG, "We deleted this row" + deletion_id);
+                                    returnedCursor.moveToFirst();
 
-                        Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
+                                    //Log.d(LOG_TAG, "This is the last index value which is going to be deleted "+returnedCursor.getInt(0));
 
-                        long movieRowId = ContentUris.parseId(uri);
+                                    final String[] deletionArgs = {String.valueOf(returnedCursor.getInt(0))};
 
-                        if (movieRowId != -1) {
-                            Toast.makeText(MovieDetailsActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                            // Log.d(LOG_TAG, "row Inserted in database at id " + movieRowId);
-                        } else {
-                            // Log.d(LOG_TAG, "row not Inserted in database");
-                        }
 
-                    } else {
-                        //delete was unsuccessful
-                        Log.d(LOG_TAG, "delete was unsuccessful");
-                    }
+                                    long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
 
-                } else {
+                                    if (deletion_id != -1) {
+
+                                        // Log.d(LOG_TAG, "We deleted this row" + deletion_id);
+
+                                        Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
+
+                                        long movieRowId = ContentUris.parseId(uri);
+
+                                        if (movieRowId != -1) {
+                                            //inserted
+                                            Snackbar.make(main_content, "Movie Saved", Snackbar.LENGTH_SHORT).show();
+
+                                        } else {
+
+                                            // Log.d(LOG_TAG, "row not Inserted in database");
+                                        }
+
+                                    } else {
+
+                                        //delete was unsuccessful
+                                    }
+
+                                    dialog.cancel();
+                                }
+                            });
+
+                    alertDialog.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Write your code here to execute after dialog
+                                    dialog.cancel();
+                                }
+                            });
+
+                    alertDialog.show();
+                }
+
+                else {
 
                     Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
 
@@ -873,20 +911,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
                     if (movieRowId != -1) {
 
-                        //finaaly inserted
-                        // Log.d(LOG_TAG, "Inserted in db was empty not 10");
-                        Toast.makeText(MovieDetailsActivity.this, "Inserted", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(main_content, "Movie Saved", Snackbar.LENGTH_SHORT).show();
+
+                        // Toast.makeText(MovieDetailsActivity.this, "Movie Inserted", Toast.LENGTH_SHORT).show();
+
                     } else {
-                        //not inserted
-                        Log.d(LOG_TAG, "Not Inserted in db");
+
+                        Snackbar.make(main_content, "Movie Not Saved", Snackbar.LENGTH_SHORT).show();
+
                     }
                 }
-
-
             }
-
         }
-
     }
 
 
@@ -936,7 +972,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             case R.id.more:
 
-                if (cast_json!=null && movie_title != null) {
+                if (cast_json != null && movie_title != null) {
 
                     Intent intent = new Intent(MovieDetailsActivity.this, FullCastActivity.class);
                     intent.putExtra("cast_json", cast_json);

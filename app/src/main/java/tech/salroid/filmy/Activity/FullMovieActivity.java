@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         setSupportActionBar(toolbar);
 
 
+
         full_movie_recycler = (RecyclerView) findViewById(R.id.full_movie_recycler);
         full_movie_recycler.setLayoutManager(new LinearLayoutManager(FullMovieActivity.this));
 
@@ -55,6 +57,9 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
 
     }
 
+
+
+
     @Override
     public void itemClicked(CharacterDetailsData setterGetterChar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
@@ -63,4 +68,7 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         startActivity(intent);
 
     }
+
+
+
 }

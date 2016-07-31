@@ -14,6 +14,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import tech.salroid.filmy.CustomAdapter.SavedMoviesAdapter;
 import tech.salroid.filmy.Database.FilmContract;
@@ -51,6 +52,8 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         setContentView(R.layout.activity_saved_movies);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         my_saved_movies_recycler = (RecyclerView) findViewById(R.id.my_saved_recycler);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
@@ -131,4 +134,16 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
 
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

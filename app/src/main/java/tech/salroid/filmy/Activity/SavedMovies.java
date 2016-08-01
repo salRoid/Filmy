@@ -15,8 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.MenuItem;
-import android.util.Log;
-import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import tech.salroid.filmy.CustomAdapter.SavedMoviesAdapter;
@@ -58,9 +56,12 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         my_saved_movies_recycler = (RecyclerView) findViewById(R.id.my_saved_recycler);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
+        emptyContainer=(LinearLayout)findViewById(R.id.emptyContainer);
 
         mainActivityAdapter = new SavedMoviesAdapter(this, null);
         my_saved_movies_recycler.setAdapter(mainActivityAdapter);

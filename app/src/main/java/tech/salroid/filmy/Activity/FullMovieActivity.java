@@ -2,23 +2,14 @@ package tech.salroid.filmy.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
-
 import java.util.List;
-
 import tech.salroid.filmy.CustomAdapter.CharacterDetailsActivityAdapter;
-import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
 import tech.salroid.filmy.DataClasses.CharacterDetailsData;
-import tech.salroid.filmy.DataClasses.MovieDetailsData;
 import tech.salroid.filmy.Datawork.CharacterDetailActivityParseWork;
-import tech.salroid.filmy.Datawork.MovieDetailsActivityParseWork;
 import tech.salroid.filmy.R;
 
 public class FullMovieActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {

@@ -587,6 +587,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             show_centre_img_url = banner_url;
 
 
+
+
             Glide.with(context)
                     .load(banner_url)
                     .asBitmap()

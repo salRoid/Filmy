@@ -61,6 +61,7 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         my_saved_movies_recycler = (RecyclerView) findViewById(R.id.my_saved_recycler);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
+        emptyContainer=(LinearLayout)findViewById(R.id.emptyContainer);
 
         mainActivityAdapter = new SavedMoviesAdapter(this, null);
         my_saved_movies_recycler.setAdapter(mainActivityAdapter);
@@ -113,8 +114,6 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
     @Override
     public void itemLongClicked(final Cursor mycursor, final int position) {
-
-
 
         AlertDialog.Builder adb = new AlertDialog.Builder(SavedMovies.this);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SavedMovies.this, android.R.layout.simple_list_item_1);

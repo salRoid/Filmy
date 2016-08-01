@@ -1,7 +1,5 @@
 package tech.salroid.filmy.Activity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,30 +14,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
-import org.json.JSONArray;
-
 import java.util.ArrayList;
-
 import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
 import tech.salroid.filmy.Database.FilmContract;
-import tech.salroid.filmy.Datawork.MainActivityParseWork;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.Network.VolleySingleton;
 import tech.salroid.filmy.SearchFragment;
-import tech.salroid.filmy.Service.FilmyService;
 import tech.salroid.filmy.Sync.FilmySyncAdapter;
 
 

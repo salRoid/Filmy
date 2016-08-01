@@ -1,7 +1,6 @@
 package tech.salroid.filmy.Activity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,24 +17,20 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,15 +39,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
-
 import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.DataClasses.MovieDetailsData;
 import tech.salroid.filmy.Database.FilmContract;
@@ -246,7 +238,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e("webi", "Volley Error: " + error.getCause());
+               // Log.e("webi", "Volley Error: " + error.getCause());
 
             }
         }
@@ -275,7 +267,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e("webi", "Volley Error: " + error.getCause());
+               // Log.e("webi", "Volley Error: " + error.getCause());
 
             }
         }
@@ -650,7 +642,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             }
 
 
-            Toast.makeText(this, thumbNail, Toast.LENGTH_LONG).show();
+        //    Toast.makeText(this, thumbNail, Toast.LENGTH_LONG).show();
 
 
             Glide.with(context)

@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                     SwitchPreference switchPreference = (SwitchPreference) preference;
 
-                    if (switchPreference.isChecked()) {
+                    if (!switchPreference.isChecked()) {
                         quality = "medium";
                     } else {
                         quality = "thumb";
@@ -87,6 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
         }
+
 
 
     }

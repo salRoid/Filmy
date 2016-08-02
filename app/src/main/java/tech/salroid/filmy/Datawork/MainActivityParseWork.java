@@ -77,7 +77,7 @@ public class MainActivityParseWork {
 
             }
 
-            Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
+          //  Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {

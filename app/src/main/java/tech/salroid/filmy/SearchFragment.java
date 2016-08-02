@@ -91,14 +91,14 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        Log.d("webi", response.toString());
+                      //  Log.d("webi", response.toString());
                         parseSearchedOutput(response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e("webi", "Volley Error: " + error.getCause());
+                //Log.e("webi", "Volley Error: " + error.getCause());
 
             }
         }

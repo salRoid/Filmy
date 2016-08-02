@@ -6,11 +6,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -31,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -39,12 +42,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+
 import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.DataClasses.MovieDetailsData;
 import tech.salroid.filmy.Database.FilmContract;
@@ -59,19 +65,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     Context context = this;
     private String movie_id, trailer = null, movie_desc;
     private RecyclerView cast_recycler;
-    private RelativeLayout header,main;
+    private RelativeLayout header, main;
     BreathingProgress breathingProgress;
 
     private RequestQueue requestQueue;
 
 
     private static TextView det_title, det_tagline, det_overview,
-                            det_rating, det_released, det_certification,
-                            det_language, det_runtime;
+            det_rating, det_released, det_certification,
+            det_language, det_runtime;
 
     private static ImageView youtube_link, banner;
     private final String LOG_TAG = MovieDetailsActivity.class.getSimpleName();
-    private final int MOVIE_DETAILS_LOADER = 2,SAVED_MOVIE_DETAILS_LOADER = 5;
+    private final int MOVIE_DETAILS_LOADER = 2, SAVED_MOVIE_DETAILS_LOADER = 5;
     LinearLayout trailorBackground;
     TextView tvRating;
     FrameLayout trailorView, newMain, headerContainer;
@@ -119,6 +125,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private String cast_json = null, movie_title = null, movie_tagline = null, movie_rating = null, show_centre_img_url = null, movie_trailer = null;
     private boolean trailer_boolean = false;
     private FrameLayout main_content;
+    private String quality;
+    boolean cache=true;
+    private String imagequality;
 
 
     @Override
@@ -147,7 +156,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
         more = (TextView) findViewById(R.id.more);
 
-        breathingProgress  = (BreathingProgress) findViewById(R.id.breathingProgress);
+        breathingProgress = (BreathingProgress) findViewById(R.id.breathingProgress);
 
         main = (RelativeLayout) findViewById(R.id.main);
         newMain = (FrameLayout) findViewById(R.id.new_main);
@@ -159,6 +168,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         cast_recycler.setLayoutManager(new LinearLayoutManager(MovieDetailsActivity.this));
         cast_recycler.setNestedScrollingEnabled(false);
 
+
+        SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
+        quality = prefrence.getString("image_quality", "medium");
+        cache=prefrence.getBoolean("cache",false);
 
         headerContainer.setOnClickListener(this);
 
@@ -185,7 +198,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         if (savedDatabaseApplicable)
             getSupportLoaderManager().initLoader(SAVED_MOVIE_DETAILS_LOADER, null, this);
 
-        if (!databaseApplicable && !savedDatabaseApplicable){
+        if (!databaseApplicable && !savedDatabaseApplicable) {
 
             main.setVisibility(View.INVISIBLE);
             breathingProgress.setVisibility(View.VISIBLE);
@@ -238,7 +251,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onErrorResponse(VolleyError error) {
 
-               // Log.e("webi", "Volley Error: " + error.getCause());
+                // Log.e("webi", "Volley Error: " + error.getCause());
 
             }
         }
@@ -267,7 +280,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onErrorResponse(VolleyError error) {
 
-               // Log.e("webi", "Volley Error: " + error.getCause());
+                // Log.e("webi", "Volley Error: " + error.getCause());
 
             }
         }
@@ -316,7 +329,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             movie_rating = String.valueOf(roundOff);
 
-            banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString("medium");
+            banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString(quality);
+
+           // Log.d("webi", banner_profile);
+
             poster = jsonObject.getJSONObject("images").getJSONObject("poster").getString("thumb");
 
             movie_desc = overview;
@@ -351,7 +367,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
                 } else {
 
-                    img_url = jsonObject.getJSONObject("images").getJSONObject("poster").getString("medium");
+                    img_url = jsonObject.getJSONObject("images").getJSONObject("poster").getString(quality);
 
                 }
 
@@ -414,6 +430,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         Glide.with(context)
                 .load(banner_profile)
                 .asBitmap()
+                .skipMemoryCache(cache)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -449,6 +466,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         Glide.with(context)
                 .load(img_url)
                 .asBitmap()
+                .skipMemoryCache(cache)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -642,7 +660,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             }
 
 
-        //    Toast.makeText(this, thumbNail, Toast.LENGTH_LONG).show();
+            //    Toast.makeText(this, thumbNail, Toast.LENGTH_LONG).show();
 
 
             Glide.with(context)
@@ -832,7 +850,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             if (alreadyCursor.moveToFirst()) {
                 //Already present in databse
-                Snackbar.make(main_content,"Already present in database",Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(main_content, "Already present in database", Snackbar.LENGTH_SHORT).show();
 
             } else {
 
@@ -849,7 +867,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     final TextView input = new TextView(context);
                     FrameLayout container = new FrameLayout(context);
                     FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(96,48,96,48);
+                    params.setMargins(96, 48, 96, 48);
                     input.setLayoutParams(params);
 
                     input.setText("Save Limit reached , want to remove the oldest movie and save this one ?");
@@ -909,9 +927,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                             });
 
                     alertDialog.show();
-                }
-
-                else {
+                } else {
 
                     Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
 

@@ -56,7 +56,7 @@
         <activity
             android:name=".Activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.Base" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activity.SavedMovies"
             android:label="@string/title_activity_saved_movies"

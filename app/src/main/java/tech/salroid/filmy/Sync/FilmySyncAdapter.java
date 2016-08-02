@@ -65,7 +65,7 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e("webi", "Volley Error: " + error.getCause());
+              //  Log.e("webi", "Volley Error: " + error.getCause());
 
             }
         }

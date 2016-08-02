@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditTextPreference
-        android:defaultValue=""
-        android:key=""
-        android:summary=""
-        android:title="About"></EditTextPreference>
-
+    <CheckBoxPreference
+        android:key="pref_sync"
+        android:title="Image Caching "
+        android:summary="Loads the image faster"
+        android:defaultValue="true" />
 
     <SwitchPreference
-        android:defaultValue=""
-        android:key=""
-        android:summaryOff=""
-        android:summaryOn=""
-        android:title="pref_enable_notifications_label" />
+        android:defaultValue="true"
+        android:key="imagequality"
+        android:summaryOff="Low"
+        android:summaryOn="High"
+        android:title="Image Quality" />
 
+    <Preference
+        android:selectable="true"
+        android:enabled="true"
+        android:key="license"
+        android:title="License"
+        android:summary="" />
 
+    <Preference
+        android:selectable="true"
+        android:enabled="true"
+        android:key="Version"
+        android:title="Version"
+        android:summary="0.0.1" />
+
+    <Preference
+        android:selectable="true"
+        android:enabled="true"
+        android:key="About"
+        android:title="About"
+        android:summary="Made for Cinephilia" />
 
 </PreferenceScreen>

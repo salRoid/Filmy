@@ -8,8 +8,10 @@
     <string name="title_activity_full_cast">FullCastActivity</string>
     <string name="title_activity_full_movie">FullMovieActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_settings">Settings</string>
     <string name="title_activity_saved_movies">Saved Movies</string>
+
+    <string name="image_quality">medium</string>
 
 
     <!-- SyncAdapter related -->

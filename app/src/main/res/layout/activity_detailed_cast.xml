@@ -125,7 +125,7 @@
                         android:text="More"
                         android:textStyle="bold"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorMore"
                         android:visibility="invisible" />
 
 

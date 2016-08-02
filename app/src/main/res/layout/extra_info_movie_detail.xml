@@ -91,7 +91,7 @@
             android:layout_alignTop="@id/release_holder"
             android:layout_below="@id/detail_language"
             android:fontFamily="sans-serif-condensed"
-            android:text=""
+            android:text=" "
             android:textAppearance="?android:textAppearanceSmall" />
 
     </RelativeLayout>

@@ -204,7 +204,7 @@
                         android:padding="16dp"
                         android:text="More"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorMore"
                         android:textStyle="bold"
                         android:visibility="invisible" />
                 </RelativeLayout>

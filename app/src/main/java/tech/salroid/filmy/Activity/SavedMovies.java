@@ -137,6 +137,11 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
                 if (deletion_id != -1) {
 
                     mainActivityAdapter.notifyItemRemoved(position);
+
+                    if(mainActivityAdapter.getItemCount()==1)
+                        my_saved_movies_recycler.setVisibility(View.GONE);
+
+
                 }
             }
         });

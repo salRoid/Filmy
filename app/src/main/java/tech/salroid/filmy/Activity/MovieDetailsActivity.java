@@ -1,5 +1,7 @@
 package tech.salroid.filmy.Activity;
 
+import android.animation.Animator;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -11,6 +13,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
@@ -26,7 +29,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +46,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
@@ -136,6 +143,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_detailed);
 
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -206,7 +214,57 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
 
 
+        if (savedInstanceState==null)
+             performReveal();
+
+
     }
+
+    private void performReveal() {
+
+        final FrameLayout allDetails = (FrameLayout) findViewById(R.id.all_details_container);
+
+        if(allDetails!=null){
+
+            ViewTreeObserver viewTreeObserver = allDetails.getViewTreeObserver();
+            if (viewTreeObserver.isAlive()) {
+                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        circularRevealActivity(allDetails);
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                            allDetails.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        } else {
+                            allDetails.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
+                    }
+                });
+            }
+
+        }
+
+    }
+
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void circularRevealActivity(FrameLayout allDetails) {
+
+        int cx = allDetails.getWidth() / 2;
+        int cy = allDetails.getHeight() / 2;
+
+        float finalRadius = Math.max(allDetails.getWidth(), allDetails.getHeight());
+
+        // create the animator for this view (the start radius is zero)
+        Animator circularReveal = ViewAnimationUtils.createCircularReveal(allDetails, cx, cy, 0, finalRadius);
+        circularReveal.setDuration(1000);
+
+        // make the view visible and start the animation
+        allDetails.setVisibility(View.VISIBLE);
+        circularReveal.start();
+    }
+
+
 
     private void getDataFromIntent(Intent intent) {
 
@@ -263,6 +321,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
 
     }
+
+
 
     private void getCastFromNetwork(RequestQueue requestQueue) {
 
@@ -430,7 +490,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         Glide.with(context)
                 .load(banner_profile)
                 .asBitmap()
-                .skipMemoryCache(cache)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -466,7 +526,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         Glide.with(context)
                 .load(img_url)
                 .asBitmap()
-                .skipMemoryCache(cache)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -608,6 +668,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             Glide.with(context)
                     .load(banner_url)
                     .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(new SimpleTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -666,6 +727,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             Glide.with(context)
                     .load(thumbNail)
                     .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(new SimpleTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -726,6 +788,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             Glide.with(context)
                     .load(banner_url)
                     .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(new SimpleTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -761,6 +824,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             Glide.with(context)
                     .load(trailer)
                     .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(new SimpleTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {

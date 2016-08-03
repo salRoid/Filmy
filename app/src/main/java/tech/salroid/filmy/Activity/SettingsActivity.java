@@ -36,8 +36,6 @@ public class SettingsActivity extends AppCompatActivity {
     public static class MyPreferenceFragment extends PreferenceFragment {
 
         private SwitchPreference imagePref;
-        private CheckBoxPreference cache_pref;
-
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -64,23 +62,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                     my_prefrence.putString("image_quality", quality);
                     my_prefrence.commit();
-
-                    return true;
-                }
-            });
-
-            cache_pref = (CheckBoxPreference) findPreference("pref_sync");
-            cache_pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object o) {
-
-                    CheckBoxPreference checkBoxPreference = (CheckBoxPreference) preference;
-
-                    if (!checkBoxPreference.isChecked()) {
-
-                        my_prefrence.putBoolean("cache",true);
-                        my_prefrence.commit();
-                    }
 
                     return true;
                 }

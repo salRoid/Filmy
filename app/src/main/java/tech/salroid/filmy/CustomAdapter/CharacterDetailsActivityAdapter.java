@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -60,11 +61,12 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
         holder.mov_name.setText(m_name);
         holder.mov_char.setText(m_desc);
-        Glide.with(con).load(m_profile).fitCenter().into(holder.mov_img);
+        Glide.with(con).load(m_profile).diskCacheStrategy(DiskCacheStrategy.NONE).fitCenter().into(holder.mov_img);
 
     }
 
     @Override
+
     public int getItemCount() {
         if (ret_size)
             return (ch.size() >= 5) ? 5 : ch.size();

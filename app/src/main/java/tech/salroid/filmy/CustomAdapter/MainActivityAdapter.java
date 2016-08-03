@@ -11,14 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import tech.salroid.filmy.Activity.MainActivity;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.DataClasses.MovieData;
+
 
 /**
  * Created by Home on 7/20/2016.
@@ -70,8 +66,10 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         movie_year = dataCursor.getInt(year_index);
 
 
-        holder.title.setText(movie_title);
-        Glide.with(context).load(movie_poster).into(holder.poster);
+        holder.title.setText(movie_title+" / "+movie_year);
+        //holder.year.setText(String.valueOf(movie_year));
+
+        Glide.with(context).load(movie_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.poster);
 
 
     }
@@ -100,6 +98,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         TextView title;
         ImageView poster;
         FrameLayout main;
+        TextView year;
 
         public Vh(View itemView) {
 
@@ -108,6 +107,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             title = (TextView) itemView.findViewById(R.id.title);
             poster = (ImageView) itemView.findViewById(R.id.poster);
             main = (FrameLayout) itemView.findViewById(R.id.main);
+            //year = (TextView) itemView.findViewById(R.id.movie_year);
 
 
             main.setOnClickListener(new View.OnClickListener() {

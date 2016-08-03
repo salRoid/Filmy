@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.R;
@@ -70,7 +71,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
 
         holder.title.setText(movie_title);
-        Glide.with(context).load(movie_poster).into(holder.poster);
+        Glide.with(context).load(movie_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.poster);
 
 
     }

@@ -33,6 +33,6 @@
         android:enabled="true"
         android:key="About"
         android:title="About"
-        android:summary="Made for Cinephilia" />
+        android:summary="Made for Cinephiles" />
 
 </PreferenceScreen>

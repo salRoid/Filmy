@@ -25,21 +25,17 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -49,15 +45,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
-
 import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.DataClasses.MovieDetailsData;
 import tech.salroid.filmy.Database.FilmContract;
@@ -74,7 +67,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private RecyclerView cast_recycler;
     private RelativeLayout header, main;
     BreathingProgress breathingProgress;
-
     private RequestQueue requestQueue;
 
 
@@ -91,6 +83,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     FullReadFragment fullReadFragment;
     HashMap<String, String> movieMap;
     boolean networkApplicable = false, databaseApplicable = false, savedDatabaseApplicable = false;
+    int type;
 
 
     private static final String[] GET_MOVIE_COLUMNS = {
@@ -272,14 +265,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             savedDatabaseApplicable = intent.getBooleanExtra("saved_database_applicable", false);
 
+            type = intent.getIntExtra("type",0);
+
             movie_id = intent.getStringExtra("id");
 
             movie_title = intent.getStringExtra("title");
-
         }
-
     }
-
 
     @Override
     protected void onResume() {
@@ -442,16 +434,58 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RELEASED, released);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, movie_rating);
 
-                    final String selection =
-                            FilmContract.MoviesEntry.TABLE_NAME +
-                                    "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
-                    final String[] selectionArgs = {movie_id};
 
-                    long id = context.getContentResolver().update(FilmContract.MoviesEntry.buildMovieByTag(movie_id), contentValues, selection, selectionArgs);
 
-                    if (id != -1) {
-                        //  Log.d(LOG_TAG, "Movie row updated with new values.");
+                    switch (type){
+
+                        case 0:
+
+                            final String selection =
+                                    FilmContract.MoviesEntry.TABLE_NAME +
+                                            "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
+                            final String[] selectionArgs = {movie_id};
+
+                            long id = context.getContentResolver().update(FilmContract.MoviesEntry.buildMovieByTag(movie_id), contentValues, selection, selectionArgs);
+
+                            if (id != -1) {
+                                //  Log.d(LOG_TAG, "Movie row updated with new values.");
+                            }
+
+                            break;
+
+                        case 1:
+
+                            final String selection2 =
+                                    FilmContract.InTheatersMoviesEntry.TABLE_NAME +
+                                            "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
+                            final String[] selectionArgs2 = {movie_id};
+
+                            long id2 = context.getContentResolver().update(FilmContract.InTheatersMoviesEntry.buildMovieByTag(movie_id), contentValues, selection2, selectionArgs2);
+
+                            if (id2 != -1) {
+                                //  Log.d(LOG_TAG, "Movie row updated with new values.");
+                            }
+                            break;
+
+                        case 2:
+
+
+                            final String selection3 =
+                                    FilmContract.UpComingMoviesEntry.TABLE_NAME +
+                                            "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
+                            final String[] selectionArgs3 = {movie_id};
+
+                            long id3 = context.getContentResolver().update(FilmContract.UpComingMoviesEntry.buildMovieByTag(movie_id), contentValues, selection3, selectionArgs3);
+
+                            if (id3 != -1) {
+                                //  Log.d(LOG_TAG, "Movie row updated with new values.");
+                            }
+
+                            break;
+
                     }
+
+
                 } else {
 
                     showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, certification, language);
@@ -581,7 +615,23 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         if (id == MOVIE_DETAILS_LOADER) {
 
-            cursorloader = new CursorLoader(this, FilmContract.MoviesEntry.buildMovieWithMovieId(movie_id), GET_MOVIE_COLUMNS, null, null, null);
+            switch (type){
+                case 0:
+
+                    cursorloader = new CursorLoader(this, FilmContract.MoviesEntry.buildMovieWithMovieId(movie_id), GET_MOVIE_COLUMNS, null, null, null);
+                    break;
+
+                case 1:
+
+                    cursorloader = new CursorLoader(this, FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movie_id), GET_MOVIE_COLUMNS, null, null, null);
+                    break;
+
+                case 2:
+
+                    cursorloader = new CursorLoader(this, FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movie_id), GET_MOVIE_COLUMNS, null, null, null);
+                    break;
+
+            }
 
         } else if (id == SAVED_MOVIE_DETAILS_LOADER) {
 

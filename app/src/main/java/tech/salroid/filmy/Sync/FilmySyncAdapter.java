@@ -47,6 +47,12 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 
     private static final int NOTIFICATION_ID = 3004;
+    private static String LOG_TAG = FilmySyncAdapter.class.getSimpleName();
+
+
+    TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
+    RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
+
 
     public FilmySyncAdapter(Context context, boolean autoInitialize) {
 
@@ -61,26 +67,28 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient contentProviderClient,
                               SyncResult syncResult) {
 
-        //  Log.d(LOG_TAG, "Starting sync");
+            syncNowTrending();
+            syncNowInTheaters();
+            syncNowUpComing();
+
+    }
 
 
-        VolleySingleton volleySingleton = VolleySingleton.getInstance();
-        RequestQueue requestQueue = volleySingleton.getRequestQueue();
-
-       TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
-        RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
 
 
-        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,page=1&limit=30";
+    private void syncNowInTheaters() {
 
-/*
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
-                new Response.Listener<JSONArray>() {
+
+        final String Intheatres_Base_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+
+        JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Intheatres_Base_URL, null,
+                new Response.Listener<JSONObject>() {
                     @Override
+                    public void onResponse(JSONObject response) {
+                        intheatresparseOutput(response.toString(), 2);
 
-                    public void onResponse(JSONArray response) {
-                        parseOutput(response.toString());
                     }
+
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -88,8 +96,14 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
                 Log.e("webi", "Volley Error: " + error.getCause());
 
             }
-        }
-        );*/
+        });
+
+
+        tmdbrequestQueue.add(IntheatresJsonObjectRequest);
+
+    }
+
+    private void syncNowUpComing() {
 
 
         final String Upcoming_Base_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
@@ -112,17 +126,24 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
             }
         });
 
+        tmdbrequestQueue.add(UpcomingJsonObjectRequest);
 
-       /* final String Intheatres_Base_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+    }
 
-        JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Intheatres_Base_URL, null,
-                new Response.Listener<JSONObject>() {
+    private void syncNowTrending() {
+
+        VolleySingleton volleySingleton = VolleySingleton.getInstance();
+        RequestQueue requestQueue = volleySingleton.getRequestQueue();
+
+        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,page=1&limit=30";
+
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        intheatresparseOutput(response.toString(), 2);
 
+                    public void onResponse(JSONArray response) {
+                        parseOutput(response.toString());
                     }
-
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -130,33 +151,29 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
                 Log.e("webi", "Volley Error: " + error.getCause());
 
             }
-        });*/
+        }
+        );
 
-
-       // requestQueue.add(jsonObjectRequest);
-        tmdbrequestQueue.add(UpcomingJsonObjectRequest);
-        //tmdbrequestQueue.add(IntheatresJsonObjectRequest);
-
+        requestQueue.add(jsonObjectRequest);
 
     }
 
-  /*  private void intheatresparseOutput(String s, int type) {
-        MainActivityParseWork pa = new MainActivityParseWork(getContext(), s, type);
+    private void intheatresparseOutput(String s, int type) {
+        MainActivityParseWork pa = new MainActivityParseWork(getContext(), s);
         pa.intheatres();
-    }*/
+    }
 
     private void upcomingparseOutput(String result_upcoming) {
-        MainActivityParseWork pa = new MainActivityParseWork(getContext(),result_upcoming);
+        MainActivityParseWork pa = new MainActivityParseWork(getContext(), result_upcoming);
         pa.parseupcoming();
     }
 
 
-    /*private void parseOutput(String result) {
+    private void parseOutput(String result) {
 
         MainActivityParseWork pa = new MainActivityParseWork(getContext(), result);
         pa.parse();
     }
-*/
 
     /**
      * Helper method to have the sync adapter sync immediately
@@ -164,6 +181,9 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
+
+        Log.d(LOG_TAG,"Sync imidiately");
+
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -176,6 +196,10 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
      * Helper method to schedule the sync adapter periodic execution
      */
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
+
+
+        Log.d(LOG_TAG,"configure Sync");
+
         Account account = getSyncAccount(context);
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -228,11 +252,13 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
             onAccountCreated(newAccount, context);
 
         }
+
         return newAccount;
     }
 
 
     private static void onAccountCreated(Account newAccount, Context context) {
+
         /*
          * Since we've created an account
          */
@@ -251,7 +277,9 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
 
 
     public static void initializeSyncAdapter(Context context) {
+
         getSyncAccount(context);
+
     }
 
 

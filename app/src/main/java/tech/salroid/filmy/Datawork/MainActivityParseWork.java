@@ -3,13 +3,10 @@ package tech.salroid.filmy.Datawork;
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Vector;
-
 import tech.salroid.filmy.Database.FilmContract;
 
 
@@ -27,7 +24,7 @@ public class MainActivityParseWork {
         // this.type=type;
     }
 
-    /* public void parse() {
+     public void parse() {
 
          //final List<MovieData> movieDataArrayList = new ArrayList<MovieData>();
          //MovieData movieData = null;
@@ -66,9 +63,6 @@ public class MainActivityParseWork {
                  movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
                  movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
                  movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, poster);
-                // movieValues.put(FilmContract.MoviesEntry.MOVIE_TYPE,type);
-
-
 
                  cVVector.add(movieValues);
 
@@ -92,7 +86,7 @@ public class MainActivityParseWork {
          }
          return;
      }
- */
+
     public void parseupcoming() {
 
         try {
@@ -107,21 +101,27 @@ public class MainActivityParseWork {
 
                 //movieData = new MovieData();
                 String title, poster, id;
-                int year;
 
                 title = (jsonArray.getJSONObject(i)).getString("original_title");
-                //  year = (jsonArray.getJSONObject(i).getJSONObject("movie")).getInt("year");
                 poster = (jsonArray.getJSONObject(i).getString("poster_path"));
-                id = (jsonArray.getJSONObject(i)).getString("id");
+                //id = (jsonArray.getJSONObject(i)).getString("id");
+
+                String temp_year []=(jsonArray.getJSONObject(i)).getString("release_date").split("-");
+                String year = temp_year[0];
+
+
+                String trimmedQuery = (title.toLowerCase()).trim();
+                String finalQuery = trimmedQuery.replace(" ","-");
+                String slug = (finalQuery.replace(":",""))+"-"+year;
 
 
                 // Insert the new weather information into the database
 
                 ContentValues movieValues = new ContentValues();
 
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
+                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, slug);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, 2016);
+                movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, "http://image.tmdb.org/t/p/w185" + poster);
 
                 Log.d("webi", "Fetching Complete. ");
@@ -135,8 +135,8 @@ public class MainActivityParseWork {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
 
-                context.getContentResolver().delete(FilmContract.MoviesEntry.CONTENT_URI, null, null);
-                inserted = context.getContentResolver().bulkInsert(FilmContract.MoviesEntry.CONTENT_URI, cvArray);
+                context.getContentResolver().delete(FilmContract.UpComingMoviesEntry.CONTENT_URI, null, null);
+                inserted = context.getContentResolver().bulkInsert(FilmContract.UpComingMoviesEntry.CONTENT_URI, cvArray);
 
             }
 
@@ -151,8 +151,7 @@ public class MainActivityParseWork {
 
 
 
-
-   /* public void intheatres() {
+    public void intheatres() {
         try {
 
 
@@ -166,23 +165,24 @@ public class MainActivityParseWork {
 
                 //movieData = new MovieData();
                 String title, poster, id;
-                int year;
-
                 title = (jsonArray.getJSONObject(i)).getString("original_title");
-//                year = (jsonArray.getJSONObject(i).getJSONObject("movie")).getInt("year");
                 poster = (jsonArray.getJSONObject(i).getString("poster_path"));
                 id = (jsonArray.getJSONObject(i)).getString("id");
 
-                // Insert the new weather information into the database
+
+                String temp_year []=(jsonArray.getJSONObject(i)).getString("release_date").split("-");
+                String year = temp_year[0];
+
+                String trimmedQuery = (title.toLowerCase()).trim();
+                String finalQuery = trimmedQuery.replace(" ","-");
+                String slug = (finalQuery.replace(":",""))+"-"+year;
 
                 ContentValues movieValues = new ContentValues();
 
-               // movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
+                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, slug);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
-               // movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK,"http://image.tmdb.org/t/p/w92"+poster);
-               // movieValues.put(FilmContract.MoviesEntry.MOVIE_TYPE,type);
-
+                movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
+                movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK,"http://image.tmdb.org/t/p/w185"+poster);
 
                 cVVector.add(movieValues);
 
@@ -193,8 +193,8 @@ public class MainActivityParseWork {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
 
-                context.getContentResolver().delete(FilmContract.MoviesEntry.CONTENT_URI, null, null);
-                inserted = context.getContentResolver().bulkInsert(FilmContract.MoviesEntry.CONTENT_URI, cvArray);
+                context.getContentResolver().delete(FilmContract.InTheatersMoviesEntry.CONTENT_URI, null, null);
+                inserted = context.getContentResolver().bulkInsert(FilmContract.InTheatersMoviesEntry.CONTENT_URI, cvArray);
 
             }
 
@@ -206,5 +206,5 @@ public class MainActivityParseWork {
         }
         return;
 
-    }*/
+    }
 }

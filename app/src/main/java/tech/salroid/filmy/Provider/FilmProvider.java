@@ -22,15 +22,28 @@ public class FilmProvider extends ContentProvider {
 
     private FilmDbHelper mOpenHelper;
 
-    static final int MOVIE = 100;
-    static final int MOVIE_DETAILS_WITH_MOVIE_ID = 101;
+    static final int TRENDING_MOVIE = 100;
+    static final int INTHEATERS_MOVIE = 400;
+    static final int UPCOMING_MOVIE = 500;
+
+    static final int TRENDING_MOVIE_DETAILS_WITH_MOVIE_ID = 101;
+    static final int INTHEATERS_MOVIE_DETAILS_WITH_MOVIE_ID = 401;
+    static final int UPCOMING_MOVIE_DETAILS_WITH_MOVIE_ID = 501;
     static final int CAST_WITH_MOVIE_ID = 102;
     static final int CAST = 300;
     static final int SAVE = 200;
     static final int SAVE_DETAILS_WITH_MOVIE_ID = 201;
 
-    private static final String sMovieIdSelection =
+    private static final String sTrendingMovieIdSelection =
             FilmContract.MoviesEntry.TABLE_NAME +
+                    "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
+
+    private static final String sInTheatersMovieIdSelection =
+            FilmContract.InTheatersMoviesEntry.TABLE_NAME +
+                    "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
+
+    private static final String sUpcomingMovieIdSelection =
+            FilmContract.UpComingMoviesEntry.TABLE_NAME +
                     "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
 
     private static final String sMovieIdSelectionForCast =
@@ -51,18 +64,31 @@ public class FilmProvider extends ContentProvider {
         Cursor retCursor;
 
         switch (sUriMatcher.match(uri)) {
-            // "weather/*/*"
-            case MOVIE_DETAILS_WITH_MOVIE_ID: {
-                retCursor = getMovieDetailsByMovieId(uri, projection, sortOrder);
+
+            case TRENDING_MOVIE_DETAILS_WITH_MOVIE_ID: {
+                retCursor = getTrendingMovieDetailsByMovieId(uri, projection, sortOrder);
                 break;
             }
-            // "weather*//*"
+
+
+            case INTHEATERS_MOVIE_DETAILS_WITH_MOVIE_ID: {
+                retCursor = getInTheatersMovieDetailsByMovieId(uri, projection, sortOrder);
+                break;
+            }
+
+            case UPCOMING_MOVIE_DETAILS_WITH_MOVIE_ID: {
+                retCursor = getUpcomingMovieDetailsByMovieId(uri, projection, sortOrder);
+                break;
+            }
+
+
+
             case CAST_WITH_MOVIE_ID: {
                 retCursor = getCastByMovieID(uri, projection, sortOrder);
                 break;
             }
-            // "weather"
-            case MOVIE: {
+
+            case TRENDING_MOVIE: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         FilmContract.MoviesEntry.TABLE_NAME,
                         projection, selection,
@@ -73,7 +99,29 @@ public class FilmProvider extends ContentProvider {
                 );
                 break;
             }
-            // "location"
+            case INTHEATERS_MOVIE: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        FilmContract.InTheatersMoviesEntry.TABLE_NAME,
+                        projection, selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            case UPCOMING_MOVIE: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        FilmContract.UpComingMoviesEntry.TABLE_NAME,
+                        projection, selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+
             case CAST: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         FilmContract.CastEntry.TABLE_NAME,
@@ -108,11 +156,11 @@ public class FilmProvider extends ContentProvider {
     }
 
 
-    private Cursor getMovieDetailsByMovieId(Uri uri, String[] projection, String sortOrder) {
+    private Cursor getTrendingMovieDetailsByMovieId(Uri uri, String[] projection, String sortOrder) {
 
         String movieId = FilmContract.MoviesEntry.getMovieIdFromUri(uri);
 
-        String selection = sMovieIdSelection;
+        String selection = sTrendingMovieIdSelection;
         String[] selectionArgs = new String[]{movieId};
 
         return mOpenHelper.getReadableDatabase().query(
@@ -127,11 +175,53 @@ public class FilmProvider extends ContentProvider {
 
     }
 
+
+    private Cursor getInTheatersMovieDetailsByMovieId(Uri uri, String[] projection, String sortOrder) {
+
+        String movieId = FilmContract.InTheatersMoviesEntry.getMovieIdFromUri(uri);
+
+        String selection = sInTheatersMovieIdSelection;
+        String[] selectionArgs = new String[]{movieId};
+
+        return mOpenHelper.getReadableDatabase().query(
+                FilmContract.InTheatersMoviesEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+    }
+
+
+    private Cursor getUpcomingMovieDetailsByMovieId(Uri uri, String[] projection, String sortOrder) {
+
+        String movieId = FilmContract.UpComingMoviesEntry.getMovieIdFromUri(uri);
+
+        String selection = sUpcomingMovieIdSelection;
+        String[] selectionArgs = new String[]{movieId};
+
+        return mOpenHelper.getReadableDatabase().query(
+                FilmContract.UpComingMoviesEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+
+    }
+
+
+
     private Cursor getCastByMovieID(Uri uri, String[] projection, String sortOrder) {
 
         String movieId = FilmContract.CastEntry.getMovieIdFromUri(uri);
 
-        String selection = sMovieIdSelection;
+        String selection = sTrendingMovieIdSelection;
         String[] selectionArgs = new String[]{movieId};
 
         return mOpenHelper.getReadableDatabase().query(
@@ -150,7 +240,7 @@ public class FilmProvider extends ContentProvider {
 
         String movieId = FilmContract.SaveEntry.getMovieIdFromUri(uri);
 
-        String selection = sMovieIdSelection;
+        String selection = sTrendingMovieIdSelection;
         String[] selectionArgs = new String[]{movieId};
 
         return mOpenHelper.getReadableDatabase().query(
@@ -175,12 +265,28 @@ public class FilmProvider extends ContentProvider {
 
         switch (match) {
 
-            case MOVIE_DETAILS_WITH_MOVIE_ID:
+            case TRENDING_MOVIE_DETAILS_WITH_MOVIE_ID:
                 return FilmContract.MoviesEntry.CONTENT_ITEM_TYPE;
+
+            case INTHEATERS_MOVIE_DETAILS_WITH_MOVIE_ID:
+                return FilmContract.MoviesEntry.CONTENT_ITEM_TYPE;
+
+            case UPCOMING_MOVIE_DETAILS_WITH_MOVIE_ID:
+                return FilmContract.MoviesEntry.CONTENT_ITEM_TYPE;
+
+
             case CAST_WITH_MOVIE_ID:
                 return FilmContract.CastEntry.CONTENT_TYPE;
-            case MOVIE:
+
+            case TRENDING_MOVIE:
                 return FilmContract.MoviesEntry.CONTENT_TYPE;
+
+            case INTHEATERS_MOVIE:
+                return FilmContract.MoviesEntry.CONTENT_TYPE;
+
+            case UPCOMING_MOVIE:
+                return FilmContract.MoviesEntry.CONTENT_TYPE;
+
             case CAST:
                 return FilmContract.CastEntry.CONTENT_TYPE;
             case SAVE:
@@ -201,11 +307,35 @@ public class FilmProvider extends ContentProvider {
         Uri returnUri;
 
         switch (match) {
-            case MOVIE: {
+            case TRENDING_MOVIE: {
 
                 long _id = db.insert(FilmContract.MoviesEntry.TABLE_NAME, null, contentValues);
                 if (_id > 0)
                     returnUri = FilmContract.MoviesEntry.buildMovieUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+
+
+            }
+
+            case INTHEATERS_MOVIE: {
+
+                long _id = db.insert(FilmContract.InTheatersMoviesEntry.TABLE_NAME, null, contentValues);
+                if (_id > 0)
+                    returnUri = FilmContract.InTheatersMoviesEntry.buildMovieUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+
+
+            }
+
+            case UPCOMING_MOVIE: {
+
+                long _id = db.insert(FilmContract.UpComingMoviesEntry.TABLE_NAME, null, contentValues);
+                if (_id > 0)
+                    returnUri = FilmContract.UpComingMoviesEntry.buildMovieUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -255,9 +385,21 @@ public class FilmProvider extends ContentProvider {
 
         switch (match) {
 
-            case MOVIE:
+            case TRENDING_MOVIE:
 
                 rowsDeleted = db.delete(FilmContract.MoviesEntry.TABLE_NAME, selection, selectionArgs);
+
+                break;
+
+            case INTHEATERS_MOVIE:
+
+                rowsDeleted = db.delete(FilmContract.InTheatersMoviesEntry.TABLE_NAME, selection, selectionArgs);
+
+                break;
+
+            case UPCOMING_MOVIE:
+
+                rowsDeleted = db.delete(FilmContract.UpComingMoviesEntry.TABLE_NAME, selection, selectionArgs);
 
                 break;
 
@@ -292,8 +434,17 @@ public class FilmProvider extends ContentProvider {
 
         switch (match) {
 
-            case MOVIE_DETAILS_WITH_MOVIE_ID:
+            case TRENDING_MOVIE_DETAILS_WITH_MOVIE_ID:
                 rowsUpdated = db.update(FilmContract.MoviesEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+
+                break;
+
+            case INTHEATERS_MOVIE_DETAILS_WITH_MOVIE_ID:
+                rowsUpdated = db.update(FilmContract.InTheatersMoviesEntry.TABLE_NAME, contentValues, selection, selectionArgs);
+
+                break;
+            case UPCOMING_MOVIE_DETAILS_WITH_MOVIE_ID:
+                rowsUpdated = db.update(FilmContract.UpComingMoviesEntry.TABLE_NAME, contentValues, selection, selectionArgs);
 
                 break;
 
@@ -321,8 +472,15 @@ public class FilmProvider extends ContentProvider {
         // 2) Use the addURI function to match each of the types.  Use the constants from
         // WeatherContract to help define the types to the UriMatcher.
 
-        uriMatcher.addURI(authority, FilmContract.PATH_MOVIE, MOVIE);
-        uriMatcher.addURI(authority, FilmContract.PATH_MOVIE + "/*", MOVIE_DETAILS_WITH_MOVIE_ID);
+        uriMatcher.addURI(authority, FilmContract.TRENDING_PATH_MOVIE, TRENDING_MOVIE);
+        uriMatcher.addURI(authority, FilmContract.TRENDING_PATH_MOVIE + "/*", TRENDING_MOVIE_DETAILS_WITH_MOVIE_ID);
+
+        uriMatcher.addURI(authority, FilmContract.INTHEATERS_PATH_MOVIE, INTHEATERS_MOVIE);
+        uriMatcher.addURI(authority, FilmContract.INTHEATERS_PATH_MOVIE + "/*", INTHEATERS_MOVIE_DETAILS_WITH_MOVIE_ID);
+
+        uriMatcher.addURI(authority, FilmContract.UPCOMING_PATH_MOVIE, UPCOMING_MOVIE);
+        uriMatcher.addURI(authority, FilmContract.UPCOMING_PATH_MOVIE + "/*", UPCOMING_MOVIE_DETAILS_WITH_MOVIE_ID);
+
         uriMatcher.addURI(authority, FilmContract.PATH_CAST + "/*", CAST_WITH_MOVIE_ID);
         uriMatcher.addURI(authority, FilmContract.PATH_CAST, CAST);
         uriMatcher.addURI(authority, FilmContract.PATH_SAVE, SAVE);
@@ -339,7 +497,7 @@ public class FilmProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
         switch (match) {
-            case MOVIE:
+            case TRENDING_MOVIE:
                 db.beginTransaction();
                 int returnCount = 0;
                 try {
@@ -355,6 +513,42 @@ public class FilmProvider extends ContentProvider {
                 }
                 getContext().getContentResolver().notifyChange(uri, null);
                 return returnCount;
+
+
+            case INTHEATERS_MOVIE:
+                db.beginTransaction();
+                int returnCount1 = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(FilmContract.InTheatersMoviesEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount1++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount1;
+
+
+            case UPCOMING_MOVIE:
+                db.beginTransaction();
+                int returnCount2 = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(FilmContract.UpComingMoviesEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount2++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount2;
 
             case SAVE:
                 db.beginTransaction();

@@ -25,6 +25,7 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,7 +64,9 @@ import tech.salroid.filmy.Network.VolleySingleton;
 public class MovieDetailsActivity extends AppCompatActivity implements View.OnClickListener, MovieDetailsActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     Context context = this;
-    private String movie_id, trailer = null, movie_desc;
+    String movie_id_final;
+    private static String movie_id;
+    private String trailer = null, movie_desc;
     private RecyclerView cast_recycler;
     private RelativeLayout header, main;
     BreathingProgress breathingProgress;
@@ -270,6 +273,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movie_id = intent.getStringExtra("id");
 
             movie_title = intent.getStringExtra("title");
+
         }
     }
 
@@ -277,6 +281,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     protected void onResume() {
         super.onResume();
     }
+
 
     private void getMovieDetailsFromNetwork() {
 
@@ -368,6 +373,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             released = jsonObject.getString("released");
             runtime = jsonObject.getString("runtime");
 
+            movie_id_final = jsonObject.getJSONObject("ids").getString("imdb");
+
             if (certification.equals("null")) {
                 certification = "--";
             }
@@ -378,7 +385,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString(quality);
 
-           // Log.d("webi", banner_profile);
+            Log.d("webi","IMDB id "+ movie_id_final);
 
             poster = jsonObject.getJSONObject("images").getJSONObject("poster").getString("thumb");
 
@@ -400,7 +407,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movieMap.put("trailer", trailer);
             movieMap.put("banner", banner_profile);
             movieMap.put("poster", poster);
-
+            movieMap.put("id",movie_id_final);
 
             try {
 
@@ -433,6 +440,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RUNTIME, runtime);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RELEASED, released);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, movie_rating);
+                    contentValues.put(FilmContract.MoviesEntry.MOVIE_ID,movie_id_final);
 
 
 
@@ -482,6 +490,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                             }
 
                             break;
+
+                    }
+
+                    if (!movie_id_final.equals(movie_id)){
+                        //loader failed show with this hack
+
+                        showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, certification, language);
 
                     }
 
@@ -616,6 +631,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         if (id == MOVIE_DETAILS_LOADER) {
 
             switch (type){
+
                 case 0:
 
                     cursorloader = new CursorLoader(this, FilmContract.MoviesEntry.buildMovieWithMovieId(movie_id), GET_MOVIE_COLUMNS, null, null, null);
@@ -904,9 +920,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             case R.id.action_search:
 
-                movie_trailer = "http://www.imdb.com/title/" + movie_id;
+                movie_trailer = "http://www.imdb.com/title/" + movie_id_final;
 
-                if (!(movie_title.equals(" ") && movie_rating.equals(" ") && movie_tagline.equals(" "))) {
+                if (!(movie_title.equals(null) && movie_rating.equals("null") && movie_id_final.equals("null"))) {
                     Intent myIntent = new Intent(Intent.ACTION_SEND);
                     myIntent.setType("text/plain");
                     myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_trailer + "\n");
@@ -934,7 +950,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             final ContentValues saveValues = new ContentValues();
 
-            saveValues.put(FilmContract.SaveEntry.SAVE_ID, movie_id);
+            saveValues.put(FilmContract.SaveEntry.SAVE_ID, movie_id_final);
             saveValues.put(FilmContract.SaveEntry.SAVE_TITLE, movieMap.get("title"));
             saveValues.put(FilmContract.SaveEntry.SAVE_TAGLINE, movieMap.get("tagline"));
             saveValues.put(FilmContract.SaveEntry.SAVE_DESCRIPTION, movieMap.get("overview"));

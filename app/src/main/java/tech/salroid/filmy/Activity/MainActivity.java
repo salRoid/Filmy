@@ -11,12 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import java.util.ArrayList;
-
 import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
 import tech.salroid.filmy.Fragments.InTheaters;
 import tech.salroid.filmy.Fragments.Trending;
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
 
         // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
         materialSearchView = (MaterialSearchView) findViewById(R.id.search_view);
@@ -67,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 //Do some magic
 
                 getSearchedResult(query);
+                searchFragment.showProgress();
 
                 return true;
             }
@@ -74,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                getSearchedResult(newText);
-
+                //getSearchedResult(newText);
                 return true;
+
             }
         });
 
@@ -85,10 +84,13 @@ public class MainActivity extends AppCompatActivity {
             public void onSearchViewShown() {
                 //Do some magic
 
+
+                tabLayout.setVisibility(View.GONE);
+
                 searchFragment = new SearchFragment();
                 getSupportFragmentManager().
                         beginTransaction().
-                        replace(R.id.fragment_container, searchFragment)
+                        replace(R.id.search_container, searchFragment)
                         .commit();
 
             }
@@ -97,10 +99,13 @@ public class MainActivity extends AppCompatActivity {
             public void onSearchViewClosed() {
                 //Do some magic
 
+
                 getSupportFragmentManager()
                         .beginTransaction()
                         .remove(searchFragment)
                         .commit();
+
+                tabLayout.setVisibility(View.VISIBLE);
 
             }
         });

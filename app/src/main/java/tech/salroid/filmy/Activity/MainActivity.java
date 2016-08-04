@@ -14,21 +14,24 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
 import java.util.ArrayList;
 
 import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
-import tech.salroid.filmy.Fragments.Popular;
+import tech.salroid.filmy.Fragments.InTheaters;
+import tech.salroid.filmy.Fragments.Trending;
+import tech.salroid.filmy.Fragments.UpComing;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.SearchFragment;
+import tech.salroid.filmy.Sync.FilmySyncAdapter;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private MaterialSearchView materialSearchView;
     private SearchFragment searchFragment;
     TextView logo;
-
 
 
     @Override
@@ -42,10 +45,9 @@ public class MainActivity extends AppCompatActivity{
         getSupportActionBar().setTitle(" ");
 
 
-
         logo = (TextView) findViewById(R.id.logo);
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(),"fonts/canaro_extra_bold.otf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
 
 
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                 getSearchedResult(newText);
+                getSearchedResult(newText);
 
                 return true;
             }
@@ -104,14 +106,18 @@ public class MainActivity extends AppCompatActivity{
         });
 
 
+        FilmySyncAdapter.syncImmediately(this);
 
     }
+
     private void setupViewPager(ViewPager viewPager) {
+
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Popular(), "POPULAR");
-        adapter.addFragment(new Popular(), "IN THEATER");
-        adapter.addFragment(new Popular(), "UPCOMING");
+        adapter.addFragment(new Trending(), "TRENDING");
+        adapter.addFragment(new InTheaters(), "IN THEATER");
+        adapter.addFragment(new UpComing(), "UPCOMING");
         viewPager.setAdapter(adapter);
+
     }
 
     private void getSearchedResult(String query) {
@@ -134,7 +140,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -144,13 +149,13 @@ public class MainActivity extends AppCompatActivity{
             startActivity(new Intent(this, SearchFragment.class));
         }
 
-        if(id==R.id.ic_setting){
+        if (id == R.id.ic_setting) {
             startActivity(new Intent(this, SettingsActivity.class));
 
         }
 
-        if(id==R.id.ic_collection){
-            startActivity(new Intent(this,SavedMovies.class));
+        if (id == R.id.ic_collection) {
+            startActivity(new Intent(this, SavedMovies.class));
         }
 
         return super.onOptionsItemSelected(item);

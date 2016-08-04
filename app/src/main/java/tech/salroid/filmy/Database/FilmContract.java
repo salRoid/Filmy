@@ -25,7 +25,9 @@ public class FilmContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
 
-    public static final String PATH_MOVIE = "movie";
+    public static final String TRENDING_PATH_MOVIE = "trending_movie";
+    public static final String INTHEATERS_PATH_MOVIE = "intheaters_movie";
+    public static final String UPCOMING_PATH_MOVIE = "upcoming_movie";
     public static final String PATH_CAST = "cast";
     public static final String PATH_SAVE = "save";
 
@@ -33,7 +35,7 @@ public class FilmContract {
     public static final class MoviesEntry implements BaseColumns {
 
 
-        public static final String TABLE_NAME = "movies";
+        public static final String TABLE_NAME = "trending";
         public static final String MOVIE_ID = "movie_id";
         public static final String MOVIE_YEAR = "movie_year";
         public static final String MOVIE_POSTER_LINK = "movie_poster";
@@ -47,16 +49,16 @@ public class FilmContract {
         public static final String MOVIE_RELEASED = "movie_release";
         public static final String MOVIE_CERTIFICATION = "movie_certification";
         public static final String MOVIE_LANGUAGE = "movie_language";
-       // public static final String MOVIE_TYPE = "movie_type";
+        public static final String MOVIE_TYPE = "movie_type";
 
 
-        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_MOVIE).build();
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TRENDING_PATH_MOVIE).build();
 
 
         public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE;
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TRENDING_PATH_MOVIE;
         public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MOVIE;
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TRENDING_PATH_MOVIE;
 
 
         public static Uri buildMovieUri(long id) {
@@ -79,6 +81,58 @@ public class FilmContract {
             return uri.getPathSegments().get(1);
         }
     }
+
+
+
+
+    public static final class InTheatersMoviesEntry implements BaseColumns {
+
+        public static final String TABLE_NAME = "intheaters";
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(INTHEATERS_PATH_MOVIE).build();
+
+        public static Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildMovieByTag(String movieTag) {
+            return CONTENT_URI.buildUpon().appendPath(movieTag).build();
+        }
+
+        public static Uri buildMovieWithMovieId(String movieId) {
+            return CONTENT_URI.buildUpon().appendPath(movieId).build();
+        }
+
+        public static String getMovieIdFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+    }
+
+
+    public static final class UpComingMoviesEntry implements BaseColumns {
+
+        public static final String TABLE_NAME = "upcoming";
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(UPCOMING_PATH_MOVIE).build();
+
+        public static Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildMovieByTag(String movieTag) {
+            return CONTENT_URI.buildUpon().appendPath(movieTag).build();
+        }
+
+        public static Uri buildMovieWithMovieId(String movieId) {
+            return CONTENT_URI.buildUpon().appendPath(movieId).build();
+        }
+
+        public static String getMovieIdFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+    }
+
+
 
     public static final class CastEntry implements BaseColumns {
 

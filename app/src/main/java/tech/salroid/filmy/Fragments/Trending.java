@@ -15,46 +15,35 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import tech.salroid.filmy.Activity.MovieDetailsActivity;
 import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
 import tech.salroid.filmy.Database.FilmContract;
+import tech.salroid.filmy.Database.MovieSelection;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.Sync.FilmySyncAdapter;
 
+import static tech.salroid.filmy.Database.FilmContract.MoviesEntry.MOVIE_TYPE;
 
-public class Popular extends Fragment implements MainActivityAdapter.ClickListener,LoaderManager.LoaderCallbacks<Cursor> {
+
+public class Trending extends Fragment implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView recycler;
     private MainActivityAdapter mainActivityAdapter;
 
 
-
-    private static final int TREANDING_MOVIE_LOADER = 1;
-
-    private static final String[] TRENDING_MOVIE_COLUMNS = {
-
-            FilmContract.MoviesEntry.MOVIE_ID,
-            FilmContract.MoviesEntry.MOVIE_TITLE,
-            FilmContract.MoviesEntry.MOVIE_YEAR,
-            FilmContract.MoviesEntry.MOVIE_POSTER_LINK
-
-    };
-
-
-
-
-    public Popular() {
-        //  public constructor
+    public Trending() {
+        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        
+
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
-        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recycler.setLayoutManager(gridLayoutManager);
 
         mainActivityAdapter = new MainActivityAdapter(getActivity(), null);
@@ -67,20 +56,18 @@ public class Popular extends Fragment implements MainActivityAdapter.ClickListen
     @Override
     public void onResume() {
         super.onResume();
-
-        FilmySyncAdapter.initializeSyncAdapter(getActivity());
-        getActivity().getSupportLoaderManager().initLoader(TREANDING_MOVIE_LOADER, null, this);
-
+        getActivity().getSupportLoaderManager().initLoader(MovieSelection.TRENDING_MOVIE_LOADER, null, this);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
+
         Uri moviesForTheUri = FilmContract.MoviesEntry.CONTENT_URI;
 
         return new CursorLoader(getActivity(),
                 moviesForTheUri,
-                TRENDING_MOVIE_COLUMNS,
+                MovieSelection.MOVIE_COLUMNS,
                 null,
                 null,
                 null);
@@ -100,7 +87,6 @@ public class Popular extends Fragment implements MainActivityAdapter.ClickListen
     }
 
 
-
     @Override
     public void itemClicked(Cursor cursor) {
 
@@ -111,10 +97,13 @@ public class Popular extends Fragment implements MainActivityAdapter.ClickListen
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra("title", cursor.getString(title_index));
         intent.putExtra("activity", true);
-        intent.putExtra("database_applicable",true);
-        intent.putExtra("network_applicable",true);
+        intent.putExtra("type",0);
+        intent.putExtra("database_applicable", true);
+        intent.putExtra("network_applicable", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
+
+
     }
 
 

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  **/
 public class FilmDbHelper extends SQLiteOpenHelper {
 
-    private static final int DB_VERSION = 12;
+    private static final int DB_VERSION = 128;
     public static final String DB_NAME = "filmy.db";
 
 
@@ -20,7 +20,7 @@ public class FilmDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + FilmContract.MoviesEntry.TABLE_NAME
+        final String SQL_CREATE_TRENDING_MOVIE_TABLE = "CREATE TABLE " + FilmContract.MoviesEntry.TABLE_NAME
                 + "(" + FilmContract.MoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
                 + FilmContract.MoviesEntry.MOVIE_ID + " VARCHAR(255) NOT NULL ,"
                 + FilmContract.MoviesEntry.MOVIE_TITLE + " VARCHAR(255) NOT NULL,"
@@ -66,7 +66,48 @@ public class FilmDbHelper extends SQLiteOpenHelper {
 
 
 
-        sqLiteDatabase.execSQL(SQL_CREATE_MOVIE_TABLE);
+
+
+        final String SQL_CREATE_INTHEATERS_MOVIE_TABLE = "CREATE TABLE " + FilmContract.InTheatersMoviesEntry.TABLE_NAME
+                + "(" + FilmContract.MoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
+                + FilmContract.MoviesEntry.MOVIE_ID + " VARCHAR(255) NOT NULL ,"
+                + FilmContract.MoviesEntry.MOVIE_TITLE + " VARCHAR(255) NOT NULL,"
+                + FilmContract.MoviesEntry.MOVIE_YEAR + " INTEGER(4) NOT NULL ,"
+                + FilmContract.MoviesEntry.MOVIE_POSTER_LINK + " VARCHAR(255) ,"
+                + FilmContract.MoviesEntry.MOVIE_BANNER + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_CERTIFICATION + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_LANGUAGE + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_RELEASED + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_RUNTIME + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_DESCRIPTION + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_TAGLINE + " VARCHAR(255) ,"
+                //+ FilmContract.MoviesEntry.MOVIE_TYPE + " INTEGER(1) NOT NULL ,"
+                + FilmContract.MoviesEntry.MOVIE_TRAILER + " VARCHAR(255) ,"
+                + FilmContract.MoviesEntry.MOVIE_RATING + " VARCHAR (255));";
+
+
+        final String SQL_CREATE_UPCOMING_MOVIE_TABLE = "CREATE TABLE " + FilmContract.UpComingMoviesEntry.TABLE_NAME
+                + "(" + FilmContract.MoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
+                + FilmContract.MoviesEntry.MOVIE_ID + " VARCHAR(255) NOT NULL ,"
+                + FilmContract.MoviesEntry.MOVIE_TITLE + " VARCHAR(255) NOT NULL,"
+                + FilmContract.MoviesEntry.MOVIE_YEAR + " INTEGER(4) NOT NULL ,"
+                + FilmContract.MoviesEntry.MOVIE_POSTER_LINK + " VARCHAR(255) ,"
+                + FilmContract.MoviesEntry.MOVIE_BANNER + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_CERTIFICATION + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_LANGUAGE + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_RELEASED + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_RUNTIME + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_DESCRIPTION + " VARCHAR (255) ,"
+                + FilmContract.MoviesEntry.MOVIE_TAGLINE + " VARCHAR(255) ,"
+                + FilmContract.MoviesEntry.MOVIE_TRAILER + " VARCHAR(255) ,"
+                + FilmContract.MoviesEntry.MOVIE_RATING + " VARCHAR (255));";
+
+
+
+
+
+        sqLiteDatabase.execSQL(SQL_CREATE_INTHEATERS_MOVIE_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_UPCOMING_MOVIE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_CAST_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_SAVE_TABLE);
 
@@ -79,6 +120,8 @@ public class FilmDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FilmContract.MoviesEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FilmContract.CastEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FilmContract.SaveEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FilmContract.InTheatersMoviesEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FilmContract.UpComingMoviesEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
 
     }

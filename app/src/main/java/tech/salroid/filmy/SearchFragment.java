@@ -2,37 +2,23 @@ package tech.salroid.filmy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import org.json.JSONArray;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-
 import tech.salroid.filmy.Activity.CharacterDetailsActivity;
 import tech.salroid.filmy.Activity.MovieDetailsActivity;
+import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.CustomAdapter.SearchResultAdapter;
 import tech.salroid.filmy.DataClasses.SearchData;
 import tech.salroid.filmy.Datawork.SearchResultParseWork;
@@ -42,7 +28,9 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
     private RecyclerView recycler;
     private Intent intent;
-/*    SearchFragmentCommunication searchFragmentCommunication;*/
+    BreathingProgress breathingProgress;
+    SearchResultAdapter sadapter;
+
 
     @Nullable
     @Override
@@ -52,7 +40,11 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         recycler = (RecyclerView) view.findViewById(R.id.search_results_recycler);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
+        breathingProgress = (BreathingProgress) view.findViewById(R.id.breathingProgress);
+
+        sadapter = new SearchResultAdapter(getActivity(), null);
+        sadapter.setClickListener(this);
 
         return view;
     }
@@ -91,7 +83,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                      //  Log.d("webi", response.toString());
+
                         parseSearchedOutput(response.toString());
                     }
                 }, new Response.ErrorListener() {
@@ -113,31 +105,34 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
         SearchResultParseWork park = new SearchResultParseWork(getActivity(), s);
         List<SearchData> list = park.parsesearchdata();
-        SearchResultAdapter sadapter = new SearchResultAdapter(getActivity(), list);
-        sadapter.setClickListener(this);
+        sadapter = new SearchResultAdapter(getActivity(),list);
         recycler.setAdapter(sadapter);
 
-    /*    String[] titles = new String[list.size()];
+        hideProgress();
 
-        for (int i=0;i<list.size();i++){
-            titles[i]= list.get(i).getMovie();
-        }
-
-        if (searchFragmentCommunication!=null)
-             searchFragmentCommunication.onSuggestionReady(titles)*/;
     }
 
 
-    /*public void setSuggestionListener(SearchFragmentCommunication listener) {
-        searchFragmentCommunication = listener;
-    }*/
-
-
-    /*public interface SearchFragmentCommunication{
-        public void onSuggestionReady(String[] suggestionArray);
-    }*/
+    public void showProgress() {
 
 
 
+        if (breathingProgress!=null && recycler!=null){
 
+            breathingProgress.setVisibility(View.VISIBLE);
+            recycler.setVisibility(View.INVISIBLE);
+
+        }
+    }
+
+
+    public void  hideProgress() {
+
+        if (breathingProgress!=null && recycler!=null){
+
+            breathingProgress.setVisibility(View.INVISIBLE);
+            recycler.setVisibility(View.VISIBLE);
+
+        }
+    }
 }

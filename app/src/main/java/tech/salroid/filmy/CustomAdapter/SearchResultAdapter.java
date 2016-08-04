@@ -7,13 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import tech.salroid.filmy.DataClasses.SearchData;
 import tech.salroid.filmy.R;
 
@@ -38,7 +35,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public Dh onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.custom_single_search_result, parent, false);
+        View view = inflater.inflate(R.layout.custom_row_search, parent, false);
         Dh holder = new Dh(view);
 
         return holder;
@@ -56,14 +53,12 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         holder.movie_name.setText(query_name);
 
-        if (query_date.equals("null"))
-            holder.movie_date.setVisibility(View.GONE);
-        else
-            holder.movie_date.setText(query_date);
-        if (query_extra.equals("null"))
-            holder.movie_date.setVisibility(View.GONE);
-        else
-            holder.movie_extra.setText(query_extra);
+        if(!query_date.equals("null"))
+          holder.date.setText(query_date);
+        else{
+            holder.date.setVisibility(View.INVISIBLE);
+        }
+
 
         Glide.with(fro).load(query_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.movie_poster);
 
@@ -78,7 +73,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     class Dh extends RecyclerView.ViewHolder {
 
-        TextView movie_name, movie_date, movie_extra;
+        TextView movie_name,date;
         ImageView movie_poster;
 
         public Dh(View itemView) {
@@ -86,10 +81,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
             super(itemView);
 
-            movie_name = (TextView) itemView.findViewById(R.id.result_title);
+            movie_name = (TextView) itemView.findViewById(R.id.title);
             movie_poster = (ImageView) itemView.findViewById(R.id.poster);
-            movie_date = (TextView) itemView.findViewById(R.id.result_date);
-            movie_extra = (TextView) itemView.findViewById(R.id.result_extra);
+            date = (TextView) itemView.findViewById(R.id.date);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +101,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     public interface ClickListener {
 
-        public void itemClicked(SearchData searchData, int position);
+        void itemClicked(SearchData searchData, int position);
 
     }
 

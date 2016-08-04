@@ -9,6 +9,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
+        android:elevation="0dp"
         android:layout_height="wrap_content">
 
         <FrameLayout
@@ -23,7 +24,19 @@
                 android:background="?attr/colorPrimary"
                 android:padding="0dp"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:theme="@style/ThemeOverlay.AppCompat" />
+                app:theme="@style/ThemeOverlay.AppCompat" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="Filmy"
+                    android:textColor="#757575"
+                    android:textSize="20sp"
+                    android:id="@+id/logo"
+                    />
+
+                </android.support.v7.widget.Toolbar>
 
             <com.miguelcatalan.materialsearchview.MaterialSearchView
                 android:id="@+id/search_view"
@@ -33,36 +46,27 @@
 
         </FrameLayout>
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/dark"
+            app:tabIndicatorHeight="3dp"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            />
+
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
+        android:background="@color/grey"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|bottom"
-                android:layout_marginBottom="16dp"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/ic_filter_list_white_24dp"
-                android:visibility="invisible"
-                app:borderWidth="2dp"
-                app:fabSize="normal" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        </FrameLayout>
-
-    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

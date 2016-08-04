@@ -20,6 +20,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -231,6 +233,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
             Glide.with(co)
                     .load(char_face)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
                     .into(character_small);
 

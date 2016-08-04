@@ -6,18 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 import tech.salroid.filmy.DataClasses.MovieDetailsData;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.DataClasses.MovieData;
-
 /**
  * Created by Home on 7/22/2016.
  */
@@ -58,6 +53,7 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
 
         Glide.with(con)
                 .load(ct_profile)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .fitCenter()
                 .into(holder.cast_poster);
     }

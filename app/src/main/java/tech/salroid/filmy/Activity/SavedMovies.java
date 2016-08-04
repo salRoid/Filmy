@@ -115,6 +115,8 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     @Override
     public void itemLongClicked(final Cursor mycursor, final int position) {
 
+
+
         AlertDialog.Builder adb = new AlertDialog.Builder(SavedMovies.this);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SavedMovies.this, android.R.layout.simple_list_item_1);
 
@@ -159,5 +161,4 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
         return super.onOptionsItemSelected(item);
     }
-
 }

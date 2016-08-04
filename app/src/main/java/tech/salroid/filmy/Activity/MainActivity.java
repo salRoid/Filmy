@@ -1,50 +1,35 @@
 package tech.salroid.filmy.Activity;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
+import android.graphics.Typeface;
 import android.speech.RecognizerIntent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.TextView;
+
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
-import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
-import tech.salroid.filmy.Database.FilmContract;
+
+import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
+import tech.salroid.filmy.Fragments.Popular;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.SearchFragment;
-import tech.salroid.filmy.Sync.FilmySyncAdapter;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity{
 
     private Toolbar toolbar;
-    RecyclerView recycler;
-    private static final int MOVIE_LOADER = 1;
-    private MainActivityAdapter mainActivityAdapter;
     private MaterialSearchView materialSearchView;
     private SearchFragment searchFragment;
-    private FloatingActionButton fab;
+    TextView logo;
 
 
-    private static final String[] MOVIE_COLUMNS = {
-
-            FilmContract.MoviesEntry.MOVIE_ID,
-            FilmContract.MoviesEntry.MOVIE_TITLE,
-            FilmContract.MoviesEntry.MOVIE_YEAR,
-            FilmContract.MoviesEntry.MOVIE_POSTER_LINK
-
-    };
 
     @Override
 
@@ -57,23 +42,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         getSupportActionBar().setTitle(" ");
 
 
-        getSupportActionBar().setLogo(R.drawable.ic_action_filmy_logo);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        logo = (TextView) findViewById(R.id.logo);
 
-            }
-        });
+        Typeface typeface = Typeface.createFromAsset(getAssets(),"fonts/canaro_extra_bold.otf");
+        logo.setTypeface(typeface);
 
-        recycler = (RecyclerView) findViewById(R.id.recycler);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-        recycler.setLayoutManager(gridLayoutManager);
 
-        mainActivityAdapter = new MainActivityAdapter(this, null);
-        recycler.setAdapter(mainActivityAdapter);
-        mainActivityAdapter.setClickListener(this);
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
 
         materialSearchView = (MaterialSearchView) findViewById(R.id.search_view);
@@ -122,20 +104,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
             }
         });
 
-/*
 
-        Intent alarmIntent = new Intent(this, FilmyService.AlarmReciever.class);
+    }
 
-        PendingIntent pi  = PendingIntent.getBroadcast(this,0,alarmIntent,PendingIntent.FLAG_ONE_SHOT);
+    private void setupViewPager(ViewPager viewPager) {
 
-        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+5000,pi);
-*/
-
-
-        FilmySyncAdapter.initializeSyncAdapter(this);
-        getSupportLoaderManager().initLoader(MOVIE_LOADER, null, this);
-
+        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new Popular(), "POPULAR");
+        adapter.addFragment(new Popular(), "IN THEATER");
+        adapter.addFragment(new Popular(), "UPCOMING");
+        viewPager.setAdapter(adapter);
     }
 
     private void getSearchedResult(String query) {
@@ -180,51 +158,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void itemClicked(Cursor cursor) {
-
-        int id_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
-        int title_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
-
-        Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("title", cursor.getString(title_index));
-        intent.putExtra("activity", true);
-        intent.putExtra("database_applicable",true);
-        intent.putExtra("network_applicable",true);
-        intent.putExtra("id", cursor.getString(id_index));
-        startActivity(intent);
-
-    }
 
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        // Sort order:  Ascending, by date.
-        //String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-        Uri moviesForTheUri = FilmContract.MoviesEntry.CONTENT_URI;
-        //locationSetting, System.currentTimeMillis());
-
-        return new CursorLoader(this,
-                moviesForTheUri,
-                MOVIE_COLUMNS,
-                null,
-                null,
-                null);
-
-    }
-
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mainActivityAdapter.swapCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-        mainActivityAdapter.swapCursor(null);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -251,8 +187,4 @@ public class MainActivity extends AppCompatActivity implements MainActivityAdapt
         }
     }
 
-    /*@Override
-    public void onSuggestionReady(String[] suggestionArray) {
-        materialSearchView.setSuggestions(suggestionArray);
-    }*/
 }

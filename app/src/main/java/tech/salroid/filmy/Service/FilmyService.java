@@ -14,9 +14,8 @@ import org.json.JSONArray;
 import tech.salroid.filmy.Datawork.MainActivityParseWork;
 import tech.salroid.filmy.Network.VolleySingleton;
 
-/**
- * Created by R Ankit on 31-07-2016.
- */
+
+
 
 public class FilmyService extends IntentService {
 
@@ -63,8 +62,8 @@ public class FilmyService extends IntentService {
     private void parseOutput(String result) {
 
 
-        MainActivityParseWork pa = new MainActivityParseWork(this, result);
-        pa.parse();
+      MainActivityParseWork pa = new MainActivityParseWork(this, result);
+      pa.parseupcoming();
     }
 
 

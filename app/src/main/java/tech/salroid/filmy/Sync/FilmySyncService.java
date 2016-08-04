@@ -16,7 +16,7 @@ public class FilmySyncService extends Service{
 
     @Override
     public void onCreate() {
-        Log.d("FilmySyncService", "FilmySyncService");
+       // Log.d("FilmySyncService", "FilmySyncService");
         synchronized (sSyncAdapterLock) {
             if (sFilmySyncAdapter == null) {
                 sFilmySyncAdapter = new FilmySyncAdapter(getApplicationContext(), true);

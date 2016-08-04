@@ -134,7 +134,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private FrameLayout main_content;
     private String quality;
     boolean cache=true;
-    private String imagequality;
 
 
     @Override
@@ -176,7 +175,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         cast_recycler.setLayoutManager(new LinearLayoutManager(MovieDetailsActivity.this));
         cast_recycler.setNestedScrollingEnabled(false);
 
-
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
         quality = prefrence.getString("image_quality", "medium");
         cache=prefrence.getBoolean("cache",false);
@@ -193,7 +191,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         getDataFromIntent(intent);
 
-
         //this should be called only when coming from the mainActivity and searchActivity & from
         //characterDetailsActivity
         if (networkApplicable)
@@ -201,7 +198,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         if (databaseApplicable)
             getSupportLoaderManager().initLoader(MOVIE_DETAILS_LOADER, null, this);
-
 
         if (savedDatabaseApplicable)
             getSupportLoaderManager().initLoader(SAVED_MOVIE_DETAILS_LOADER, null, this);
@@ -302,7 +298,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     public void onResponse(JSONObject response) {
 
                         parseMovieDetails(response.toString());
-
 
                     }
                 }, new Response.ErrorListener() {

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -30,7 +31,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         inflater = LayoutInflater.from(context);
         fro = context;
         this.data = data;
-
     }
 
     @Override
@@ -75,6 +75,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         TextView movie_name,date;
         ImageView movie_poster;
+        FrameLayout main;
 
         public Dh(View itemView) {
 
@@ -84,9 +85,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             movie_name = (TextView) itemView.findViewById(R.id.title);
             movie_poster = (ImageView) itemView.findViewById(R.id.poster);
             date = (TextView) itemView.findViewById(R.id.date);
+            main = (FrameLayout) itemView.findViewById(R.id.main);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            main.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 

@@ -43,8 +43,6 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         recycler.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
         breathingProgress = (BreathingProgress) view.findViewById(R.id.breathingProgress);
 
-        sadapter = new SearchResultAdapter(getActivity(), null);
-        sadapter.setClickListener(this);
 
         return view;
     }
@@ -107,6 +105,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         List<SearchData> list = park.parsesearchdata();
         sadapter = new SearchResultAdapter(getActivity(),list);
         recycler.setAdapter(sadapter);
+        sadapter.setClickListener(this);
 
         hideProgress();
 

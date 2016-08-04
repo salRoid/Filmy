@@ -1,3 +1,4 @@
+/*
 package tech.salroid.filmy.Service;
 
 import android.app.IntentService;
@@ -80,3 +81,4 @@ public class FilmyService extends IntentService {
 
 
 }
+*/

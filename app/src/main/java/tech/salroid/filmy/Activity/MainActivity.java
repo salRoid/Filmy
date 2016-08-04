@@ -156,51 +156,6 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void itemClicked(Cursor cursor) {
-
-        int id_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
-        int title_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
-
-        Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("title", cursor.getString(title_index));
-        intent.putExtra("activity", true);
-        intent.putExtra("database_applicable",true);
-        intent.putExtra("network_applicable",true);
-        intent.putExtra("id", cursor.getString(id_index));
-        startActivity(intent);
-
-    }
-
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        // Sort order:  Ascending, by date.
-        //String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-        Uri moviesForTheUri = FilmContract.MoviesEntry.CONTENT_URI;
-        //locationSetting, System.currentTimeMillis());
-
-        return new CursorLoader(this,
-                moviesForTheUri,
-                MOVIE_COLUMNS,
-                null,
-                null,
-                null);
-
-    }
-
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mainActivityAdapter.swapCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-        mainActivityAdapter.swapCursor(null);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -44,7 +44,7 @@ public class Popular extends Fragment implements MainActivityAdapter.ClickListen
 
 
     public Popular() {
-        // Required empty public constructor
+        //  public constructor
     }
 
     @Override

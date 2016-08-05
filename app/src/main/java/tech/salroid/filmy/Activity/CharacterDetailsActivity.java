@@ -30,9 +30,8 @@ import java.util.List;
 import tech.salroid.filmy.DataClasses.CharacterDetailsData;
 import tech.salroid.filmy.Datawork.CharacterDetailActivityParseWork;
 import tech.salroid.filmy.CustomAdapter.CharacterDetailsActivityAdapter;
-import tech.salroid.filmy.FullReadFragment;
+import tech.salroid.filmy.Fragments.FullReadFragment;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.DataClasses.MovieData;
 import tech.salroid.filmy.Network.VolleySingleton;
 
 public class CharacterDetailsActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {

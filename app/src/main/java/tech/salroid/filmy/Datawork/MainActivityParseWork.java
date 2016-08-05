@@ -78,7 +78,7 @@ public class MainActivityParseWork {
 
              }
 
-             Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
+             //Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
          } catch (JSONException e1) {
@@ -124,7 +124,7 @@ public class MainActivityParseWork {
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, "http://image.tmdb.org/t/p/w185" + poster);
 
-                Log.d("webi", "Fetching Complete. ");
+                //Log.d("webi", "Fetching Complete. ");
 
                 cVVector.add(movieValues);
 
@@ -140,7 +140,7 @@ public class MainActivityParseWork {
 
             }
 
-            Log.d("webi", "Fetching Complete. " + inserted + " Inserted");
+            //Log.d("webi", "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {
@@ -198,7 +198,7 @@ public class MainActivityParseWork {
 
             }
 
-            Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
+            //Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {

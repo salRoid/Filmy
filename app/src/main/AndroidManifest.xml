@@ -5,12 +5,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     !-- Permissions required by the sync adapter -->
-    <uses-permission
+
+    <!--<uses-permission
         android:name="android.permission.READ_SYNC_SETTINGS"/>
     <uses-permission
         android:name="android.permission.WRITE_SYNC_SETTINGS"/>
     <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>-->
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".FilmyApplication"
@@ -41,22 +46,27 @@
             android:exported="false"
             android:authorities="@string/content_authority" />
 
+
         <activity
             android:name=".Activity.FullCastActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
+
         <activity
             android:name=".Activity.FullMovieActivity"
             android:label="@string/title_activity_full_movie"
             android:theme="@style/AppTheme.Base" />
+
         <activity
             android:name=".Activity.FullScreenImage"
             android:label=" "
             android:theme="@style/FullScreenTheme" />
+
         <activity
             android:name=".Activity.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".Activity.SavedMovies"
             android:label="@string/title_activity_saved_movies"
@@ -67,17 +77,17 @@
 
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name=".Sync.FilmyAuthenticatorService">
+        <!--<service android:name=".Sync.FilmyAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
-        </service>
+        </service>-->
 
         <!-- The SyncAdapter service -->
-        <service
+        <!--<service
             android:name=".Sync.FilmySyncService"
             android:exported="true"
             >
@@ -88,7 +98,12 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
+-->
 
+        <service
+            android:name=".Service.FilmyJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true" />
 
 
 

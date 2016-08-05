@@ -22,8 +22,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -51,23 +49,21 @@ import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import tech.salroid.filmy.Custom.BreathingProgress;
-import tech.salroid.filmy.DataClasses.MovieDetailsData;
 import tech.salroid.filmy.Database.FilmContract;
-import tech.salroid.filmy.Datawork.MovieDetailsActivityParseWork;
 import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
-import tech.salroid.filmy.FullReadFragment;
+import tech.salroid.filmy.Fragments.CastFragment;
+import tech.salroid.filmy.Fragments.FullReadFragment;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.Network.VolleySingleton;
 
-public class MovieDetailsActivity extends AppCompatActivity implements View.OnClickListener, MovieDetailsActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class MovieDetailsActivity extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     Context context = this;
     String movie_id_final;
-    private static String movie_id;
+    private String movie_id;
     private String trailer = null, movie_desc;
-    private RecyclerView cast_recycler;
+
     private RelativeLayout header, main;
     BreathingProgress breathingProgress;
     private RequestQueue requestQueue;
@@ -124,7 +120,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
 
     private ImageView youtube_play_button;
-    private TextView more;
+
     private String cast_json = null, movie_title = null, movie_tagline = null, movie_rating = null, show_centre_img_url = null, movie_trailer = null;
     private boolean trailer_boolean = false;
     private FrameLayout main_content;
@@ -157,7 +153,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         det_runtime = (TextView) findViewById(R.id.detail_runtime);
         det_language = (TextView) findViewById(R.id.detail_language);
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
-        more = (TextView) findViewById(R.id.more);
+
 
         breathingProgress = (BreathingProgress) findViewById(R.id.breathingProgress);
 
@@ -167,17 +163,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         header = (RelativeLayout) findViewById(R.id.header);
         headerContainer = (FrameLayout) findViewById(R.id.header_container);
 
-        cast_recycler = (RecyclerView) findViewById(R.id.cast_recycler);
-        cast_recycler.setLayoutManager(new LinearLayoutManager(MovieDetailsActivity.this));
-        cast_recycler.setNestedScrollingEnabled(false);
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
         quality = prefrence.getString("image_quality", "medium");
         cache=prefrence.getBoolean("cache",false);
 
         headerContainer.setOnClickListener(this);
-
-        more.setOnClickListener(this);
 
         newMain.setOnClickListener(this);
 
@@ -309,42 +300,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         requestQueue.add(jsonObjectRequestForMovieDetails);
 
-        getCastFromNetwork(requestQueue);
+        showCastFragment();
 
 
     }
 
+    private void showCastFragment() {
 
 
-    private void getCastFromNetwork(RequestQueue requestQueue) {
-
-        final String BASE_MOVIE_CAST_DETAILS = new String("https://api.trakt.tv/movies/" + movie_id + "/people?extended=images");
-        JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(Request.Method.GET, BASE_MOVIE_CAST_DETAILS, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        cast_json = response.toString();
-                        cast_parseOutput(response.toString());
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                // Log.e("webi", "Volley Error: " + error.getCause());
-
-            }
-        }
-        );
-
-        if (requestQueue != null)
-            requestQueue.add(jsonObjectRequestForMovieCastDetails);
-        else {
-            VolleySingleton volleySingleton = VolleySingleton.getInstance();
-            requestQueue = volleySingleton.getRequestQueue();
-            requestQueue.add(jsonObjectRequestForMovieCastDetails);
-        }
+        CastFragment castFragment = CastFragment.newInstance(movie_id,movie_title);
+        getSupportFragmentManager().
+                beginTransaction().
+                replace(R.id.cast_container, castFragment)
+                .commit();
 
     }
 
@@ -588,26 +556,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-    @Override
-    public void itemClicked(MovieDetailsData setterGetter, int position) {
-        Intent intent = new Intent(this, CharacterDetailsActivity.class);
-        intent.putExtra("id", setterGetter.getCast_id());
-        startActivity(intent);
-    }
 
 
-    private void cast_parseOutput(String cast_result) {
-
-        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(this, cast_result);
-        List<MovieDetailsData> cast_list = par.parse_cast();
-        Boolean size = true;
-        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(this, cast_list, size);
-        cast_adapter.setClickListener(this);
-        cast_recycler.setAdapter(cast_adapter);
-        more.setVisibility(View.VISIBLE);
-
-
-    }
 
     public String extractYoutubeId(String url) throws MalformedURLException {
         String query = new URL(url).getQuery();
@@ -804,7 +754,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
 
 
-        getCastFromNetwork(requestQueue);
+        showCastFragment();
 
     }
 
@@ -1115,19 +1065,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     fullReadFragment.setArguments(args);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.all_details_container, fullReadFragment, "DESC").commit();
-                }
-
-                break;
-
-            case R.id.more:
-
-                if (cast_json != null && movie_title != null) {
-
-                    Intent intent = new Intent(MovieDetailsActivity.this, FullCastActivity.class);
-                    intent.putExtra("cast_json", cast_json);
-                    intent.putExtra("toolbar_title", movie_title);
-                    startActivity(intent);
-
                 }
 
                 break;

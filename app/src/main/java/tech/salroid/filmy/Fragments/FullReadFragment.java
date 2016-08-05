@@ -1,4 +1,4 @@
-package tech.salroid.filmy;
+package tech.salroid.filmy.Fragments;
 
 import android.animation.Animator;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import tech.salroid.filmy.R;
 
 /**
  * Created by R Ankit on 29-07-2016.

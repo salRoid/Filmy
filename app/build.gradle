@@ -33,4 +33,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:24.1.1'
     compile 'com.android.support:support-v4:24.1.1'
     testCompile 'junit:junit:4.12'
+    compile 'me.tatarka.support:jobscheduler:0.1.1'
 }

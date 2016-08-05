@@ -112,7 +112,7 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("webi",response.toString());
+
                         upcomingparseOutput(response.toString());
 
                     }
@@ -182,8 +182,6 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
      */
     public static void syncImmediately(Context context) {
 
-        Log.d(LOG_TAG,"Sync imidiately");
-
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
@@ -196,9 +194,6 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
      * Helper method to schedule the sync adapter periodic execution
      */
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
-
-
-        Log.d(LOG_TAG,"configure Sync");
 
         Account account = getSyncAccount(context);
         String authority = context.getString(R.string.content_authority);

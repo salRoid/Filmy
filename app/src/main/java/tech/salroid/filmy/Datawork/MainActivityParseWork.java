@@ -7,11 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import tech.salroid.filmy.Database.FilmContract;
-import tech.salroid.filmy.Network.TmdbVolleySingleton;
 
 
 public class MainActivityParseWork {
@@ -144,7 +140,7 @@ public class MainActivityParseWork {
 
             }
 
-          //  Log.d("webi", "Fetching Complete. " + inserted + " Inserted");
+           // Log.d("webi", "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {

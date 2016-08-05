@@ -1,5 +1,6 @@
 package tech.salroid.filmy.Activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.speech.RecognizerIntent;
@@ -15,12 +16,19 @@ import android.view.View;
 import android.widget.TextView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
+
+import me.tatarka.support.internal.JobSchedulerCompat;
+import me.tatarka.support.job.JobInfo;
+import me.tatarka.support.job.JobScheduler;
+import me.tatarka.support.os.PersistableBundle;
 import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
 import tech.salroid.filmy.Fragments.InTheaters;
 import tech.salroid.filmy.Fragments.Trending;
 import tech.salroid.filmy.Fragments.UpComing;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.SearchFragment;
+import tech.salroid.filmy.Fragments.SearchFragment;
+import tech.salroid.filmy.Service.FilmyJobScheduler;
+import tech.salroid.filmy.Service.FilmyJobService;
 import tech.salroid.filmy.Sync.FilmySyncAdapter;
 
 
@@ -29,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private MaterialSearchView materialSearchView;
     private SearchFragment searchFragment;
     TextView logo;
-
 
     @Override
 
@@ -40,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(" ");
-
 
         logo = (TextView) findViewById(R.id.logo);
 
@@ -110,9 +116,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        FilmySyncAdapter.syncImmediately(this);
+        //FilmySyncAdapter.syncImmediately(this);
+
+        FilmyJobScheduler filmyJobScheduler = new FilmyJobScheduler(this);
+        filmyJobScheduler.createJob();
 
     }
+
+
+
 
     private void setupViewPager(ViewPager viewPager) {
 

@@ -13,7 +13,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import tech.salroid.filmy.Activity.MovieDetailsActivity;
 import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
 import tech.salroid.filmy.Database.FilmContract;

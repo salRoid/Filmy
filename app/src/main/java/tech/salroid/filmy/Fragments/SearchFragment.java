@@ -1,4 +1,4 @@
-package tech.salroid.filmy;
+package tech.salroid.filmy.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import tech.salroid.filmy.CustomAdapter.SearchResultAdapter;
 import tech.salroid.filmy.DataClasses.SearchData;
 import tech.salroid.filmy.Datawork.SearchResultParseWork;
 import tech.salroid.filmy.Network.VolleySingleton;
+import tech.salroid.filmy.R;
 
 public class SearchFragment extends Fragment implements SearchResultAdapter.ClickListener {
 

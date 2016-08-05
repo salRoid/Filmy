@@ -129,6 +129,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private FrameLayout main_content;
     private String quality;
     boolean cache=true;
+    private String banner_for_full_activity;
 
 
     @Override
@@ -311,11 +312,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private void showCastFragment() {
 
 
-        CastFragment castFragment = CastFragment.newInstance(movie_id,movie_title);
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.cast_container, castFragment)
-                .commit();
 
     }
 
@@ -323,7 +319,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     void parseMovieDetails(String movieDetails) {
 
 
-        String title, tagline, overview, banner_profile, certification="--", runtime, language, released, poster;
+        String title, tagline, overview, banner_profile, runtime, language, released, poster;
         double rating;
         String img_url = null;
 
@@ -345,6 +341,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             movie_id_final = jsonObject.getString("imdb_id");
 
+
+
+            CastFragment castFragment = CastFragment.newInstance(movie_id_final,title);
+            getSupportFragmentManager().
+                    beginTransaction().
+                    replace(R.id.cast_container, castFragment)
+                    .commit();
+
+
+
+
             JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
             JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
 
@@ -354,6 +361,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             String trailor = singleTrailor.getString("source");
 
             trailer = "https://www.youtube.com/watch?v="+trailor;
+
+          banner_for_full_activity="http://image.tmdb.org/t/p/500"+jsonObject.getString("backdrop_path");
 
             banner_profile = "http://image.tmdb.org/t/p/w500"+jsonObject.getString("backdrop_path");
             poster = "http://image.tmdb.org/t/p/w185"+jsonObject.getString("poster_path");
@@ -390,7 +399,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movie_desc = overview;
             movie_title = title;
             movie_tagline = tagline;
-            show_centre_img_url = banner_profile;
+            show_centre_img_url = banner_for_full_activity;
 
             movieMap = new HashMap<String, String>();
             movieMap.put("title", title);

@@ -27,6 +27,7 @@ import tech.salroid.filmy.Fragments.Trending;
 import tech.salroid.filmy.Fragments.UpComing;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.Fragments.SearchFragment;
+import tech.salroid.filmy.Service.FilmyJobScheduler;
 import tech.salroid.filmy.Service.FilmyJobService;
 import tech.salroid.filmy.Sync.FilmySyncAdapter;
 
@@ -38,10 +39,6 @@ public class MainActivity extends AppCompatActivity {
     private SearchFragment searchFragment;
     TextView logo;
 
-    private JobScheduler jobScheduler;
-    private int JOB_ID = 456;
-
-
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(" ");
-
-        jobScheduler = JobScheduler.getInstance(this);
 
         logo = (TextView) findViewById(R.id.logo);
 
@@ -124,26 +119,11 @@ public class MainActivity extends AppCompatActivity {
 
         //FilmySyncAdapter.syncImmediately(this);
 
-        createJob();
+        FilmyJobScheduler filmyJobScheduler = new FilmyJobScheduler(this);
+        filmyJobScheduler.createJob();
 
     }
 
-
-
-
-    public void createJob(){
-
-        JobInfo.Builder jobBuilder = new JobInfo.Builder(JOB_ID,new ComponentName(this, FilmyJobService.class));
-
-        //PersistableBundle persistableBundle = new PersistableBundle();
-
-        jobBuilder.setPeriodic(3000)
-        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-        .setPersisted(true);
-
-        jobScheduler.schedule(jobBuilder.build());
-
-    }
 
 
 

@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.StringDef;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -44,6 +45,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.MalformedURLException;
@@ -175,7 +178,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         trailorView.setOnClickListener(this);
 
         Intent intent = getIntent();
-
         getDataFromIntent(intent);
 
         //this should be called only when coming from the mainActivity and searchActivity & from
@@ -198,7 +200,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
 
         if (savedInstanceState==null)
-             performReveal();
+            performReveal();
 
 
     }
@@ -279,12 +281,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL_MOVIE_DETAILS = new String("https://api.trakt.tv/movies/" + movie_id + "?extended=full,images");
+        final String BASE_URL_MOVIE_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movie_id + "?api_key=b640f55eb6ecc47b3433cfe98d0675b1&append_to_response=trailers");
         JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(Request.Method.GET, BASE_URL_MOVIE_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
+                        Log.d("webi",response.toString());
                         parseMovieDetails(response.toString());
 
                     }
@@ -320,7 +323,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     void parseMovieDetails(String movieDetails) {
 
 
-        String title, tagline, overview, banner_profile, certification, runtime, language, released, poster;
+        String title, tagline, overview, banner_profile, certification="--", runtime, language, released, poster;
         double rating;
         String img_url = null;
 
@@ -334,14 +337,30 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             title = jsonObject.getString("title");
             tagline = jsonObject.getString("tagline");
             overview = jsonObject.getString("overview");
-            trailer = jsonObject.getString("trailer");
-            rating = jsonObject.getDouble("rating");
-            certification = jsonObject.getString("certification");
-            language = jsonObject.getString("language");
-            released = jsonObject.getString("released");
+            released = jsonObject.getString("release_date");
             runtime = jsonObject.getString("runtime");
+            language = jsonObject.getString("original_language");
 
-            movie_id_final = jsonObject.getJSONObject("ids").getString("imdb");
+            //check the values correcly
+
+            movie_id_final = jsonObject.getString("imdb_id");
+
+            JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
+            JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
+
+            Log.d("webi"," youtube length "+youTubeArray.length());
+
+            JSONObject singleTrailor = youTubeArray.getJSONObject(0);
+            String trailor = singleTrailor.getString("source");
+
+            trailer = "https://www.youtube.com/watch?v="+trailor;
+
+            banner_profile = "http://image.tmdb.org/t/p/w500"+jsonObject.getString("backdrop_path");
+            poster = "http://image.tmdb.org/t/p/w185"+jsonObject.getString("poster_path");
+
+
+           /* rating = jsonObject.getDouble("rating");
+            certification = jsonObject.getString("certification");
 
             if (certification.equals("null")) {
                 certification = "--";
@@ -349,13 +368,24 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             double roundOff = Math.round(rating * 100.0) / 100.0;
 
-            movie_rating = String.valueOf(roundOff);
+            movie_rating = String.valueOf(roundOff);*/
 
-            banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString(quality);
+            String genre="";
 
-            Log.d("webi","IMDB id "+ movie_id_final);
+            JSONArray genreArray=jsonObject.getJSONArray("genres");
 
-            poster = jsonObject.getJSONObject("images").getJSONObject("poster").getString("thumb");
+            for(int i=0 ;i<genreArray.length();i++){
+
+                String finalgenre=genreArray.getJSONObject(i).getString("name");
+
+                String punctuation=", ";
+
+                if(i==genre.length())
+                    punctuation="";
+
+                genre=genre+punctuation+finalgenre;
+
+            }
 
             movie_desc = overview;
             movie_title = title;
@@ -366,8 +396,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movieMap.put("title", title);
             movieMap.put("tagline", tagline);
             movieMap.put("overview", overview);
-            movieMap.put("rating", movie_rating);
-            movieMap.put("certification", certification);
+          //  movieMap.put("rating", movie_rating);
+           movieMap.put("certification", genre);
             movieMap.put("language", language);
             movieMap.put("year", "0");
             movieMap.put("released", released);
@@ -403,12 +433,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE, tagline);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION, overview);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER, img_url);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_CERTIFICATION, certification);
+                    contentValues.put(FilmContract.MoviesEntry.MOVIE_CERTIFICATION, genre);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_LANGUAGE, language);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RUNTIME, runtime);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RELEASED, released);
                     contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, movie_rating);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_ID,movie_id_final);
+                    //contentValues.put(FilmContract.MoviesEntry.MOVIE_ID,movie_id_final);
+
 
 
 
@@ -461,17 +492,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
                     }
 
-                    if (!movie_id_final.equals(movie_id)){
+                    /*if (!movie_id_final.equals(movie_id)){
                         //loader failed show with this hack
 
-                        showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, certification, language);
+                        showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
 
-                    }
+                    }*/
 
 
                 } else {
 
-                    showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, certification, language);
+                    showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
 
                 }
 
@@ -482,6 +513,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             e.printStackTrace();
         }
     }
+
+
 
     private void showParsedContent(String title, String banner_profile, String img_url, String tagline,
                                    String overview, String rating, String runtime,

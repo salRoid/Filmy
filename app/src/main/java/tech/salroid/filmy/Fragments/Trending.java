@@ -18,9 +18,6 @@ import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.Database.MovieSelection;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.Sync.FilmySyncAdapter;
-
-import static tech.salroid.filmy.Database.FilmContract.MoviesEntry.MOVIE_TYPE;
 
 
 public class Trending extends Fragment implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
@@ -36,7 +33,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
 
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
@@ -94,7 +91,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra("title", cursor.getString(title_index));
         intent.putExtra("activity", true);
-        intent.putExtra("type",0);
+        intent.putExtra("type", 0);
         intent.putExtra("database_applicable", true);
         intent.putExtra("network_applicable", true);
         intent.putExtra("id", cursor.getString(id_index));

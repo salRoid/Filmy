@@ -16,6 +16,7 @@ public class MainActivityParseWork {
     private Context context;
     private String result;
     private final String LOG_TAG = MainActivityParseWork.class.getSimpleName();
+    private String imdb_id;
 
 
     public MainActivityParseWork(Context context, String result) {
@@ -44,7 +45,7 @@ public class MainActivityParseWork {
                      title = (jsonArray.getJSONObject(i).getJSONObject("movie")).getString("title");
                      year = (jsonArray.getJSONObject(i).getJSONObject("movie")).getInt("year");
                      poster = (jsonArray.getJSONObject(i).getJSONObject("movie").getJSONObject("images").getJSONObject("poster").getString("thumb"));
-                     id = (jsonArray.getJSONObject(i).getJSONObject("movie")).getJSONObject("ids").getString("imdb");
+                     id = (jsonArray.getJSONObject(i).getJSONObject("movie")).getJSONObject("ids").getString("tmdb");
 
 
 
@@ -78,7 +79,7 @@ public class MainActivityParseWork {
 
              }
 
-             //Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
+            // Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
          } catch (JSONException e1) {
@@ -92,26 +93,27 @@ public class MainActivityParseWork {
         try {
 
             JSONObject jsonObject = new JSONObject(result);
-
             JSONArray jsonArray = jsonObject.getJSONArray("results");
 
             Vector<ContentValues> cVVector = new Vector<ContentValues>(jsonArray.length());
 
             for (int i = 0; i < jsonArray.length(); i++) {
 
-                //movieData = new MovieData();
+
                 String title, poster, id;
 
-                title = (jsonArray.getJSONObject(i)).getString("original_title");
+                title = (jsonArray.getJSONObject(i)).getString("title");
                 poster = (jsonArray.getJSONObject(i).getString("poster_path"));
-                //id = (jsonArray.getJSONObject(i)).getString("id");
+                id = (jsonArray.getJSONObject(i)).getString("id");
 
                 String temp_year []=(jsonArray.getJSONObject(i)).getString("release_date").split("-");
                 String year = temp_year[0];
 
 
                 String trimmedQuery = (title.toLowerCase()).trim();
+
                 String finalQuery = trimmedQuery.replace(" ","-");
+                finalQuery=finalQuery.replace("'","-");
                 String slug = (finalQuery.replace(":",""))+"-"+year;
 
 
@@ -119,18 +121,16 @@ public class MainActivityParseWork {
 
                 ContentValues movieValues = new ContentValues();
 
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, slug);
+                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, "http://image.tmdb.org/t/p/w185" + poster);
 
-                //Log.d("webi", "Fetching Complete. ");
 
                 cVVector.add(movieValues);
 
             }
             int inserted = 0;
-            // add to database
             if (cVVector.size() > 0) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
@@ -140,7 +140,7 @@ public class MainActivityParseWork {
 
             }
 
-            //Log.d("webi", "Fetching Complete. " + inserted + " Inserted");
+           // Log.d("webi", "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {
@@ -165,7 +165,7 @@ public class MainActivityParseWork {
 
                 //movieData = new MovieData();
                 String title, poster, id;
-                title = (jsonArray.getJSONObject(i)).getString("original_title");
+                title = (jsonArray.getJSONObject(i)).getString("title");
                 poster = (jsonArray.getJSONObject(i).getString("poster_path"));
                 id = (jsonArray.getJSONObject(i)).getString("id");
 
@@ -175,11 +175,12 @@ public class MainActivityParseWork {
 
                 String trimmedQuery = (title.toLowerCase()).trim();
                 String finalQuery = trimmedQuery.replace(" ","-");
+                finalQuery=finalQuery.replace("'","-");
                 String slug = (finalQuery.replace(":",""))+"-"+year;
 
                 ContentValues movieValues = new ContentValues();
 
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, slug);
+                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK,"http://image.tmdb.org/t/p/w185"+poster);
@@ -198,7 +199,7 @@ public class MainActivityParseWork {
 
             }
 
-            //Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
+           // Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,6 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
             intent.putExtra("network_applicable",true);
         }
 
-
         intent.putExtra("id", setterGetter.getId());
         intent.putExtra("activity", false);
 
@@ -74,7 +74,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         String finalQuery = trimmedQuery.replace(" ","-");
 
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
-        RequestQueue requestQueue = volleySingleton.getRequestQueue();
+        final RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
         final String BASE_URL = "https://api.trakt.tv/search/movie,person?query=" + finalQuery + "&extended=images,full";
 
@@ -82,7 +82,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-
+                        Log.d("webi",response.toString());
                         parseSearchedOutput(response.toString());
                     }
                 }, new Response.ErrorListener() {

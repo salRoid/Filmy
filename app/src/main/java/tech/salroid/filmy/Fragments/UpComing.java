@@ -65,6 +65,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
         intent.putExtra("title", cursor.getString(title_index));
         intent.putExtra("activity", true);
         intent.putExtra("type",2);
+        //intent.putExtra("update_id",true);
         intent.putExtra("database_applicable", true);
         intent.putExtra("network_applicable", true);
         intent.putExtra("id", cursor.getString(id_index));

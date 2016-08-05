@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/runtime_holder"
             android:fontFamily="sans-serif-condensed"
-            android:text="Certificate"
+            android:text="Genre"
             android:textAppearance="?android:textAppearanceMedium" />
 
         <TextView

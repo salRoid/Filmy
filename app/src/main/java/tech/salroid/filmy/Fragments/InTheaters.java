@@ -90,6 +90,7 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
         intent.putExtra("title", cursor.getString(title_index));
         intent.putExtra("activity", true);
         intent.putExtra("type",1);
+      //  intent.putExtra("update_id",true);
         intent.putExtra("database_applicable", true);
         intent.putExtra("network_applicable", true);
         intent.putExtra("id", cursor.getString(id_index));

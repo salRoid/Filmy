@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -56,7 +57,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         setSupportActionBar(toolbar);
 
         more = (TextView) findViewById(R.id.more);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         more.setOnClickListener(new View.OnClickListener() {
@@ -85,17 +85,17 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             public void onClick(View view) {
 
 
-                if(character_title!=null && character_bio!=null){
+                if (character_title != null && character_bio != null) {
 
                     fullReadFragment = new FullReadFragment();
                     Bundle args = new Bundle();
-                    args.putString("title",character_title);
-                    args.putString("desc",character_bio);
+                    args.putString("title", character_title);
+                    args.putString("desc", character_bio);
 
                     fullReadFragment.setArguments(args);
 
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main,fullReadFragment,"DESC").commit();
+                            .replace(R.id.main, fullReadFragment, "DESC").commit();
                 }
 
             }
@@ -182,7 +182,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     public void itemClicked(CharacterDetailsData setterGetterchar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("id", setterGetterchar.getChar_id());
-        intent.putExtra("network_applicable",true);
+        intent.putExtra("network_applicable", true);
         intent.putExtra("activity", false);
         startActivity(intent);
     }
@@ -265,15 +265,13 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     }
 
 
-
     @Override
     public void onBackPressed() {
 
         FullReadFragment fragment = (FullReadFragment) getSupportFragmentManager().findFragmentByTag("DESC");
         if (fragment != null && fragment.isVisible()) {
             getSupportFragmentManager().beginTransaction().remove(fullReadFragment).commit();
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }

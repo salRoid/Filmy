@@ -33,7 +33,6 @@ public class FilmDbHelper extends SQLiteOpenHelper {
                 + FilmContract.MoviesEntry.MOVIE_RUNTIME + " VARCHAR (255) ,"
                 + FilmContract.MoviesEntry.MOVIE_DESCRIPTION + " VARCHAR (255) ,"
                 + FilmContract.MoviesEntry.MOVIE_TAGLINE + " VARCHAR(255) ,"
-                //+ FilmContract.MoviesEntry.MOVIE_TYPE + " INTEGER(1) NOT NULL ,"
                 + FilmContract.MoviesEntry.MOVIE_TRAILER + " VARCHAR(255) ,"
                 + FilmContract.MoviesEntry.MOVIE_RATING + " VARCHAR (255));";
 
@@ -66,7 +65,6 @@ public class FilmDbHelper extends SQLiteOpenHelper {
 
 
 
-
         final String SQL_CREATE_INTHEATERS_MOVIE_TABLE = "CREATE TABLE " + FilmContract.InTheatersMoviesEntry.TABLE_NAME
                 + "(" + FilmContract.MoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT ,"
                 + FilmContract.MoviesEntry.MOVIE_ID + " VARCHAR(255) NOT NULL ,"
@@ -80,7 +78,6 @@ public class FilmDbHelper extends SQLiteOpenHelper {
                 + FilmContract.MoviesEntry.MOVIE_RUNTIME + " VARCHAR (255) ,"
                 + FilmContract.MoviesEntry.MOVIE_DESCRIPTION + " VARCHAR (255) ,"
                 + FilmContract.MoviesEntry.MOVIE_TAGLINE + " VARCHAR(255) ,"
-                //+ FilmContract.MoviesEntry.MOVIE_TYPE + " INTEGER(1) NOT NULL ,"
                 + FilmContract.MoviesEntry.MOVIE_TRAILER + " VARCHAR(255) ,"
                 + FilmContract.MoviesEntry.MOVIE_RATING + " VARCHAR (255));";
 
@@ -100,8 +97,6 @@ public class FilmDbHelper extends SQLiteOpenHelper {
                 + FilmContract.MoviesEntry.MOVIE_TAGLINE + " VARCHAR(255) ,"
                 + FilmContract.MoviesEntry.MOVIE_TRAILER + " VARCHAR(255) ,"
                 + FilmContract.MoviesEntry.MOVIE_RATING + " VARCHAR (255));";
-
-
 
 
         sqLiteDatabase.execSQL(SQL_CREATE_TRENDING_MOVIE_TABLE);

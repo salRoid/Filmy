@@ -474,6 +474,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
 
 
+
                     switch (type){
 
                         case 0:

@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.Network.TmdbVolleySingleton;
 
@@ -80,7 +83,7 @@ public class MainActivityParseWork {
 
              }
 
-             Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
+            // Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
          } catch (JSONException e1) {
@@ -103,16 +106,18 @@ public class MainActivityParseWork {
 
                 String title, poster, id;
 
-                title = (jsonArray.getJSONObject(i)).getString("original_title");
+                title = (jsonArray.getJSONObject(i)).getString("title");
                 poster = (jsonArray.getJSONObject(i).getString("poster_path"));
-                //id = (jsonArray.getJSONObject(i)).getString("id");
+                id = (jsonArray.getJSONObject(i)).getString("id");
 
                 String temp_year []=(jsonArray.getJSONObject(i)).getString("release_date").split("-");
                 String year = temp_year[0];
 
 
                 String trimmedQuery = (title.toLowerCase()).trim();
+
                 String finalQuery = trimmedQuery.replace(" ","-");
+                finalQuery=finalQuery.replace("'","-");
                 String slug = (finalQuery.replace(":",""))+"-"+year;
 
 
@@ -120,12 +125,11 @@ public class MainActivityParseWork {
 
                 ContentValues movieValues = new ContentValues();
 
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, slug);
+                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, "http://image.tmdb.org/t/p/w185" + poster);
 
-                Log.d("webi", "Fetching Complete. ");
 
                 cVVector.add(movieValues);
 
@@ -140,7 +144,7 @@ public class MainActivityParseWork {
 
             }
 
-            Log.d("webi", "Fetching Complete. " + inserted + " Inserted");
+          //  Log.d("webi", "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {
@@ -165,7 +169,7 @@ public class MainActivityParseWork {
 
                 //movieData = new MovieData();
                 String title, poster, id;
-                title = (jsonArray.getJSONObject(i)).getString("original_title");
+                title = (jsonArray.getJSONObject(i)).getString("title");
                 poster = (jsonArray.getJSONObject(i).getString("poster_path"));
                 id = (jsonArray.getJSONObject(i)).getString("id");
 
@@ -175,11 +179,12 @@ public class MainActivityParseWork {
 
                 String trimmedQuery = (title.toLowerCase()).trim();
                 String finalQuery = trimmedQuery.replace(" ","-");
+                finalQuery=finalQuery.replace("'","-");
                 String slug = (finalQuery.replace(":",""))+"-"+year;
 
                 ContentValues movieValues = new ContentValues();
 
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, slug);
+                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
                 movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK,"http://image.tmdb.org/t/p/w185"+poster);
@@ -198,7 +203,7 @@ public class MainActivityParseWork {
 
             }
 
-            Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
+           // Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {

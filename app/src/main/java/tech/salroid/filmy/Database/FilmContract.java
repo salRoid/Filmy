@@ -49,7 +49,6 @@ public class FilmContract {
         public static final String MOVIE_RELEASED = "movie_release";
         public static final String MOVIE_CERTIFICATION = "movie_certification";
         public static final String MOVIE_LANGUAGE = "movie_language";
-        public static final String MOVIE_TYPE = "movie_type";
 
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TRENDING_PATH_MOVIE).build();

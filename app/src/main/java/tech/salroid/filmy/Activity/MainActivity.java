@@ -26,7 +26,6 @@ import tech.salroid.filmy.Sync.FilmySyncAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private MaterialSearchView materialSearchView;
     private SearchFragment searchFragment;
     TextView logo;
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(" ");
 

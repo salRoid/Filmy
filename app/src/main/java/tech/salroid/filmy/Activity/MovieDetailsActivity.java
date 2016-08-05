@@ -46,6 +46,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.MalformedURLException;
@@ -184,7 +186,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         trailorView.setOnClickListener(this);
 
         Intent intent = getIntent();
-
         getDataFromIntent(intent);
 
         //this should be called only when coming from the mainActivity and searchActivity & from
@@ -288,12 +289,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL_MOVIE_DETAILS = new String("https://api.trakt.tv/movies/" + movie_id + "?extended=full,images");
+        final String BASE_URL_MOVIE_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movie_id + "?api_key=b640f55eb6ecc47b3433cfe98d0675b1&append_to_response=trailers");
         JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(Request.Method.GET, BASE_URL_MOVIE_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
+                        Log.d("webi",response.toString());
                         parseMovieDetails(response.toString());
 
                     }
@@ -366,28 +368,44 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             title = jsonObject.getString("title");
             tagline = jsonObject.getString("tagline");
             overview = jsonObject.getString("overview");
-            trailer = jsonObject.getString("trailer");
-            rating = jsonObject.getDouble("rating");
-            certification = jsonObject.getString("certification");
-            language = jsonObject.getString("language");
-            released = jsonObject.getString("released");
+            released = jsonObject.getString("release_date");
             runtime = jsonObject.getString("runtime");
+            language = jsonObject.getString("original_language");
 
-            movie_id_final = jsonObject.getJSONObject("ids").getString("imdb");
+            //check the values correcly
 
-            if (certification.equals("null")) {
+            movie_id_final = jsonObject.getString("imdb_id");
+
+            JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
+            JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
+
+            Log.d("webi"," youtube length "+youTubeArray.length());
+
+            JSONObject singleTrailor = youTubeArray.getJSONObject(0);
+            String trailor = singleTrailor.getString("source");
+
+            trailer = "https://www.youtube.com/watch?v="+trailor;
+
+            banner_profile = "http://image.tmdb.org/t/p/w500"+jsonObject.getString("backdrop_path");
+
+            //  Log.d("webi","IMDB id "+ movie_id_final);
+
+            poster = "http://image.tmdb.org/t/p/w185"+jsonObject.getString("poster_path");
+
+            certification = "--";
+
+            /*if (certification.equals(null)) {
                 certification = "--";
-            }
+            }*/
+
+           /* rating = jsonObject.getDouble("rating");
 
             double roundOff = Math.round(rating * 100.0) / 100.0;
 
-            movie_rating = String.valueOf(roundOff);
+            movie_rating = String.valueOf(roundOff);*/
 
-            banner_profile = jsonObject.getJSONObject("images").getJSONObject("fanart").getString(quality);
 
-            Log.d("webi","IMDB id "+ movie_id_final);
-
-            poster = jsonObject.getJSONObject("images").getJSONObject("poster").getString("thumb");
+            movie_rating=String.valueOf(0.0);
 
             movie_desc = overview;
             movie_title = title;

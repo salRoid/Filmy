@@ -49,7 +49,7 @@ public class MainActivityParseWork {
                      title = (jsonArray.getJSONObject(i).getJSONObject("movie")).getString("title");
                      year = (jsonArray.getJSONObject(i).getJSONObject("movie")).getInt("year");
                      poster = (jsonArray.getJSONObject(i).getJSONObject("movie").getJSONObject("images").getJSONObject("poster").getString("thumb"));
-                     id = (jsonArray.getJSONObject(i).getJSONObject("movie")).getJSONObject("ids").getString("imdb");
+                     id = (jsonArray.getJSONObject(i).getJSONObject("movie")).getJSONObject("ids").getString("tmdb");
 
 
 

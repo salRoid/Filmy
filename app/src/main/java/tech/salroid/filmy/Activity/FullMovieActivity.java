@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import java.util.List;
 import tech.salroid.filmy.CustomAdapter.CharacterDetailsActivityAdapter;
 import tech.salroid.filmy.DataClasses.CharacterDetailsData;
-import tech.salroid.filmy.Datawork.CharacterDetailActivityParseWork;
+import tech.salroid.filmy.Parsers.CharacterDetailActivityParseWork;
 import tech.salroid.filmy.R;
 
 public class FullMovieActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {

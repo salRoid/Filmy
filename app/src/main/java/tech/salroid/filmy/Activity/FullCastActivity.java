@@ -11,7 +11,7 @@ import java.util.List;
 
 import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
 import tech.salroid.filmy.DataClasses.MovieDetailsData;
-import tech.salroid.filmy.Datawork.MovieDetailsActivityParseWork;
+import tech.salroid.filmy.Parsers.MovieDetailsActivityParseWork;
 import tech.salroid.filmy.R;
 
 public class FullCastActivity extends AppCompatActivity implements MovieDetailsActivityAdapter.ClickListener {

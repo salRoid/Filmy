@@ -1,19 +1,14 @@
 package tech.salroid.filmy.Activity;
 
-import android.app.AlertDialog;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -24,17 +19,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -50,11 +39,12 @@ import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.Database.MovieLoaders;
 import tech.salroid.filmy.Database.MovieSelection;
+import tech.salroid.filmy.Database.OfflineMovies;
 import tech.salroid.filmy.Fragments.CastFragment;
 import tech.salroid.filmy.Fragments.FullReadFragment;
 import tech.salroid.filmy.Network.GetDataFromNetwork;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.Network.VolleySingleton;
+
 
 public class MovieDetailsActivity extends AppCompatActivity implements
         View.OnClickListener,
@@ -67,8 +57,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     private RelativeLayout header, main;
     BreathingProgress breathingProgress;
-    private RequestQueue requestQueue;
-
 
     private static TextView det_title, det_tagline, det_overview,
             det_rating, det_released, det_certification,
@@ -201,7 +189,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
 
-
     private void showCastFragment() {
 
     }
@@ -301,7 +288,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             show_centre_img_url = banner_for_full_activity;
 
             movieMap = new HashMap<String, String>();
-            movieMap.put("title", title);
+            movieMap.put("title", movie_title);
             movieMap.put("tagline", tagline);
             movieMap.put("overview", overview);
             movieMap.put("rating", movie_rating);
@@ -825,145 +812,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             case R.id.action_save:
 
-                saveMovie();
+                OfflineMovies offlineMovies = new OfflineMovies(this, main_content);
+                offlineMovies.saveMovie(movieMap, movie_id, movie_id_final);
 
                 break;
 
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    private void saveMovie() {
-
-        if (movieMap != null && !movieMap.isEmpty()) {
-
-
-            final ContentValues saveValues = new ContentValues();
-
-            saveValues.put(FilmContract.SaveEntry.SAVE_ID, movie_id_final);
-            saveValues.put(FilmContract.SaveEntry.SAVE_TITLE, movieMap.get("title"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_TAGLINE, movieMap.get("tagline"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_DESCRIPTION, movieMap.get("overview"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_BANNER, movieMap.get("banner"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_TRAILER, movieMap.get("trailer"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_RATING, movieMap.get("rating"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_YEAR, movieMap.get("year"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_POSTER_LINK, movieMap.get("poster"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_RUNTIME, movieMap.get("runtime"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_CERTIFICATION, movieMap.get("certification"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_LANGUAGE, movieMap.get("language"));
-            saveValues.put(FilmContract.SaveEntry.SAVE_RELEASED, movieMap.get("released"));
-
-
-            final String selection =
-                    FilmContract.SaveEntry.TABLE_NAME +
-                            "." + FilmContract.SaveEntry.SAVE_ID + " = ? ";
-            final String[] selectionArgs = {movie_id};
-
-            //  boolean deletePermission = false;
-            Cursor alreadyCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, selection, selectionArgs, null);
-
-            if (alreadyCursor.moveToFirst()) {
-                //Already present in databse
-                Snackbar.make(main_content, "Already present in database", Snackbar.LENGTH_SHORT).show();
-
-            } else {
-
-                final Cursor returnedCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, null, null, null);
-
-
-                if (returnedCursor.moveToFirst() && returnedCursor.getCount() == 10) {
-                    //No space to fill more. Have to delete oldest entry to save this Agree?
-
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                    alertDialog.setTitle("Remove");
-                    alertDialog.setIcon(R.drawable.ic_delete_sweep_black_24dp);
-
-                    final TextView input = new TextView(context);
-                    FrameLayout container = new FrameLayout(context);
-                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(96, 48, 96, 48);
-                    input.setLayoutParams(params);
-
-                    input.setText("Save Limit reached , want to remove the oldest movie and save this one ?");
-                    input.setTextColor(Color.parseColor("#303030"));
-
-                    container.addView(input);
-
-
-                    alertDialog.setView(container);
-                    alertDialog.setPositiveButton("Okay",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry._ID + " = ? ";
-
-                                    returnedCursor.moveToFirst();
-
-                                    //Log.d(LOG_TAG, "This is the last index value which is going to be deleted "+returnedCursor.getInt(0));
-
-                                    final String[] deletionArgs = {String.valueOf(returnedCursor.getInt(0))};
-
-
-                                    long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
-
-                                    if (deletion_id != -1) {
-
-                                        // Log.d(LOG_TAG, "We deleted this row" + deletion_id);
-
-                                        Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
-
-                                        long movieRowId = ContentUris.parseId(uri);
-
-                                        if (movieRowId != -1) {
-                                            //inserted
-                                            Snackbar.make(main_content, "Movie Saved", Snackbar.LENGTH_SHORT).show();
-
-                                        } else {
-
-                                            // Log.d(LOG_TAG, "row not Inserted in database");
-                                        }
-
-                                    } else {
-
-                                        //delete was unsuccessful
-                                    }
-
-                                    dialog.cancel();
-                                }
-                            });
-
-                    alertDialog.setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Write your code here to execute after dialog
-                                    dialog.cancel();
-                                }
-                            });
-
-                    alertDialog.show();
-                } else {
-
-                    Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
-
-                    long movieRowId = ContentUris.parseId(uri);
-
-                    if (movieRowId != -1) {
-
-                        Snackbar.make(main_content, "Movie Saved", Snackbar.LENGTH_SHORT).show();
-
-                        // Toast.makeText(MovieDetailsActivity.this, "Movie Inserted", Toast.LENGTH_SHORT).show();
-
-                    } else {
-
-                        Snackbar.make(main_content, "Movie Not Saved", Snackbar.LENGTH_SHORT).show();
-
-                    }
-                }
-            }
-        }
     }
 
 

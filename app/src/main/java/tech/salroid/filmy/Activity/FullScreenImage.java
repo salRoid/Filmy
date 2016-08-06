@@ -35,7 +35,6 @@ public class FullScreenImage extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             image_url = intent.getStringExtra("img_url");
-            Log.d("webi",image_url);
         }
 
         Glide.with(this)

@@ -1,7 +1,5 @@
 package tech.salroid.filmy.Activity;
 
-import android.animation.Animator;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -13,10 +11,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.StringDef;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -28,9 +24,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,22 +39,26 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import tech.salroid.filmy.Animation.RevealAnimation;
 import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.Database.FilmContract;
-import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
+import tech.salroid.filmy.Database.MovieLoaders;
+import tech.salroid.filmy.Database.MovieSelection;
 import tech.salroid.filmy.Fragments.CastFragment;
 import tech.salroid.filmy.Fragments.FullReadFragment;
+import tech.salroid.filmy.Network.GetDataFromNetwork;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.Network.VolleySingleton;
 
-public class MovieDetailsActivity extends AppCompatActivity implements View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class MovieDetailsActivity extends AppCompatActivity implements
+        View.OnClickListener,
+        LoaderManager.LoaderCallbacks<Cursor>, GetDataFromNetwork.DataFetchedListener {
 
     Context context = this;
     String movie_id_final;
@@ -78,65 +76,37 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
     private static ImageView youtube_link, banner;
     private final String LOG_TAG = MovieDetailsActivity.class.getSimpleName();
-    private final int MOVIE_DETAILS_LOADER = 2, SAVED_MOVIE_DETAILS_LOADER = 5;
+
     LinearLayout trailorBackground;
     TextView tvRating;
     FrameLayout trailorView, newMain, headerContainer;
     FullReadFragment fullReadFragment;
     HashMap<String, String> movieMap;
-    boolean networkApplicable = false, databaseApplicable = false, savedDatabaseApplicable = false;
+    boolean networkApplicable, databaseApplicable, savedDatabaseApplicable;
     int type;
-
-
-    private static final String[] GET_MOVIE_COLUMNS = {
-
-            FilmContract.MoviesEntry.MOVIE_TITLE,
-            FilmContract.MoviesEntry.MOVIE_BANNER,
-            FilmContract.MoviesEntry.MOVIE_DESCRIPTION,
-            FilmContract.MoviesEntry.MOVIE_TAGLINE,
-            FilmContract.MoviesEntry.MOVIE_TRAILER,
-            FilmContract.MoviesEntry.MOVIE_RATING,
-            FilmContract.MoviesEntry.MOVIE_LANGUAGE,
-            FilmContract.MoviesEntry.MOVIE_RELEASED,
-            FilmContract.MoviesEntry.MOVIE_CERTIFICATION,
-            FilmContract.MoviesEntry.MOVIE_RUNTIME,
-    };
-
-
-    private static final String[] GET_SAVE_COLUMNS = {
-
-            FilmContract.SaveEntry.SAVE_ID,
-            FilmContract.SaveEntry.SAVE_TITLE,
-            FilmContract.SaveEntry.SAVE_BANNER,
-            FilmContract.SaveEntry.SAVE_DESCRIPTION,
-            FilmContract.SaveEntry.SAVE_TAGLINE,
-            FilmContract.SaveEntry.SAVE_TRAILER,
-            FilmContract.SaveEntry.SAVE_RATING,
-            FilmContract.SaveEntry.SAVE_LANGUAGE,
-            FilmContract.SaveEntry.SAVE_RELEASED,
-            FilmContract.SaveEntry._ID,
-            FilmContract.SaveEntry.SAVE_YEAR,
-            FilmContract.SaveEntry.SAVE_CERTIFICATION,
-            FilmContract.SaveEntry.SAVE_RUNTIME,
-            FilmContract.SaveEntry.SAVE_POSTER_LINK,
-    };
 
 
     private ImageView youtube_play_button;
 
-    private String cast_json = null, movie_title = null, movie_tagline = null, movie_rating = null, show_centre_img_url = null, movie_trailer = null;
+    private String cast_json,
+            movie_title,
+            movie_tagline,
+            movie_rating,
+            show_centre_img_url, movie_trailer = null;
+
+
     private boolean trailer_boolean = false;
     private FrameLayout main_content;
     private String quality;
-    boolean cache=true;
+    boolean cache = true;
     private String banner_for_full_activity;
+    FrameLayout allDetails;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
-
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -157,6 +127,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         det_runtime = (TextView) findViewById(R.id.detail_runtime);
         det_language = (TextView) findViewById(R.id.detail_language);
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
+        allDetails = (FrameLayout) findViewById(R.id.all_details_container);
 
 
         breathingProgress = (BreathingProgress) findViewById(R.id.breathingProgress);
@@ -170,7 +141,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
         quality = prefrence.getString("image_quality", "w780");
-        cache=prefrence.getBoolean("cache",false);
+        cache = prefrence.getBoolean("cache", false);
 
         headerContainer.setOnClickListener(this);
 
@@ -183,14 +154,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         //this should be called only when coming from the mainActivity and searchActivity & from
         //characterDetailsActivity
+
+        GetDataFromNetwork getStuffFromNetwork = new GetDataFromNetwork();
+        getStuffFromNetwork.setDataFetchedListener(this);
+
         if (networkApplicable)
-            getMovieDetailsFromNetwork();
+            getStuffFromNetwork.getMovieDetailsFromNetwork(movie_id);
 
         if (databaseApplicable)
-            getSupportLoaderManager().initLoader(MOVIE_DETAILS_LOADER, null, this);
+            getSupportLoaderManager().initLoader(MovieLoaders.MOVIE_DETAILS_LOADER, null, this);
 
         if (savedDatabaseApplicable)
-            getSupportLoaderManager().initLoader(SAVED_MOVIE_DETAILS_LOADER, null, this);
+            getSupportLoaderManager().initLoader(MovieLoaders.SAVED_MOVIE_DETAILS_LOADER, null, this);
 
         if (!databaseApplicable && !savedDatabaseApplicable) {
 
@@ -200,56 +175,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
 
 
-        if (savedInstanceState==null)
-            performReveal();
-
-
-    }
-
-    private void performReveal() {
-
-        final FrameLayout allDetails = (FrameLayout) findViewById(R.id.all_details_container);
-
-        if(allDetails!=null){
-
-            ViewTreeObserver viewTreeObserver = allDetails.getViewTreeObserver();
-            if (viewTreeObserver.isAlive()) {
-                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        circularRevealActivity(allDetails);
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                            allDetails.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        } else {
-                            allDetails.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        }
-                    }
-                });
-            }
-
-        }
+        if (savedInstanceState == null)
+            RevealAnimation.performReveal(allDetails);
 
     }
-
-
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void circularRevealActivity(FrameLayout allDetails) {
-
-        int cx = allDetails.getWidth() / 2;
-        int cy = allDetails.getHeight() / 2;
-
-        float finalRadius = Math.max(allDetails.getWidth(), allDetails.getHeight());
-
-        // create the animator for this view (the start radius is zero)
-        Animator circularReveal = ViewAnimationUtils.createCircularReveal(allDetails, cx, cy, 0, finalRadius);
-        circularReveal.setDuration(1000);
-
-        // make the view visible and start the animation
-        allDetails.setVisibility(View.VISIBLE);
-        circularReveal.start();
-    }
-
 
 
     private void getDataFromIntent(Intent intent) {
@@ -262,7 +191,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             savedDatabaseApplicable = intent.getBooleanExtra("saved_database_applicable", false);
 
-            type = intent.getIntExtra("type",0);
+            type = intent.getIntExtra("type", 0);
 
             movie_id = intent.getStringExtra("id");
 
@@ -273,39 +202,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
 
 
-    private void getMovieDetailsFromNetwork() {
-
-        VolleySingleton volleySingleton = VolleySingleton.getInstance();
-        requestQueue = volleySingleton.getRequestQueue();
-
-        final String BASE_URL_MOVIE_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movie_id + "?api_key=b640f55eb6ecc47b3433cfe98d0675b1&append_to_response=trailers");
-        JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(Request.Method.GET, BASE_URL_MOVIE_DETAILS, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        parseMovieDetails(response.toString());
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                // Log.e("webi", "Volley Error: " + error.getCause());
-
-            }
-        }
-        );
-
-        requestQueue.add(jsonObjectRequestForMovieDetails);
-
-        showCastFragment();
-
-
-    }
-
     private void showCastFragment() {
-
-
 
     }
 
@@ -337,8 +234,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movie_rating = jsonObject.getString("vote_average");
 
 
-
-            CastFragment castFragment = CastFragment.newInstance(movie_id_final,title);
+            CastFragment castFragment = CastFragment.newInstance(movie_id_final, title);
             getSupportFragmentManager().
                     beginTransaction().
                     replace(R.id.cast_container, castFragment)
@@ -347,9 +243,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
             JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
-            String trailor=null;
+            String trailor = null;
 
-            if (youTubeArray.length()!=0) {
+            if (youTubeArray.length() != 0) {
 
                 for (int i = 0; i < youTubeArray.length(); i++) {
                     JSONObject singleTrailor = youTubeArray.getJSONObject(i);
@@ -364,53 +260,38 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 trailer = "https://www.youtube.com/watch?v=" + trailor;
-            }
-            else
-            trailer=null;
+            } else
+                trailer = null;
 
-            String get_poster_path_from_json=jsonObject.getString("poster_path");
+            String get_poster_path_from_json = jsonObject.getString("poster_path");
             poster = "http://image.tmdb.org/t/p/w185" + get_poster_path_from_json;
             String get_banner_from_json = jsonObject.getString("backdrop_path");
 
-            Log.d("webi","banner"+get_banner_from_json);
-            if (get_banner_from_json!="null") {
+            Log.d("webi", "banner" + get_banner_from_json);
+            if (get_banner_from_json != "null") {
                 banner_profile = "http://image.tmdb.org/t/p/w500" + get_banner_from_json;
                 banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_banner_from_json;
 
-            }
-            else{
+            } else {
                 banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_poster_path_from_json;
                 banner_profile = "http://image.tmdb.org/t/p/w500" + get_poster_path_from_json;
             }
 
 
+            String genre = "";
 
-           /* rating = jsonObject.getDouble("rating");
-            certification = jsonObject.getString("certification");
+            JSONArray genreArray = jsonObject.getJSONArray("genres");
 
-            if (certification.equals("null")) {
-                certification = "--";
-            }
+            for (int i = 0; i < genreArray.length(); i++) {
 
-            double roundOff = Math.round(rating * 100.0) / 100.0;
-            */
+                String finalgenre = genreArray.getJSONObject(i).getString("name");
 
+                String punctuation = ", ";
 
+                if (i == genre.length())
+                    punctuation = "";
 
-            String genre="";
-
-            JSONArray genreArray=jsonObject.getJSONArray("genres");
-
-            for(int i=0 ;i<genreArray.length();i++){
-
-                String finalgenre=genreArray.getJSONObject(i).getString("name");
-
-                String punctuation=", ";
-
-                if(i==genre.length())
-                    punctuation="";
-
-                genre=genre+punctuation+finalgenre;
+                genre = genre + punctuation + finalgenre;
 
             }
 
@@ -423,8 +304,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movieMap.put("title", title);
             movieMap.put("tagline", tagline);
             movieMap.put("overview", overview);
-           movieMap.put("rating", movie_rating);
-           movieMap.put("certification", genre);
+            movieMap.put("rating", movie_rating);
+            movieMap.put("certification", genre);
             movieMap.put("language", language);
             movieMap.put("year", "0");
             movieMap.put("released", released);
@@ -432,11 +313,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movieMap.put("trailer", trailer);
             movieMap.put("banner", banner_profile);
             movieMap.put("poster", poster);
-            movieMap.put("id",movie_id_final);
+            movieMap.put("id", movie_id_final);
 
             try {
 
-                if (trailer!=null ) {
+                if (trailer != null) {
 
                     trailer_boolean = true;
                     String videoId = extractYoutubeId(trailer);
@@ -468,9 +349,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     //contentValues.put(FilmContract.MoviesEntry.MOVIE_ID,movie_id_final);
 
 
-
-
-                    switch (type){
+                    switch (type) {
 
                         case 0:
 
@@ -540,7 +419,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             e.printStackTrace();
         }
     }
-
 
 
     private void showParsedContent(String title, String banner_profile, String img_url, String tagline,
@@ -616,9 +494,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-
-
-
     public String extractYoutubeId(String url) throws MalformedURLException {
         String query = new URL(url).getQuery();
         String[] param = query.split("&");
@@ -638,34 +513,41 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         CursorLoader cursorloader = null;
 
-        if (id == MOVIE_DETAILS_LOADER) {
+        if (id == MovieLoaders.MOVIE_DETAILS_LOADER) {
 
-            switch (type){
+            switch (type) {
 
                 case 0:
 
-                    cursorloader = new CursorLoader(this, FilmContract.MoviesEntry.buildMovieWithMovieId(movie_id), GET_MOVIE_COLUMNS, null, null, null);
+                    cursorloader = new CursorLoader(this,
+                            FilmContract.MoviesEntry.buildMovieWithMovieId(movie_id),
+                            MovieSelection.GET_MOVIE_COLUMNS, null, null, null);
                     break;
 
                 case 1:
 
-                    cursorloader = new CursorLoader(this, FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movie_id), GET_MOVIE_COLUMNS, null, null, null);
+                    cursorloader = new CursorLoader(this,
+                            FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movie_id),
+                            MovieSelection.GET_MOVIE_COLUMNS, null, null, null);
                     break;
 
                 case 2:
 
-                    cursorloader = new CursorLoader(this, FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movie_id), GET_MOVIE_COLUMNS, null, null, null);
+                    cursorloader = new CursorLoader(this,
+                            FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movie_id),
+                            MovieSelection.GET_MOVIE_COLUMNS, null, null, null);
                     break;
 
             }
 
-        } else if (id == SAVED_MOVIE_DETAILS_LOADER) {
+        } else if (id == MovieLoaders.SAVED_MOVIE_DETAILS_LOADER) {
 
             final String selection = FilmContract.SaveEntry.TABLE_NAME +
                     "." + FilmContract.SaveEntry.SAVE_ID + " = ? ";
             String[] selectionArgs = {movie_id};
 
-            cursorloader = new CursorLoader(this, FilmContract.SaveEntry.CONTENT_URI, GET_SAVE_COLUMNS, selection, selectionArgs, null);
+            cursorloader = new CursorLoader(this, FilmContract.SaveEntry.CONTENT_URI,
+                    MovieSelection.GET_SAVE_COLUMNS, selection, selectionArgs, null);
 
         }
 
@@ -678,11 +560,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         int id = loader.getId();
 
-        if (id == MOVIE_DETAILS_LOADER) {
+        if (id == MovieLoaders.MOVIE_DETAILS_LOADER) {
 
             fetchMovieDetailsFromCursor(data);
 
-        } else if (id == SAVED_MOVIE_DETAILS_LOADER) {
+        } else if (id == MovieLoaders.SAVED_MOVIE_DETAILS_LOADER) {
 
             fetchSavedMovieDetailsFromCursor(data);
         }
@@ -1148,4 +1030,29 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
         }
     }
+
+
+    @Override
+    public void dataFetched(String response, int code) {
+
+
+        switch (code) {
+
+
+            case GetDataFromNetwork.MOVIE_DETAILS_CODE:
+
+                parseMovieDetails(response);
+                showCastFragment();
+
+                break;
+
+            case GetDataFromNetwork.CAST_CODE:
+
+
+                break;
+
+        }
+
+    }
+
 }

@@ -39,4 +39,9 @@ public class CoolAnimations {
             mView.requestLayout();
         }
     }
+
+
+
+
+
 }

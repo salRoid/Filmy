@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import me.tatarka.support.job.JobParameters;
 import me.tatarka.support.job.JobService;
-import tech.salroid.filmy.Datawork.MainActivityParseWork;
+import tech.salroid.filmy.Parsers.MainActivityParseWork;
 import tech.salroid.filmy.Network.TmdbVolleySingleton;
 import tech.salroid.filmy.Network.VolleySingleton;
 

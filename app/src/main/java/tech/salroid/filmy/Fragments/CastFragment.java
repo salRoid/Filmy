@@ -22,7 +22,7 @@ import tech.salroid.filmy.Activity.CharacterDetailsActivity;
 import tech.salroid.filmy.Activity.FullCastActivity;
 import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
 import tech.salroid.filmy.DataClasses.MovieDetailsData;
-import tech.salroid.filmy.Datawork.MovieDetailsActivityParseWork;
+import tech.salroid.filmy.Parsers.MovieDetailsActivityParseWork;
 import tech.salroid.filmy.Network.VolleySingleton;
 import tech.salroid.filmy.R;
 

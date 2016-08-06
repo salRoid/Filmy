@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Datawork;
+package tech.salroid.filmy.Parsers;
 
 import android.content.Context;
 
@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.DataClasses.MovieData;
 import tech.salroid.filmy.DataClasses.MovieDetailsData;
 
 /**

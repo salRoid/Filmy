@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Datawork;
+package tech.salroid.filmy.Parsers;
 
 import android.content.Context;
 
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.salroid.filmy.DataClasses.CharacterDetailsData;
-import tech.salroid.filmy.DataClasses.MovieData;
 
 /**
  * Created by Home on 7/23/2016.

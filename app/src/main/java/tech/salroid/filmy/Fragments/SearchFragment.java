@@ -22,7 +22,7 @@ import tech.salroid.filmy.Activity.MovieDetailsActivity;
 import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.CustomAdapter.SearchResultAdapter;
 import tech.salroid.filmy.DataClasses.SearchData;
-import tech.salroid.filmy.Datawork.SearchResultParseWork;
+import tech.salroid.filmy.Parsers.SearchResultParseWork;
 import tech.salroid.filmy.Network.VolleySingleton;
 import tech.salroid.filmy.R;
 

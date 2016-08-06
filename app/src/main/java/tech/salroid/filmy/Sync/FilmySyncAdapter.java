@@ -18,13 +18,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import tech.salroid.filmy.Datawork.MainActivityParseWork;
-import tech.salroid.filmy.FilmyApplication;
+import tech.salroid.filmy.Parsers.MainActivityParseWork;
 import tech.salroid.filmy.Network.TmdbVolleySingleton;
 import tech.salroid.filmy.Network.VolleySingleton;
 import tech.salroid.filmy.R;

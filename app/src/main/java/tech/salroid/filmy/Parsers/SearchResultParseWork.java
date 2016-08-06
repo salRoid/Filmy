@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Datawork;
+package tech.salroid.filmy.Parsers;
 
 import android.content.Context;
 

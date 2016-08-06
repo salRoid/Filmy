@@ -129,6 +129,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private FrameLayout main_content;
     private String quality;
     boolean cache=true;
+    private String banner_for_full_activity;
 
 
     @Override
@@ -168,7 +169,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
-        quality = prefrence.getString("image_quality", "medium");
+        quality = prefrence.getString("image_quality", "w780");
         cache=prefrence.getBoolean("cache",false);
 
         headerContainer.setOnClickListener(this);
@@ -270,10 +271,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
 
     private void getMovieDetailsFromNetwork() {
@@ -286,8 +283,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
-                        Log.d("webi",response.toString());
                         parseMovieDetails(response.toString());
 
                     }
@@ -311,11 +306,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     private void showCastFragment() {
 
 
-        CastFragment castFragment = CastFragment.newInstance(movie_id,movie_title);
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.cast_container, castFragment)
-                .commit();
 
     }
 
@@ -323,7 +313,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
     void parseMovieDetails(String movieDetails) {
 
 
-        String title, tagline, overview, banner_profile, certification="--", runtime, language, released, poster;
+        String title, tagline, overview, banner_profile, runtime, language, released, poster;
         double rating;
         String img_url = null;
 
@@ -345,18 +335,53 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             movie_id_final = jsonObject.getString("imdb_id");
 
+
+
+            CastFragment castFragment = CastFragment.newInstance(movie_id_final,title);
+            getSupportFragmentManager().
+                    beginTransaction().
+                    replace(R.id.cast_container, castFragment)
+                    .commit();
+
+
             JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
             JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
+            String trailor=null;
 
-            Log.d("webi"," youtube length "+youTubeArray.length());
+            if (youTubeArray.length()!=0) {
 
-            JSONObject singleTrailor = youTubeArray.getJSONObject(0);
-            String trailor = singleTrailor.getString("source");
+                for (int i = 0; i < youTubeArray.length(); i++) {
+                    JSONObject singleTrailor = youTubeArray.getJSONObject(i);
 
-            trailer = "https://www.youtube.com/watch?v="+trailor;
+                    String type = singleTrailor.getString("type");
 
-            banner_profile = "http://image.tmdb.org/t/p/w500"+jsonObject.getString("backdrop_path");
-            poster = "http://image.tmdb.org/t/p/w185"+jsonObject.getString("poster_path");
+                    if (type.equals("Trailer")) {
+                        trailor = singleTrailor.getString("source");
+                        break;
+                    } else
+                        trailor = youTubeArray.getJSONObject(0).getString("source");
+                }
+
+                trailer = "https://www.youtube.com/watch?v=" + trailor;
+            }
+            else
+            trailer=null;
+
+            String get_poster_path_from_json=jsonObject.getString("poster_path");
+            poster = "http://image.tmdb.org/t/p/w185" + get_poster_path_from_json;
+            String get_banner_from_json = jsonObject.getString("backdrop_path");
+
+            Log.d("webi",""+get_banner_from_json);
+            if (get_banner_from_json!="null") {
+                banner_profile = "http://image.tmdb.org/t/p/w500" + get_banner_from_json;
+                banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_banner_from_json;
+
+            }
+            else{
+                banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_poster_path_from_json;
+                banner_profile = "http://image.tmdb.org/t/p/w500" + get_poster_path_from_json;
+            }
+
 
 
            /* rating = jsonObject.getDouble("rating");
@@ -390,7 +415,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movie_desc = overview;
             movie_title = title;
             movie_tagline = tagline;
-            show_centre_img_url = banner_profile;
+            show_centre_img_url = banner_for_full_activity;
 
             movieMap = new HashMap<String, String>();
             movieMap.put("title", title);
@@ -409,7 +434,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             try {
 
-                if (!(trailer.equals("null"))) {
+                if (trailer!=null ) {
 
                     trailer_boolean = true;
                     String videoId = extractYoutubeId(trailer);
@@ -419,7 +444,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
                 } else {
 
-                    img_url = jsonObject.getJSONObject("images").getJSONObject("poster").getString(quality);
+                    img_url = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("poster_path");
 
                 }
 

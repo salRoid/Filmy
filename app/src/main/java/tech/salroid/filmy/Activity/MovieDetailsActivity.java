@@ -371,7 +371,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             poster = "http://image.tmdb.org/t/p/w185" + get_poster_path_from_json;
             String get_banner_from_json = jsonObject.getString("backdrop_path");
 
-            Log.d("webi",""+get_banner_from_json);
+            Log.d("webi","banner"+get_banner_from_json);
             if (get_banner_from_json!="null") {
                 banner_profile = "http://image.tmdb.org/t/p/w500" + get_banner_from_json;
                 banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_banner_from_json;

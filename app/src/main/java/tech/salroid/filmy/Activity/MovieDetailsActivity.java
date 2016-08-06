@@ -334,6 +334,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             //check the values correcly
 
             movie_id_final = jsonObject.getString("imdb_id");
+            movie_rating = jsonObject.getString("vote_average");
 
 
 
@@ -392,8 +393,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             }
 
             double roundOff = Math.round(rating * 100.0) / 100.0;
+            */
 
-            movie_rating = String.valueOf(roundOff);*/
+
 
             String genre="";
 
@@ -421,7 +423,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movieMap.put("title", title);
             movieMap.put("tagline", tagline);
             movieMap.put("overview", overview);
-          //  movieMap.put("rating", movie_rating);
+           movieMap.put("rating", movie_rating);
            movieMap.put("certification", genre);
             movieMap.put("language", language);
             movieMap.put("year", "0");

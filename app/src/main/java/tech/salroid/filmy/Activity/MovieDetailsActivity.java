@@ -1,6 +1,5 @@
 package tech.salroid.filmy.Activity;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,16 +23,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+
 import tech.salroid.filmy.Animation.RevealAnimation;
 import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.Database.FilmContract;
@@ -206,10 +209,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
 
-
-
-
-
     void parseMovieDetails(String movieDetails) {
 
         String title, tagline, overview, banner_profile, runtime, language, released, poster;
@@ -319,15 +318,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 e.printStackTrace();
             } finally {
 
-                movieMap.put("img_url",img_url);
+                movieMap.put("img_url", img_url);
 
                 if (databaseApplicable) {
 
-                    MovieDetailsUpdation.performMovieDetailsUpdation(this,type,movieMap,movie_id);
+                    MovieDetailsUpdation.performMovieDetailsUpdation(this, type, movieMap, movie_id);
 
                 } else {
 
-                    showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
+                    showParsedContent(movieMap);
 
                 }
             }
@@ -338,7 +337,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         }
     }
 
-    private String getTrailorImageUrl(JSONObject jsonObject) throws Exception{
+    private String getTrailorImageUrl(JSONObject jsonObject) throws Exception {
 
         String img_url;
 
@@ -360,12 +359,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
 
-    private void showParsedContent(String title, String banner_profile, String img_url, String tagline,
-                                   String overview, String rating, String runtime,
-                                   String released, String certification, String language) {
+    private void showParsedContent(HashMap<String, String> movieMap) {
 
 
-
+        String title = movieMap.get("title");
+        String banner_profile = movieMap.get("banner");
+        String img_url = movieMap.get("img_url");
+        String tagline = movieMap.get("tagline");
+        String overview = movieMap.get("overview");
+        String rating = movieMap.get("rating");
+        String runtime = movieMap.get("runtime");
+        String released = movieMap.get("released");
+        String certification = movieMap.get("certification");
+        String language = movieMap.get("language");
 
         det_title.setText(title);
         det_tagline.setText(tagline);
@@ -768,9 +774,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
 
-
-
-
     private void shareMovie() {
 
 
@@ -858,9 +861,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             case GetDataFromNetwork.MOVIE_DETAILS_CODE:
 
                 parseMovieDetails(response);
-
                 break;
-
         }
 
     }

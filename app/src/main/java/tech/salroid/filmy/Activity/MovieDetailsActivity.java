@@ -344,31 +344,44 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                     .commit();
 
 
-
-
             JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
             JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
             String trailor=null;
 
-        for (int i=0;i<youTubeArray.length();i++) {
-            JSONObject singleTrailor = youTubeArray.getJSONObject(i);
+            if (youTubeArray.length()!=0) {
 
-            String type=singleTrailor.getString("type");
+                for (int i = 0; i < youTubeArray.length(); i++) {
+                    JSONObject singleTrailor = youTubeArray.getJSONObject(i);
 
-            if(type.equals("Trailer")) {
-                trailor = singleTrailor.getString("source");
-                break;
+                    String type = singleTrailor.getString("type");
+
+                    if (type.equals("Trailer")) {
+                        trailor = singleTrailor.getString("source");
+                        break;
+                    } else
+                        trailor = youTubeArray.getJSONObject(0).getString("source");
+                }
+
+                trailer = "https://www.youtube.com/watch?v=" + trailor;
             }
             else
-                trailor=youTubeArray.getJSONObject(0).getString("source");
-        }
+            trailer=null;
 
-                        trailer = "https://www.youtube.com/watch?v="+trailor;
+            String get_poster_path_from_json=jsonObject.getString("poster_path");
+            poster = "http://image.tmdb.org/t/p/w185" + get_poster_path_from_json;
+            String get_banner_from_json = jsonObject.getString("backdrop_path");
 
-          banner_for_full_activity="http://image.tmdb.org/t/p/"+quality+jsonObject.getString("backdrop_path");
+            Log.d("webi",""+get_banner_from_json);
+            if (get_banner_from_json!="null") {
+                banner_profile = "http://image.tmdb.org/t/p/w500" + get_banner_from_json;
+                banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_banner_from_json;
 
-            banner_profile = "http://image.tmdb.org/t/p/w500"+jsonObject.getString("backdrop_path");
-            poster = "http://image.tmdb.org/t/p/w185"+jsonObject.getString("poster_path");
+            }
+            else{
+                banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_poster_path_from_json;
+                banner_profile = "http://image.tmdb.org/t/p/w500" + get_poster_path_from_json;
+            }
+
 
 
            /* rating = jsonObject.getDouble("rating");
@@ -421,7 +434,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             try {
 
-                if (!(trailer.equals("null"))) {
+                if (trailer!=null ) {
 
                     trailer_boolean = true;
                     String videoId = extractYoutubeId(trailer);
@@ -431,7 +444,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
                 } else {
 
-                    img_url = jsonObject.getJSONObject("images").getJSONObject("poster").getString(quality);
+                    img_url = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("poster_path");
 
                 }
 

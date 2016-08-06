@@ -1,6 +1,5 @@
 package tech.salroid.filmy.Activity;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,19 +23,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+
 import tech.salroid.filmy.Animation.RevealAnimation;
 import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.Database.FilmContract;
+import tech.salroid.filmy.Database.MovieDetailsUpdation;
 import tech.salroid.filmy.Database.MovieLoaders;
 import tech.salroid.filmy.Database.MovieSelection;
 import tech.salroid.filmy.Database.OfflineMovies;
@@ -80,7 +84,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movie_title,
             movie_tagline,
             movie_rating,
-            show_centre_img_url, movie_trailer = null;
+            show_centre_img_url, movie_trailer;
 
 
     private boolean trailer_boolean = false;
@@ -140,8 +144,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         getDataFromIntent(intent);
 
-        //this should be called only when coming from the mainActivity and searchActivity & from
-        //characterDetailsActivity
+
+        //fetching details and various data on the basis of requirements
+        performDataFetching();
+
+
+        if (savedInstanceState == null)
+            RevealAnimation.performReveal(allDetails);
+
+    }
+
+    private void performDataFetching() {
+
 
         GetDataFromNetwork getStuffFromNetwork = new GetDataFromNetwork();
         getStuffFromNetwork.setDataFetchedListener(this);
@@ -161,10 +175,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             breathingProgress.setVisibility(View.VISIBLE);
 
         }
-
-
-        if (savedInstanceState == null)
-            RevealAnimation.performReveal(allDetails);
 
     }
 
@@ -189,13 +199,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
 
-    private void showCastFragment() {
+    private void showCastFragment(String title) {
 
+        CastFragment castFragment = CastFragment.newInstance(movie_id_final, title);
+        getSupportFragmentManager().
+                beginTransaction().
+                replace(R.id.cast_container, castFragment)
+                .commit();
     }
 
 
     void parseMovieDetails(String movieDetails) {
-
 
         String title, tagline, overview, banner_profile, runtime, language, released, poster;
         double rating;
@@ -203,10 +217,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         try {
 
-
             JSONObject jsonObject = new JSONObject(movieDetails);
-
-            ContentValues contentValues = new ContentValues();
 
             title = jsonObject.getString("title");
             tagline = jsonObject.getString("tagline");
@@ -224,11 +235,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 movie_rating="--";
             }
 
-            CastFragment castFragment = CastFragment.newInstance(movie_id_final, title);
-            getSupportFragmentManager().
-                    beginTransaction().
-                    replace(R.id.cast_container, castFragment)
-                    .commit();
+            showCastFragment(title);
 
 
             JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
@@ -290,7 +297,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movie_tagline = tagline;
             show_centre_img_url = banner_for_full_activity;
 
-            movieMap = new HashMap<String, String>();
+            movieMap = new HashMap<>();
             movieMap.put("title", movie_title);
             movieMap.put("tagline", tagline);
             movieMap.put("overview", overview);
@@ -305,116 +312,69 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movieMap.put("poster", poster);
             movieMap.put("id", movie_id_final);
 
+
             try {
 
-                if (trailer != null) {
+                img_url = getTrailorImageUrl(jsonObject);
 
-                    trailer_boolean = true;
-                    String videoId = extractYoutubeId(trailer);
-                    img_url = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
-
-                    //  movie_trailer=trailer;
-
-                } else {
-
-                    img_url = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("poster_path");
-
-                }
-
-            } catch (MalformedURLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
 
+                movieMap.put("img_url", img_url);
+
                 if (databaseApplicable) {
 
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_BANNER, banner_profile);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE, tagline);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION, overview);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER, img_url);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_CERTIFICATION, genre);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_LANGUAGE, language);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_RUNTIME, runtime);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_RELEASED, released);
-                    contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, movie_rating);
-                    //contentValues.put(FilmContract.MoviesEntry.MOVIE_ID,movie_id_final);
-
-
-                    switch (type) {
-
-                        case 0:
-
-                            final String selection =
-                                    FilmContract.MoviesEntry.TABLE_NAME +
-                                            "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
-                            final String[] selectionArgs = {movie_id};
-
-                            long id = context.getContentResolver().update(FilmContract.MoviesEntry.buildMovieByTag(movie_id), contentValues, selection, selectionArgs);
-
-                            if (id != -1) {
-                                //  Log.d(LOG_TAG, "Movie row updated with new values.");
-                            }
-
-                            break;
-
-                        case 1:
-
-                            final String selection2 =
-                                    FilmContract.InTheatersMoviesEntry.TABLE_NAME +
-                                            "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
-                            final String[] selectionArgs2 = {movie_id};
-
-                            long id2 = context.getContentResolver().update(FilmContract.InTheatersMoviesEntry.buildMovieByTag(movie_id), contentValues, selection2, selectionArgs2);
-
-                            if (id2 != -1) {
-                                //  Log.d(LOG_TAG, "Movie row updated with new values.");
-                            }
-                            break;
-
-                        case 2:
-
-
-                            final String selection3 =
-                                    FilmContract.UpComingMoviesEntry.TABLE_NAME +
-                                            "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
-                            final String[] selectionArgs3 = {movie_id};
-
-                            long id3 = context.getContentResolver().update(FilmContract.UpComingMoviesEntry.buildMovieByTag(movie_id), contentValues, selection3, selectionArgs3);
-
-                            if (id3 != -1) {
-                                //  Log.d(LOG_TAG, "Movie row updated with new values.");
-                            }
-
-                            break;
-
-                    }
-
-                    /*if (!movie_id_final.equals(movie_id)){
-                        //loader failed show with this hack
-
-                        showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
-
-                    }*/
-
+                    MovieDetailsUpdation.performMovieDetailsUpdation(this, type, movieMap, movie_id);
 
                 } else {
 
-                    showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
+                    showParsedContent(movieMap);
 
                 }
-
-
             }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private String getTrailorImageUrl(JSONObject jsonObject) throws Exception {
 
-    private void showParsedContent(String title, String banner_profile, String img_url, String tagline,
-                                   String overview, String rating, String runtime,
-                                   String released, String certification, String language) {
+        String img_url;
 
+        if (trailer != null) {
+
+            trailer_boolean = true;
+            String videoId = extractYoutubeId(trailer);
+            img_url = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
+
+
+        } else {
+
+            img_url = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("poster_path");
+
+        }
+
+        return img_url;
+
+    }
+
+
+    private void showParsedContent(HashMap<String, String> movieMap) {
+
+
+        String title = movieMap.get("title");
+        String banner_profile = movieMap.get("banner");
+        String img_url = movieMap.get("img_url");
+        String tagline = movieMap.get("tagline");
+        String overview = movieMap.get("overview");
+        String rating = movieMap.get("rating");
+        String runtime = movieMap.get("runtime");
+        String released = movieMap.get("released");
+        String certification = movieMap.get("certification");
+        String language = movieMap.get("language");
 
         det_title.setText(title);
         det_tagline.setText(tagline);
@@ -686,8 +646,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         }
 
 
-        showCastFragment();
-
     }
 
     private void fetchMovieDetailsFromCursor(Cursor data) {
@@ -800,16 +758,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 finish();
                 break;
 
-            case R.id.action_search:
+            case R.id.action_share:
 
-                movie_trailer = "http://www.imdb.com/title/" + movie_id_final;
-
-                if (!(movie_title.equals(null) && movie_rating.equals("null") && movie_id_final.equals("null"))) {
-                    Intent myIntent = new Intent(Intent.ACTION_SEND);
-                    myIntent.setType("text/plain");
-                    myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_trailer + "\n");
-                    startActivity(Intent.createChooser(myIntent, "Share with"));
-                }
+                shareMovie();
 
                 break;
 
@@ -823,6 +774,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void shareMovie() {
+
+
+        movie_trailer = "http://www.imdb.com/title/" + movie_id_final;
+        if (!(movie_title.equals(null) && movie_rating.equals("null") && movie_id_final.equals("null"))) {
+            Intent myIntent = new Intent(Intent.ACTION_SEND);
+            myIntent.setType("text/plain");
+            myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_trailer + "\n");
+            startActivity(Intent.createChooser(myIntent, "Share with"));
+        }
+
     }
 
 
@@ -894,22 +859,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @Override
     public void dataFetched(String response, int code) {
 
-
         switch (code) {
-
 
             case GetDataFromNetwork.MOVIE_DETAILS_CODE:
 
                 parseMovieDetails(response);
-                showCastFragment();
-
                 break;
-
-            case GetDataFromNetwork.CAST_CODE:
-
-
-                break;
-
         }
 
     }

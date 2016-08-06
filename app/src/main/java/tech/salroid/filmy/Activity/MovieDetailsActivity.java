@@ -336,6 +336,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
             movie_id_final = jsonObject.getString("imdb_id");
             movie_rating = jsonObject.getString("vote_average");
 
+            if(movie_rating=="0"){
+                movie_rating="--";
+            }
 
 
             CastFragment castFragment = CastFragment.newInstance(movie_id_final,title);

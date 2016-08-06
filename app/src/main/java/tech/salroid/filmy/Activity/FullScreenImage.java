@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
@@ -34,6 +35,7 @@ public class FullScreenImage extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             image_url = intent.getStringExtra("img_url");
+            Log.d("webi",image_url);
         }
 
         Glide.with(this)

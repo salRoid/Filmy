@@ -169,7 +169,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
-        quality = prefrence.getString("image_quality", "medium");
+        quality = prefrence.getString("image_quality", "w780");
         cache=prefrence.getBoolean("cache",false);
 
         headerContainer.setOnClickListener(this);
@@ -271,10 +271,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
 
     private void getMovieDetailsFromNetwork() {
@@ -287,8 +283,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
-                        Log.d("webi",response.toString());
                         parseMovieDetails(response.toString());
 
                     }
@@ -354,15 +348,24 @@ public class MovieDetailsActivity extends AppCompatActivity implements View.OnCl
 
             JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
             JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
+            String trailor=null;
 
-            Log.d("webi"," youtube length "+youTubeArray.length());
+        for (int i=0;i<youTubeArray.length();i++) {
+            JSONObject singleTrailor = youTubeArray.getJSONObject(i);
 
-            JSONObject singleTrailor = youTubeArray.getJSONObject(0);
-            String trailor = singleTrailor.getString("source");
+            String type=singleTrailor.getString("type");
 
-            trailer = "https://www.youtube.com/watch?v="+trailor;
+            if(type.equals("Trailer")) {
+                trailor = singleTrailor.getString("source");
+                break;
+            }
+            else
+                trailor=youTubeArray.getJSONObject(0).getString("source");
+        }
 
-          banner_for_full_activity="http://image.tmdb.org/t/p/500"+jsonObject.getString("backdrop_path");
+                        trailer = "https://www.youtube.com/watch?v="+trailor;
+
+          banner_for_full_activity="http://image.tmdb.org/t/p/"+quality+jsonObject.getString("backdrop_path");
 
             banner_profile = "http://image.tmdb.org/t/p/w500"+jsonObject.getString("backdrop_path");
             poster = "http://image.tmdb.org/t/p/w185"+jsonObject.getString("poster_path");

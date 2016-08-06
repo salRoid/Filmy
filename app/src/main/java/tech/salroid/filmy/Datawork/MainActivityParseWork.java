@@ -60,6 +60,8 @@ public class MainActivityParseWork {
 
                  ContentValues movieValues = new ContentValues();
 
+
+
                  movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
                  movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
                  movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
@@ -117,18 +119,22 @@ public class MainActivityParseWork {
                 String slug = (finalQuery.replace(":",""))+"-"+year;
 
 
+
                 // Insert the new weather information into the database
 
                 ContentValues movieValues = new ContentValues();
 
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, "http://image.tmdb.org/t/p/w185" + poster);
+                if (!(poster.equals("null"))) {
 
 
-                cVVector.add(movieValues);
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, "http://image.tmdb.org/t/p/w185" + poster);
 
+
+                    cVVector.add(movieValues);
+                }
             }
             int inserted = 0;
             if (cVVector.size() > 0) {
@@ -178,15 +184,18 @@ public class MainActivityParseWork {
                 finalQuery=finalQuery.replace("'","-");
                 String slug = (finalQuery.replace(":",""))+"-"+year;
 
-                ContentValues movieValues = new ContentValues();
 
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
-                movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK,"http://image.tmdb.org/t/p/w185"+poster);
+                if (!(poster.equals("null"))) {
 
-                cVVector.add(movieValues);
+                    ContentValues movieValues = new ContentValues();
 
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, "http://image.tmdb.org/t/p/w185" + poster);
+
+                    cVVector.add(movieValues);
+                }
             }
             int inserted = 0;
             // add to database

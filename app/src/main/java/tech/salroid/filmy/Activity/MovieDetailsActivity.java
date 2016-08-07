@@ -123,12 +123,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         getDataFromIntent(intent);
 
 
-        //fetching details and various data on the basis of requirements
-        performDataFetching();
-
-
         if (savedInstanceState == null)
             RevealAnimation.performReveal(allDetails);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //fetching details and various data on the basis of requirements
+        performDataFetching();
 
     }
 

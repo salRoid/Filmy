@@ -19,10 +19,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-
 import java.util.HashMap;
-
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.Utils.NullChecker;
 
 /**
  * Created by R Ankit on 07-08-2016.
@@ -113,12 +112,19 @@ public class DetailedDescription extends Fragment implements View.OnClickListene
             String language = movieMap.get("language");
 
             trailer = movieMap.get("trailer");
+            if (NullChecker.isSettable(rating))
+               det_rating.setText(rating);
 
-            det_rating.setText(rating);
             if(runtime!=null && !runtime.equals("null mins"))
                 det_runtime.setText(runtime);
-            det_released.setText(released);
+
+            if (NullChecker.isSettable(released))
+             det_released.setText(released);
+
+            if (NullChecker.isSettable(certification))
             det_certification.setText(certification);
+
+            if (NullChecker.isSettable(language))
             det_language.setText(language);
 
         }

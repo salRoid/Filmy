@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -22,16 +21,21 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+
 import tech.salroid.filmy.Animation.RevealAnimation;
 import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.Database.FilmContract;
@@ -44,6 +48,7 @@ import tech.salroid.filmy.Fragments.DetailedDescription;
 import tech.salroid.filmy.Fragments.FullReadFragment;
 import tech.salroid.filmy.Network.GetDataFromNetwork;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.Utils.NullChecker;
 
 
 public class MovieDetailsActivity extends AppCompatActivity implements
@@ -123,19 +128,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         getDataFromIntent(intent);
 
 
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
+
             RevealAnimation.performReveal(allDetails);
+        }
 
 
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        //fetching details and various data on the basis of requirements
         performDataFetching();
-
     }
 
     private void performDataFetching() {
@@ -243,7 +249,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             poster = "http://image.tmdb.org/t/p/w185" + get_poster_path_from_json;
             String get_banner_from_json = jsonObject.getString("backdrop_path");
 
-           //Log.d("webi", "banner" + get_banner_from_json);
+            //Log.d("webi", "banner" + get_banner_from_json);
             if (get_banner_from_json != "null") {
                 banner_profile = "http://image.tmdb.org/t/p/w500" + get_banner_from_json;
                 banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_banner_from_json;
@@ -285,7 +291,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movieMap.put("language", language);
             movieMap.put("year", "0");
             movieMap.put("released", released);
-            movieMap.put("runtime", runtime+" mins");
+            movieMap.put("runtime", runtime + " mins");
             movieMap.put("trailer", trailer);
             movieMap.put("banner", banner_profile);
             movieMap.put("poster", poster);
@@ -493,6 +499,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             fetchSavedMovieDetailsFromCursor(data);
         }
 
+
     }
 
 
@@ -522,14 +529,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             String certification = data.getString(certification_index);
             String language = data.getString(language_index);
 
+            Toast.makeText(this,"I will be called again",Toast.LENGTH_SHORT).show();
 
-            det_title.setText(title);
-            det_tagline.setText(tagline);
-            det_overview.setText(overview);
+            if (NullChecker.isSettable(title))
+                det_title.setText(title);
+
+            if (NullChecker.isSettable(tagline))
+                det_tagline.setText(tagline);
+
+            if (NullChecker.isSettable(overview))
+                det_overview.setText(overview);
 
 
-            HashMap<String,String> movieMap = new HashMap<>();
 
+            HashMap<String, String> movieMap = new HashMap<>();
             movieMap.put("rating", rating);
             movieMap.put("runtime", runtime);
             movieMap.put("released", released);
@@ -628,13 +641,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             det_tagline.setText(tagline);
             det_overview.setText(overview);
 
-            HashMap<String,String> movieMap = new HashMap<>();
+            HashMap<String, String> movieMap = new HashMap<>();
             movieMap.put("rating", rating);
             movieMap.put("runtime", runtime + " mins");
             movieMap.put("released", released);
             movieMap.put("certification", certification);
             movieMap.put("language", language);
-
 
 
             movie_desc = overview;
@@ -722,16 +734,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
-        int id = loader.getId();
-
-        if (id == MovieLoaders.MOVIE_DETAILS_LOADER) {
-
-            fetchMovieDetailsFromCursor(null);
-
-        } else if (id == MovieLoaders.SAVED_MOVIE_DETAILS_LOADER) {
-
-            fetchSavedMovieDetailsFromCursor(null);
-        }
     }
 
 
@@ -830,13 +832,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                     intent.putExtra("img_url", show_centre_img_url);
                     startActivity(intent);
                 }
-
-                break;
-
-            case R.id.trailorView:
-
-                if ((trailer_boolean))
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer)));
 
                 break;
 

@@ -24,7 +24,7 @@
                 android:foreground="?android:selectableItemBackground">
 
                 <ImageView
-                    android:id="@+id/backdrop"
+                    android:id="@+id/bannu"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:background="@color/grey"
@@ -77,26 +77,100 @@
                 </RelativeLayout>
             </FrameLayout>
 
+            <LinearLayout
+                android:id="@+id/movie_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/header_container"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/trailorBackground"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#f5f5f5"
+                        android:weightSum="10">
 
 
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_weight="3"
+                            android:orientation="horizontal">
 
-           <FrameLayout
-               android:id="@+id/detailed_description_container"
-               android:layout_below="@id/header_container"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/tvRating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="sans-serif-condensed"
+                                android:text="Rating"
+                                android:textAppearance="?android:textAppearanceLarge" />
+
+                            <TextView
+                                android:id="@+id/detail_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tvRating"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="sans-serif-condensed"
+                                android:textAppearance="?android:textAppearanceLarge" />
+
+                        </RelativeLayout>
+
+                        <FrameLayout
+                            android:id="@+id/trailorView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="7"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:selectableItemBackground">
 
 
+                            <ImageView
+                                android:id="@+id/detail_youtube"
+                                android:layout_width="match_parent"
+                                android:layout_height="180dp"
+                                android:scaleType="centerCrop" />
 
 
-           <FrameLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_below="@id/detailed_description_container"
-               android:id="@+id/cast_container"
-               />
+                            <ImageView
+                                android:id="@+id/play_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:alpha="0.8"
+                                android:background="@drawable/ic_play_circle_filled_white_48dp"
+                                android:visibility="invisible" />
+
+                        </FrameLayout>
 
 
+                    </LinearLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+                <include layout="@layout/extra_info_movie_detail" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/movie_description"
+                android:id="@+id/cast_container"
+                />
 
         </RelativeLayout>
 
@@ -121,7 +195,3 @@
 
 
 </FrameLayout>
-
-
-
-

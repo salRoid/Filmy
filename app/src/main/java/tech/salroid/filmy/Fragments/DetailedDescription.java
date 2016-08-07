@@ -1,3 +1,4 @@
+/*
 package tech.salroid.filmy.Fragments;
 
 import android.content.Intent;
@@ -23,9 +24,11 @@ import java.util.HashMap;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.Utils.NullChecker;
 
+*/
 /**
  * Created by R Ankit on 07-08-2016.
- */
+ *//*
+
 
 public class DetailedDescription extends Fragment implements View.OnClickListener {
 
@@ -166,3 +169,4 @@ public class DetailedDescription extends Fragment implements View.OnClickListene
 
     }
 }
+*/

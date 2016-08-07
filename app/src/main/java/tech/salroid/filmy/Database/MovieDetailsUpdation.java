@@ -17,14 +17,13 @@ public class MovieDetailsUpdation {
         contentValues.put(FilmContract.MoviesEntry.MOVIE_BANNER, movieMap.get("banner"));
         contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE, movieMap.get("tagline"));
         contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION, movieMap.get("overview"));
-        contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER, movieMap.get("img_url"));
+        contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER, movieMap.get("trailer"));
         contentValues.put(FilmContract.MoviesEntry.MOVIE_CERTIFICATION, movieMap.get("certification"));
         contentValues.put(FilmContract.MoviesEntry.MOVIE_LANGUAGE, movieMap.get("language"));
         contentValues.put(FilmContract.MoviesEntry.MOVIE_RUNTIME, movieMap.get("runtime"));
         contentValues.put(FilmContract.MoviesEntry.MOVIE_RELEASED, movieMap.get("released"));
         contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, movieMap.get("rating"));
         //contentValues.put(FilmContract.MoviesEntry.MOVIE_ID,movie_id_final);
-
 
         switch (type) {
 

@@ -115,7 +115,7 @@ public class DetailedDescription extends Fragment implements View.OnClickListene
             trailer = movieMap.get("trailer");
 
             det_rating.setText(rating);
-            if(!runtime.equals("null mins"))
+            if(runtime!=null && !runtime.equals("null mins"))
                 det_runtime.setText(runtime);
             det_released.setText(released);
             det_certification.setText(certification);

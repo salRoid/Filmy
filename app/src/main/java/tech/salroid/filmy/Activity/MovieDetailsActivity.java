@@ -715,6 +715,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+        int id = loader.getId();
+
+        if (id == MovieLoaders.MOVIE_DETAILS_LOADER) {
+
+            fetchMovieDetailsFromCursor(null);
+
+        } else if (id == MovieLoaders.SAVED_MOVIE_DETAILS_LOADER) {
+
+            fetchSavedMovieDetailsFromCursor(null);
+        }
     }
 
 

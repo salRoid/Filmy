@@ -13,7 +13,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import tech.salroid.filmy.Activity.MainActivity;
 import tech.salroid.filmy.Activity.MovieDetailsActivity;
 import tech.salroid.filmy.Custom.BreathingProgress;
@@ -85,7 +84,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
             breathingProgress.setVisibility(View.GONE);
 
         } else if (!((MainActivity) getActivity()).fetchingFromNetwork) {
-            ((MainActivity) getActivity()).cantProceed();
+            ((MainActivity) getActivity()).cantProceed(-1);
         }
 
     }

@@ -1,11 +1,15 @@
 package tech.salroid.filmy.Activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,18 +18,11 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import java.util.ArrayList;
-
-import tech.salroid.filmy.Animation.ResizeAnimation;
 import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
 import tech.salroid.filmy.Fragments.InTheaters;
 import tech.salroid.filmy.Fragments.Trending;
@@ -43,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private MaterialSearchView materialSearchView;
     private SearchFragment searchFragment;
     private TextView logo;
-    private AppBarLayout appBar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ErrorView mErrorView;
@@ -77,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         mErrorView.setConfig(ErrorView.Config.create()
                 .title(getString(R.string.error_title_damn))
                 .titleColor(getResources().getColor(R.color.dark))
-                .subtitle("Unable to fetch movies.\nConnect to internet then try again.")
+                .subtitle("Unable to fetch movies.\nCheck internet connection then try again.")
                 .retryText(getString(R.string.error_view_retry))
                 .build());
 
@@ -101,9 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         mErrorView.setVisibility(View.GONE);
-
-
-        appBar = (AppBarLayout) findViewById(R.id.appbar);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -170,14 +163,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //FilmySyncAdapter.syncImmediately(this);
+
 
         if (Network.isNetworkConnected(this)) {
 
             fetchingFromNetwork = true ;
             setScheduler();
         }
-
 
     }
 
@@ -190,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void cantProceed() {
+    public void cantProceed(final int status) {
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -200,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
                 tabLayout.setVisibility(View.GONE);
                 viewPager.setVisibility(View.GONE);
+                mErrorView.setError(status);
                 mErrorView.setVisibility(View.VISIBLE);
 
                 //disable toolbar scrolling
@@ -325,5 +318,38 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Extract data included in the Intent
+            int statusCode = intent.getIntExtra("message",00);
+
+            Toast.makeText(context,"Failed to get latest movies.",Toast.LENGTH_SHORT).show();
+
+            cantProceed(statusCode);
+
+        }
+    };
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("fetch-failed"));
+
+    }
+
+    @Override
+    protected void onPause() {
+        // Unregister since the activity is not visible
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onPause();
+    }
+
+
 
 }

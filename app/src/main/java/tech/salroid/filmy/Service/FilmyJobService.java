@@ -1,6 +1,9 @@
 package tech.salroid.filmy.Service;
 
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,7 +17,6 @@ import me.tatarka.support.job.JobService;
 import tech.salroid.filmy.Parsers.MainActivityParseWork;
 import tech.salroid.filmy.Network.TmdbVolleySingleton;
 import tech.salroid.filmy.Network.VolleySingleton;
-
 
 /**
  * Created by R Ankit on 05-08-2016.
@@ -123,14 +125,19 @@ public class FilmyJobService extends JobService {
 
                         parseOutput(response.toString());
 
-
-
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.e("webi", "Volley Error: " + error.getCause());
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null ) {
+                    sendFetchFailedMessage(networkResponse.statusCode);
+                }else{
+
+                    sendFetchFailedMessage(00);
+
+                }
 
             }
         }
@@ -160,6 +167,13 @@ public class FilmyJobService extends JobService {
         pa.parse();
     }
 
+    private void sendFetchFailedMessage(int message) {
+
+        Intent intent = new Intent("fetch-failed");
+        intent.putExtra("message",message);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+    }
 
 
 

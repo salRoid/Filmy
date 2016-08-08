@@ -101,9 +101,6 @@ public class DetailedDescription extends Fragment implements View.OnClickListene
 
     public void setAllThings(HashMap<String, String> mMovieMap) {
 
-
-
-
         if(movieMap!=null){
 
             movieMap = mMovieMap;

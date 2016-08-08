@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+
 import java.util.List;
 import tech.salroid.filmy.CustomAdapter.CharacterDetailsActivityAdapter;
 import tech.salroid.filmy.DataClasses.CharacterDetailsData;
@@ -50,11 +52,12 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
 
 
 
-
     @Override
     public void itemClicked(CharacterDetailsData setterGetterChar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("id", setterGetterChar.getChar_id());
+        intent.putExtra("network_applicable", true);
+        Log.d("webi",setterGetterChar.getChar_id());
         intent.putExtra("activity", false);
         startActivity(intent);
 

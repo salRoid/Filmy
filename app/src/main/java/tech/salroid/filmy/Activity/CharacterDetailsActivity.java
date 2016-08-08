@@ -63,7 +63,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             @Override
             public void onClick(View view) {
 
-                if (!(movie_json.equals(" ") && character_title.equals(" "))) {
+                if (!(movie_json.equals(null) && character_title.equals(null))) {
                     Intent intent = new Intent(CharacterDetailsActivity.this, FullMovieActivity.class);
                     intent.putExtra("cast_json", movie_json);
                     intent.putExtra("toolbar_title", character_title);

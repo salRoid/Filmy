@@ -102,8 +102,8 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
 
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-
         intent.putExtra("saved_database_applicable",true);
+        intent.putExtra("network_applicable",true);
         intent.putExtra("title",title);
         intent.putExtra("id", movieId);
 

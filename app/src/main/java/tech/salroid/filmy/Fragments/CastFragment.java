@@ -83,6 +83,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
     }
 
+
     private void getCastFromNetwork() {
 
 

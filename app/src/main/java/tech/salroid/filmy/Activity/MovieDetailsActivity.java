@@ -1,12 +1,13 @@
 package tech.salroid.filmy.Activity;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -19,9 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -38,13 +39,13 @@ import java.util.HashMap;
 
 import tech.salroid.filmy.Animation.RevealAnimation;
 import tech.salroid.filmy.Custom.BreathingProgress;
+import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.Database.MovieDetailsUpdation;
 import tech.salroid.filmy.Database.MovieLoaders;
 import tech.salroid.filmy.Database.MovieSelection;
 import tech.salroid.filmy.Database.OfflineMovies;
 import tech.salroid.filmy.Fragments.CastFragment;
-import tech.salroid.filmy.Fragments.DetailedDescription;
 import tech.salroid.filmy.Fragments.FullReadFragment;
 import tech.salroid.filmy.Network.GetDataFromNetwork;
 import tech.salroid.filmy.R;
@@ -56,37 +57,25 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, GetDataFromNetwork.DataFetchedListener {
 
     Context context = this;
-    String movie_id_final;
-    private String movie_id;
-    private String trailer = null, movie_desc;
 
+    static String movie_title, movie_id_final;
+    private String movie_id, trailer = null, movie_desc, quality, banner_for_full_activity;
     private RelativeLayout header, main;
     BreathingProgress breathingProgress;
-    private TextView det_title, det_tagline, det_overview;
-
-    private ImageView banner;
+    private static TextView det_title, det_tagline, det_overview,
+            det_rating, det_released, det_certification,
+            det_language, det_runtime, tvRating;
+    private static ImageView youtube_link, banner, youtube_play_button;
     private final String LOG_TAG = MovieDetailsActivity.class.getSimpleName();
-
-    FrameLayout newMain, headerContainer;
+    LinearLayout trailorBackground;
+    FrameLayout trailorView, newMain, headerContainer, main_content, allDetails;
     FullReadFragment fullReadFragment;
     HashMap<String, String> movieMap;
-    boolean networkApplicable, databaseApplicable, savedDatabaseApplicable;
+    boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
     int type;
 
-    private String cast_json,
-            movie_title,
-            movie_tagline,
-            movie_rating,
-            show_centre_img_url, movie_trailer;
-
-    private boolean trailer_boolean = false;
-    private FrameLayout main_content;
-    private String quality;
-    boolean cache = true;
-    private String banner_for_full_activity;
-    FrameLayout allDetails;
-    DetailedDescription detailedDescription;
-    private String img_url;
+    private String cast_json, movie_tagline, movie_rating,
+            show_centre_img_url, movie_trailer = null;
 
 
     @Override
@@ -94,58 +83,59 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        banner = (ImageView) findViewById(R.id.backdrop);
         det_title = (TextView) findViewById(R.id.detail_title);
         det_tagline = (TextView) findViewById(R.id.detail_tagline);
         det_overview = (TextView) findViewById(R.id.detail_overview);
+        det_rating = (TextView) findViewById(R.id.detail_rating);
+        tvRating = (TextView) findViewById(R.id.tvRating);
+        det_released = (TextView) findViewById(R.id.detail_released);
+        det_certification = (TextView) findViewById(R.id.detail_certification);
+        det_runtime = (TextView) findViewById(R.id.detail_runtime);
+        det_language = (TextView) findViewById(R.id.detail_language);
 
+        youtube_link = (ImageView) findViewById(R.id.detail_youtube);
+        banner = (ImageView) findViewById(R.id.bannu);
+        youtube_play_button = (ImageView) findViewById(R.id.play_button);
+
+        trailorBackground = (LinearLayout) findViewById(R.id.trailorBackground);
+
+        trailorView = (FrameLayout) findViewById(R.id.trailorView);
         allDetails = (FrameLayout) findViewById(R.id.all_details_container);
+        newMain = (FrameLayout) findViewById(R.id.new_main);
+        main_content = (FrameLayout) findViewById(R.id.all_details_container);
+        headerContainer = (FrameLayout) findViewById(R.id.header_container);
 
         breathingProgress = (BreathingProgress) findViewById(R.id.breathingProgress);
 
         main = (RelativeLayout) findViewById(R.id.main);
-        newMain = (FrameLayout) findViewById(R.id.new_main);
-        main_content = (FrameLayout) findViewById(R.id.all_details_container);
         header = (RelativeLayout) findViewById(R.id.header);
-        headerContainer = (FrameLayout) findViewById(R.id.header_container);
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
         quality = prefrence.getString("image_quality", "w780");
-        cache = prefrence.getBoolean("cache", false);
 
         headerContainer.setOnClickListener(this);
-
         newMain.setOnClickListener(this);
-
+        trailorView.setOnClickListener(this);
 
         Intent intent = getIntent();
         getDataFromIntent(intent);
 
-
-        if (savedInstanceState == null) {
-
+        if (savedInstanceState == null)
             RevealAnimation.performReveal(allDetails);
-        }
-
 
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-
         performDataFetching();
     }
 
     private void performDataFetching() {
-
 
         GetDataFromNetwork getStuffFromNetwork = new GetDataFromNetwork();
         getStuffFromNetwork.setDataFetchedListener(this);
@@ -163,9 +153,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             main.setVisibility(View.INVISIBLE);
             breathingProgress.setVisibility(View.VISIBLE);
-
         }
-
     }
 
 
@@ -174,58 +162,69 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         if (intent != null) {
 
             networkApplicable = intent.getBooleanExtra("network_applicable", false);
-
             databaseApplicable = intent.getBooleanExtra("database_applicable", false);
-
             savedDatabaseApplicable = intent.getBooleanExtra("saved_database_applicable", false);
-
             type = intent.getIntExtra("type", 0);
-
             movie_id = intent.getStringExtra("id");
-
             movie_title = intent.getStringExtra("title");
-
         }
     }
 
-
-    private void showCastFragment(String title) {
-
-        CastFragment castFragment = CastFragment.newInstance(movie_id_final, title);
+    private void showCastFragment() {
+        CastFragment castFragment = CastFragment.newInstance(movie_id_final, movie_title);
         getSupportFragmentManager().
                 beginTransaction().
                 replace(R.id.cast_container, castFragment)
                 .commit();
-    }
 
+    }
 
     void parseMovieDetails(String movieDetails) {
 
-        String title, tagline, overview, banner_profile, runtime, language, released, poster;
+        String title, tagline, overview, banner_profile, runtime, language, released,
+                poster, img_url = null, trailor = null, get_poster_path_from_json, get_banner_from_json;
 
         try {
 
             JSONObject jsonObject = new JSONObject(movieDetails);
 
+            ContentValues contentValues = new ContentValues();
+
             title = jsonObject.getString("title");
             tagline = jsonObject.getString("tagline");
             overview = jsonObject.getString("overview");
             released = jsonObject.getString("release_date");
-            runtime = jsonObject.getString("runtime");
+            runtime = jsonObject.getString("runtime")+" mins";
             language = jsonObject.getString("original_language");
 
-            //check the values correcly
-
             movie_id_final = jsonObject.getString("imdb_id");
+            showCastFragment();
+
             movie_rating = jsonObject.getString("vote_average");
 
+            if (movie_rating == "0") {
+                movie_rating = "N.A";
+            }
 
-            showCastFragment(title);
+            //poster and banner
+            get_poster_path_from_json = jsonObject.getString("poster_path");
+            get_banner_from_json = jsonObject.getString("backdrop_path");
 
+            poster = "http://image.tmdb.org/t/p/w185" + get_poster_path_from_json;
+
+            if (get_banner_from_json != "null") {
+                banner_profile = "http://image.tmdb.org/t/p/w500" + get_banner_from_json;
+                banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_banner_from_json;
+
+            } else {
+                banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_poster_path_from_json;
+                banner_profile = "http://image.tmdb.org/t/p/w500" + get_poster_path_from_json;
+            }
+
+            //trailer
 
             JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
             JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
-            String trailor = null;
 
             if (youTubeArray.length() != 0) {
 
@@ -245,26 +244,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             } else
                 trailer = null;
 
-            String get_poster_path_from_json = jsonObject.getString("poster_path");
-            poster = "http://image.tmdb.org/t/p/w185" + get_poster_path_from_json;
-            String get_banner_from_json = jsonObject.getString("backdrop_path");
 
-            //Log.d("webi", "banner" + get_banner_from_json);
-            if (get_banner_from_json != "null") {
-                banner_profile = "http://image.tmdb.org/t/p/w500" + get_banner_from_json;
-                banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_banner_from_json;
-
-            } else {
-                banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_poster_path_from_json;
-                banner_profile = "http://image.tmdb.org/t/p/w500" + get_poster_path_from_json;
-            }
-
-
+            //genre
             String genre = "";
 
             JSONArray genreArray = jsonObject.getJSONArray("genres");
 
             for (int i = 0; i < genreArray.length(); i++) {
+
+                if(i>3)
+                    break;
 
                 String finalgenre = genreArray.getJSONObject(i).getString("name");
 
@@ -282,83 +271,67 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movie_tagline = tagline;
             show_centre_img_url = banner_for_full_activity;
 
-            movieMap = new HashMap<>();
+            movieMap = new HashMap<String, String>();
+            movieMap.put("imdb_id", movie_id_final);
             movieMap.put("title", movie_title);
             movieMap.put("tagline", tagline);
             movieMap.put("overview", overview);
             movieMap.put("rating", movie_rating);
             movieMap.put("certification", genre);
             movieMap.put("language", language);
-            movieMap.put("year", "0");
             movieMap.put("released", released);
-            movieMap.put("runtime", runtime + " mins");
+            movieMap.put("runtime", runtime);
             movieMap.put("trailer", trailer);
             movieMap.put("banner", banner_profile);
             movieMap.put("poster", poster);
-            movieMap.put("id", movie_id_final);
+
 
             try {
+                if (trailor != null) {
+                    trailer_boolean = true;
+                    String videoId = extractYoutubeId(trailer);
+                    img_url = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
 
-                img_url = getTrailorImageUrl(jsonObject);
+                } else {
+                    img_url = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("poster_path");
 
-            } catch (Exception e) {
+                }
+                movieMap.put("trailer_img",img_url);
+
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
             } finally {
 
-                movieMap.put("img_url", img_url);
-
-
                 if (databaseApplicable) {
-
-                    MovieDetailsUpdation.performMovieDetailsUpdation(this, type, movieMap, movie_id);
-
+                    MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this,type, movieMap,movie_id);
                 } else {
 
-                    showParsedContent(movieMap);
+                    showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
 
                 }
-            }
 
+
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private String getTrailorImageUrl(JSONObject jsonObject) throws Exception {
 
-        String img_url;
+    private void showParsedContent(String title, String banner_profile, String img_url, String tagline,
+                                   String overview, String rating, String runtime,
+                                   String released, String certification, String language) {
 
-        if (trailer != null) {
-
-            trailer_boolean = true;
-            String videoId = extractYoutubeId(trailer);
-            img_url = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
-
-
-        } else {
-
-            img_url = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("poster_path");
-
-        }
-
-        return img_url;
-
-    }
-
-
-    private void showParsedContent(HashMap<String, String> movieMap) {
-
-        String title = movieMap.get("title");
-        String banner_profile = movieMap.get("banner");
-        String tagline = movieMap.get("tagline");
-        String overview = movieMap.get("overview");
 
         det_title.setText(title);
         det_tagline.setText(tagline);
         det_overview.setText(overview);
-
-        showDetailedDescription(movieMap);
+        det_rating.setText(rating);
+        det_runtime.setText(runtime);
+        det_released.setText(released);
+        det_certification.setText(certification);
+        det_language.setText(language);
 
         Glide.with(context)
                 .load(banner_profile)
@@ -369,7 +342,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
                         banner.setImageBitmap(resource);
-
                         Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                             public void onGenerated(Palette p) {
                                 // Use generated instance
@@ -377,21 +349,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                 Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                 if (swatch != null) {
-
                                     header.setBackgroundColor(swatch.getRgb());
                                     det_title.setTextColor(swatch.getTitleTextColor());
                                     det_tagline.setTextColor(swatch.getBodyTextColor());
                                     det_overview.setTextColor(swatch.getBodyTextColor());
-
-
                                 }
                                 if (trailorSwatch != null) {
-
-                                    if (detailedDescription != null) {
-
-                                        detailedDescription.doSwatchWork(trailorSwatch, trailer_boolean);
-                                    }
-
+                                    trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
+                                    tvRating.setTextColor(trailorSwatch.getTitleTextColor());
+                                    det_rating.setTextColor(trailorSwatch.getBodyTextColor());
                                 }
                             }
                         });
@@ -400,41 +366,23 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 });
 
 
+        Glide.with(context)
+                .load(img_url)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        youtube_link.setImageBitmap(resource);
+                        if (trailer_boolean)
+                            youtube_play_button.setVisibility(View.VISIBLE);
+                    }
+
+                });
+
         main.setVisibility(View.VISIBLE);
         breathingProgress.setVisibility(View.INVISIBLE);
 
-    }
-
-
-    private void showDetailedDescription(HashMap<String, String> movieMap) {
-
-        detailedDescription = DetailedDescription.newInstance(movieMap);
-
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-
-                getSupportFragmentManager().
-                        beginTransaction().
-                        replace(R.id.detailed_description_container, detailedDescription)
-                        .commit();
-            }
-        });
-
-    }
-
-
-    public String extractYoutubeId(String url) throws MalformedURLException {
-        String query = new URL(url).getQuery();
-        String[] param = query.split("&");
-        String id = null;
-        for (String row : param) {
-            String[] param1 = row.split("=");
-            if (param1[0].equals("v")) {
-                id = param1[1];
-            }
-        }
-        return id;
     }
 
 
@@ -499,9 +447,120 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             fetchSavedMovieDetailsFromCursor(data);
         }
 
-
     }
 
+    private void fetchSavedMovieDetailsFromCursor(Cursor data) {
+
+        if (data != null && data.moveToFirst()) {
+
+            int title_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
+            int banner_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_BANNER);
+            int tagline_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TAGLINE);
+            int description_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_DESCRIPTION);
+            int trailer_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TRAILER);
+            int rating_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING);
+            int released_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING);
+            int runtime_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RUNTIME);
+            int language_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_LANGUAGE);
+            int certification_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_CERTIFICATION);
+            int id_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_ID);
+            int poster_link_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_POSTER_LINK);
+
+            String title = data.getString(title_index);
+            String banner_url = data.getString(banner_index);
+            String tagline = data.getString(tagline_index);
+            String overview = data.getString(description_index);
+
+            //as it will be used to show it on YouTube
+            trailer = data.getString(trailer_index);
+            String posterLink = data.getString(poster_link_index);
+
+            String rating = data.getString(rating_index);
+            String runtime = data.getString(runtime_index);
+            String released = data.getString(released_index);
+            String certification = data.getString(certification_index);
+            String language = data.getString(language_index);
+
+            movie_id_final = data.getString(id_index);
+
+            det_title.setText(title);
+            det_tagline.setText(tagline);
+            det_overview.setText(overview);
+            det_rating.setText(rating);
+            det_runtime.setText(runtime + " mins");
+            det_released.setText(released);
+            det_certification.setText(certification);
+            det_language.setText(language);
+
+            movie_desc = overview;
+            show_centre_img_url = banner_url;
+
+
+            Glide.with(context)
+                    .load(banner_url)
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+
+                            banner.setImageBitmap(resource);
+                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                                public void onGenerated(Palette p) {
+                                    // Use generated instance
+                                    Palette.Swatch swatch = p.getMutedSwatch();
+                                    Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
+
+                                    if (swatch != null) {
+                                        header.setBackgroundColor(swatch.getRgb());
+                                        det_title.setTextColor(swatch.getTitleTextColor());
+                                        det_tagline.setTextColor(swatch.getBodyTextColor());
+                                        det_overview.setTextColor(swatch.getBodyTextColor());
+                                    }
+                                    if (trailorSwatch != null) {
+                                        trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
+                                        tvRating.setTextColor(trailorSwatch.getTitleTextColor());
+                                        det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+
+
+            String thumbNail = null;
+            if ((trailer != null)) {
+                trailer_boolean = true;
+                try {
+                    String videoId = extractYoutubeId(trailer);
+                    thumbNail = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
+                } catch (Exception e) {
+                }
+            } else {
+                thumbNail = posterLink;
+            }
+
+
+            Glide.with(context)
+                    .load(thumbNail)
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            youtube_link.setImageBitmap(resource);
+                            if (trailer_boolean)
+                                youtube_play_button.setVisibility(View.VISIBLE);
+                        }
+
+                    });
+
+
+        }
+
+
+    }
 
     private void fetchMovieDetailsFromCursor(Cursor data) {
 
@@ -529,8 +588,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             String certification = data.getString(certification_index);
             String language = data.getString(language_index);
 
-            Toast.makeText(this,"I will be called again",Toast.LENGTH_SHORT).show();
-
             if (NullChecker.isSettable(title))
                 det_title.setText(title);
 
@@ -539,27 +596,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             if (NullChecker.isSettable(overview))
                 det_overview.setText(overview);
+            if (NullChecker.isSettable(rating))
+                det_rating.setText(rating);
 
+            if (runtime != null && !runtime.equals("null mins"))
+                det_runtime.setText(runtime);
 
+            if (NullChecker.isSettable(released))
+                det_released.setText(released);
 
-            HashMap<String, String> movieMap = new HashMap<>();
-            movieMap.put("rating", rating);
-            movieMap.put("runtime", runtime);
-            movieMap.put("released", released);
-            movieMap.put("certification", certification);
-            movieMap.put("language", language);
-            movieMap.put("img_url", img_url);
-            movieMap.put("trailer", trailer);
+            if (NullChecker.isSettable(certification))
+                det_certification.setText(certification);
 
-
-            if (detailedDescription != null) {
-
-                detailedDescription.setAllThings(movieMap);
-            } else {
-
-                showDetailedDescription(movieMap);
-            }
-
+            if (NullChecker.isSettable(language))
+                det_language.setText(language);
 
             Glide.with(context)
                     .load(banner_url)
@@ -573,7 +623,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
                             Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                                 public void onGenerated(Palette p) {
-                                    // Use generated instance
                                     Palette.Swatch swatch = p.getMutedSwatch();
                                     Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
@@ -583,15 +632,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                         det_title.setTextColor(swatch.getTitleTextColor());
                                         det_tagline.setTextColor(swatch.getBodyTextColor());
                                         det_overview.setTextColor(swatch.getBodyTextColor());
-
                                     }
                                     if (trailorSwatch != null) {
-
-                                        if (detailedDescription != null) {
-
-                                            detailedDescription.doSwatchWork(trailorSwatch, trailer_boolean);
-                                        }
-
+                                        trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
+                                        tvRating.setTextColor(trailorSwatch.getTitleTextColor());
+                                        det_rating.setTextColor(trailorSwatch.getBodyTextColor());
                                     }
                                 }
                             });
@@ -599,187 +644,50 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                         }
                     });
 
-
-        }
-
-    }
-
-    private void fetchSavedMovieDetailsFromCursor(Cursor data) {
-
-        if (data != null && data.moveToFirst()) {
-
-            int title_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
-            int banner_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_BANNER);
-            int tagline_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TAGLINE);
-            int description_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_DESCRIPTION);
-            int trailer_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TRAILER);
-            int rating_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING);
-            int released_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING);
-            int runtime_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RUNTIME);
-            int language_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_LANGUAGE);
-            int certification_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_CERTIFICATION);
-
-            int poster_link_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_POSTER_LINK);
-
-            String title = data.getString(title_index);
-            String banner_url = data.getString(banner_index);
-            String tagline = data.getString(tagline_index);
-            String overview = data.getString(description_index);
-
-            //as it will be used to show it on YouTube
-            trailer = data.getString(trailer_index);
-            String posterLink = data.getString(poster_link_index);
-
-            String rating = data.getString(rating_index);
-            String runtime = data.getString(runtime_index);
-            String released = data.getString(released_index);
-            String certification = data.getString(certification_index);
-            String language = data.getString(language_index);
-
-
-            det_title.setText(title);
-            det_tagline.setText(tagline);
-            det_overview.setText(overview);
-
-            HashMap<String, String> movieMap = new HashMap<>();
-            movieMap.put("rating", rating);
-            movieMap.put("runtime", runtime + " mins");
-            movieMap.put("released", released);
-            movieMap.put("certification", certification);
-            movieMap.put("language", language);
-
-
-            movie_desc = overview;
-            show_centre_img_url = banner_url;
-
-
-            String thumbNail = null;
-
-            if (!trailer.equals("null")) {
-
-                trailer_boolean = true;
-
-                try {
-
-                    String videoId = extractYoutubeId(trailer);
-                    thumbNail = "http://img.youtube.com/vi/" + videoId + "/0.jpg";
-
-                } catch (Exception e) {
-
-                }
-
-            } else {
-                thumbNail = posterLink;
-            }
-
-            movieMap.put("img_url", thumbNail);
-            movieMap.put("trailer", trailer);
-
-
-            if (detailedDescription != null) {
-
-                detailedDescription.setAllThings(movieMap);
-            } else {
-
-                showDetailedDescription(movieMap);
-            }
-
-
             Glide.with(context)
-                    .load(banner_url)
+                    .load(trailer)
                     .asBitmap()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(new SimpleTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-
-                            banner.setImageBitmap(resource);
-
-                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                                public void onGenerated(Palette p) {
-                                    // Use generated instance
-                                    Palette.Swatch swatch = p.getMutedSwatch();
-                                    Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
-
-                                    if (swatch != null) {
-
-                                        header.setBackgroundColor(swatch.getRgb());
-                                        det_title.setTextColor(swatch.getTitleTextColor());
-                                        det_tagline.setTextColor(swatch.getBodyTextColor());
-                                        det_overview.setTextColor(swatch.getBodyTextColor());
-
-                                    }
-                                    if (trailorSwatch != null) {
-
-                                        if (detailedDescription != null) {
-
-                                            detailedDescription.doSwatchWork(trailorSwatch, trailer_boolean);
-                                        }
-
-
-                                    }
-                                }
-                            });
-
+                            youtube_link.setImageBitmap(resource);
+                            if (trailer_boolean)
+                                youtube_play_button.setVisibility(View.VISIBLE);
                         }
+
                     });
 
 
         }
 
-
     }
-
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
 
-
             case android.R.id.home:
-
                 finish();
                 break;
 
-            case R.id.action_share:
-
+            case R.id.action_search:
                 shareMovie();
-
                 break;
 
             case R.id.action_save:
-
                 OfflineMovies offlineMovies = new OfflineMovies(this, main_content);
                 offlineMovies.saveMovie(movieMap, movie_id, movie_id_final);
-
                 break;
-
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-
-    private void shareMovie() {
-
-
-        movie_trailer = "http://www.imdb.com/title/" + movie_id_final;
-        if (!(movie_title.equals(null) && movie_rating.equals("null") && movie_id_final.equals("null"))) {
-            Intent myIntent = new Intent(Intent.ACTION_SEND);
-            myIntent.setType("text/plain");
-            myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_trailer + "\n");
-            startActivity(Intent.createChooser(myIntent, "Share with"));
-        }
-
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -793,7 +701,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -804,16 +711,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         return true;
     }
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
 
             case R.id.header_container:
-
-
                 if (movie_title != null && movie_desc != null) {
-
                     fullReadFragment = new FullReadFragment();
                     Bundle args = new Bundle();
                     args.putString("title", movie_title);
@@ -822,34 +725,70 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.all_details_container, fullReadFragment, "DESC").commit();
                 }
-
                 break;
 
             case R.id.new_main:
-
                 if (!(show_centre_img_url == null)) {
                     Intent intent = new Intent(MovieDetailsActivity.this, FullScreenImage.class);
                     intent.putExtra("img_url", show_centre_img_url);
                     startActivity(intent);
                 }
+                break;
 
+            case R.id.trailorView:
+                if ((trailer_boolean))
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer)));
                 break;
 
         }
     }
-
 
     @Override
     public void dataFetched(String response, int code) {
 
+
         switch (code) {
+
 
             case GetDataFromNetwork.MOVIE_DETAILS_CODE:
 
                 parseMovieDetails(response);
+                // showCastFragment();
+
                 break;
+
+            case GetDataFromNetwork.CAST_CODE:
+
+
+                break;
+
         }
 
     }
+
+    private void shareMovie() {
+        movie_trailer = "http://www.imdb.com/title/" + movie_id_final;
+        if (!(movie_title.equals(null) && movie_rating.equals("null") && movie_id_final.equals("null"))) {
+            Intent myIntent = new Intent(Intent.ACTION_SEND);
+            myIntent.setType("text/plain");
+            myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_trailer + "\n");
+            startActivity(Intent.createChooser(myIntent, "Share with"));
+        }
+
+    }
+
+    public String extractYoutubeId(String url) throws MalformedURLException {
+        String query = new URL(url).getQuery();
+        String[] param = query.split("&");
+        String id = null;
+        for (String row : param) {
+            String[] param1 = row.split("=");
+            if (param1[0].equals("v")) {
+                id = param1[1];
+            }
+        }
+        return id;
+    }
+
 
 }

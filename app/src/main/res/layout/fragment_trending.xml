@@ -22,6 +22,13 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </FrameLayout>
 
+        <tech.salroid.filmy.Custom.BreathingProgress
+            android:id="@+id/breathingProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />
+
     </RelativeLayout>
 
 </FrameLayout>

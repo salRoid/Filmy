@@ -1,10 +1,15 @@
 package tech.salroid.filmy.Activity;
 
-import android.content.ComponentName;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,14 +18,11 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
-
-import me.tatarka.support.internal.JobSchedulerCompat;
-import me.tatarka.support.job.JobInfo;
-import me.tatarka.support.job.JobScheduler;
-import me.tatarka.support.os.PersistableBundle;
 import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
 import tech.salroid.filmy.Fragments.InTheaters;
 import tech.salroid.filmy.Fragments.Trending;
@@ -28,15 +30,26 @@ import tech.salroid.filmy.Fragments.UpComing;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.Fragments.SearchFragment;
 import tech.salroid.filmy.Service.FilmyJobScheduler;
-import tech.salroid.filmy.Service.FilmyJobService;
-import tech.salroid.filmy.Sync.FilmySyncAdapter;
+import tech.salroid.filmy.Utils.Network;
+import tr.xip.errorview.ErrorView;
 
 
 public class MainActivity extends AppCompatActivity {
 
+
     private MaterialSearchView materialSearchView;
     private SearchFragment searchFragment;
-    TextView logo;
+    private TextView logo;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private ErrorView mErrorView;
+    public boolean fetchingFromNetwork;
+    private Trending trendingFragment;
+    private InTheaters inTheatersFragment;
+    private UpComing upComingFragment;
+    private Toolbar toolbar;
+    private FrameLayout toolbarScroller;
+    private boolean cantProceed;
 
     @Override
 
@@ -44,22 +57,53 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(" ");
 
         logo = (TextView) findViewById(R.id.logo);
 
+        toolbarScroller = (FrameLayout) findViewById(R.id.toolbarScroller);
+
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
 
+        mErrorView = (ErrorView) findViewById(R.id.error_view);
+
+        mErrorView.setConfig(ErrorView.Config.create()
+                .title(getString(R.string.error_title_damn))
+                .titleColor(getResources().getColor(R.color.dark))
+                .subtitle("Unable to fetch movies.\nCheck internet connection then try again.")
+                .retryText(getString(R.string.error_view_retry))
+                .build());
+
+
+        mErrorView.setOnRetryListener(new ErrorView.RetryListener() {
+            @Override
+            public void onRetry() {
+
+                if (Network.isNetworkConnected(MainActivity.this)) {
+
+                    fetchingFromNetwork = true;
+                    setScheduler();
+
+                }
+
+                canProceed();
+
+            }
+        });
+
+
+
+        mErrorView.setVisibility(View.GONE);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         // Give the TabLayout the ViewPager
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
         materialSearchView = (MaterialSearchView) findViewById(R.id.search_view);
@@ -89,8 +133,9 @@ public class MainActivity extends AppCompatActivity {
             public void onSearchViewShown() {
                 //Do some magic
 
-
                 tabLayout.setVisibility(View.GONE);
+
+                disableToolbarScrolling();
 
                 searchFragment = new SearchFragment();
                 getSupportFragmentManager().
@@ -110,28 +155,99 @@ public class MainActivity extends AppCompatActivity {
                         .remove(searchFragment)
                         .commit();
 
-                tabLayout.setVisibility(View.VISIBLE);
+                if (!cantProceed)
+                  tabLayout.setVisibility(View.VISIBLE);
+
+                enableToolbarScrolling();
 
             }
         });
 
 
-        //FilmySyncAdapter.syncImmediately(this);
+
+        if (Network.isNetworkConnected(this)) {
+
+            fetchingFromNetwork = true ;
+            setScheduler();
+        }
+
+    }
+
+
+
+    private void setScheduler() {
 
         FilmyJobScheduler filmyJobScheduler = new FilmyJobScheduler(this);
         filmyJobScheduler.createJob();
 
     }
 
+    public void cantProceed(final int status) {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                cantProceed = true;
+
+                tabLayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                mErrorView.setError(status);
+                mErrorView.setVisibility(View.VISIBLE);
+
+                //disable toolbar scrolling
+                disableToolbarScrolling();
+
+            }
+        }, 1000);
+
+    }
 
 
+
+    public void canProceed(){
+
+        cantProceed = false;
+
+        tabLayout.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.VISIBLE);
+        mErrorView.setVisibility(View.GONE);
+
+        if(trendingFragment!=null){
+
+            trendingFragment.retryLoading();
+
+        }
+
+        enableToolbarScrolling();
+
+    }
+
+    private void disableToolbarScrolling() {
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbarScroller.getLayoutParams();
+        params.setScrollFlags(0);
+    }
+
+    private void enableToolbarScrolling() {
+
+        AppBarLayout.LayoutParams params =
+                (AppBarLayout.LayoutParams) toolbarScroller.getLayoutParams();
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+
+    }
 
     private void setupViewPager(ViewPager viewPager) {
 
+
+        trendingFragment = new Trending();
+        inTheatersFragment = new InTheaters();
+        upComingFragment = new UpComing();
+
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Trending(), "TRENDING");
-        adapter.addFragment(new InTheaters(), "IN THEATER");
-        adapter.addFragment(new UpComing(), "UPCOMING");
+        adapter.addFragment(trendingFragment, "TRENDING");
+        adapter.addFragment(inTheatersFragment, "IN THEATERS");
+        adapter.addFragment(upComingFragment, "UPCOMING");
         viewPager.setAdapter(adapter);
 
     }
@@ -202,5 +318,38 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Extract data included in the Intent
+            int statusCode = intent.getIntExtra("message",00);
+
+            Toast.makeText(context,"Failed to get latest movies.",Toast.LENGTH_SHORT).show();
+
+            cantProceed(statusCode);
+
+        }
+    };
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("fetch-failed"));
+
+    }
+
+    @Override
+    protected void onPause() {
+        // Unregister since the activity is not visible
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onPause();
+    }
+
+
 
 }

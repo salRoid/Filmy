@@ -13,7 +13,10 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import tech.salroid.filmy.Activity.MainActivity;
 import tech.salroid.filmy.Activity.MovieDetailsActivity;
+import tech.salroid.filmy.Custom.BreathingProgress;
 import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
 import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.Database.MovieSelection;
@@ -24,6 +27,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
     private RecyclerView recycler;
     private MainActivityAdapter mainActivityAdapter;
+    BreathingProgress breathingProgress;
 
 
     public Trending() {
@@ -37,6 +41,9 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
+
+        breathingProgress = (BreathingProgress) view.findViewById(R.id.breathingProgress);
+
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recycler.setLayoutManager(gridLayoutManager);
 
@@ -71,7 +78,16 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mainActivityAdapter.swapCursor(cursor);
+
+        if (cursor != null && cursor.getCount() > 0) {
+
+            mainActivityAdapter.swapCursor(cursor);
+            breathingProgress.setVisibility(View.GONE);
+
+        } else if (!((MainActivity) getActivity()).fetchingFromNetwork) {
+            ((MainActivity) getActivity()).cantProceed();
+        }
+
     }
 
     @Override
@@ -97,6 +113,13 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
 
+
+    }
+
+
+    public void retryLoading() {
+
+        getActivity().getSupportLoaderManager().restartLoader(MovieSelection.TRENDING_MOVIE_LOADER, null, this);
 
     }
 

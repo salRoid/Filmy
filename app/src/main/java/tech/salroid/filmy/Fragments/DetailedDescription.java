@@ -82,17 +82,12 @@ public class DetailedDescription extends Fragment implements View.OnClickListene
         trailorView = (FrameLayout) view.findViewById(R.id.trailorView);
         trailorView.setOnClickListener(this);
 
+        setAllThings(movieMap);
+
         return view;
 
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        setAllThings(movieMap);
-
-    }
 
 
 

@@ -1,9 +1,8 @@
-package tech.salroid.filmy.Sync;
+package tech.salroid.filmy.sync;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 /**
  * Created by R Ankit on 21-07-2016.

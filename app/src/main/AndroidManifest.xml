@@ -2,11 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tech.salroid.filmy">
 
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    !-- Permissions required by the sync adapter -->
+    <!-- Permissions required by the sync adapter -->
 
     <!--<uses-permission
         android:name="android.permission.READ_SYNC_SETTINGS"/>
@@ -19,60 +20,66 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
     <application
         android:name=".FilmyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/lunch"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
 
         </activity>
+
+
+
         <activity
-            android:name=".Activity.MovieDetailsActivity"
+            android:name=".activity.MovieDetailsActivity"
             android:label=" "
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activity.CharacterDetailsActivity"
+            android:name=".activity.CharacterDetailsActivity"
             android:label="Details"
             android:theme="@style/AppTheme.Base" />
 
         <provider
-            android:name=".Provider.FilmProvider"
+            android:name=".provider.FilmProvider"
             android:syncable="true"
             android:exported="false"
             android:authorities="@string/content_authority" />
 
 
         <activity
-            android:name=".Activity.FullCastActivity"
+            android:name=".activity.FullCastActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".Activity.FullMovieActivity"
+            android:name=".activity.FullMovieActivity"
             android:label="@string/title_activity_full_movie"
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".Activity.FullScreenImage"
+            android:name=".activity.FullScreenImage"
             android:label=" "
             android:theme="@style/FullScreenTheme" />
 
         <activity
-            android:name=".Activity.SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".Activity.SavedMovies"
+            android:name=".activity.SavedMovies"
             android:label="@string/title_activity_saved_movies"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/AppTheme.Base"/>
 
         <!--<service android:name=".Service.FilmyService"/>
         <receiver android:name=".Service.FilmyService$AlarmReciever"/>-->
@@ -103,11 +110,9 @@
 -->
 
         <service
-            android:name=".Service.FilmyJobService"
+            android:name=".service.FilmyJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true" />
-
-
 
     </application>
 

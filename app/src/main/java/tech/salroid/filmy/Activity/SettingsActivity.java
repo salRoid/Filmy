@@ -1,8 +1,7 @@
-package tech.salroid.filmy.Activity;
+package tech.salroid.filmy.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -22,6 +21,7 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (getSupportActionBar()!=null)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getFragmentManager().beginTransaction().
@@ -58,9 +58,8 @@ public class SettingsActivity extends AppCompatActivity {
                         quality = "w500";
                     }
 
-
                     my_prefrence.putString("image_quality", quality);
-                    my_prefrence.commit();
+                    my_prefrence.apply();
 
                     return true;
                 }

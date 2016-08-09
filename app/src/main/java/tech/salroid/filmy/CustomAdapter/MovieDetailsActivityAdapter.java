@@ -1,4 +1,4 @@
-package tech.salroid.filmy.CustomAdapter;
+package tech.salroid.filmy.customAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +11,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import java.util.ArrayList;
 import java.util.List;
-import tech.salroid.filmy.DataClasses.MovieDetailsData;
+import tech.salroid.filmy.dataClasses.MovieDetailsData;
 import tech.salroid.filmy.R;
-/**
- * Created by Home on 7/22/2016.
- */
 public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetailsActivityAdapter.Ho> {
 
     private final Boolean ret_size;

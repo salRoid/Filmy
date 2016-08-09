@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
                 android:padding="16dp"
-                android:text="Cast "
+                android:text="@string/cast"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
                 android:background="?android:selectableItemBackground"
                 android:fontFamily="sans-serif-condensed"
                 android:padding="16dp"
-                android:text="More"
+                android:text="@string/more"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@color/colorMore"
                 android:textStyle="bold"

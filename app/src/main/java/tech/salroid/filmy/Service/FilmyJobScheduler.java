@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Service;
+package tech.salroid.filmy.service;
 
 import android.content.ComponentName;
 import android.content.Context;

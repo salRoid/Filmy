@@ -1,11 +1,9 @@
-package tech.salroid.filmy.Database;
+package tech.salroid.filmy.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import java.util.HashMap;
-/**
- * Created by R Ankit on 07-08-2016.
- */
+
 
 public class MovieDetailsUpdation {
 

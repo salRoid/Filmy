@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Activity;
+package tech.salroid.filmy.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,14 +9,13 @@ import android.support.v7.widget.Toolbar;
 
 import java.util.List;
 
-import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
-import tech.salroid.filmy.DataClasses.MovieDetailsData;
-import tech.salroid.filmy.Parsers.MovieDetailsActivityParseWork;
+import tech.salroid.filmy.customAdapter.MovieDetailsActivityAdapter;
+import tech.salroid.filmy.dataClasses.MovieDetailsData;
+import tech.salroid.filmy.parsers.MovieDetailsActivityParseWork;
 import tech.salroid.filmy.R;
 
 public class FullCastActivity extends AppCompatActivity implements MovieDetailsActivityAdapter.ClickListener {
 
-    private RecyclerView full_cast_recycler;
     private String cast_result;
 
     @Override
@@ -29,21 +28,23 @@ public class FullCastActivity extends AppCompatActivity implements MovieDetailsA
         setSupportActionBar(toolbar);
 
 
-        full_cast_recycler = (RecyclerView) findViewById(R.id.full_cast_recycler);
+        RecyclerView full_cast_recycler = (RecyclerView) findViewById(R.id.full_cast_recycler);
         full_cast_recycler.setLayoutManager(new LinearLayoutManager(FullCastActivity.this));
 
 
         Intent intent = getIntent();
         if (intent != null) {
             cast_result = intent.getStringExtra("cast_json");
-            getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
+
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
+
         }
 
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(this, cast_result);
         List<MovieDetailsData> cast_list = par.parse_cast();
-        Boolean size = false;
-        MovieDetailsActivityAdapter full_cast_adapter = new MovieDetailsActivityAdapter(this, cast_list, size);
+        MovieDetailsActivityAdapter full_cast_adapter = new MovieDetailsActivityAdapter(this, cast_list, false);
         full_cast_adapter.setClickListener(this);
         full_cast_recycler.setAdapter(full_cast_adapter);
 

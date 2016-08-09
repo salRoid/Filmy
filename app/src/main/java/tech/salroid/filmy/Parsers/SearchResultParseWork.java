@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Parsers;
+package tech.salroid.filmy.parsers;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.DataClasses.SearchData;
+import tech.salroid.filmy.dataClasses.SearchData;
 
 /**
  * Created by Home on 7/27/2016.

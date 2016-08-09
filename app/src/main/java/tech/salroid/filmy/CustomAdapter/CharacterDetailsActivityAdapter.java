@@ -1,4 +1,4 @@
-package tech.salroid.filmy.CustomAdapter;
+package tech.salroid.filmy.customAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +14,9 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.DataClasses.CharacterDetailsData;
+import tech.salroid.filmy.dataClasses.CharacterDetailsData;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.DataClasses.MovieData;
 
-/**
- * Created by Home on 7/22/2016.
- */
 public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<CharacterDetailsActivityAdapter.Fo> {
 
     private final LayoutInflater inflater;
@@ -92,7 +88,7 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null) {
-                        clickListener.itemClicked(ch.get(getPosition()), getPosition());
+                        clickListener.itemClicked(ch.get(getAdapterPosition()), getAdapterPosition());
                     }
                 }
             });

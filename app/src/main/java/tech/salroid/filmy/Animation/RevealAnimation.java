@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Animation;
+package tech.salroid.filmy.animation;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;

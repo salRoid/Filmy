@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Fragments;
+package tech.salroid.filmy.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,18 +13,17 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import tech.salroid.filmy.Activity.MainActivity;
-import tech.salroid.filmy.Activity.MovieDetailsActivity;
-import tech.salroid.filmy.Custom.BreathingProgress;
-import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
-import tech.salroid.filmy.Database.FilmContract;
-import tech.salroid.filmy.Database.MovieSelection;
+import tech.salroid.filmy.activity.MainActivity;
+import tech.salroid.filmy.activity.MovieDetailsActivity;
+import tech.salroid.filmy.custom.BreathingProgress;
+import tech.salroid.filmy.customAdapter.MainActivityAdapter;
+import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.database.MovieSelection;
 import tech.salroid.filmy.R;
 
 
 public class Trending extends Fragment implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private RecyclerView recycler;
     private MainActivityAdapter mainActivityAdapter;
     BreathingProgress breathingProgress;
 
@@ -39,7 +38,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
 
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
-        recycler = (RecyclerView) view.findViewById(R.id.recycler);
+        RecyclerView recycler = (RecyclerView) view.findViewById(R.id.recycler);
 
         breathingProgress = (BreathingProgress) view.findViewById(R.id.breathingProgress);
 

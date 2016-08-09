@@ -1,13 +1,10 @@
-package tech.salroid.filmy.Network;
+package tech.salroid.filmy.network;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import tech.salroid.filmy.FilmyApplication;
 
-/**
- * Created by Home on 7/23/2016.
- */
 public class VolleySingleton {
 
     public static VolleySingleton instance = null;

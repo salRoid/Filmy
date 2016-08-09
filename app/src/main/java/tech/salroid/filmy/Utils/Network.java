@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Utils;
+package tech.salroid.filmy.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

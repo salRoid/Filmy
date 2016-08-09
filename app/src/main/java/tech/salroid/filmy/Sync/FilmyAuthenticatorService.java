@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Sync;
+package tech.salroid.filmy.sync;
 
 import android.app.Service;
 import android.content.Intent;

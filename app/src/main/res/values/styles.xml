@@ -16,7 +16,6 @@
     </style>
 
 
-
     <style name="MyToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">#FFFFFF</item>
     </style>
@@ -47,4 +46,10 @@
 
 
     <color name="white">#ffffff</color>
+
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
 </resources>

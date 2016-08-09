@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activity;
+package tech.salroid.filmy.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,18 +37,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import tech.salroid.filmy.animation.RevealAnimation;
-import tech.salroid.filmy.custom.BreathingProgress;
-import tech.salroid.filmy.database.FilmContract;
-import tech.salroid.filmy.database.MovieDetailsUpdation;
-import tech.salroid.filmy.database.MovieLoaders;
-import tech.salroid.filmy.database.MovieSelection;
-import tech.salroid.filmy.database.OfflineMovies;
-import tech.salroid.filmy.fragments.CastFragment;
-import tech.salroid.filmy.fragments.FullReadFragment;
-import tech.salroid.filmy.network.GetDataFromNetwork;
+import tech.salroid.filmy.Animation.RevealAnimation;
+import tech.salroid.filmy.Custom.BreathingProgress;
+import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
+import tech.salroid.filmy.Database.FilmContract;
+import tech.salroid.filmy.Database.MovieDetailsUpdation;
+import tech.salroid.filmy.Database.MovieLoaders;
+import tech.salroid.filmy.Database.MovieSelection;
+import tech.salroid.filmy.Database.OfflineMovies;
+import tech.salroid.filmy.Fragments.CastFragment;
+import tech.salroid.filmy.Fragments.FullReadFragment;
+import tech.salroid.filmy.Network.GetDataFromNetwork;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.utils.NullChecker;
+import tech.salroid.filmy.Utils.NullChecker;
 
 
 public class MovieDetailsActivity extends AppCompatActivity implements
@@ -308,7 +309,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             } finally {
 
                 if (databaseApplicable) {
-                    MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this, type, movieMap, movie_id);
+                    MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this,type, movieMap,movie_id);
                 } else {
 
                     showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);

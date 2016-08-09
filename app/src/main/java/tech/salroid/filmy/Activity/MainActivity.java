@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activity;
+package tech.salroid.filmy.Activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,14 +24,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
-import tech.salroid.filmy.customAdapter.MyPagerAdapter;
-import tech.salroid.filmy.fragments.InTheaters;
-import tech.salroid.filmy.fragments.Trending;
-import tech.salroid.filmy.fragments.UpComing;
+import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
+import tech.salroid.filmy.Fragments.InTheaters;
+import tech.salroid.filmy.Fragments.Trending;
+import tech.salroid.filmy.Fragments.UpComing;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.fragments.SearchFragment;
-import tech.salroid.filmy.service.FilmyJobScheduler;
-import tech.salroid.filmy.utils.Network;
+import tech.salroid.filmy.Fragments.SearchFragment;
+import tech.salroid.filmy.Service.FilmyJobScheduler;
+import tech.salroid.filmy.Utils.Network;
 import tr.xip.errorview.ErrorView;
 
 

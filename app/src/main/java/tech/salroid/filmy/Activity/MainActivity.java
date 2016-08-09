@@ -4,8 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
+import tech.salroid.filmy.FilmyIntro;
 import tech.salroid.filmy.Fragments.InTheaters;
 import tech.salroid.filmy.Fragments.Trending;
 import tech.salroid.filmy.Fragments.UpComing;
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(" ");
+
+        introLogic();
 
         logo = (TextView) findViewById(R.id.logo);
 
@@ -173,6 +178,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void introLogic() {
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                SharedPreferences getPrefs = PreferenceManager
+                        .getDefaultSharedPreferences(getBaseContext());
+
+                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+
+                if (isFirstStart) {
+
+                    Intent i = new Intent(MainActivity.this, FilmyIntro.class);
+                    startActivity(i);
+                    SharedPreferences.Editor e = getPrefs.edit();
+                    e.putBoolean("firstStart", false);
+                    e.apply();
+                }
+            }
+        });
+        t.start();
+
+    }
 
 
     private void setScheduler() {

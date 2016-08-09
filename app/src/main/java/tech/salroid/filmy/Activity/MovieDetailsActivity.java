@@ -213,12 +213,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             poster = "http://image.tmdb.org/t/p/w185" + get_poster_path_from_json;
 
             if (get_banner_from_json != "null") {
-                banner_profile = "http://image.tmdb.org/t/p/w500" + get_banner_from_json;
+                banner_profile = "http://image.tmdb.org/t/p/w780" + get_banner_from_json;
                 banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_banner_from_json;
 
             } else {
                 banner_for_full_activity = "http://image.tmdb.org/t/p/" + quality + get_poster_path_from_json;
-                banner_profile = "http://image.tmdb.org/t/p/w500" + get_poster_path_from_json;
+                banner_profile = "http://image.tmdb.org/t/p/w780" + get_poster_path_from_json;
             }
 
             //trailer

@@ -27,7 +27,7 @@
                     android:id="@+id/bannu"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:background="@color/grey"
+                    android:background="@color/dark"
                     android:scaleType="centerCrop" />
             </FrameLayout>
 

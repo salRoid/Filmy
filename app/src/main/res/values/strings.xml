@@ -13,7 +13,6 @@
 
     <string name="image_quality">medium</string>
 
-
     <!-- SyncAdapter related -->
     <string name="sync_account_type">filmy.salroid.com</string>
     <string name="content_authority">tech.salroid.filmy</string>

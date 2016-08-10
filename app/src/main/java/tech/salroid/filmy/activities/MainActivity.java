@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FrameLayout toolbarScroller;
     private boolean cantProceed;
+
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

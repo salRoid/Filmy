@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Filmy</string>
+    <string name="title_activity_detailed">DetailedActivity</string>
+    <string name="title_activity_detailed__cast">Detailed_Cast</string>
+
+    <string name="api_key">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_full_cast">FullCastActivity</string>
+    <string name="title_activity_full_movie">FullMovieActivity</string>
+    <string name="title_activity_full_screen_image">FullScreenImage</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_saved_movies">Saved Movies</string>
+
+    <string name="image_quality">medium</string>
+
+    <string name="trakt_base_url">https://api.trakt.tv/people/</string>
+    <string name="trakt_movie_base_url">https://api.trakt.tv/movies/</string>
+    <string name="trakt_cast_suffix">/people?extended=images</string>
+    <string name="tmdb_movie_base_url">http://api.themoviedb.org/3/movie/</string>
+    <string name="tmdb_api_key">api_key=b640f55eb6ecc47b3433cfe98d0675b1</string>
+
+    <string name="person_details_suffix">extended=full,images</string>
+    <string name="person_movies_details">/movies?extended=images,full</string>
+    <string name="imdb_link_prefix">http://www.imdb.com/title/</string>
+    <string name="trailer_img_prefix">http://img.youtube.com/vi/</string>
+    <string name="trailer_img_suffix">/0.jpg</string>
+    <string name="poster_prefix_185">http://image.tmdb.org/t/p/w185</string>
+    <string name="poster_prefix_500">http://image.tmdb.org/t/p/w500</string>
+    <string name="poster_prefix_add_quality">http://image.tmdb.org/t/p/</string>
+    <string name="trailer_link_prefix">https://www.youtube.com/watch?v=</string>
+
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">filmy.salroid.com</string>
+    <string name="content_authority">tech.salroid.filmy</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_title_damn">Something went wrong !</string>
+    <string name="info_retrying">Retrying</string>
+    <string name="rating">Rating</string>
+    <string name="movies">Movies</string>
+    <string name="cast">Cast</string>
+    <string name="dash">- - - -</string>
+    <string name="more">More</string>
+    <string name="runtime">Runtime</string>
+    <string name="genre">Genre</string>
+    <string name="language">Language</string>
+    <string name="release_date">Release Date</string>
+
+
+</resources>

@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Fragments;
+package tech.salroid.filmy.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,19 +17,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import org.json.JSONArray;
 import java.util.List;
-import tech.salroid.filmy.Activity.CharacterDetailsActivity;
-import tech.salroid.filmy.Activity.MovieDetailsActivity;
-import tech.salroid.filmy.Custom.BreathingProgress;
-import tech.salroid.filmy.CustomAdapter.SearchResultAdapter;
-import tech.salroid.filmy.DataClasses.SearchData;
-import tech.salroid.filmy.Parsers.SearchResultParseWork;
-import tech.salroid.filmy.Network.VolleySingleton;
+import tech.salroid.filmy.activity.CharacterDetailsActivity;
+import tech.salroid.filmy.activity.MovieDetailsActivity;
+import tech.salroid.filmy.custom.BreathingProgress;
+import tech.salroid.filmy.customAdapter.SearchResultAdapter;
+import tech.salroid.filmy.dataClasses.SearchData;
+import tech.salroid.filmy.parsers.SearchResultParseWork;
+import tech.salroid.filmy.network.VolleySingleton;
 import tech.salroid.filmy.R;
 
 public class SearchFragment extends Fragment implements SearchResultAdapter.ClickListener {
 
     private RecyclerView recycler;
-    private Intent intent;
     BreathingProgress breathingProgress;
     SearchResultAdapter sadapter;
 
@@ -53,6 +52,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     @Override
     public void itemClicked(SearchData setterGetter, int position) {
 
+        Intent intent;
         if (setterGetter.getType().equals("person"))
             intent = new Intent(getActivity(), CharacterDetailsActivity.class);
         else{

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context=".Activity.MainActivity">
+    tools:context=".activity.MainActivity">
 
     <ImageView
         android:id="@+id/cen_img"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <tech.salroid.filmy.Custom.BreathingProgress
+    <tech.salroid.filmy.custom.BreathingProgress
         android:layout_centerInParent="true"
         android:id="@+id/breathingProgress"
         android:visibility="invisible"

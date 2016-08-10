@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Sync;
+package tech.salroid.filmy.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -22,9 +22,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import tech.salroid.filmy.Parsers.MainActivityParseWork;
-import tech.salroid.filmy.Network.TmdbVolleySingleton;
-import tech.salroid.filmy.Network.VolleySingleton;
+import tech.salroid.filmy.parsers.MainActivityParseWork;
+import tech.salroid.filmy.network.TmdbVolleySingleton;
+import tech.salroid.filmy.network.VolleySingleton;
 import tech.salroid.filmy.R;
 
 import static com.android.volley.toolbox.Volley.newRequestQueue;

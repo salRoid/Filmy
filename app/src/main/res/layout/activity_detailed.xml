@@ -24,7 +24,7 @@
                 android:foreground="?android:selectableItemBackground">
 
                 <ImageView
-                    android:id="@+id/bannu"
+                    android:id="@+id/backdrop"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:background="@color/dark"
@@ -113,7 +113,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:fontFamily="sans-serif-condensed"
-                                android:text="Rating"
+                                android:text="@string/rating"
                                 android:textAppearance="?android:textAppearanceLarge" />
 
                             <TextView
@@ -185,7 +185,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <tech.salroid.filmy.Custom.BreathingProgress
+    <tech.salroid.filmy.custom.BreathingProgress
 
         android:layout_gravity="center"
         android:id="@+id/breathingProgress"

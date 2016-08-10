@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Database;
+package tech.salroid.filmy.database;
 
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -15,9 +15,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 import tech.salroid.filmy.R;
 
-/**
- * Created by R Ankit on 06-08-2016.
- */
+
 
 public class OfflineMovies {
 

@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Animation;
+package tech.salroid.filmy.animation;
 
 import android.view.View;
 import android.view.animation.Animation;

@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Provider;
+package tech.salroid.filmy.provider;
 
 import android.annotation.TargetApi;
 import android.content.ContentProvider;
@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
-import tech.salroid.filmy.Database.FilmContract;
-import tech.salroid.filmy.Database.FilmDbHelper;
+import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.database.FilmDbHelper;
 
 /**
  * Created by Home on 7/24/2016.

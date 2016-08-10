@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
-            android:text="Runtime"
+            android:text="@string/runtime"
             android:textAppearance="?android:textAppearanceMedium" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/runtime_holder"
             android:fontFamily="sans-serif-condensed"
-            android:text="Genre"
+            android:text="@string/genre"
             android:textAppearance="?android:textAppearanceMedium" />
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/certification_holder"
             android:fontFamily="sans-serif-condensed"
-            android:text="Language"
+            android:text="@string/language"
             android:textAppearance="?android:textAppearanceMedium" />
 
         <TextView
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/language_holder"
             android:fontFamily="sans-serif-condensed"
-            android:text="Release Date"
+            android:text="@string/release_date"
             android:textAppearance="?android:textAppearanceMedium" />
 
 

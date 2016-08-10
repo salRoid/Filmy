@@ -1,4 +1,4 @@
-package tech.salroid.filmy.CustomAdapter;
+package tech.salroid.filmy.customAdapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +12,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
-import tech.salroid.filmy.DataClasses.SearchData;
+import tech.salroid.filmy.dataClasses.SearchData;
 import tech.salroid.filmy.R;
 
-/**
- * Created by Home on 7/27/2016.
- */
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.Dh> {
 
     private final LayoutInflater inflater;

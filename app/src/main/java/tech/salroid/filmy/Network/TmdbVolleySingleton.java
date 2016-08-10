@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Network;
+package tech.salroid.filmy.network;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;

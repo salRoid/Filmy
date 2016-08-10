@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activity;
+package tech.salroid.filmy.activities;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -191,7 +191,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             tagline = jsonObject.getString("tagline");
             overview = jsonObject.getString("overview");
             released = jsonObject.getString("release_date");
-            runtime = jsonObject.getString("runtime")+" mins";
+            runtime = jsonObject.getString("runtime") + " mins";
             language = jsonObject.getString("original_language");
 
             movie_id_final = jsonObject.getString("imdb_id");
@@ -249,7 +249,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             for (int i = 0; i < genreArray.length(); i++) {
 
-                if(i>3)
+                if (i > 3)
                     break;
 
                 String finalgenre = genreArray.getJSONObject(i).getString("name");
@@ -293,14 +293,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                     img_url = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("poster_path");
 
                 }
-                movieMap.put("trailer_img",img_url);
+                movieMap.put("trailer_img", img_url);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } finally {
 
                 if (databaseApplicable) {
-                    MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this,type, movieMap,movie_id);
+                    MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this, type, movieMap, movie_id);
                 } else {
 
                     showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);

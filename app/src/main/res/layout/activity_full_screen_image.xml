@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    tools:context=".activity.MainActivity">
+    tools:context=".activities.MainActivity">
 
     <ImageView
         android:id="@+id/cen_img"

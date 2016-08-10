@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activity;
+package tech.salroid.filmy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

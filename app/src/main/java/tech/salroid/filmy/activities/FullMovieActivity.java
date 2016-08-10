@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activity;
+package tech.salroid.filmy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,7 +30,6 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         setSupportActionBar(toolbar);
 
 
-
         full_movie_recycler = (RecyclerView) findViewById(R.id.full_movie_recycler);
         full_movie_recycler.setLayoutManager(new LinearLayoutManager(FullMovieActivity.this));
 
@@ -52,18 +51,16 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
     }
 
 
-
     @Override
     public void itemClicked(CharacterDetailsData setterGetterChar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("id", setterGetterChar.getChar_id());
         intent.putExtra("network_applicable", true);
-        Log.d("webi",setterGetterChar.getChar_id());
+        Log.d("webi", setterGetterChar.getChar_id());
         intent.putExtra("activity", false);
         startActivity(intent);
 
     }
-
 
 
 }

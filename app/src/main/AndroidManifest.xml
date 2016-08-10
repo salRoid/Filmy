@@ -41,15 +41,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activities.MainActivity">
         </activity>
 
         <activity
-            android:name=".activity.MovieDetailsActivity"
+            android:name=".activities.MovieDetailsActivity"
             android:label=" "
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.CharacterDetailsActivity"
+            android:name=".activities.CharacterDetailsActivity"
             android:label="Details"
             android:theme="@style/AppTheme.Base" />
 
@@ -61,27 +61,27 @@
 
 
         <activity
-            android:name=".activity.FullCastActivity"
+            android:name=".activities.FullCastActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".activity.FullMovieActivity"
+            android:name=".activities.FullMovieActivity"
             android:label="@string/title_activity_full_movie"
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".activity.FullScreenImage"
+            android:name=".activities.FullScreenImage"
             android:label=" "
             android:theme="@style/FullScreenTheme" />
 
         <activity
-            android:name=".activity.SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activity.SavedMovies"
+            android:name=".activities.SavedMovies"
             android:label="@string/title_activity_saved_movies"
             android:theme="@style/AppTheme.Base"></activity>
 

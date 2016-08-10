@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activity.SavedMovies">
+    tools:context=".activities.SavedMovies">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

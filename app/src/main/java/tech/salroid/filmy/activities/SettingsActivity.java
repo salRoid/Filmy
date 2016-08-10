@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activity;
+package tech.salroid.filmy.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,7 +26,6 @@ public class SettingsActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().
                 replace(R.id.container,
                         new MyPreferenceFragment()).commit();
-
 
 
     }
@@ -76,7 +75,6 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
         }
-
 
 
     }

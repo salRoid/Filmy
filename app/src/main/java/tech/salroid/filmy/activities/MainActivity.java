@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activity;
+package tech.salroid.filmy.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Extract data included in the Intent
-            int statusCode = intent.getIntExtra("message",00);
+            int statusCode = intent.getIntExtra("message", 00);
 
-            Toast.makeText(context,"Failed to get latest movies.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Failed to get latest movies.", Toast.LENGTH_SHORT).show();
 
             cantProceed(statusCode);
 
@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
 
 
         mErrorView.setVisibility(View.GONE);
@@ -176,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
 
                 if (!cantProceed)
-                  tabLayout.setVisibility(View.VISIBLE);
+                    tabLayout.setVisibility(View.VISIBLE);
 
                 enableToolbarScrolling();
 
@@ -184,10 +183,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         if (Network.isNetworkConnected(this)) {
 
-            fetchingFromNetwork = true ;
+            fetchingFromNetwork = true;
             setScheduler();
         }
 
@@ -246,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void canProceed(){
+    public void canProceed() {
 
         cantProceed = false;
 
@@ -254,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setVisibility(View.VISIBLE);
         mErrorView.setVisibility(View.GONE);
 
-        if(trendingFragment!=null){
+        if (trendingFragment != null) {
 
             trendingFragment.retryLoading();
 
@@ -372,7 +370,6 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         super.onPause();
     }
-
 
 
 }

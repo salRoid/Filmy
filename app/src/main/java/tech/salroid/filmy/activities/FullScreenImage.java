@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activity;
+package tech.salroid.filmy.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,7 +26,7 @@ public class FullScreenImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_image);
 
-        breathingProgress  = (BreathingProgress) findViewById(R.id.breathingProgress);
+        breathingProgress = (BreathingProgress) findViewById(R.id.breathingProgress);
         breathingProgress.setVisibility(View.VISIBLE);
 
 
@@ -42,12 +42,12 @@ public class FullScreenImage extends AppCompatActivity {
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                centreimg.setImageBitmap(resource);
-                breathingProgress.setVisibility(View.INVISIBLE);
-            }
-        });
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        centreimg.setImageBitmap(resource);
+                        breathingProgress.setVisibility(View.INVISIBLE);
+                    }
+                });
 
     }
 

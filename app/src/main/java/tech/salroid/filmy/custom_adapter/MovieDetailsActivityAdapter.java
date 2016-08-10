@@ -20,22 +20,24 @@ import tech.salroid.filmy.data_classes.MovieDetailsData;
 public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetailsActivityAdapter.Ho> {
 
     private final Boolean ret_size;
-    private final LayoutInflater inflater;
     String ct_name, ct_desc, ct_profile, ct_id;
     List<MovieDetailsData> cast = new ArrayList<>();
-    Context con;
+    Context context;
     private ClickListener clickListener;
 
     public MovieDetailsActivityAdapter(Context context, List<MovieDetailsData> cast, Boolean size) {
-        inflater = LayoutInflater.from(context);
-        con = context;
+
+        this.context = context;
         this.cast = cast;
         this.ret_size = size;
+
     }
 
     @Override
     public Ho onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.cast_custom_row, parent, false);
+
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = layoutInflater.inflate(R.layout.cast_custom_row, parent, false);
         Ho holder = new Ho(view);
         return holder;
     }
@@ -51,7 +53,7 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
         holder.cast_name.setText(ct_name);
         holder.cast_description.setText(ct_desc);
 
-        Glide.with(con)
+        Glide.with(context)
                 .load(ct_profile)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .fitCenter()

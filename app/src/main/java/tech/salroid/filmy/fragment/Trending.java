@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.MainActivity;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
@@ -25,8 +27,13 @@ import tech.salroid.filmy.database.MovieSelection;
 
 public class Trending extends Fragment implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
+    @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;
+    @BindView(R.id.recycler)
+    RecyclerView recycler;
+
     private MainActivityAdapter mainActivityAdapter;
+
 
 
     public Trending() {
@@ -39,9 +46,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
 
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
-        RecyclerView recycler = (RecyclerView) view.findViewById(R.id.recycler);
-
-        breathingProgress = (BreathingProgress) view.findViewById(R.id.breathingProgress);
+        ButterKnife.bind(this, view);
 
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recycler.setLayoutManager(gridLayoutManager);

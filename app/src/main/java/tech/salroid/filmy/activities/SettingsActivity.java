@@ -67,6 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
                         quality = "w500";
                     }
 
+
                     my_prefrence.putString("image_quality", quality);
                     my_prefrence.apply();
 
@@ -78,4 +79,5 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     }
+
 }

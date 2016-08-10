@@ -113,8 +113,8 @@
                         android:fontFamily="sans-serif-condensed"
                         android:padding="16dp"
                         android:text="@string/movies"
-                        android:textStyle="bold"
-                        android:textAppearance="?android:textAppearanceMedium" />
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/more"

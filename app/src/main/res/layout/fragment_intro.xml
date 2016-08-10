@@ -28,8 +28,7 @@
         android:fontFamily="sans-serif-condensed"
         android:text="Filmy is your new movie app."
         android:textColor="#ffffff"
-        android:textSize="18sp"
-        />
+        android:textSize="18sp" />
 
 
     <ImageView

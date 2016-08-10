@@ -45,7 +45,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         recycler = (RecyclerView) view.findViewById(R.id.search_results_recycler);
-        recycler.setLayoutManager(new StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL));
+        recycler.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         breathingProgress = (BreathingProgress) view.findViewById(R.id.breathingProgress);
 
 
@@ -59,9 +59,9 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         Intent intent;
         if (setterGetter.getType().equals("person"))
             intent = new Intent(getActivity(), CharacterDetailsActivity.class);
-        else{
+        else {
             intent = new Intent(getActivity(), MovieDetailsActivity.class);
-            intent.putExtra("network_applicable",true);
+            intent.putExtra("network_applicable", true);
         }
 
         intent.putExtra("id", setterGetter.getId());
@@ -108,7 +108,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
         SearchResultParseWork park = new SearchResultParseWork(getActivity(), s);
         List<SearchData> list = park.parsesearchdata();
-        sadapter = new SearchResultAdapter(getActivity(),list);
+        sadapter = new SearchResultAdapter(getActivity(), list);
         recycler.setAdapter(sadapter);
         sadapter.setClickListener(this);
 
@@ -120,8 +120,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     public void showProgress() {
 
 
-
-        if (breathingProgress!=null && recycler!=null){
+        if (breathingProgress != null && recycler != null) {
 
             breathingProgress.setVisibility(View.VISIBLE);
             recycler.setVisibility(View.INVISIBLE);

@@ -15,8 +15,7 @@
         android:text="Exploration"
         android:textColor="#ffffff"
         android:textSize="24sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,8 +28,7 @@
         android:fontFamily="sans-serif-condensed"
         android:text="Search through the large sea of movies and know about different casts."
         android:textColor="#ffffff"
-        android:textSize="18sp"
-        />
+        android:textSize="18sp" />
 
 
     <ImageView

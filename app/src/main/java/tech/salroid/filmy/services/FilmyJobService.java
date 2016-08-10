@@ -3,6 +3,7 @@ package tech.salroid.filmy.services;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -129,9 +130,9 @@ public class FilmyJobService extends JobService {
             public void onErrorResponse(VolleyError error) {
 
                 NetworkResponse networkResponse = error.networkResponse;
-                if (networkResponse != null ) {
+                if (networkResponse != null) {
                     sendFetchFailedMessage(networkResponse.statusCode);
-                }else{
+                } else {
 
                     sendFetchFailedMessage(00);
 

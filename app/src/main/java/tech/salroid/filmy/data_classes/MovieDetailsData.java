@@ -5,7 +5,7 @@ public class MovieDetailsData {
 
 
     String cast_name, cast_character, cast_profile, cast_id;
-    String  cast_description;
+    String cast_description;
 
     public String getCast_name() {
         return cast_name;

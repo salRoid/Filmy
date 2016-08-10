@@ -36,8 +36,8 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         Intent intent = getIntent();
         if (intent != null) {
             movie_result = intent.getStringExtra("cast_json");
-            if (getSupportActionBar()!=null)
-            getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
         }
 
 

@@ -31,7 +31,8 @@
         android:theme="@style/AppTheme.Base">
 
 
-        <activity android:name=".FilmyIntro"
+        <activity
+            android:name=".FilmyIntro"
             android:label=" " />
 
         <activity
@@ -50,8 +51,7 @@
 
         </activity>
 
-        <activity android:name=".activities.MainActivity">
-        </activity>
+        <activity android:name=".activities.MainActivity"></activity>
 
         <activity
             android:name=".activities.MovieDetailsActivity"
@@ -98,7 +98,6 @@
             android:name=".services.FilmyJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
 
 
     </application>

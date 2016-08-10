@@ -44,8 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="You saved movies appear here."
-            android:textColor="#BDBDBD"
-            />
+            android:textColor="#BDBDBD" />
 
     </LinearLayout>
 

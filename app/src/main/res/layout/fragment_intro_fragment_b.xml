@@ -29,8 +29,7 @@
         android:fontFamily="sans-serif-condensed"
         android:text="Get different movies in different categories at one place."
         android:textColor="#ffffff"
-        android:textSize="18sp"
-        />
+        android:textSize="18sp" />
 
     <ImageView
         android:layout_width="320dp"

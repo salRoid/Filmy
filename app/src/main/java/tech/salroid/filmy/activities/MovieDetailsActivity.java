@@ -1,5 +1,6 @@
 package tech.salroid.filmy.activities;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,13 +55,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         View.OnClickListener,
         LoaderManager.LoaderCallbacks<Cursor>, GetDataFromNetwork.DataFetchedListener {
 
+    Context context = this;
+
     static String movie_title, movie_id_final;
+
+    BreathingProgress breathingProgress;
     private static TextView det_title, det_tagline, det_overview,
             det_rating, det_released, det_certification,
             det_language, det_runtime, tvRating;
     private static ImageView youtube_link, banner, youtube_play_button;
-    Context context = this;
-    BreathingProgress breathingProgress;
     LinearLayout trailorBackground;
     FrameLayout trailorView, newMain, headerContainer, main_content, allDetails;
     FullReadFragment fullReadFragment;
@@ -104,6 +107,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         trailorBackground = (LinearLayout) findViewById(R.id.trailorBackground);
 
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
+        allDetails = (FrameLayout) findViewById(R.id.all_details_container);
         newMain = (FrameLayout) findViewById(R.id.new_main);
         main_content = (FrameLayout) findViewById(R.id.all_details_container);
         headerContainer = (FrameLayout) findViewById(R.id.header_container);
@@ -305,7 +309,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             } finally {
 
                 if (databaseApplicable) {
-                    MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this, type, movieMap, movie_id);
+                    MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this,type, movieMap,movie_id);
                 } else {
 
                     showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
@@ -759,6 +763,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
                 parseMovieDetails(response);
                 // showCastFragment();
+
                 break;
 
             case GetDataFromNetwork.CAST_CODE:
@@ -772,7 +777,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     private void shareMovie() {
         String movie_imdb = getResources().getString(R.string.imdb_link_prefix) + movie_id_final;
-        if (!(movie_title == null && movie_rating.equals("null") && movie_id_final.equals("null"))) {
+        if (!(movie_title.equals(null)&& movie_rating.equals("null") && movie_id_final.equals("null"))) {
             Intent myIntent = new Intent(Intent.ACTION_SEND);
             myIntent.setType("text/plain");
             myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_imdb + "\n");

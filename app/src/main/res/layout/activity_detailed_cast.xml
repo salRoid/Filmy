@@ -112,9 +112,9 @@
                         android:layout_alignParentLeft="true"
                         android:fontFamily="sans-serif-condensed"
                         android:padding="16dp"
-                        android:text="Movies "
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:textStyle="bold" />
+                        android:text="@string/movies"
+                        android:textStyle="bold"
+                        android:textAppearance="?android:textAppearanceMedium" />
 
                     <TextView
                         android:id="@+id/more"

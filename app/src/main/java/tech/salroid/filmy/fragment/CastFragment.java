@@ -30,6 +30,9 @@ import tech.salroid.filmy.data_classes.MovieDetailsData;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
+/**
+ * Created by R Ankit on 05-08-2016.
+ */
 
 public class CastFragment extends Fragment implements View.OnClickListener, MovieDetailsActivityAdapter.ClickListener {
 
@@ -88,8 +91,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     private void getCastFromNetwork() {
 
 
-        final String BASE_MOVIE_CAST_DETAILS = new String(getResources().getString(R.string.trakt_movie_base_url) + movieId
-                + getResources().getString(R.string.trakt_cast_suffix));
+        final String BASE_MOVIE_CAST_DETAILS = new String("https://api.trakt.tv/movies/" + movieId + "/people?extended=images");
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(Request.Method.GET, BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -121,7 +123,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), cast_result);
         List<MovieDetailsData> cast_list = par.parse_cast();
-        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, true);
+        Boolean size = true;
+        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, size);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
         more.setVisibility(View.VISIBLE);

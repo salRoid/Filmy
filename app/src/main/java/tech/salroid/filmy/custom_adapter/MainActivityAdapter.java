@@ -62,7 +62,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         movie_year = dataCursor.getInt(year_index);
 
 
-        holder.title.setText(movie_title + " / " + movie_year);
+        holder.title.setText(movie_title+" / "+movie_year);
         //holder.year.setText(String.valueOf(movie_year));
 
         Glide.with(context).load(movie_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.poster);
@@ -88,16 +88,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         return oldCursor;
     }
 
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
-    }
-
-
-    public interface ClickListener {
-
-        void itemClicked(Cursor cursor);
-
-    }
 
     class Vh extends RecyclerView.ViewHolder {
 
@@ -129,6 +119,17 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
                 }
             });
         }
+    }
+
+
+    public interface ClickListener {
+
+        public void itemClicked(Cursor cursor);
+
+    }
+
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
 }

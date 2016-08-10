@@ -54,7 +54,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text="- - - -"
+                android:text="@string/dash"
                 android:textAppearance="?android:textAppearanceSmall" />
 
             <TextView
@@ -63,10 +63,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:ellipsize="end"
                 android:fontFamily="sans-serif-condensed"
+                android:text="@string/dash"
                 android:maxLines="1"
-                android:text="- - - -"
+                android:ellipsize="end"
                 android:textAppearance="?android:textAppearanceSmall" />
         </LinearLayout>
     </LinearLayout>

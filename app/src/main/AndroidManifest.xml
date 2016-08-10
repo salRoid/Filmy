@@ -29,7 +29,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
-        <activity android:name=".activities.MainActivity">
+
+
+        <activity android:name=".FilmyIntro"
+            android:label=" " />
+
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,6 +48,9 @@
                 android:name="io.fabric.ApiKey"
                 android:value="62707285253d6b217b66e97e6e602bcab0edc463" />
 
+        </activity>
+
+        <activity android:name=".activities.MainActivity">
         </activity>
 
         <activity
@@ -82,40 +92,14 @@
         <activity
             android:name=".activities.SavedMovies"
             android:label="@string/title_activity_saved_movies"
-            android:theme="@style/AppTheme.Base" />
-
-        <!--<service android:name=".Service.FilmyService"/>
-        <receiver android:name=".Service.FilmyService$AlarmReciever"/>-->
-
-
-        <!-- SyncAdapter's dummy authentication service -->
-        <!--<service android:name=".Sync.FilmyAuthenticatorService">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator" />
-            </intent-filter>
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
-        </service>-->
-
-        <!-- The SyncAdapter service -->
-        <!--<service
-            android:name=".Sync.FilmySyncService"
-            android:exported="true"
-            >
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter" />
-            </intent-filter>
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
-        </service>
--->
+            android:theme="@style/AppTheme.Base"></activity>
 
         <service
             android:name=".services.FilmyJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+
 
     </application>
 

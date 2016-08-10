@@ -16,7 +16,8 @@
         android:text="Offline movies"
         android:textColor="#ffffff"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,7 +30,8 @@
         android:fontFamily="sans-serif-condensed"
         android:text="Save movies locally to see various details even if you don't have internet."
         android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        />
 
     <ImageView
         android:layout_width="100dp"

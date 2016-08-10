@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activity;
+package tech.salroid.filmy.Activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,13 +17,12 @@ import android.view.View;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-
-import tech.salroid.filmy.customAdapter.SavedMoviesAdapter;
-import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.CustomAdapter.SavedMoviesAdapter;
+import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.R;
 
 
-public class SavedMovies extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
+public class SavedMovies extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
 
     private static final int SAVED_DETAILS_LOADER = 3;
     private RecyclerView my_saved_movies_recycler;
@@ -56,13 +55,13 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         setContentView(R.layout.activity_saved_movies);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         my_saved_movies_recycler = (RecyclerView) findViewById(R.id.my_saved_recycler);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
-        emptyContainer = (LinearLayout) findViewById(R.id.emptyContainer);
+        emptyContainer=(LinearLayout)findViewById(R.id.emptyContainer);
 
         mainActivityAdapter = new SavedMoviesAdapter(this, null);
         my_saved_movies_recycler.setAdapter(mainActivityAdapter);
@@ -77,17 +76,17 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        return new CursorLoader(this, FilmContract.SaveEntry.CONTENT_URI, GET_SAVE_COLUMNS, null, null, "_ID DESC");
+        return new CursorLoader(this, FilmContract.SaveEntry.CONTENT_URI, GET_SAVE_COLUMNS, null, null,"_ID DESC");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 
 
-        if (cursor != null && cursor.getCount() > 0)
-            mainActivityAdapter.swapCursor(cursor);
-        else
-            emptyContainer.setVisibility(View.VISIBLE);
+            if(cursor!=null && cursor.getCount()>0)
+               mainActivityAdapter.swapCursor(cursor);
+           else
+                emptyContainer.setVisibility(View.VISIBLE);
 
 
     }
@@ -99,13 +98,13 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     }
 
     @Override
-    public void itemClicked(String movieId, String title) {
+    public void itemClicked(String movieId,String title) {
 
 
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("saved_database_applicable", true);
-        intent.putExtra("network_applicable", true);
-        intent.putExtra("title", title);
+        intent.putExtra("saved_database_applicable",true);
+        intent.putExtra("network_applicable",true);
+        intent.putExtra("title",title);
         intent.putExtra("id", movieId);
 
         startActivity(intent);
@@ -117,13 +116,14 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     public void itemLongClicked(final Cursor mycursor, final int position) {
 
 
+
         AlertDialog.Builder adb = new AlertDialog.Builder(SavedMovies.this);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SavedMovies.this, android.R.layout.simple_list_item_1);
 
         arrayAdapter.add("Remove");
 
 
-        final Context context = this;
+        final Context context=this;
 
         adb.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
             @Override
@@ -140,7 +140,7 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
                     mainActivityAdapter.notifyItemRemoved(position);
 
-                    if (mainActivityAdapter.getItemCount() == 1)
+                    if(mainActivityAdapter.getItemCount()==1)
                         my_saved_movies_recycler.setVisibility(View.GONE);
 
 

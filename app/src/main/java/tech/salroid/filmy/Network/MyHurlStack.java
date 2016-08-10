@@ -1,4 +1,4 @@
-package tech.salroid.filmy.network;
+package tech.salroid.filmy.Network;
 
 import com.android.volley.toolbox.HurlStack;
 

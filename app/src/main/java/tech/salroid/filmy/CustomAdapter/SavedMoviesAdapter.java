@@ -1,5 +1,8 @@
-package tech.salroid.filmy.customAdapter;
+package tech.salroid.filmy.CustomAdapter;
 
+/**
+ * Created by Home on 7/30/2016.
+ */
 
 import android.content.Context;
 import android.database.Cursor;
@@ -14,11 +17,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.Database.FilmContract;
 import tech.salroid.filmy.R;
 
 
 
+/**
+ * Created by Home on 7/20/2016.
+ */
 public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.Vh> {
 
     private final LayoutInflater inflater;

@@ -1,4 +1,4 @@
-package tech.salroid.filmy.network;
+package tech.salroid.filmy.Network;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -7,12 +7,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONObject;
 
-import tech.salroid.filmy.FilmyApplication;
-import tech.salroid.filmy.R;
-
+/**
+ * Created by R Ankit on 06-08-2016.
+ */
 
 public class GetDataFromNetwork {
 
+    private RequestQueue requestQueue;
     private DataFetchedListener mDataFetchedListener;
     public static final int MOVIE_DETAILS_CODE = 1;
     public static final int CAST_CODE = 2;
@@ -20,18 +21,13 @@ public class GetDataFromNetwork {
     public  void getMovieDetailsFromNetwork(String movie_id) {
 
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
-        RequestQueue requestQueue = volleySingleton.getRequestQueue();
+        requestQueue = volleySingleton.getRequestQueue();
 
 
         //still here we will use the query builder
         //this String is not awesome.
 
-        final String BASE_URL_MOVIE_DETAILS = new String(FilmyApplication.getContext().getResources().getString(R.string.tmdb_movie_base_url)
-                + movie_id
-                + "?"
-                +FilmyApplication.getContext().getResources().getString(R.string.tmdb_movie_url_suffix)
-                +"&append_to_response=trailers");
-
+        final String BASE_URL_MOVIE_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movie_id + "?api_key=b640f55eb6ecc47b3433cfe98d0675b1&append_to_response=trailers");
         JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(Request.Method.GET, BASE_URL_MOVIE_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override

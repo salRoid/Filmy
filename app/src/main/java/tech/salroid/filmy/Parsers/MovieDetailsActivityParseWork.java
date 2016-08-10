@@ -1,4 +1,4 @@
-package tech.salroid.filmy.parsers;
+package tech.salroid.filmy.Parsers;
 
 import android.content.Context;
 
@@ -9,8 +9,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.dataClasses.MovieDetailsData;
+import tech.salroid.filmy.DataClasses.MovieDetailsData;
 
+/**
+ * Created by Home on 7/22/2016.
+ */
 public class MovieDetailsActivityParseWork {
 
     private Context context;

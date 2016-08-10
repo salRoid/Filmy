@@ -1,4 +1,4 @@
-package tech.salroid.filmy.fragments;
+package tech.salroid.filmy.Fragments;
 
 import android.animation.Animator;
 import android.os.Bundle;
@@ -9,11 +9,16 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import tech.salroid.filmy.R;
 
+/**
+ * Created by R Ankit on 29-07-2016.
+ */
 
 public class FullReadFragment extends Fragment implements View.OnClickListener {
 

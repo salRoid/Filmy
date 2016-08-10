@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#009688"
-    tools:context="tech.salroid.filmy.Fragments.intro_fragments.IntroFragmentD">
+    tools:context="tech.salroid.filmy.fragment.intro_fragments.IntroFragmentD">
 
     <TextView
         android:id="@+id/intro_title"

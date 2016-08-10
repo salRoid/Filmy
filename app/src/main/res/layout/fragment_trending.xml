@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tech.salroid.filmy.Fragments.Trending">
+    tools:context="tech.salroid.filmy.fragment.Trending">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </FrameLayout>
 
-        <tech.salroid.filmy.Custom.BreathingProgress
+        <tech.salroid.filmy.customs.BreathingProgress
             android:id="@+id/breathingProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

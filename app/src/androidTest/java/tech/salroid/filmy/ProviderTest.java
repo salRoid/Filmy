@@ -11,9 +11,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.test.AndroidTestCase;
 
-import tech.salroid.filmy.Databases.FilmContract;
-import tech.salroid.filmy.Databases.FilmDbHelper;
-import tech.salroid.filmy.Provider.FilmProvider;
+import tech.salroid.filmy.databases.FilmContract;
+import tech.salroid.filmy.databases.FilmDbHelper;
+import tech.salroid.filmy.providers.FilmProvider;
 
 /**
  * Created by Home on 7/24/2016.

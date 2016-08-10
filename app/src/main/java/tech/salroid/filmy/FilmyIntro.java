@@ -7,10 +7,10 @@ import android.support.v4.app.Fragment;
 
 import com.github.paolorotolo.appintro.AppIntro2;
 
-import tech.salroid.filmy.Fragments.intro_fragments.IntroFragmentA;
-import tech.salroid.filmy.Fragments.intro_fragments.IntroFragmentB;
-import tech.salroid.filmy.Fragments.intro_fragments.IntroFragmentC;
-import tech.salroid.filmy.Fragments.intro_fragments.IntroFragmentD;
+import tech.salroid.filmy.fragment.intro_fragments.IntroFragmentA;
+import tech.salroid.filmy.fragment.intro_fragments.IntroFragmentB;
+import tech.salroid.filmy.fragment.intro_fragments.IntroFragmentC;
+import tech.salroid.filmy.fragment.intro_fragments.IntroFragmentD;
 
 /**
  * Created by R Ankit on 09-08-2016.

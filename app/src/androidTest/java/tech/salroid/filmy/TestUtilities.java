@@ -14,9 +14,9 @@ import android.test.AndroidTestCase;
 import java.util.Map;
 import java.util.Set;
 
-import tech.salroid.filmy.Databases.FilmContract;
-import tech.salroid.filmy.Databases.FilmDbHelper;
-import tech.salroid.filmy.Utils.PollingCheck;
+import tech.salroid.filmy.databases.FilmContract;
+import tech.salroid.filmy.databases.FilmDbHelper;
+import tech.salroid.filmy.utility.PollingCheck;
 
 /**
  * Created by Home on 7/24/2016.

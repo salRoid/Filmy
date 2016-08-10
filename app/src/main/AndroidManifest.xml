@@ -29,7 +29,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,43 +44,43 @@
         </activity>
 
         <activity
-            android:name=".Activity.MovieDetailsActivity"
+            android:name=".activities.MovieDetailsActivity"
             android:label=" "
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activity.CharacterDetailsActivity"
+            android:name=".activities.CharacterDetailsActivity"
             android:label="Details"
             android:theme="@style/AppTheme.Base" />
 
         <provider
-            android:name=".Provider.FilmProvider"
+            android:name=".providers.FilmProvider"
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true" />
 
 
         <activity
-            android:name=".Activity.FullCastActivity"
+            android:name=".activities.FullCastActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".Activity.FullMovieActivity"
+            android:name=".activities.FullMovieActivity"
             android:label="@string/title_activity_full_movie"
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".Activity.FullScreenImage"
+            android:name=".activities.FullScreenImage"
             android:label=" "
             android:theme="@style/FullScreenTheme" />
 
         <activity
-            android:name=".Activity.SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".Activity.SavedMovies"
+            android:name=".activities.SavedMovies"
             android:label="@string/title_activity_saved_movies"
             android:theme="@style/AppTheme.Base" />
 
@@ -113,7 +113,7 @@
 -->
 
         <service
-            android:name=".Service.FilmyJobService"
+            android:name=".services.FilmyJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 

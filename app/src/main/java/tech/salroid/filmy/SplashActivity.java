@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import tech.salroid.filmy.Activity.MainActivity;
+import tech.salroid.filmy.activities.MainActivity;
 
 /**
  * Created by R Ankit on 23-07-2016.

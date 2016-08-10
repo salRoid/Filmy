@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.dataClasses.MovieDetailsData;
+import tech.salroid.filmy.data_classes.MovieDetailsData;
 
 public class MovieDetailsActivityParseWork {
 

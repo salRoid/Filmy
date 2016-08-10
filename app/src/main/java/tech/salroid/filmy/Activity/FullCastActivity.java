@@ -9,10 +9,10 @@ import android.support.v7.widget.Toolbar;
 
 import java.util.List;
 
-import tech.salroid.filmy.customAdapter.MovieDetailsActivityAdapter;
-import tech.salroid.filmy.dataClasses.MovieDetailsData;
-import tech.salroid.filmy.parsers.MovieDetailsActivityParseWork;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.custom_adapter.MovieDetailsActivityAdapter;
+import tech.salroid.filmy.data_classes.MovieDetailsData;
+import tech.salroid.filmy.parsers.MovieDetailsActivityParseWork;
 
 public class FullCastActivity extends AppCompatActivity implements MovieDetailsActivityAdapter.ClickListener {
 

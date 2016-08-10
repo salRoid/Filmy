@@ -1,10 +1,11 @@
-package tech.salroid.filmy.Activity;
+package tech.salroid.filmy.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
@@ -13,7 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -22,36 +22,54 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
 import java.util.ArrayList;
-import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
-import tech.salroid.filmy.Fragments.InTheaters;
-import tech.salroid.filmy.Fragments.Trending;
-import tech.salroid.filmy.Fragments.UpComing;
+
+import io.fabric.sdk.android.Fabric;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.Fragments.SearchFragment;
-import tech.salroid.filmy.Service.FilmyJobScheduler;
-import tech.salroid.filmy.Utils.Network;
+import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
+import tech.salroid.filmy.fragments.InTheaters;
+import tech.salroid.filmy.fragments.SearchFragment;
+import tech.salroid.filmy.fragments.Trending;
+import tech.salroid.filmy.fragments.UpComing;
+import tech.salroid.filmy.service.FilmyJobScheduler;
+import tech.salroid.filmy.utils.Network;
 import tr.xip.errorview.ErrorView;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
+    public boolean fetchingFromNetwork;
     private MaterialSearchView materialSearchView;
     private SearchFragment searchFragment;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ErrorView mErrorView;
-    public boolean fetchingFromNetwork;
     private Trending trendingFragment;
     private FrameLayout toolbarScroller;
     private boolean cantProceed;
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Extract data included in the Intent
+            int statusCode = intent.getIntExtra("message",00);
+
+            Toast.makeText(context,"Failed to get latest movies.",Toast.LENGTH_SHORT).show();
+
+            cantProceed(statusCode);
+
+        }
+    };
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (getSupportActionBar()!=null)
         getSupportActionBar().setTitle(" ");
+
+
+
 
         TextView logo = (TextView) findViewById(R.id.logo);
 
@@ -172,8 +193,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     private void setScheduler() {
 
         FilmyJobScheduler filmyJobScheduler = new FilmyJobScheduler(this);
@@ -201,8 +220,6 @@ public class MainActivity extends AppCompatActivity {
         }, 1000);
 
     }
-
-
 
     public void canProceed(){
 
@@ -259,7 +276,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -269,7 +285,6 @@ public class MainActivity extends AppCompatActivity {
         materialSearchView.setMenuItem(item);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -281,7 +296,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.ic_setting) {
-            startActivity(new Intent(this, SettingsActivity.class));
+
+                throw new RuntimeException("This is a crash");
+
+           // startActivity(new Intent(this, SettingsActivity.class));
 
         }
 
@@ -291,7 +309,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -317,21 +334,6 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
-
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Extract data included in the Intent
-            int statusCode = intent.getIntExtra("message",00);
-
-            Toast.makeText(context,"Failed to get latest movies.",Toast.LENGTH_SHORT).show();
-
-            cantProceed(statusCode);
-
-        }
-    };
-
 
     @Override
     protected void onResume() {

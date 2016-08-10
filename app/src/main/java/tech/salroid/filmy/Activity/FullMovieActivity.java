@@ -6,11 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
 import java.util.List;
-import tech.salroid.filmy.customAdapter.CharacterDetailsActivityAdapter;
-import tech.salroid.filmy.dataClasses.CharacterDetailsData;
-import tech.salroid.filmy.parsers.CharacterDetailActivityParseWork;
+
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
+import tech.salroid.filmy.data_classes.CharacterDetailsData;
+import tech.salroid.filmy.parsers.CharacterDetailActivityParseWork;
 
 public class FullMovieActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 
@@ -35,7 +37,7 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         if (intent != null) {
             movie_result = intent.getStringExtra("cast_json");
             if (getSupportActionBar()!=null)
-            getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
+                getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
         }
 
 

@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Activity;
+package tech.salroid.filmy.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,45 +36,42 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import tech.salroid.filmy.Animation.RevealAnimation;
-import tech.salroid.filmy.Custom.BreathingProgress;
-import tech.salroid.filmy.CustomAdapter.MovieDetailsActivityAdapter;
-import tech.salroid.filmy.Database.FilmContract;
-import tech.salroid.filmy.Database.MovieDetailsUpdation;
-import tech.salroid.filmy.Database.MovieLoaders;
-import tech.salroid.filmy.Database.MovieSelection;
-import tech.salroid.filmy.Database.OfflineMovies;
-import tech.salroid.filmy.Fragments.CastFragment;
-import tech.salroid.filmy.Fragments.FullReadFragment;
-import tech.salroid.filmy.Network.GetDataFromNetwork;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.Utils.NullChecker;
+import tech.salroid.filmy.animation.RevealAnimation;
+import tech.salroid.filmy.custom.BreathingProgress;
+import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.database.MovieDetailsUpdation;
+import tech.salroid.filmy.database.MovieLoaders;
+import tech.salroid.filmy.database.MovieSelection;
+import tech.salroid.filmy.database.OfflineMovies;
+import tech.salroid.filmy.fragments.CastFragment;
+import tech.salroid.filmy.fragments.FullReadFragment;
+import tech.salroid.filmy.network.GetDataFromNetwork;
+import tech.salroid.filmy.utils.NullChecker;
 
 
 public class MovieDetailsActivity extends AppCompatActivity implements
         View.OnClickListener,
         LoaderManager.LoaderCallbacks<Cursor>, GetDataFromNetwork.DataFetchedListener {
 
-    Context context = this;
-
     static String movie_title, movie_id_final;
-    private String movie_id;
-    private String trailer = null;
-    private String movie_desc;
-    private String quality;
-    private RelativeLayout header, main;
-    BreathingProgress breathingProgress;
     private static TextView det_title, det_tagline, det_overview,
             det_rating, det_released, det_certification,
             det_language, det_runtime, tvRating;
     private static ImageView youtube_link, banner, youtube_play_button;
+    Context context = this;
+    BreathingProgress breathingProgress;
     LinearLayout trailorBackground;
     FrameLayout trailorView, newMain, headerContainer, main_content, allDetails;
     FullReadFragment fullReadFragment;
     HashMap<String, String> movieMap;
     boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
     int type;
-
+    private String movie_id;
+    private String trailer = null;
+    private String movie_desc;
+    private String quality;
+    private RelativeLayout header, main;
     private String movie_tagline;
     private String movie_rating;
     private String show_centre_img_url;
@@ -776,7 +772,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     private void shareMovie() {
         String movie_imdb = getResources().getString(R.string.imdb_link_prefix) + movie_id_final;
-        if (!(movie_title.equals(null)&& movie_rating.equals("null") && movie_id_final.equals("null"))) {
+        if (!(movie_title==null&& movie_rating.equals("null") && movie_id_final.equals("null"))) {
             Intent myIntent = new Intent(Intent.ACTION_SEND);
             myIntent.setType("text/plain");
             myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_imdb + "\n");

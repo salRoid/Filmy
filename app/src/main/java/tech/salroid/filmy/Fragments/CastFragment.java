@@ -22,13 +22,13 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import tech.salroid.filmy.R;
 import tech.salroid.filmy.activity.CharacterDetailsActivity;
 import tech.salroid.filmy.activity.FullCastActivity;
-import tech.salroid.filmy.customAdapter.MovieDetailsActivityAdapter;
-import tech.salroid.filmy.dataClasses.MovieDetailsData;
-import tech.salroid.filmy.parsers.MovieDetailsActivityParseWork;
+import tech.salroid.filmy.custom_adapter.MovieDetailsActivityAdapter;
+import tech.salroid.filmy.data_classes.MovieDetailsData;
 import tech.salroid.filmy.network.VolleySingleton;
-import tech.salroid.filmy.R;
+import tech.salroid.filmy.parsers.MovieDetailsActivityParseWork;
 
 
 public class CastFragment extends Fragment implements View.OnClickListener, MovieDetailsActivityAdapter.ClickListener {

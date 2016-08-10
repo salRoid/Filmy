@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,12 +23,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import tech.salroid.filmy.parsers.MainActivityParseWork;
+import tech.salroid.filmy.FilmyApplication;
+import tech.salroid.filmy.R;
 import tech.salroid.filmy.network.TmdbVolleySingleton;
 import tech.salroid.filmy.network.VolleySingleton;
-import tech.salroid.filmy.R;
-
-import static com.android.volley.toolbox.Volley.newRequestQueue;
+import tech.salroid.filmy.parsers.MainActivityParseWork;
 
 /**
  * Created by R Ankit on 21-07-2016.
@@ -35,19 +35,15 @@ import static com.android.volley.toolbox.Volley.newRequestQueue;
 
 public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
 
+    public static final int SYNC_INTERVAL = 60 * 180;
 
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
-
-    public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
-
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
-
     private static final int NOTIFICATION_ID = 3004;
     private static String LOG_TAG = FilmySyncAdapter.class.getSimpleName();
-
-
+    Resources resource = FilmyApplication.getContext().getResources();
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
 
@@ -56,121 +52,6 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
 
         super(context, autoInitialize);
 
-    }
-
-    @Override
-    public void onPerformSync(Account account,
-                              Bundle bundle,
-                              String s,
-                              ContentProviderClient contentProviderClient,
-                              SyncResult syncResult) {
-
-            syncNowTrending();
-            syncNowInTheaters();
-            syncNowUpComing();
-
-    }
-
-
-
-
-    private void syncNowInTheaters() {
-
-
-        final String Intheatres_Base_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
-
-        JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Intheatres_Base_URL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        intheatresparseOutput(response.toString(), 2);
-
-                    }
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.e("webi", "Volley Error: " + error.getCause());
-
-            }
-        });
-
-
-        tmdbrequestQueue.add(IntheatresJsonObjectRequest);
-
-    }
-
-    private void syncNowUpComing() {
-
-
-        final String Upcoming_Base_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
-
-        JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Upcoming_Base_URL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        upcomingparseOutput(response.toString());
-
-                    }
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.e("webi", "Volley Error: " + error.getCause());
-
-            }
-        });
-
-        tmdbrequestQueue.add(UpcomingJsonObjectRequest);
-
-    }
-
-    private void syncNowTrending() {
-
-        VolleySingleton volleySingleton = VolleySingleton.getInstance();
-        RequestQueue requestQueue = volleySingleton.getRequestQueue();
-
-        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,page=1&limit=30";
-
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-
-                    public void onResponse(JSONArray response) {
-                        parseOutput(response.toString());
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                Log.e("webi", "Volley Error: " + error.getCause());
-
-            }
-        }
-        );
-
-        requestQueue.add(jsonObjectRequest);
-
-    }
-
-    private void intheatresparseOutput(String s, int type) {
-        MainActivityParseWork pa = new MainActivityParseWork(getContext(), s);
-        pa.intheatres();
-    }
-
-    private void upcomingparseOutput(String result_upcoming) {
-        MainActivityParseWork pa = new MainActivityParseWork(getContext(), result_upcoming);
-        pa.parseupcoming();
-    }
-
-
-    private void parseOutput(String result) {
-
-        MainActivityParseWork pa = new MainActivityParseWork(getContext(), result);
-        pa.parse();
     }
 
     /**
@@ -186,7 +67,6 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
         ContentResolver.requestSync(getSyncAccount(context),
                 context.getString(R.string.content_authority), bundle);
     }
-
 
     /**
      * Helper method to schedule the sync adapter periodic execution
@@ -249,7 +129,6 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
         return newAccount;
     }
 
-
     private static void onAccountCreated(Account newAccount, Context context) {
 
         /*
@@ -268,11 +147,121 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
         syncImmediately(context);
     }
 
-
     public static void initializeSyncAdapter(Context context) {
 
         getSyncAccount(context);
 
+    }
+
+    @Override
+    public void onPerformSync(Account account,
+                              Bundle bundle,
+                              String s,
+                              ContentProviderClient contentProviderClient,
+                              SyncResult syncResult) {
+
+            syncNowTrending();
+            syncNowInTheaters();
+            syncNowUpComing();
+
+    }
+
+    private void syncNowInTheaters() {
+
+
+        final String Intheatres_Base_URL = resource.getString(R.string.tmdb_movie_base_url) + "now_playing?" + resource.getString(R.string.tmdb_api_key);
+
+        JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Intheatres_Base_URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        intheatresparseOutput(response.toString(), 2);
+
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("webi", "Volley Error: " + error.getCause());
+
+            }
+        });
+
+
+        tmdbrequestQueue.add(IntheatresJsonObjectRequest);
+
+    }
+
+    private void syncNowUpComing() {
+
+
+        final String Upcoming_Base_URL = resource.getString(R.string.tmdb_movie_base_url) + "upcoming?" + resource.getString(R.string.tmdb_api_key);
+
+        JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Upcoming_Base_URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        upcomingparseOutput(response.toString());
+
+                    }
+
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("webi", "Volley Error: " + error.getCause());
+
+            }
+        });
+
+        tmdbrequestQueue.add(UpcomingJsonObjectRequest);
+
+    }
+
+    private void syncNowTrending() {
+
+        VolleySingleton volleySingleton = VolleySingleton.getInstance();
+        RequestQueue requestQueue = volleySingleton.getRequestQueue();
+
+        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,page=1&limit=30";
+
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+
+                    public void onResponse(JSONArray response) {
+                        parseOutput(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.e("webi", "Volley Error: " + error.getCause());
+
+            }
+        }
+        );
+
+        requestQueue.add(jsonObjectRequest);
+
+    }
+
+    private void intheatresparseOutput(String s, int type) {
+        MainActivityParseWork pa = new MainActivityParseWork(getContext(), s);
+        pa.intheatres();
+    }
+
+    private void upcomingparseOutput(String result_upcoming) {
+        MainActivityParseWork pa = new MainActivityParseWork(getContext(), result_upcoming);
+        pa.parseupcoming();
+    }
+
+    private void parseOutput(String result) {
+
+        MainActivityParseWork pa = new MainActivityParseWork(getContext(), result);
+        pa.parse();
     }
 
 

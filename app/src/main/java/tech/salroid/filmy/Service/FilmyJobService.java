@@ -3,6 +3,7 @@ package tech.salroid.filmy.service;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -10,13 +11,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import me.tatarka.support.job.JobParameters;
 import me.tatarka.support.job.JobService;
-import tech.salroid.filmy.parsers.MainActivityParseWork;
 import tech.salroid.filmy.network.TmdbVolleySingleton;
 import tech.salroid.filmy.network.VolleySingleton;
+import tech.salroid.filmy.parsers.MainActivityParseWork;
 
 /**
  * Created by R Ankit on 05-08-2016.
@@ -174,6 +177,7 @@ public class FilmyJobService extends JobService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
     }
+
 
 
 

@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import tech.salroid.filmy.custom.BreathingProgress;
+
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.custom.BreathingProgress;
 
 public class FullScreenImage extends AppCompatActivity {
 
@@ -40,12 +42,12 @@ public class FullScreenImage extends AppCompatActivity {
                 .asBitmap()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                centreimg.setImageBitmap(resource);
-                breathingProgress.setVisibility(View.INVISIBLE);
-            }
-        });
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        centreimg.setImageBitmap(resource);
+                        breathingProgress.setVisibility(View.INVISIBLE);
+                    }
+                });
 
     }
 

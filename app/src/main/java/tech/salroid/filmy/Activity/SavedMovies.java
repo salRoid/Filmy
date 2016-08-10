@@ -13,22 +13,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
-import tech.salroid.filmy.customAdapter.SavedMoviesAdapter;
-import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.custom_adapter.SavedMoviesAdapter;
+import tech.salroid.filmy.database.FilmContract;
 
 
 public class SavedMovies extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
 
     private static final int SAVED_DETAILS_LOADER = 3;
-    private RecyclerView my_saved_movies_recycler;
-
-
     private static final String[] GET_SAVE_COLUMNS = {
 
             FilmContract.SaveEntry.SAVE_ID,
@@ -46,9 +43,9 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
             FilmContract.SaveEntry.SAVE_RUNTIME,
             FilmContract.SaveEntry.SAVE_POSTER_LINK,
     };
-
-    private SavedMoviesAdapter mainActivityAdapter;
     LinearLayout emptyContainer;
+    private RecyclerView my_saved_movies_recycler;
+    private SavedMoviesAdapter mainActivityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

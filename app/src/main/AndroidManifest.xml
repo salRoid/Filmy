@@ -29,27 +29,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
-
-
-        <activity android:name=".FilmyIntro"
-            android:label=" " />
-
-        <activity
-            android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
+
+            <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="62707285253d6b217b66e97e6e602bcab0edc463" />
+
         </activity>
-
-        <activity android:name=".activity.MainActivity">
-        </activity>
-
-
-
 
         <activity
             android:name=".activity.MovieDetailsActivity"
@@ -62,9 +53,9 @@
 
         <provider
             android:name=".provider.FilmProvider"
-            android:syncable="true"
+            android:authorities="@string/content_authority"
             android:exported="false"
-            android:authorities="@string/content_authority" />
+            android:syncable="true" />
 
 
         <activity
@@ -122,8 +113,8 @@
 
         <service
             android:name=".service.FilmyJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="true" />
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
     </application>
 

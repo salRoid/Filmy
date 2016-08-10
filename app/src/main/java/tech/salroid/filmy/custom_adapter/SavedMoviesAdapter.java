@@ -1,4 +1,4 @@
-package tech.salroid.filmy.customAdapter;
+package tech.salroid.filmy.custom_adapter;
 
 
 import android.content.Context;
@@ -14,9 +14,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.R;
-
+import tech.salroid.filmy.database.FilmContract;
 
 
 public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.Vh> {
@@ -88,6 +87,24 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
         return oldCursor;
     }
 
+    public void setLongClickListener(LongClickListener longclickListener) {
+        this.longclickListener = longclickListener;
+    }
+
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public interface ClickListener {
+
+        void itemClicked(String id, String title);
+
+    }
+
+    public interface LongClickListener {
+        void itemLongClicked(Cursor cursor, int position);
+
+    }
 
     class Vh extends RecyclerView.ViewHolder {
 
@@ -114,7 +131,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
                     int movie_title_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
 
                     if (clickListener != null) {
-                        clickListener.itemClicked(dataCursor.getString(movie_id_index),dataCursor.getString(movie_title_index));
+                        clickListener.itemClicked(dataCursor.getString(movie_id_index), dataCursor.getString(movie_title_index));
                     }
 
                 }
@@ -128,35 +145,14 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
 
                     if (longclickListener != null) {
-                        longclickListener.itemLongClicked(dataCursor,getPosition());
+                        longclickListener.itemLongClicked(dataCursor, getPosition());
                     }
 
                     return true;
                 }
             });
 
-            }
         }
-
-
-
-    public interface ClickListener {
-
-        public void itemClicked(String id,String title);
-
-    }
-
-    public interface LongClickListener{
-        public void itemLongClicked(Cursor cursor,int position);
-
-    }
-
-    public void setLongClickListener(LongClickListener longclickListener) {
-        this.longclickListener = longclickListener;
-    }
-
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
 }

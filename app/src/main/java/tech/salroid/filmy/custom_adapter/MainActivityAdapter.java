@@ -1,4 +1,4 @@
-package tech.salroid.filmy.customAdapter;
+package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,8 +12,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import tech.salroid.filmy.database.FilmContract;
+
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.database.FilmContract;
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.Vh> {
 
@@ -46,7 +47,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         int movie_year;
 
 
-
         dataCursor.moveToPosition(position);
 
 
@@ -62,7 +62,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         movie_year = dataCursor.getInt(year_index);
 
 
-        holder.title.setText(movie_title+" / "+movie_year);
+        holder.title.setText(movie_title + " / " + movie_year);
         //holder.year.setText(String.valueOf(movie_year));
 
         Glide.with(context).load(movie_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.poster);
@@ -88,6 +88,16 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         return oldCursor;
     }
 
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+
+    public interface ClickListener {
+
+        void itemClicked(Cursor cursor);
+
+    }
 
     class Vh extends RecyclerView.ViewHolder {
 
@@ -119,17 +129,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
                 }
             });
         }
-    }
-
-
-    public interface ClickListener {
-
-        public void itemClicked(Cursor cursor);
-
-    }
-
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
 }

@@ -1,4 +1,4 @@
-package tech.salroid.filmy.customAdapter;
+package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,22 +6,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
+
 import java.util.ArrayList;
 import java.util.List;
-import tech.salroid.filmy.dataClasses.MovieDetailsData;
+
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.data_classes.MovieDetailsData;
+
 public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetailsActivityAdapter.Ho> {
 
     private final Boolean ret_size;
-    String ct_name, ct_desc, ct_profile, ct_id;
     private final LayoutInflater inflater;
-    private ClickListener clickListener;
-
+    String ct_name, ct_desc, ct_profile, ct_id;
     List<MovieDetailsData> cast = new ArrayList<>();
     Context con;
+    private ClickListener clickListener;
 
     public MovieDetailsActivityAdapter(Context context, List<MovieDetailsData> cast, Boolean size) {
         inflater = LayoutInflater.from(context);
@@ -67,6 +70,16 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
 
     }
 
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public interface ClickListener {
+
+        void itemClicked(MovieDetailsData setterGetter, int position);
+
+    }
+
     class Ho extends RecyclerView.ViewHolder {
 
         TextView cast_name, cast_description;
@@ -89,16 +102,6 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
                 }
             });
         }
-    }
-
-    public interface ClickListener {
-
-        public void itemClicked(MovieDetailsData setterGetter, int position);
-
-    }
-
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
 

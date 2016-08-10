@@ -10,6 +10,8 @@ import android.view.animation.Transformation;
 
 public class ResizeAnimation extends Animation {
     final int targetHeight;
+
+
     View view;
     int startHeight;
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.Vector;
 
 import tech.salroid.filmy.R;
@@ -25,6 +26,8 @@ public class MainActivityParseWork {
         this.result = result;
         // this.type=type;
     }
+
+
 
      public void parse() {
 

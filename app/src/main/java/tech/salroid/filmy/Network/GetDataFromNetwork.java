@@ -5,6 +5,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONObject;
 
 import tech.salroid.filmy.FilmyApplication;
@@ -13,9 +14,9 @@ import tech.salroid.filmy.R;
 
 public class GetDataFromNetwork {
 
-    private DataFetchedListener mDataFetchedListener;
     public static final int MOVIE_DETAILS_CODE = 1;
     public static final int CAST_CODE = 2;
+    private DataFetchedListener mDataFetchedListener;
 
     public  void getMovieDetailsFromNetwork(String movie_id) {
 
@@ -29,8 +30,10 @@ public class GetDataFromNetwork {
         final String BASE_URL_MOVIE_DETAILS = new String(FilmyApplication.getContext().getResources().getString(R.string.tmdb_movie_base_url)
                 + movie_id
                 + "?"
-                +FilmyApplication.getContext().getResources().getString(R.string.tmdb_movie_url_suffix)
+                +FilmyApplication.getContext().getResources().getString(R.string.tmdb_api_key)
                 +"&append_to_response=trailers");
+
+
 
         JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(Request.Method.GET, BASE_URL_MOVIE_DETAILS, null,
                 new Response.Listener<JSONObject>() {

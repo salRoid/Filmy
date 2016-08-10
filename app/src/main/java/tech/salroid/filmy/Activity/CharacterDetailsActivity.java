@@ -29,22 +29,24 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import tech.salroid.filmy.dataClasses.CharacterDetailsData;
-import tech.salroid.filmy.parsers.CharacterDetailActivityParseWork;
-import tech.salroid.filmy.customAdapter.CharacterDetailsActivityAdapter;
-import tech.salroid.filmy.fragments.FullReadFragment;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
+import tech.salroid.filmy.data_classes.CharacterDetailsData;
+import tech.salroid.filmy.fragments.FullReadFragment;
 import tech.salroid.filmy.network.VolleySingleton;
+import tech.salroid.filmy.parsers.CharacterDetailActivityParseWork;
 
 public class CharacterDetailsActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 
+
+
+    Context co = this;
+    FrameLayout headerContainer;
     private String character_id;
     private ImageView character_small;
-    Context co = this;
     private RecyclerView char_recycler;
     private String character_title = null, movie_json = null;
     private TextView more;
-    FrameLayout headerContainer;
     private String character_bio;
     private FullReadFragment fullReadFragment;
 
@@ -233,7 +235,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                 if (Build.VERSION.SDK_INT >= 24) {
                     ch_desc.setText(Html.fromHtml(char_desc,Html.FROM_HTML_MODE_LEGACY));
                 } else {
-                    ch_desc.setText(Html.fromHtml(char_desc));
+                  ch_desc.setText(Html.fromHtml(char_desc));
                 }
             }
 

@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.SavedMoviesAdapter;
-import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.databases.FilmContract;
 
 
 public class SavedMovies extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {

@@ -54,7 +54,7 @@
             android:theme="@style/AppTheme.Base" />
 
         <provider
-            android:name=".provider.FilmProvider"
+            android:name=".providers.FilmProvider"
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true" />
@@ -114,7 +114,7 @@
 -->
 
         <service
-            android:name=".service.FilmyJobService"
+            android:name=".services.FilmyJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 

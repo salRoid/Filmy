@@ -13,7 +13,7 @@ import java.util.List;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
 import tech.salroid.filmy.data_classes.CharacterDetailsData;
-import tech.salroid.filmy.parsers.CharacterDetailActivityParseWork;
+import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 
 public class FullMovieActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 

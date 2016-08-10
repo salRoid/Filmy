@@ -38,17 +38,17 @@ import java.net.URL;
 import java.util.HashMap;
 
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.animation.RevealAnimation;
-import tech.salroid.filmy.custom.BreathingProgress;
-import tech.salroid.filmy.database.FilmContract;
-import tech.salroid.filmy.database.MovieDetailsUpdation;
-import tech.salroid.filmy.database.MovieLoaders;
-import tech.salroid.filmy.database.MovieSelection;
-import tech.salroid.filmy.database.OfflineMovies;
-import tech.salroid.filmy.fragments.CastFragment;
-import tech.salroid.filmy.fragments.FullReadFragment;
-import tech.salroid.filmy.network.GetDataFromNetwork;
-import tech.salroid.filmy.utils.NullChecker;
+import tech.salroid.filmy.animations.RevealAnimation;
+import tech.salroid.filmy.customs.BreathingProgress;
+import tech.salroid.filmy.databases.FilmContract;
+import tech.salroid.filmy.databases.MovieDetailsUpdation;
+import tech.salroid.filmy.databases.MovieLoaders;
+import tech.salroid.filmy.databases.MovieSelection;
+import tech.salroid.filmy.databases.OfflineMovies;
+import tech.salroid.filmy.fragment.CastFragment;
+import tech.salroid.filmy.fragment.FullReadFragment;
+import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
+import tech.salroid.filmy.utility.NullChecker;
 
 
 public class MovieDetailsActivity extends AppCompatActivity implements

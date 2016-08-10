@@ -13,7 +13,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.custom.BreathingProgress;
+import tech.salroid.filmy.customs.BreathingProgress;
 
 public class FullScreenImage extends AppCompatActivity {
 

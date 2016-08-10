@@ -31,12 +31,12 @@ import java.util.ArrayList;
 import tech.salroid.filmy.FilmyIntro;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
-import tech.salroid.filmy.fragments.InTheaters;
-import tech.salroid.filmy.fragments.SearchFragment;
-import tech.salroid.filmy.fragments.Trending;
-import tech.salroid.filmy.fragments.UpComing;
-import tech.salroid.filmy.service.FilmyJobScheduler;
-import tech.salroid.filmy.utils.Network;
+import tech.salroid.filmy.fragment.InTheaters;
+import tech.salroid.filmy.fragment.SearchFragment;
+import tech.salroid.filmy.fragment.Trending;
+import tech.salroid.filmy.fragment.UpComing;
+import tech.salroid.filmy.services.FilmyJobScheduler;
+import tech.salroid.filmy.utility.Network;
 import tr.xip.errorview.ErrorView;
 
 

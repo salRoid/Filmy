@@ -33,19 +33,18 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-    <ImageView
-        android:layout_width="85dp"
-        android:layout_height="85dp"
-        android:layout_gravity="center"
-        android:src="@drawable/empty_folder" />
+        <ImageView
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:layout_gravity="center"
+            android:src="@drawable/empty_folder" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="You saved movies appear here."
-            android:textColor="#BDBDBD"
-            />
+            android:textColor="#BDBDBD" />
 
     </LinearLayout>
 

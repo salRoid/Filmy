@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 
 public class FullMovieActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 
-    private RecyclerView full_movie_recycler;
+
     private String movie_result;
 
     @Override
@@ -30,14 +29,15 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         setSupportActionBar(toolbar);
 
 
-        full_movie_recycler = (RecyclerView) findViewById(R.id.full_movie_recycler);
+        RecyclerView full_movie_recycler = (RecyclerView) findViewById(R.id.full_movie_recycler);
         full_movie_recycler.setLayoutManager(new LinearLayoutManager(FullMovieActivity.this));
 
 
         Intent intent = getIntent();
         if (intent != null) {
             movie_result = intent.getStringExtra("cast_json");
-            getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
         }
 
 
@@ -56,7 +56,6 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("id", setterGetterChar.getChar_id());
         intent.putExtra("network_applicable", true);
-        Log.d("webi", setterGetterChar.getChar_id());
         intent.putExtra("activity", false);
         startActivity(intent);
 

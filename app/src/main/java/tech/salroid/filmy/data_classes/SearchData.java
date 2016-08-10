@@ -1,8 +1,6 @@
 package tech.salroid.filmy.data_classes;
 
-/**
- * Created by Home on 7/27/2016.
- */
+
 public class SearchData {
 
 

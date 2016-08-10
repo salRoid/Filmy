@@ -16,9 +16,7 @@ import java.util.List;
 
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.data_classes.MovieDetailsData;
-/**
- * Created by Home on 7/22/2016.
- */
+
 public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetailsActivityAdapter.Ho> {
 
     private final Boolean ret_size;

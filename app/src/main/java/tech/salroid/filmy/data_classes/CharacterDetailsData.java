@@ -1,21 +1,17 @@
 package tech.salroid.filmy.data_classes;
 
-/**
- * Created by Home on 7/23/2016.
- */
+
 public class CharacterDetailsData {
 
 
     String char_movie, char_role, char_id, Charmovie_img;
-    int char_date;
+    //  int char_date;
 
-    public int getChar_date() {
-        return char_date;
-    }
 
-    public void setChar_date(int char_date) {
+    /*public void setChar_date(int char_date) {
         this.char_date = char_date;
-    }
+    }*/
+
 
     public String getChar_id() {
         return char_id;
@@ -51,3 +47,5 @@ public class CharacterDetailsData {
 
 
 }
+
+

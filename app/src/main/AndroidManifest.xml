@@ -2,11 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tech.salroid.filmy">
 
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Permissions required by the sync adapter -->
+
+    <!--<uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>-->
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
 
     <application
         android:name=".FilmyApplication"
@@ -17,7 +31,8 @@
         android:theme="@style/AppTheme.Base">
 
 
-        <activity android:name=".FilmyIntro"
+        <activity
+            android:name=".FilmyIntro"
             android:label=" " />
 
         <activity
@@ -27,11 +42,16 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
+
+            <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="62707285253d6b217b66e97e6e602bcab0edc463" />
+
         </activity>
 
-        <activity android:name=".activities.MainActivity">
-        </activity>
+        <activity android:name=".activities.MainActivity"></activity>
 
         <activity
             android:name=".activities.MovieDetailsActivity"
@@ -78,7 +98,6 @@
             android:name=".services.FilmyJobService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
 
 
     </application>

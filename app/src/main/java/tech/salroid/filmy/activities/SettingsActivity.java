@@ -21,7 +21,8 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getFragmentManager().beginTransaction().
                 replace(R.id.container,
@@ -68,7 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
                     my_prefrence.putString("image_quality", quality);
-                    my_prefrence.commit();
+                    my_prefrence.apply();
 
                     return true;
                 }
@@ -78,4 +79,5 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     }
+
 }

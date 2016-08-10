@@ -9,24 +9,24 @@
         android:title="Image Quality" />
 
     <Preference
-        android:selectable="true"
         android:enabled="true"
         android:key="license"
-        android:title="License"
-        android:summary="" />
+        android:selectable="true"
+        android:summary=""
+        android:title="License" />
 
     <Preference
-        android:selectable="true"
         android:enabled="true"
         android:key="Version"
-        android:title="Version"
-        android:summary="0.0.1" />
+        android:selectable="true"
+        android:summary="0.0.1"
+        android:title="Version" />
 
     <Preference
-        android:selectable="true"
         android:enabled="true"
         android:key="About"
-        android:title="About"
-        android:summary="Made for Cinephiles" />
+        android:selectable="true"
+        android:summary="Made for Cinephiles"
+        android:title="About" />
 
 </PreferenceScreen>

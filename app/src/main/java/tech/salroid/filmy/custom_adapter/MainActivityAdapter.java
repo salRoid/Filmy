@@ -16,10 +16,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.database.FilmContract;
 
-
-/**
- * Created by Home on 7/20/2016.
- */
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.Vh> {
 
     private final LayoutInflater inflater;
@@ -51,7 +47,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         int movie_year;
 
 
-
         dataCursor.moveToPosition(position);
 
 
@@ -67,7 +62,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         movie_year = dataCursor.getInt(year_index);
 
 
-        holder.title.setText(movie_title+" / "+movie_year);
+        holder.title.setText(movie_title + " / " + movie_year);
         //holder.year.setText(String.valueOf(movie_year));
 
         Glide.with(context).load(movie_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.poster);

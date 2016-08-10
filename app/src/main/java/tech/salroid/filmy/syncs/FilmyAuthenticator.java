@@ -29,6 +29,7 @@ public class FilmyAuthenticator extends AbstractAccountAuthenticator {
         throw new UnsupportedOperationException();
     }
 
+
     // Because we're not actually adding an account to the device, just return null.
     @Override
     public Bundle addAccount(

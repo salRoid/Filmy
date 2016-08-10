@@ -34,6 +34,7 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
         this.ch = ch;
         this.ret_size = size;
 
+
     }
 
 

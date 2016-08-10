@@ -56,9 +56,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
         holder.movie_name.setText(query_name);
 
-        if(!query_date.equals("null"))
-          holder.date.setText(query_date);
-        else{
+        if (!query_date.equals("null"))
+            holder.date.setText(query_date);
+        else {
             holder.date.setVisibility(View.INVISIBLE);
         }
 
@@ -85,7 +85,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     class Dh extends RecyclerView.ViewHolder {
 
-        TextView movie_name,date;
+        TextView movie_name, date;
         ImageView movie_poster;
         FrameLayout main;
 

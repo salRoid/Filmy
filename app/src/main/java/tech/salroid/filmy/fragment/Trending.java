@@ -26,7 +26,6 @@ import tech.salroid.filmy.database.MovieSelection;
 public class Trending extends Fragment implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     BreathingProgress breathingProgress;
-    private RecyclerView recycler;
     private MainActivityAdapter mainActivityAdapter;
 
 
@@ -40,7 +39,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
 
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
-        recycler = (RecyclerView) view.findViewById(R.id.recycler);
+        RecyclerView recycler = (RecyclerView) view.findViewById(R.id.recycler);
 
         breathingProgress = (BreathingProgress) view.findViewById(R.id.breathingProgress);
 

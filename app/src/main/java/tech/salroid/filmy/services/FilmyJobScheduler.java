@@ -21,6 +21,7 @@ public class FilmyJobScheduler {
 
     public FilmyJobScheduler(Context context) {
 
+
         this.context = context;
         jobScheduler = JobScheduler.getInstance(context);
 

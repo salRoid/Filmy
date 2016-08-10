@@ -2,6 +2,7 @@ package tech.salroid.filmy.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 
 public class CharacterDetailsActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 
+
     Context co = this;
     FrameLayout headerContainer;
     private String character_id;
@@ -57,7 +59,10 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         setSupportActionBar(toolbar);
 
         more = (TextView) findViewById(R.id.more);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        if (getActionBar() != null)
+            getActionBar().setDisplayHomeAsUpEnabled(true);
 
         more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,9 +132,13 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
+        final String BASE_URL = getResources().getString(R.string.trakt_base_url);
 
-        final String BASE_URL_PERSON_DETAIL = "https://api.trakt.tv/people/" + character_id + "?extended=full,images";
-        final String BASE_URL_PEOPLE_MOVIES = "https://api.trakt.tv/people/" + character_id + "/movies?extended=images,full";
+        final String BASE_URL_PERSON_DETAIL = BASE_URL + character_id + "?" +
+                getResources().getString(R.string.person_details_suffix);
+
+        final String BASE_URL_PEOPLE_MOVIES = BASE_URL + character_id +
+                getResources().getString(R.string.person_movies_details);
 
         JsonObjectRequest personDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PERSON_DETAIL, null,
                 new Response.Listener<JSONObject>() {
@@ -221,9 +230,13 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                 ch_place.setText(char_birthplace);
             if (char_birthplace.equals("null"))
                 ch_desc.setVisibility(View.GONE);
-            else
-                ch_desc.setText(Html.fromHtml(char_desc));
-
+            else {
+                if (Build.VERSION.SDK_INT >= 24) {
+                    ch_desc.setText(Html.fromHtml(char_desc, Html.FROM_HTML_MODE_LEGACY));
+                } else {
+                    ch_desc.setText(Html.fromHtml(char_desc));
+                }
+            }
 
           /*Glide.with(co)
                   .load(char_banner)
@@ -246,8 +259,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         CharacterDetailActivityParseWork par = new CharacterDetailActivityParseWork(this, cast_result);
         List<CharacterDetailsData> char_list = par.char_parse_cast();
-        Boolean size = true;
-        CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, size);
+        CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, true);
         char_adapter.setClickListener(this);
         char_recycler.setAdapter(char_adapter);
         more.setVisibility(View.VISIBLE);

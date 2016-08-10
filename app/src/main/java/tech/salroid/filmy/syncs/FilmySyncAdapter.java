@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import tech.salroid.filmy.FilmyApplication;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
@@ -33,19 +35,15 @@ import tech.salroid.filmy.parser.MainActivityParseWork;
 
 public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
 
+    public static final int SYNC_INTERVAL = 60 * 180;
 
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
-
-    public static final int SYNC_INTERVAL = 60 * 180;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
-
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
-
     private static final int NOTIFICATION_ID = 3004;
     private static String LOG_TAG = FilmySyncAdapter.class.getSimpleName();
-
-
+    Resources resource = FilmyApplication.getContext().getResources();
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
 
@@ -171,7 +169,7 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncNowInTheaters() {
 
 
-        final String Intheatres_Base_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+        final String Intheatres_Base_URL = resource.getString(R.string.tmdb_movie_base_url) + "now_playing?" + resource.getString(R.string.tmdb_api_key);
 
         JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Intheatres_Base_URL, null,
                 new Response.Listener<JSONObject>() {
@@ -198,7 +196,7 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncNowUpComing() {
 
 
-        final String Upcoming_Base_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+        final String Upcoming_Base_URL = resource.getString(R.string.tmdb_movie_base_url) + "upcoming?" + resource.getString(R.string.tmdb_api_key);
 
         JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Upcoming_Base_URL, null,
                 new Response.Listener<JSONObject>() {

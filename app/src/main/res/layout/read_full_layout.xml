@@ -9,8 +9,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
 
         <RelativeLayout
             android:id="@+id/fragment_desc"
@@ -59,11 +59,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/header"
+                android:fontFamily="sans-serif-condensed"
+                android:paddingBottom="48dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="16dp"
-                android:paddingBottom="48dp"
-                android:fontFamily="sans-serif-condensed"
                 android:text=""
                 android:textColor="#ffffff"
                 android:textSize="17sp" />

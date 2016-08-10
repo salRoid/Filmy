@@ -16,8 +16,7 @@
         android:text="Welcome to Filmy"
         android:textColor="#ffffff"
         android:textSize="24sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/intro_desc"
@@ -29,9 +28,8 @@
         android:fontFamily="sans-serif-condensed"
         android:text="Filmy is your new movie app."
         android:textColor="#ffffff"
-        android:textSize="18sp"
-        />
-    
+        android:textSize="18sp" />
+
 
     <ImageView
         android:layout_width="200dp"

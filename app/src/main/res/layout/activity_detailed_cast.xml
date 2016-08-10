@@ -47,8 +47,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
                         android:layout_marginRight="16dp"
+                        android:layout_marginTop="16dp"
                         android:fontFamily="sans-serif-condensed"
                         android:textAppearance="?android:textAppearanceLarge" />
 
@@ -112,9 +112,9 @@
                         android:layout_alignParentLeft="true"
                         android:fontFamily="sans-serif-condensed"
                         android:padding="16dp"
-                        android:text="Movies "
-                        android:textStyle="bold"
-                        android:textAppearance="?android:textAppearanceMedium" />
+                        android:text="@string/movies"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/more"
@@ -126,9 +126,9 @@
                         android:fontFamily="sans-serif-condensed"
                         android:padding="16dp"
                         android:text="More"
-                        android:textStyle="bold"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:textColor="@color/colorMore"
+                        android:textStyle="bold"
                         android:visibility="invisible" />
 
 

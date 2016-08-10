@@ -1,8 +1,5 @@
 package tech.salroid.filmy.custom_adapter;
 
-/**
- * Created by Home on 7/30/2016.
- */
 
 import android.content.Context;
 import android.database.Cursor;
@@ -21,10 +18,6 @@ import tech.salroid.filmy.R;
 import tech.salroid.filmy.database.FilmContract;
 
 
-
-/**
- * Created by Home on 7/20/2016.
- */
 public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.Vh> {
 
     private final LayoutInflater inflater;
@@ -138,7 +131,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
                     int movie_title_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
 
                     if (clickListener != null) {
-                        clickListener.itemClicked(dataCursor.getString(movie_id_index),dataCursor.getString(movie_title_index));
+                        clickListener.itemClicked(dataCursor.getString(movie_id_index), dataCursor.getString(movie_title_index));
                     }
 
                 }
@@ -152,14 +145,14 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
 
                     if (longclickListener != null) {
-                        longclickListener.itemLongClicked(dataCursor,getPosition());
+                        longclickListener.itemLongClicked(dataCursor, getPosition());
                     }
 
                     return true;
                 }
             });
 
-            }
         }
+    }
 
 }

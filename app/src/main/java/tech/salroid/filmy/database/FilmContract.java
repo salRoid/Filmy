@@ -1,4 +1,4 @@
-package tech.salroid.filmy.Databases;
+package tech.salroid.filmy.database;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;

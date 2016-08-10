@@ -14,8 +14,8 @@ import android.test.AndroidTestCase;
 import java.util.Map;
 import java.util.Set;
 
-import tech.salroid.filmy.databases.FilmContract;
-import tech.salroid.filmy.databases.FilmDbHelper;
+import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.database.FilmDbHelper;
 import tech.salroid.filmy.utility.PollingCheck;
 
 /**

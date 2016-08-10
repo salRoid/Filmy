@@ -1,4 +1,4 @@
-package tech.salroid.filmy.databases;
+package tech.salroid.filmy.database;
 
 /**
  * Created by R Ankit on 04-08-2016.

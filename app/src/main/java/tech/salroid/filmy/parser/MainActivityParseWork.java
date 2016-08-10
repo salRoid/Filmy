@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.util.Vector;
 
-import tech.salroid.filmy.databases.FilmContract;
+import tech.salroid.filmy.database.FilmContract;
 
 
 public class MainActivityParseWork {

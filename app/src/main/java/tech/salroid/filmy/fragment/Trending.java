@@ -19,8 +19,8 @@ import tech.salroid.filmy.activities.MainActivity;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
-import tech.salroid.filmy.databases.FilmContract;
-import tech.salroid.filmy.databases.MovieSelection;
+import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.database.MovieSelection;
 
 
 public class Trending extends Fragment implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {

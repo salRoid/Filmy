@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.databases.FilmContract;
+import tech.salroid.filmy.database.FilmContract;
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.Vh> {
 

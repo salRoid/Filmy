@@ -7,8 +7,8 @@ import android.test.AndroidTestCase;
 
 import java.util.HashSet;
 
-import tech.salroid.filmy.databases.FilmContract;
-import tech.salroid.filmy.databases.FilmDbHelper;
+import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.database.FilmDbHelper;
 
 /**
  * Created by Home on 7/24/2016.

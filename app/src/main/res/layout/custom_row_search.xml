@@ -43,6 +43,7 @@
                     android:paddingRight="8dp"
                     android:paddingTop="8dp"
                     android:maxLines="4"
+                    android:text="Star Trek"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textStyle="bold" />
 
@@ -57,6 +58,7 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:maxLines="2"
+                    android:text="Release Date"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textStyle="bold"
                     />

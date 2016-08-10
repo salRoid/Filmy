@@ -112,7 +112,7 @@
                         android:layout_alignParentLeft="true"
                         android:fontFamily="sans-serif-condensed"
                         android:padding="16dp"
-                        android:text="@string/movies"
+                        android:text="Movies "
                         android:textStyle="bold"
                         android:textAppearance="?android:textAppearanceMedium" />
 

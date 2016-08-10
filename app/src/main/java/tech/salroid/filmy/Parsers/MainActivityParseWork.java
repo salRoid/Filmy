@@ -1,4 +1,4 @@
-package tech.salroid.filmy.parsers;
+package tech.salroid.filmy.Parsers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,9 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Vector;
-
-import tech.salroid.filmy.R;
-import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.Database.FilmContract;
 
 
 public class MainActivityParseWork {
@@ -17,7 +15,8 @@ public class MainActivityParseWork {
     // private final int type;
     private Context context;
     private String result;
-  //  private String imdb_id;
+    private final String LOG_TAG = MainActivityParseWork.class.getSimpleName();
+    private String imdb_id;
 
 
     public MainActivityParseWork(Context context, String result) {
@@ -71,13 +70,14 @@ public class MainActivityParseWork {
                  cVVector.add(movieValues);
 
              }
+             int inserted = 0;
              // add to database
              if (cVVector.size() > 0) {
                  ContentValues[] cvArray = new ContentValues[cVVector.size()];
                  cVVector.toArray(cvArray);
 
                  context.getContentResolver().delete(FilmContract.MoviesEntry.CONTENT_URI, null, null);
-                  context.getContentResolver().bulkInsert(FilmContract.MoviesEntry.CONTENT_URI, cvArray);
+                 inserted = context.getContentResolver().bulkInsert(FilmContract.MoviesEntry.CONTENT_URI, cvArray);
 
              }
 
@@ -87,7 +87,7 @@ public class MainActivityParseWork {
          } catch (JSONException e1) {
              e1.printStackTrace();
          }
-
+         return;
      }
 
     public void parseupcoming() {
@@ -112,11 +112,11 @@ public class MainActivityParseWork {
                 String year = temp_year[0];
 
 
-                /*String trimmedQuery = (title.toLowerCase()).trim();
+                String trimmedQuery = (title.toLowerCase()).trim();
 
                 String finalQuery = trimmedQuery.replace(" ","-");
                 finalQuery=finalQuery.replace("'","-");
-                String slug = (finalQuery.replace(":",""))+"-"+year;*/
+                String slug = (finalQuery.replace(":",""))+"-"+year;
 
 
 
@@ -130,19 +130,19 @@ public class MainActivityParseWork {
                     movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
                     movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
                     movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
-                    movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK,
-                            context.getResources().getString(R.string.poster_prefix_185) + poster);
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, "http://image.tmdb.org/t/p/w185" + poster);
 
 
                     cVVector.add(movieValues);
                 }
             }
+            int inserted = 0;
             if (cVVector.size() > 0) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
 
                 context.getContentResolver().delete(FilmContract.UpComingMoviesEntry.CONTENT_URI, null, null);
-                 context.getContentResolver().bulkInsert(FilmContract.UpComingMoviesEntry.CONTENT_URI, cvArray);
+                inserted = context.getContentResolver().bulkInsert(FilmContract.UpComingMoviesEntry.CONTENT_URI, cvArray);
 
             }
 
@@ -152,7 +152,7 @@ public class MainActivityParseWork {
         } catch (JSONException e1) {
             e1.printStackTrace();
         }
-
+        return;
     }
 
 
@@ -179,10 +179,10 @@ public class MainActivityParseWork {
                 String temp_year []=(jsonArray.getJSONObject(i)).getString("release_date").split("-");
                 String year = temp_year[0];
 
-                /*String trimmedQuery = (title.toLowerCase()).trim();
+                String trimmedQuery = (title.toLowerCase()).trim();
                 String finalQuery = trimmedQuery.replace(" ","-");
                 finalQuery=finalQuery.replace("'","-");
-                String slug = (finalQuery.replace(":",""))+"-"+year;*/
+                String slug = (finalQuery.replace(":",""))+"-"+year;
 
 
                 if (!(poster.equals("null"))) {
@@ -192,20 +192,19 @@ public class MainActivityParseWork {
                     movieValues.put(FilmContract.MoviesEntry.MOVIE_ID, id);
                     movieValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, title);
                     movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year);
-                    movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK,
-                            context.getResources().getString(R.string.poster_prefix_185) + poster);
+                    movieValues.put(FilmContract.MoviesEntry.MOVIE_POSTER_LINK, "http://image.tmdb.org/t/p/w185" + poster);
 
                     cVVector.add(movieValues);
                 }
             }
-
+            int inserted = 0;
             // add to database
             if (cVVector.size() > 0) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
 
                 context.getContentResolver().delete(FilmContract.InTheatersMoviesEntry.CONTENT_URI, null, null);
-                 context.getContentResolver().bulkInsert(FilmContract.InTheatersMoviesEntry.CONTENT_URI, cvArray);
+                inserted = context.getContentResolver().bulkInsert(FilmContract.InTheatersMoviesEntry.CONTENT_URI, cvArray);
 
             }
 
@@ -215,6 +214,7 @@ public class MainActivityParseWork {
         } catch (JSONException e1) {
             e1.printStackTrace();
         }
+        return;
 
     }
 }

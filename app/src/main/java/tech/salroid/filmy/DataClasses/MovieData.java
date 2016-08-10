@@ -1,5 +1,8 @@
-package tech.salroid.filmy.dataClasses;
+package tech.salroid.filmy.DataClasses;
 
+/**
+ * Created by Home on 7/20/2016.
+ */
 public class MovieData {
 
     String movie, poster, id;

@@ -1,4 +1,4 @@
-package tech.salroid.filmy.custom;
+package tech.salroid.filmy.Custom;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;

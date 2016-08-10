@@ -5,10 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
+import java.util.Date;
 import java.util.HashSet;
 
-import tech.salroid.filmy.database.FilmContract;
-import tech.salroid.filmy.database.FilmDbHelper;
+import tech.salroid.filmy.Database.FilmContract;
+import tech.salroid.filmy.Database.FilmDbHelper;
 
 /**
  * Created by Home on 7/24/2016.

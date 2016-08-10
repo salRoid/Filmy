@@ -4,12 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import tech.salroid.filmy.CustomAdapter.MyPagerAdapter;
+import tech.salroid.filmy.FilmyIntro;
 import tech.salroid.filmy.Fragments.InTheaters;
 import tech.salroid.filmy.Fragments.Trending;
 import tech.salroid.filmy.Fragments.UpComing;
@@ -40,11 +42,15 @@ public class MainActivity extends AppCompatActivity {
 
     private MaterialSearchView materialSearchView;
     private SearchFragment searchFragment;
+    private TextView logo;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ErrorView mErrorView;
     public boolean fetchingFromNetwork;
     private Trending trendingFragment;
+    private InTheaters inTheatersFragment;
+    private UpComing upComingFragment;
+    private Toolbar toolbar;
     private FrameLayout toolbarScroller;
     private boolean cantProceed;
 
@@ -54,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        if (getSupportActionBar()!=null)
         getSupportActionBar().setTitle(" ");
 
-        TextView logo = (TextView) findViewById(R.id.logo);
+        introLogic();
+
+        logo = (TextView) findViewById(R.id.logo);
 
         toolbarScroller = (FrameLayout) findViewById(R.id.toolbarScroller);
 
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         mErrorView.setConfig(ErrorView.Config.create()
                 .title(getString(R.string.error_title_damn))
-                .titleColor(ContextCompat.getColor(this,R.color.dark))
+                .titleColor(getResources().getColor(R.color.dark))
                 .subtitle("Unable to fetch movies.\nCheck internet connection then try again.")
                 .retryText(getString(R.string.error_view_retry))
                 .build());
@@ -172,6 +178,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void introLogic() {
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                SharedPreferences getPrefs = PreferenceManager
+                        .getDefaultSharedPreferences(getBaseContext());
+
+                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+
+                if (isFirstStart) {
+
+                    Intent i = new Intent(MainActivity.this, FilmyIntro.class);
+                    startActivity(i);
+                    SharedPreferences.Editor e = getPrefs.edit();
+                    e.putBoolean("firstStart", false);
+                    e.apply();
+                }
+            }
+        });
+        t.start();
+
+    }
 
 
     private void setScheduler() {
@@ -240,8 +270,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         trendingFragment = new Trending();
-        InTheaters inTheatersFragment = new InTheaters();
-        UpComing upComingFragment = new UpComing();
+        inTheatersFragment = new InTheaters();
+        upComingFragment = new UpComing();
 
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(trendingFragment, "TRENDING");

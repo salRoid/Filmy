@@ -54,7 +54,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text="@string/dash"
+                android:text="- - - -"
                 android:textAppearance="?android:textAppearanceSmall" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text="@string/dash"
+                android:text="- - - -"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textAppearance="?android:textAppearanceSmall" />

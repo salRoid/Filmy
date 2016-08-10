@@ -1,4 +1,4 @@
-package tech.salroid.filmy.service;
+package tech.salroid.filmy.Service;
 
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
@@ -14,9 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import me.tatarka.support.job.JobParameters;
 import me.tatarka.support.job.JobService;
-import tech.salroid.filmy.parsers.MainActivityParseWork;
-import tech.salroid.filmy.network.TmdbVolleySingleton;
-import tech.salroid.filmy.network.VolleySingleton;
+import tech.salroid.filmy.Parsers.MainActivityParseWork;
+import tech.salroid.filmy.Network.TmdbVolleySingleton;
+import tech.salroid.filmy.Network.VolleySingleton;
 
 /**
  * Created by R Ankit on 05-08-2016.

@@ -1,9 +1,10 @@
-package tech.salroid.filmy.fragments;
+package tech.salroid.filmy.Fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -13,15 +14,16 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import tech.salroid.filmy.activity.MovieDetailsActivity;
-import tech.salroid.filmy.customAdapter.MainActivityAdapter;
-import tech.salroid.filmy.database.FilmContract;
-import tech.salroid.filmy.database.MovieSelection;
+import tech.salroid.filmy.Activity.MovieDetailsActivity;
+import tech.salroid.filmy.CustomAdapter.MainActivityAdapter;
+import tech.salroid.filmy.Database.FilmContract;
+import tech.salroid.filmy.Database.MovieSelection;
 import tech.salroid.filmy.R;
 
 
 public class UpComing extends Fragment implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
+    private RecyclerView recycler;
     private MainActivityAdapter mainActivityAdapter;
 
     public UpComing() {
@@ -33,7 +35,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_up_coming, container, false);
-        RecyclerView recycler = (RecyclerView) view.findViewById(R.id.recycler);
+        recycler = (RecyclerView) view.findViewById(R.id.recycler);
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recycler.setLayoutManager(gridLayoutManager);
 
@@ -63,6 +65,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
         intent.putExtra("title", cursor.getString(title_index));
         intent.putExtra("activity", true);
         intent.putExtra("type",2);
+        //intent.putExtra("update_id",true);
         intent.putExtra("database_applicable", true);
         intent.putExtra("network_applicable", true);
         intent.putExtra("id", cursor.getString(id_index));

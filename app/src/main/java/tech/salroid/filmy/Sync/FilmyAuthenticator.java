@@ -1,4 +1,4 @@
-package tech.salroid.filmy.sync;
+package tech.salroid.filmy.Sync;
 
 
 import android.accounts.AbstractAccountAuthenticator;

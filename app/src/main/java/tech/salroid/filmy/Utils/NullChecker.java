@@ -1,4 +1,4 @@
-package tech.salroid.filmy.utils;
+package tech.salroid.filmy.Utils;
 
 /**
  * Created by R Ankit on 07-08-2016.

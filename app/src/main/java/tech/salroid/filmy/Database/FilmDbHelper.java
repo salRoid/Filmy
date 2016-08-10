@@ -1,4 +1,4 @@
-package tech.salroid.filmy.database;
+package tech.salroid.filmy.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

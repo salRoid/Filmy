@@ -1,21 +1,22 @@
-package tech.salroid.filmy.dataClasses;
+package tech.salroid.filmy.DataClasses;
 
-
+/**
+ * Created by Home on 7/23/2016.
+ */
 public class MovieDetailsData {
 
 
-    String cast_name, cast_character, cast_profile, cast_id;
-    //String  cast_description;
+    String cast_name, cast_character, cast_profile, cast_description, cast_id;
 
 
     public void setCast_character(String cast_character) {
         this.cast_character = cast_character;
     }
 
-    /*  public void setCast_description(String cast_description) {
-          this.cast_description = cast_description;
-      }
-  */
+    public void setCast_description(String cast_description) {
+        this.cast_description = cast_description;
+    }
+
     public void setCast_id(String cast_id) {
         this.cast_id = cast_id;
     }
@@ -40,9 +41,9 @@ public class MovieDetailsData {
         return cast_profile;
     }
 
-   /* public String getCast_description() {
+    public String getCast_description() {
         return cast_description;
-    }*/
+    }
 
     public String getCast_character() {
         return cast_character;

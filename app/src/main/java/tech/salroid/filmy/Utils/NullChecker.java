@@ -8,10 +8,7 @@ public class NullChecker
   {
       public static <T> boolean isSettable(T stuff){
 
-          if(stuff==null || stuff.equals("null"))
-              return false;
-          else
-              return true;
+          return !(stuff == null || stuff.equals("null"));
       }
 
 }

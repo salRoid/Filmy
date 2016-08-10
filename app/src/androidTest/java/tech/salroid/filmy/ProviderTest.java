@@ -21,6 +21,29 @@ import tech.salroid.filmy.provider.FilmProvider;
 public class ProviderTest extends AndroidTestCase {
 
     static final String TAG = ProviderTest.class.getSimpleName();
+    static private final int BULK_INSERT_RECORDS_TO_INSERT = 10;
+
+    static ContentValues[] createBulkInsertMovieValues() {
+
+        ContentValues[] returnContentValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
+
+        for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++) {
+
+            ContentValues contentValues = new ContentValues();
+
+            contentValues.put(FilmContract.MoviesEntry.MOVIE_ID, "t1234" + i);
+            contentValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, "Superman " + i);
+            contentValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, 2000 + i);
+            contentValues.put(FilmContract.MoviesEntry.MOVIE_BANNER, "http://www.webianks.com/logo" + i + ".png");
+            contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, 7.8 + i);
+            contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION, "this is superman" + i);
+            contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE, "this is jaan" + i);
+            contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER, "http://www.webianks.com/logo" + i + ".png");
+
+            returnContentValues[i] = contentValues;
+        }
+        return returnContentValues;
+    }
 
     // Since we want each test to start with a clean slate, run deleteAllRecords
     // in setUp (called by the test runner before each test).
@@ -29,7 +52,6 @@ public class ProviderTest extends AndroidTestCase {
         super.setUp();
         deleteAllRecords();
     }
-
 
     public void deleteAllRecords() {
         deleteAllRecordsFromProvider();
@@ -70,7 +92,6 @@ public class ProviderTest extends AndroidTestCase {
         cursor.close();
     }
 
-
     public void testProviderRegistry() {
 
         PackageManager pm = mContext.getPackageManager();
@@ -90,7 +111,6 @@ public class ProviderTest extends AndroidTestCase {
                     false);
         }
     }
-
 
     public void testGetType() {
 
@@ -119,7 +139,6 @@ public class ProviderTest extends AndroidTestCase {
                 FilmContract.CastEntry.CONTENT_TYPE, type);
     }
 
-
     public void testBasicMoviesQuery() {
 
         // insert our test records into the database
@@ -127,7 +146,6 @@ public class ProviderTest extends AndroidTestCase {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues movieValues = TestUtilities.createMovieTestValues();
-        ;
         long movieRowId = TestUtilities.insertMovieValues(mContext);
 
         ContentValues castValues = TestUtilities.createCastValues();
@@ -149,7 +167,6 @@ public class ProviderTest extends AndroidTestCase {
         // Make sure we get the correct cursor out of the database
         TestUtilities.validateCursor("testBasicMovieQuery", movieCursor, movieValues);
     }
-
 
     public void testBasicCastQueries() {
         // insert our test records into the database
@@ -178,7 +195,6 @@ public class ProviderTest extends AndroidTestCase {
                     castCursor.getNotificationUri(), FilmContract.CastEntry.CONTENT_URI);
         }
     }
-
 
     public void testInsertReadProvider() {
 
@@ -246,7 +262,6 @@ public class ProviderTest extends AndroidTestCase {
 
     }
 
-
     public void testDeleteRecords() {
 
         testInsertReadProvider();
@@ -270,32 +285,6 @@ public class ProviderTest extends AndroidTestCase {
         mContext.getContentResolver().unregisterContentObserver(locationObserver);
         mContext.getContentResolver().unregisterContentObserver(weatherObserver);
     }
-
-    static private final int BULK_INSERT_RECORDS_TO_INSERT = 10;
-
-
-    static ContentValues[] createBulkInsertMovieValues() {
-
-        ContentValues[] returnContentValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
-
-        for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++) {
-
-            ContentValues contentValues = new ContentValues();
-
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_ID, "t1234" + i);
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_TITLE, "Superman " + i);
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, 2000 + i);
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_BANNER, "http://www.webianks.com/logo" + i + ".png");
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_RATING, 7.8 + i);
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_DESCRIPTION, "this is superman" + i);
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_TAGLINE, "this is jaan" + i);
-            contentValues.put(FilmContract.MoviesEntry.MOVIE_TRAILER, "http://www.webianks.com/logo" + i + ".png");
-
-            returnContentValues[i] = contentValues;
-        }
-        return returnContentValues;
-    }
-
 
     public void testBulkInsertInMovie() {
        /* // first, let'FilmyAuthenticator create a location value

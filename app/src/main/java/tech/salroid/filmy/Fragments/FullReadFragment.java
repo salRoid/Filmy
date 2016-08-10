@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import tech.salroid.filmy.R;
 
+/**
+ * Created by R Ankit on 29-07-2016.
+ */
 
 public class FullReadFragment extends Fragment implements View.OnClickListener {
 

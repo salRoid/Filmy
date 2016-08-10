@@ -8,7 +8,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.dataClasses.SearchData;
+import tech.salroid.filmy.data_classes.SearchData;
 
 /**
  * Created by Home on 7/27/2016.

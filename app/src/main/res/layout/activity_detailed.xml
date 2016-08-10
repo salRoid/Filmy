@@ -24,7 +24,7 @@
                 android:foreground="?android:selectableItemBackground">
 
                 <ImageView
-                    android:id="@+id/backdrop"
+                    android:id="@+id/bannu"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:background="@color/dark"
@@ -113,7 +113,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:fontFamily="sans-serif-condensed"
-                                android:text="@string/rating"
+                                android:text="Rating"
                                 android:textAppearance="?android:textAppearanceLarge" />
 
                             <TextView
@@ -166,10 +166,10 @@
             </LinearLayout>
 
             <FrameLayout
+                android:id="@+id/cast_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/movie_description"
-                android:id="@+id/cast_container"
                 />
 
         </RelativeLayout>
@@ -187,11 +187,11 @@
 
     <tech.salroid.filmy.custom.BreathingProgress
 
-        android:layout_gravity="center"
         android:id="@+id/breathingProgress"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 
 
 </FrameLayout>

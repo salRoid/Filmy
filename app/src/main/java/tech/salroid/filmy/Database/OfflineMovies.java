@@ -12,10 +12,14 @@ import android.support.design.widget.Snackbar;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import java.util.HashMap;
+
 import tech.salroid.filmy.R;
 
-
+/**
+ * Created by R Ankit on 06-08-2016.
+ */
 
 public class OfflineMovies {
 

@@ -13,11 +13,11 @@
         android:layout_centerInParent="true" />
 
     <tech.salroid.filmy.custom.BreathingProgress
-        android:layout_centerInParent="true"
         android:id="@+id/breathingProgress"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
 
 
 </RelativeLayout>

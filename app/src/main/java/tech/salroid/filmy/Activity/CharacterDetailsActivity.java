@@ -2,7 +2,6 @@ package tech.salroid.filmy.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,22 +28,22 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import tech.salroid.filmy.dataClasses.CharacterDetailsData;
-import tech.salroid.filmy.parsers.CharacterDetailActivityParseWork;
-import tech.salroid.filmy.customAdapter.CharacterDetailsActivityAdapter;
-import tech.salroid.filmy.fragments.FullReadFragment;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
+import tech.salroid.filmy.data_classes.CharacterDetailsData;
+import tech.salroid.filmy.fragments.FullReadFragment;
 import tech.salroid.filmy.network.VolleySingleton;
+import tech.salroid.filmy.parsers.CharacterDetailActivityParseWork;
 
 public class CharacterDetailsActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 
+    Context co = this;
+    FrameLayout headerContainer;
     private String character_id;
     private ImageView character_small;
-    Context co = this;
     private RecyclerView char_recycler;
     private String character_title = null, movie_json = null;
     private TextView more;
-    FrameLayout headerContainer;
     private String character_bio;
     private FullReadFragment fullReadFragment;
 
@@ -58,16 +57,13 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         setSupportActionBar(toolbar);
 
         more = (TextView) findViewById(R.id.more);
-
-
-        if (getActionBar() != null)
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (!(movie_json == null && character_title == null)) {
+                if (!(movie_json.equals(null) && character_title.equals(null))) {
                     Intent intent = new Intent(CharacterDetailsActivity.this, FullMovieActivity.class);
                     intent.putExtra("cast_json", movie_json);
                     intent.putExtra("toolbar_title", character_title);
@@ -131,13 +127,9 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = getResources().getString(R.string.trakt_base_url);
 
-        final String BASE_URL_PERSON_DETAIL = BASE_URL + character_id + "?" +
-                getResources().getString(R.string.person_details_suffix);
-
-        final String BASE_URL_PEOPLE_MOVIES = BASE_URL + character_id +
-                getResources().getString(R.string.person_movies_details);
+        final String BASE_URL_PERSON_DETAIL = "https://api.trakt.tv/people/" + character_id + "?extended=full,images";
+        final String BASE_URL_PEOPLE_MOVIES = "https://api.trakt.tv/people/" + character_id + "/movies?extended=images,full";
 
         JsonObjectRequest personDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PERSON_DETAIL, null,
                 new Response.Listener<JSONObject>() {
@@ -229,13 +221,9 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                 ch_place.setText(char_birthplace);
             if (char_birthplace.equals("null"))
                 ch_desc.setVisibility(View.GONE);
-            else {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    ch_desc.setText(Html.fromHtml(char_desc,Html.FROM_HTML_MODE_LEGACY));
-                } else {
-                    ch_desc.setText(Html.fromHtml(char_desc));
-                }
-            }
+            else
+                ch_desc.setText(Html.fromHtml(char_desc));
+
 
           /*Glide.with(co)
                   .load(char_banner)
@@ -258,7 +246,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         CharacterDetailActivityParseWork par = new CharacterDetailActivityParseWork(this, cast_result);
         List<CharacterDetailsData> char_list = par.char_parse_cast();
-        CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, true);
+        Boolean size = true;
+        CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, size);
         char_adapter.setClickListener(this);
         char_recycler.setAdapter(char_adapter);
         more.setVisibility(View.VISIBLE);

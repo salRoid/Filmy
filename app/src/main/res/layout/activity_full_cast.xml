@@ -10,8 +10,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="@color/primaryColor"
         android:layout_height="?attr/actionBarSize"
+        android:background="@color/primaryColor"
         app:popupTheme="@style/AppTheme.Base.PopupOverlay" />
 
     <android.support.v7.widget.RecyclerView

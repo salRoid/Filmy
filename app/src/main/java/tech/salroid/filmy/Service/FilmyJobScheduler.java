@@ -13,11 +13,11 @@ import me.tatarka.support.job.JobScheduler;
 public class FilmyJobScheduler {
 
 
+    public static final int SYNC_INTERVAL = 60 * 180;
     private JobScheduler jobScheduler;
     private int JOB_ID = 456;
     private int JOB_ID_IMMEDIATE = 654;
     private Context context;
-    public static final int SYNC_INTERVAL = 60 * 180;
 
     public FilmyJobScheduler(Context context){
 

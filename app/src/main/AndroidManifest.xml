@@ -2,12 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tech.salroid.filmy">
 
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!-- Permissions required by the sync adapter -->
+    !-- Permissions required by the sync adapter -->
 
     <!--<uses-permission
         android:name="android.permission.READ_SYNC_SETTINGS"/>
@@ -20,12 +19,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-
     <application
         android:name=".FilmyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/lunch"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
@@ -41,15 +38,11 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
 
         <activity android:name=".activity.MainActivity">
         </activity>
-
-
-
 
         <activity
             android:name=".activity.MovieDetailsActivity"
@@ -62,9 +55,9 @@
 
         <provider
             android:name=".provider.FilmProvider"
-            android:syncable="true"
+            android:authorities="@string/content_authority"
             android:exported="false"
-            android:authorities="@string/content_authority" />
+            android:syncable="true" />
 
 
         <activity
@@ -90,7 +83,7 @@
         <activity
             android:name=".activity.SavedMovies"
             android:label="@string/title_activity_saved_movies"
-            android:theme="@style/AppTheme.Base"/>
+            android:theme="@style/AppTheme.Base"></activity>
 
         <!--<service android:name=".Service.FilmyService"/>
         <receiver android:name=".Service.FilmyService$AlarmReciever"/>-->
@@ -122,8 +115,10 @@
 
         <service
             android:name=".service.FilmyJobService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="true" />
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+
 
     </application>
 

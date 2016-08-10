@@ -22,14 +22,17 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import tech.salroid.filmy.R;
 import tech.salroid.filmy.activity.CharacterDetailsActivity;
 import tech.salroid.filmy.activity.FullCastActivity;
-import tech.salroid.filmy.customAdapter.MovieDetailsActivityAdapter;
-import tech.salroid.filmy.dataClasses.MovieDetailsData;
-import tech.salroid.filmy.parsers.MovieDetailsActivityParseWork;
+import tech.salroid.filmy.custom_adapter.MovieDetailsActivityAdapter;
+import tech.salroid.filmy.data_classes.MovieDetailsData;
 import tech.salroid.filmy.network.VolleySingleton;
-import tech.salroid.filmy.R;
+import tech.salroid.filmy.parsers.MovieDetailsActivityParseWork;
 
+/**
+ * Created by R Ankit on 05-08-2016.
+ */
 
 public class CastFragment extends Fragment implements View.OnClickListener, MovieDetailsActivityAdapter.ClickListener {
 
@@ -37,7 +40,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     private String cast_json;
     private RecyclerView cast_recycler;
     private TextView more;
-    private String movieId, movieTitle;
+    private String movieId,movieTitle;
 
 
     public static CastFragment newInstance(String movie_Id, String movie_Title) {
@@ -53,7 +56,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.cast_fragment, container, false);
+        View view = inflater.inflate(R.layout.cast_fragment,container,false);
 
         more = (TextView) view.findViewById(R.id.more);
 
@@ -73,7 +76,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
         Bundle savedBundle = getArguments();
 
-        if (savedBundle != null) {
+        if(savedBundle!=null){
 
             movieId = savedBundle.getString("movie_id");
             movieTitle = savedBundle.getString("movie_title");
@@ -88,8 +91,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     private void getCastFromNetwork() {
 
 
-        final String BASE_MOVIE_CAST_DETAILS = new String(getResources().getString(R.string.trakt_movie_base_url) + movieId
-                + getResources().getString(R.string.trakt_cast_suffix));
+        final String BASE_MOVIE_CAST_DETAILS = new String("https://api.trakt.tv/movies/" + movieId + "/people?extended=images");
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(Request.Method.GET, BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -97,6 +99,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
                         cast_json = response.toString();
                         cast_parseOutput(response.toString());
+
 
 
                     }
@@ -121,7 +124,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), cast_result);
         List<MovieDetailsData> cast_list = par.parse_cast();
-        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, true);
+        Boolean size = true;
+        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, size);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
         more.setVisibility(View.VISIBLE);
@@ -131,7 +135,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.more) {
+        if(view.getId() == R.id.more) {
 
             if (cast_json != null && movieTitle != null) {
 

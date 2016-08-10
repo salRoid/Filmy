@@ -10,28 +10,32 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+
 import org.json.JSONArray;
+
 import java.util.List;
+
+import tech.salroid.filmy.R;
 import tech.salroid.filmy.activity.CharacterDetailsActivity;
 import tech.salroid.filmy.activity.MovieDetailsActivity;
 import tech.salroid.filmy.custom.BreathingProgress;
-import tech.salroid.filmy.customAdapter.SearchResultAdapter;
-import tech.salroid.filmy.dataClasses.SearchData;
-import tech.salroid.filmy.parsers.SearchResultParseWork;
+import tech.salroid.filmy.custom_adapter.SearchResultAdapter;
+import tech.salroid.filmy.data_classes.SearchData;
 import tech.salroid.filmy.network.VolleySingleton;
-import tech.salroid.filmy.R;
+import tech.salroid.filmy.parsers.SearchResultParseWork;
 
 public class SearchFragment extends Fragment implements SearchResultAdapter.ClickListener {
 
-    private RecyclerView recycler;
     BreathingProgress breathingProgress;
     SearchResultAdapter sadapter;
-
+    private RecyclerView recycler;
+    private Intent intent;
 
     @Nullable
     @Override
@@ -52,7 +56,6 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     @Override
     public void itemClicked(SearchData setterGetter, int position) {
 
-        Intent intent;
         if (setterGetter.getType().equals("person"))
             intent = new Intent(getActivity(), CharacterDetailsActivity.class);
         else{

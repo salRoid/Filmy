@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#009688"
+    tools:context="tech.salroid.filmy.fragments.IntroFragments.IntroFragmentD">
+
+    <TextView
+        android:id="@+id/intro_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Exploration"
+        android:textColor="#ffffff"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/intro_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Search through the large sea of movies and know about different casts."
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        />
+
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/intro_d" />
+
+</RelativeLayout>

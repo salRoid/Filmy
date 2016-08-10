@@ -1,5 +1,4 @@
-package tech.salroid.filmy.customAdapter;
-
+package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -14,20 +13,21 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.database.FilmContract;
 
 
-
-public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.Vh> {
+/**
+ * Created by Home on 7/20/2016.
+ */
+public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.Vh> {
 
     private final LayoutInflater inflater;
     Context context;
     private ClickListener clickListener;
     private Cursor dataCursor;
-    private LongClickListener longclickListener;
 
-    public SavedMoviesAdapter(Context context, Cursor cursor) {
+    public MainActivityAdapter(Context context, Cursor cursor) {
 
         inflater = LayoutInflater.from(context);
         this.context = context;
@@ -50,12 +50,15 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
         String movie_title, imdb_id, movie_poster;
         int movie_year;
 
+
+
         dataCursor.moveToPosition(position);
 
-        int id_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID);
-        int title_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
-        int poster_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_POSTER_LINK);
-        int year_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_YEAR);
+
+        int id_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
+        int title_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
+        int poster_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_POSTER_LINK);
+        int year_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_YEAR);
 
 
         movie_title = dataCursor.getString(title_index);
@@ -64,7 +67,9 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
         movie_year = dataCursor.getInt(year_index);
 
 
-        holder.title.setText(movie_title);
+        holder.title.setText(movie_title+" / "+movie_year);
+        //holder.year.setText(String.valueOf(movie_year));
+
         Glide.with(context).load(movie_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.poster);
 
 
@@ -88,12 +93,23 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
         return oldCursor;
     }
 
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+
+    public interface ClickListener {
+
+        void itemClicked(Cursor cursor);
+
+    }
 
     class Vh extends RecyclerView.ViewHolder {
 
         TextView title;
         ImageView poster;
         FrameLayout main;
+        TextView year;
 
         public Vh(View itemView) {
 
@@ -102,6 +118,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
             title = (TextView) itemView.findViewById(R.id.title);
             poster = (ImageView) itemView.findViewById(R.id.poster);
             main = (FrameLayout) itemView.findViewById(R.id.main);
+            //year = (TextView) itemView.findViewById(R.id.movie_year);
 
 
             main.setOnClickListener(new View.OnClickListener() {
@@ -110,53 +127,13 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
                     dataCursor.moveToPosition(getPosition());
 
-                    int movie_id_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID);
-                    int movie_title_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
-
                     if (clickListener != null) {
-                        clickListener.itemClicked(dataCursor.getString(movie_id_index),dataCursor.getString(movie_title_index));
+                        clickListener.itemClicked(dataCursor);
                     }
 
                 }
             });
-
-            main.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-
-                    dataCursor.moveToPosition(getPosition());
-
-
-                    if (longclickListener != null) {
-                        longclickListener.itemLongClicked(dataCursor,getPosition());
-                    }
-
-                    return true;
-                }
-            });
-
-            }
         }
-
-
-
-    public interface ClickListener {
-
-        public void itemClicked(String id,String title);
-
-    }
-
-    public interface LongClickListener{
-        public void itemLongClicked(Cursor cursor,int position);
-
-    }
-
-    public void setLongClickListener(LongClickListener longclickListener) {
-        this.longclickListener = longclickListener;
-    }
-
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
 }

@@ -21,7 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar()!=null)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getFragmentManager().beginTransaction().
@@ -30,6 +29,16 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment {
@@ -58,8 +67,9 @@ public class SettingsActivity extends AppCompatActivity {
                         quality = "w500";
                     }
 
+
                     my_prefrence.putString("image_quality", quality);
-                    my_prefrence.apply();
+                    my_prefrence.commit();
 
                     return true;
                 }
@@ -69,15 +79,5 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

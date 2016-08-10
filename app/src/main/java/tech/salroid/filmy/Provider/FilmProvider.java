@@ -17,15 +17,9 @@ import tech.salroid.filmy.database.FilmDbHelper;
  */
 public class FilmProvider extends ContentProvider {
 
-    // The URI Matcher used by this content provider.
-    private static final UriMatcher sUriMatcher = buildUriMatcher();
-
-    private FilmDbHelper mOpenHelper;
-
     static final int TRENDING_MOVIE = 100;
     static final int INTHEATERS_MOVIE = 400;
     static final int UPCOMING_MOVIE = 500;
-
     static final int TRENDING_MOVIE_DETAILS_WITH_MOVIE_ID = 101;
     static final int INTHEATERS_MOVIE_DETAILS_WITH_MOVIE_ID = 401;
     static final int UPCOMING_MOVIE_DETAILS_WITH_MOVIE_ID = 501;
@@ -33,23 +27,51 @@ public class FilmProvider extends ContentProvider {
     static final int CAST = 300;
     static final int SAVE = 200;
     static final int SAVE_DETAILS_WITH_MOVIE_ID = 201;
-
+    // The URI Matcher used by this content provider.
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
     private static final String sTrendingMovieIdSelection =
             FilmContract.MoviesEntry.TABLE_NAME +
                     "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
-
     private static final String sInTheatersMovieIdSelection =
             FilmContract.InTheatersMoviesEntry.TABLE_NAME +
                     "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
-
     private static final String sUpcomingMovieIdSelection =
             FilmContract.UpComingMoviesEntry.TABLE_NAME +
                     "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";
-
     private static final String sMovieIdSelectionForCast =
             FilmContract.CastEntry.TABLE_NAME +
                     "." + FilmContract.CastEntry.CAST_MOVIE_ID + " = ? ";
+    private FilmDbHelper mOpenHelper;
 
+    static UriMatcher buildUriMatcher() {
+        // 1) The code passed into the constructor represents the code to return for the root
+        // URI.  It'FilmyAuthenticator common to use NO_MATCH as the code for this case. Add the constructor below.
+
+        final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = FilmContract.CONTENT_AUTHORITY;
+
+        // 2) Use the addURI function to match each of the types.  Use the constants from
+        // WeatherContract to help define the types to the UriMatcher.
+
+        uriMatcher.addURI(authority, FilmContract.TRENDING_PATH_MOVIE, TRENDING_MOVIE);
+        uriMatcher.addURI(authority, FilmContract.TRENDING_PATH_MOVIE + "/*", TRENDING_MOVIE_DETAILS_WITH_MOVIE_ID);
+
+        uriMatcher.addURI(authority, FilmContract.INTHEATERS_PATH_MOVIE, INTHEATERS_MOVIE);
+        uriMatcher.addURI(authority, FilmContract.INTHEATERS_PATH_MOVIE + "/*", INTHEATERS_MOVIE_DETAILS_WITH_MOVIE_ID);
+
+        uriMatcher.addURI(authority, FilmContract.UPCOMING_PATH_MOVIE, UPCOMING_MOVIE);
+        uriMatcher.addURI(authority, FilmContract.UPCOMING_PATH_MOVIE + "/*", UPCOMING_MOVIE_DETAILS_WITH_MOVIE_ID);
+
+        uriMatcher.addURI(authority, FilmContract.PATH_CAST + "/*", CAST_WITH_MOVIE_ID);
+        uriMatcher.addURI(authority, FilmContract.PATH_CAST, CAST);
+        uriMatcher.addURI(authority, FilmContract.PATH_SAVE, SAVE);
+        uriMatcher.addURI(authority, FilmContract.PATH_SAVE + "/*", SAVE_DETAILS_WITH_MOVIE_ID);
+
+        // 3) Return the new matcher!
+
+
+        return uriMatcher;
+    }
 
     @Override
     public boolean onCreate() {
@@ -155,7 +177,6 @@ public class FilmProvider extends ContentProvider {
         return retCursor;
     }
 
-
     private Cursor getTrendingMovieDetailsByMovieId(Uri uri, String[] projection, String sortOrder) {
 
         String movieId = FilmContract.MoviesEntry.getMovieIdFromUri(uri);
@@ -174,7 +195,6 @@ public class FilmProvider extends ContentProvider {
         );
 
     }
-
 
     private Cursor getInTheatersMovieDetailsByMovieId(Uri uri, String[] projection, String sortOrder) {
 
@@ -195,7 +215,6 @@ public class FilmProvider extends ContentProvider {
 
     }
 
-
     private Cursor getUpcomingMovieDetailsByMovieId(Uri uri, String[] projection, String sortOrder) {
 
         String movieId = FilmContract.UpComingMoviesEntry.getMovieIdFromUri(uri);
@@ -214,8 +233,6 @@ public class FilmProvider extends ContentProvider {
         );
 
     }
-
-
 
     private Cursor getCastByMovieID(Uri uri, String[] projection, String sortOrder) {
 
@@ -254,7 +271,6 @@ public class FilmProvider extends ContentProvider {
         );
 
     }
-
 
     @Nullable
     @Override
@@ -459,37 +475,6 @@ public class FilmProvider extends ContentProvider {
         if (rowsUpdated != 0)
             getContext().getContentResolver().notifyChange(uri, null);
         return rowsUpdated;
-    }
-
-
-    static UriMatcher buildUriMatcher() {
-        // 1) The code passed into the constructor represents the code to return for the root
-        // URI.  It'FilmyAuthenticator common to use NO_MATCH as the code for this case. Add the constructor below.
-
-        final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = FilmContract.CONTENT_AUTHORITY;
-
-        // 2) Use the addURI function to match each of the types.  Use the constants from
-        // WeatherContract to help define the types to the UriMatcher.
-
-        uriMatcher.addURI(authority, FilmContract.TRENDING_PATH_MOVIE, TRENDING_MOVIE);
-        uriMatcher.addURI(authority, FilmContract.TRENDING_PATH_MOVIE + "/*", TRENDING_MOVIE_DETAILS_WITH_MOVIE_ID);
-
-        uriMatcher.addURI(authority, FilmContract.INTHEATERS_PATH_MOVIE, INTHEATERS_MOVIE);
-        uriMatcher.addURI(authority, FilmContract.INTHEATERS_PATH_MOVIE + "/*", INTHEATERS_MOVIE_DETAILS_WITH_MOVIE_ID);
-
-        uriMatcher.addURI(authority, FilmContract.UPCOMING_PATH_MOVIE, UPCOMING_MOVIE);
-        uriMatcher.addURI(authority, FilmContract.UPCOMING_PATH_MOVIE + "/*", UPCOMING_MOVIE_DETAILS_WITH_MOVIE_ID);
-
-        uriMatcher.addURI(authority, FilmContract.PATH_CAST + "/*", CAST_WITH_MOVIE_ID);
-        uriMatcher.addURI(authority, FilmContract.PATH_CAST, CAST);
-        uriMatcher.addURI(authority, FilmContract.PATH_SAVE, SAVE);
-        uriMatcher.addURI(authority, FilmContract.PATH_SAVE + "/*", SAVE_DETAILS_WITH_MOVIE_ID);
-
-        // 3) Return the new matcher!
-
-
-        return uriMatcher;
     }
 
     @Override

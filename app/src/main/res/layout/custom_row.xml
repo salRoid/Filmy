@@ -40,6 +40,7 @@
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-condensed"
                     android:padding="8dp"
+                    android:text="Star Trek"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textStyle="bold" />
 

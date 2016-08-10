@@ -5,6 +5,9 @@ import com.android.volley.toolbox.Volley;
 
 import tech.salroid.filmy.FilmyApplication;
 
+/**
+ * Created by Home on 7/23/2016.
+ */
 public class VolleySingleton {
 
     public static VolleySingleton instance = null;

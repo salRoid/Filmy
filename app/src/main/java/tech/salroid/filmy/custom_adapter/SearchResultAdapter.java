@@ -1,4 +1,4 @@
-package tech.salroid.filmy.customAdapter;
+package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,13 +8,19 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import java.util.ArrayList;
 import java.util.List;
-import tech.salroid.filmy.dataClasses.SearchData;
-import tech.salroid.filmy.R;
 
+import tech.salroid.filmy.R;
+import tech.salroid.filmy.data_classes.SearchData;
+
+/**
+ * Created by Home on 7/27/2016.
+ */
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.Dh> {
 
     private final LayoutInflater inflater;
@@ -67,6 +73,15 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         return data.size();
     }
 
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public interface ClickListener {
+
+        void itemClicked(SearchData searchData, int position);
+
+    }
 
     class Dh extends RecyclerView.ViewHolder {
 
@@ -96,16 +111,6 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                 }
             });
         }
-    }
-
-    public interface ClickListener {
-
-        void itemClicked(SearchData searchData, int position);
-
-    }
-
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
 

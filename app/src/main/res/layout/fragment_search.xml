@@ -3,22 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity"
     android:background="#f5f5f5"
+    tools:context=".activity.MainActivity"
     >
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="8dp"
         android:id="@+id/search_results_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp" />
 
 
     <tech.salroid.filmy.custom.BreathingProgress
         android:id="@+id/breathingProgress"
-        android:visibility="invisible"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
 
 </RelativeLayout>

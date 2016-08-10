@@ -1,4 +1,4 @@
-package tech.salroid.filmy.customAdapter;
+package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -14,17 +14,19 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.dataClasses.CharacterDetailsData;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.data_classes.CharacterDetailsData;
 
+/**
+ * Created by Home on 7/22/2016.
+ */
 public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<CharacterDetailsActivityAdapter.Fo> {
 
     private final LayoutInflater inflater;
     private final Boolean ret_size;
     Context con;
-    private ClickListener clickListener;
-
     List<CharacterDetailsData> ch = new ArrayList<>();
+    private ClickListener clickListener;
 
     public CharacterDetailsActivityAdapter(Context context, List<CharacterDetailsData> ch, Boolean size) {
         inflater = LayoutInflater.from(context);
@@ -71,6 +73,16 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
             return ch.size();
     }
 
+    public void setClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+    public interface ClickListener {
+
+        void itemClicked(CharacterDetailsData setterGetter, int position);
+
+    }
+
     class Fo extends RecyclerView.ViewHolder {
 
         TextView mov_char, mov_name;
@@ -88,22 +100,12 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null) {
-                        clickListener.itemClicked(ch.get(getAdapterPosition()), getAdapterPosition());
+                        clickListener.itemClicked(ch.get(getPosition()), getPosition());
                     }
                 }
             });
 
         }
-    }
-
-    public interface ClickListener {
-
-        public void itemClicked(CharacterDetailsData setterGetter, int position);
-
-    }
-
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
 }

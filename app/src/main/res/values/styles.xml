@@ -44,14 +44,11 @@
 
     </style>
 
-
     <color name="white">#ffffff</color>
 
-    <!-- <style name="AppTheme.NoActionBar">
-         <item name="windowActionBar">false</item>
-         <item name="windowNoTitle">true</item>
-     </style>-->
+
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
+
 </resources>

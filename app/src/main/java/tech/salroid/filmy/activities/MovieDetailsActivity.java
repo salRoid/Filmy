@@ -797,4 +797,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
+
+
 }

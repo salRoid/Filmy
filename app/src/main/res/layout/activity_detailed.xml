@@ -113,7 +113,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:fontFamily="sans-serif-condensed"
-                                android:text="Rating"
+                                android:text="@string/rating"
                                 android:textAppearance="?android:textAppearanceLarge" />
 
                             <TextView

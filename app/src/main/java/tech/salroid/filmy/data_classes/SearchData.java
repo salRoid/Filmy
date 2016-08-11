@@ -4,7 +4,7 @@ package tech.salroid.filmy.data_classes;
 public class SearchData {
 
 
-    String movie, poster, id, type, date, extra;
+    private String movie, poster, id, type, date, extra;
 
     public String getId() {
         return id;

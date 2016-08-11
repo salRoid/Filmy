@@ -15,9 +15,6 @@ import android.widget.FrameLayout;
 
 import tech.salroid.filmy.R;
 
-/**
- * Created by R Ankit on 30-07-2016.
- */
 
 public class BreathingProgress extends FrameLayout {
 
@@ -95,8 +92,7 @@ public class BreathingProgress extends FrameLayout {
 
         float logicalDensity = displayMetrics.density;
 
-        int px = (int) Math.ceil(dp * logicalDensity);
-        return px;
+        return (int) Math.ceil(dp * logicalDensity);
     }
 
 

@@ -5,9 +5,6 @@ import android.content.Context;
 
 import java.util.HashMap;
 
-/**
- * Created by R Ankit on 07-08-2016.
- */
 
 public class MovieDetailsUpdation {
 

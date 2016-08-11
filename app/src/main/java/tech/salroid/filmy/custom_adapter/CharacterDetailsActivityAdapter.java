@@ -17,15 +17,12 @@ import java.util.List;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.data_classes.CharacterDetailsData;
 
-/**
- * Created by Home on 7/22/2016.
- */
 public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<CharacterDetailsActivityAdapter.Fo> {
 
     private final LayoutInflater inflater;
     private final Boolean ret_size;
-    Context con;
-    List<CharacterDetailsData> ch = new ArrayList<>();
+    private Context con;
+    private List<CharacterDetailsData> ch = new ArrayList<>();
     private ClickListener clickListener;
 
     public CharacterDetailsActivityAdapter(Context context, List<CharacterDetailsData> ch, Boolean size) {
@@ -41,6 +38,7 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
     @Override
     public Fo onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.char_custom_row, parent, false);
+
         Fo holder = new Fo(view);
 
         return holder;
@@ -49,12 +47,13 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
     @Override
     public void onBindViewHolder(Fo holder, int position) {
 
-        String m_name, m_profile, m_desc, m_id;
+        String m_name, m_profile, m_desc;
+        // String m_id;
 
         m_name = ch.get(position).getChar_movie();
         m_profile = ch.get(position).getCharmovie_img();
         m_desc = ch.get(position).getChar_role();
-        m_id = ch.get(position).getChar_id();
+        //m_id = ch.get(position).getChar_id();
 
         // Log.d("webi","charAdapter"+m_id);
 
@@ -89,7 +88,7 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
         TextView mov_char, mov_name;
         CircularImageView mov_img;
 
-        public Fo(View itemView) {
+        Fo(View itemView) {
 
             super(itemView);
 

@@ -4,9 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by Home on 7/24/2016.
- **/
 public class FilmDbHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "filmy.db";

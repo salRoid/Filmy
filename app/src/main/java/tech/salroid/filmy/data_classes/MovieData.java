@@ -1,22 +1,19 @@
 package tech.salroid.filmy.data_classes;
 
-/**
- * Created by Home on 7/20/2016.
- */
 public class MovieData {
 
-    String movie, poster, id;
+    private String movie, poster, id;
 
 
-    int year;
+    //int year;
 
-    public int getYear() {
+ /*   public int getYear() {
         return year;
     }
 
     public void setYear(int year) {
         this.year = year;
-    }
+    }*/
 
     public String getId() {
         return id;

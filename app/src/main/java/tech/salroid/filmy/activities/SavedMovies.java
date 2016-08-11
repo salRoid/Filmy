@@ -54,6 +54,8 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        if (getSupportActionBar()!=null)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         my_saved_movies_recycler = (RecyclerView) findViewById(R.id.my_saved_recycler);
@@ -115,7 +117,7 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
 
         AlertDialog.Builder adb = new AlertDialog.Builder(SavedMovies.this);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(SavedMovies.this, android.R.layout.simple_list_item_1);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SavedMovies.this, android.R.layout.simple_list_item_1);
 
         arrayAdapter.add("Remove");
 

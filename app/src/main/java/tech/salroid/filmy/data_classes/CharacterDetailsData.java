@@ -4,7 +4,7 @@ package tech.salroid.filmy.data_classes;
 public class CharacterDetailsData {
 
 
-    String char_movie, char_role, char_id, Charmovie_img;
+    private String char_movie, char_role, char_id, Charmovie_img;
     //  int char_date;
 
 

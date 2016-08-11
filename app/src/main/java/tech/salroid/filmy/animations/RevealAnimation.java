@@ -8,9 +8,6 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
-/**
- * Created by R Ankit on 06-08-2016.
- */
 
 public class RevealAnimation {
 

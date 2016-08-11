@@ -19,7 +19,7 @@ import tech.salroid.filmy.database.FilmContract;
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.Vh> {
 
     private final LayoutInflater inflater;
-    Context context;
+    private Context context;
     private ClickListener clickListener;
     private Cursor dataCursor;
 
@@ -58,7 +58,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
         movie_title = dataCursor.getString(title_index);
         movie_poster = dataCursor.getString(poster_index);
-        imdb_id = dataCursor.getString(id_index);
+       imdb_id = dataCursor.getString(id_index);
         movie_year = dataCursor.getInt(year_index);
 
 
@@ -104,9 +104,9 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         TextView title;
         ImageView poster;
         FrameLayout main;
-        TextView year;
+       // TextView year;
 
-        public Vh(View itemView) {
+         Vh(View itemView) {
 
             super(itemView);
 

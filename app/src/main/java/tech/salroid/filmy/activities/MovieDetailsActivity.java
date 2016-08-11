@@ -104,6 +104,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         trailorBackground = (LinearLayout) findViewById(R.id.trailorBackground);
 
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
+        allDetails = (FrameLayout) findViewById(R.id.all_details_container);
         newMain = (FrameLayout) findViewById(R.id.new_main);
         main_content = (FrameLayout) findViewById(R.id.all_details_container);
         headerContainer = (FrameLayout) findViewById(R.id.header_container);
@@ -759,6 +760,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
                 parseMovieDetails(response);
                 // showCastFragment();
+
                 break;
 
             case GetDataFromNetwork.CAST_CODE:
@@ -772,7 +774,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     private void shareMovie() {
         String movie_imdb = getResources().getString(R.string.imdb_link_prefix) + movie_id_final;
-        if (!(movie_title == null && movie_rating.equals("null") && movie_id_final.equals("null"))) {
+        if (!(movie_title.equals(null) && movie_rating.equals("null") && movie_id_final.equals("null"))) {
             Intent myIntent = new Intent(Intent.ACTION_SEND);
             myIntent.setType("text/plain");
             myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_imdb + "\n");
@@ -792,6 +794,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             }
         }
         return id;
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 
 

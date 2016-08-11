@@ -42,7 +42,6 @@
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:paddingTop="8dp"
-                    android:text="Star Trek"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textStyle="bold" />
 

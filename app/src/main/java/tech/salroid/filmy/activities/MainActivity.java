@@ -1,13 +1,14 @@
-
 package tech.salroid.filmy.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
@@ -24,12 +25,13 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 
-import io.fabric.sdk.android.Fabric;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import tech.salroid.filmy.FilmyIntro;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
 import tech.salroid.filmy.fragment.InTheaters;
@@ -45,14 +47,27 @@ public class MainActivity extends AppCompatActivity {
 
 
     public boolean fetchingFromNetwork;
-    private MaterialSearchView materialSearchView;
-    private SearchFragment searchFragment;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private ErrorView mErrorView;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.search_view)
+    MaterialSearchView materialSearchView;
+    @BindView(R.id.logo)
+    TextView logo;
+    @BindView(R.id.toolbarScroller)
+    FrameLayout toolbarScroller;
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
+    @BindView(R.id.error_view)
+    ErrorView mErrorView;
+
+
     private Trending trendingFragment;
-    private FrameLayout toolbarScroller;
+    private SearchFragment searchFragment;
     private boolean cantProceed;
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -70,24 +85,19 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
-        setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(" ");
 
-
-        TextView logo = (TextView) findViewById(R.id.logo);
-
-        toolbarScroller = (FrameLayout) findViewById(R.id.toolbarScroller);
+        introLogic();
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
-
-        mErrorView = (ErrorView) findViewById(R.id.error_view);
 
         mErrorView.setConfig(ErrorView.Config.create()
                 .title(getString(R.string.error_title_damn))
@@ -116,15 +126,9 @@ public class MainActivity extends AppCompatActivity {
 
         mErrorView.setVisibility(View.GONE);
 
-        // Get the ViewPager and set it's PagerAdapter so that it can display items
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
-
-        // Give the TabLayout the ViewPager
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        materialSearchView = (MaterialSearchView) findViewById(R.id.search_view);
         materialSearchView.setVoiceSearch(true);
         materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
@@ -187,6 +191,31 @@ public class MainActivity extends AppCompatActivity {
             fetchingFromNetwork = true;
             setScheduler();
         }
+
+    }
+
+    private void introLogic() {
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                SharedPreferences getPrefs = PreferenceManager
+                        .getDefaultSharedPreferences(getBaseContext());
+
+                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+
+                if (isFirstStart) {
+
+                    Intent i = new Intent(MainActivity.this, FilmyIntro.class);
+                    startActivity(i);
+                    SharedPreferences.Editor e = getPrefs.edit();
+                    e.putBoolean("firstStart", false);
+                    e.apply();
+                }
+            }
+        });
+        t.start();
 
     }
 
@@ -293,10 +322,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.ic_setting) {
-
-            throw new RuntimeException("This is a crash");
-
-            // startActivity(new Intent(this, SettingsActivity.class));
+            startActivity(new Intent(this, SettingsActivity.class));
 
         }
 

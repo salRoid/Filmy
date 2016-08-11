@@ -35,6 +35,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     BreathingProgress breathingProgress;
     SearchResultAdapter sadapter;
     private RecyclerView recycler;
+    private Intent intent;
 
     @Nullable
     @Override

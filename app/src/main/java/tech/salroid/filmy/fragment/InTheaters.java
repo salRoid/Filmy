@@ -23,6 +23,7 @@ import tech.salroid.filmy.database.MovieSelection;
 public class InTheaters extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, MainActivityAdapter.ClickListener {
 
 
+    private RecyclerView recycler;
     private MainActivityAdapter mainActivityAdapter;
 
     public InTheaters() {
@@ -34,7 +35,7 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_in_theaters, container, false);
-        RecyclerView recycler = (RecyclerView) view.findViewById(R.id.recycler);
+        recycler = (RecyclerView) view.findViewById(R.id.recycler);
         StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recycler.setLayoutManager(gridLayoutManager);
 

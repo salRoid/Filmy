@@ -7,9 +7,6 @@ import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 
-/**
- * Created by Home on 7/23/2016.
- */
 public class FilmyApplication extends Application {
 
     private static FilmyApplication instance;

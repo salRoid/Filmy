@@ -12,9 +12,6 @@ import tech.salroid.filmy.fragment.intro_fragments.IntroFragmentB;
 import tech.salroid.filmy.fragment.intro_fragments.IntroFragmentC;
 import tech.salroid.filmy.fragment.intro_fragments.IntroFragmentD;
 
-/**
- * Created by R Ankit on 09-08-2016.
- */
 
 public class FilmyIntro extends AppIntro2 {
 

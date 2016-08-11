@@ -3,9 +3,6 @@ package tech.salroid.filmy.utility;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
-/**
- * Created by R Ankit on 08-08-2016.
- */
 
 public class Network {
 

@@ -54,6 +54,7 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        if (getSupportActionBar() != null)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         my_saved_movies_recycler = (RecyclerView) findViewById(R.id.my_saved_recycler);

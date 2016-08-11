@@ -16,7 +16,6 @@ import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
 public class FullCastActivity extends AppCompatActivity implements MovieDetailsActivityAdapter.ClickListener {
 
-    private RecyclerView full_cast_recycler;
     private String cast_result;
 
     @Override
@@ -29,21 +28,22 @@ public class FullCastActivity extends AppCompatActivity implements MovieDetailsA
         setSupportActionBar(toolbar);
 
 
-        full_cast_recycler = (RecyclerView) findViewById(R.id.full_cast_recycler);
+        RecyclerView full_cast_recycler = (RecyclerView) findViewById(R.id.full_cast_recycler);
         full_cast_recycler.setLayoutManager(new LinearLayoutManager(FullCastActivity.this));
 
 
         Intent intent = getIntent();
         if (intent != null) {
             cast_result = intent.getStringExtra("cast_json");
+            if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
         }
 
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(this, cast_result);
         List<MovieDetailsData> cast_list = par.parse_cast();
-        Boolean size = false;
-        MovieDetailsActivityAdapter full_cast_adapter = new MovieDetailsActivityAdapter(this, cast_list, size);
+
+        MovieDetailsActivityAdapter full_cast_adapter = new MovieDetailsActivityAdapter(this, cast_list, false);
         full_cast_adapter.setClickListener(this);
         full_cast_recycler.setAdapter(full_cast_adapter);
 

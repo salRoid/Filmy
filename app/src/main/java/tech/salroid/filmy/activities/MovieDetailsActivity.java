@@ -55,10 +55,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>, GetDataFromNetwork.DataFetchedListener {
 
     static String movie_title, movie_id_final;
-    private static TextView det_title, det_tagline, det_overview,
+    private TextView det_title, det_tagline, det_overview,
             det_rating, det_released, det_certification,
             det_language, det_runtime, tvRating;
-    private static ImageView youtube_link, banner, youtube_play_button;
+    private ImageView youtube_link, banner, youtube_play_button;
     Context context = this;
     BreathingProgress breathingProgress;
     LinearLayout trailorBackground;
@@ -104,7 +104,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         trailorBackground = (LinearLayout) findViewById(R.id.trailorBackground);
 
         trailorView = (FrameLayout) findViewById(R.id.trailorView);
-        allDetails = (FrameLayout) findViewById(R.id.all_details_container);
         newMain = (FrameLayout) findViewById(R.id.new_main);
         main_content = (FrameLayout) findViewById(R.id.all_details_container);
         headerContainer = (FrameLayout) findViewById(R.id.header_container);

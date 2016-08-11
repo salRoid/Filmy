@@ -7,9 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import tech.salroid.filmy.activities.MainActivity;
 
-/**
- * Created by R Ankit on 23-07-2016.
- */
 public class SplashActivity extends AppCompatActivity {
 
     @Override

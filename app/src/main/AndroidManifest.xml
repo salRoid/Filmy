@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
 
     <application
@@ -19,25 +18,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base">
 
-
         <activity
             android:name=".FilmyIntro"
             android:label=" " />
-
+        
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="tech.salroid.com" />
             </intent-filter>
 
 
         </activity>
 
-        <activity android:name=".activities.MainActivity"></activity>
+        <activity android:name=".activities.MainActivity"/>
 
         <activity
             android:name=".activities.MovieDetailsActivity"
@@ -78,7 +82,7 @@
         <activity
             android:name=".activities.SavedMovies"
             android:label="@string/title_activity_saved_movies"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/AppTheme.Base"/>
 
         <service
             android:name=".services.FilmyJobService"

@@ -36,6 +36,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.animations.RevealAnimation;
 import tech.salroid.filmy.customs.BreathingProgress;
@@ -54,65 +56,75 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         View.OnClickListener,
         LoaderManager.LoaderCallbacks<Cursor>, GetDataFromNetwork.DataFetchedListener {
 
-    static String movie_title, movie_id_final;
-    private static TextView det_title, det_tagline, det_overview,
-            det_rating, det_released, det_certification,
-            det_language, det_runtime, tvRating;
-    private static ImageView youtube_link, banner, youtube_play_button;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.detail_title)
+    TextView det_title;
+    @BindView(R.id.detail_tagline)
+    TextView det_tagline;
+    @BindView(R.id.detail_overview)
+    TextView det_overview;
+    @BindView(R.id.detail_rating)
+    TextView det_rating;
+    @BindView(R.id.tvRating)
+    TextView tvRating;
+    @BindView(R.id.detail_released)
+    TextView det_released;
+    @BindView(R.id.detail_certification)
+    TextView det_certification;
+    @BindView(R.id.detail_runtime)
+    TextView det_runtime;
+    @BindView(R.id.detail_language)
+    TextView det_language;
+
+
+    @BindView(R.id.detail_youtube)
+    ImageView youtube_link;
+    @BindView(R.id.backdrop)
+    ImageView banner;
+    @BindView(R.id.play_button)
+    ImageView youtube_play_button;
+
+
+    @BindView(R.id.trailorBackground)
+    LinearLayout trailorBackground;
+    @BindView(R.id.trailorView)
+    FrameLayout trailorView;
+    @BindView(R.id.new_main)
+    FrameLayout newMain;
+    @BindView(R.id.all_details_container)
+    FrameLayout main_content;
+    @BindView(R.id.header_container)
+    FrameLayout headerContainer;
+    @BindView(R.id.main)
+    RelativeLayout main;
+    @BindView(R.id.header)
+    RelativeLayout header;
+
+
     Context context = this;
     BreathingProgress breathingProgress;
-    LinearLayout trailorBackground;
-    FrameLayout trailorView, newMain, headerContainer, main_content, allDetails;
     FullReadFragment fullReadFragment;
     HashMap<String, String> movieMap;
     boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
     int type;
-    private String movie_id;
-    private String trailer = null;
-    private String movie_desc;
-    private String quality;
-    private RelativeLayout header, main;
-    private String movie_tagline;
-    private String movie_rating;
-    private String show_centre_img_url;
+    private String movie_id, trailer = null, movie_desc, quality, movie_tagline,
+            movie_rating, show_centre_img_url, movie_title, movie_id_final;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        det_title = (TextView) findViewById(R.id.detail_title);
-        det_tagline = (TextView) findViewById(R.id.detail_tagline);
-        det_overview = (TextView) findViewById(R.id.detail_overview);
-        det_rating = (TextView) findViewById(R.id.detail_rating);
-        tvRating = (TextView) findViewById(R.id.tvRating);
-        det_released = (TextView) findViewById(R.id.detail_released);
-        det_certification = (TextView) findViewById(R.id.detail_certification);
-        det_runtime = (TextView) findViewById(R.id.detail_runtime);
-        det_language = (TextView) findViewById(R.id.detail_language);
-
-        youtube_link = (ImageView) findViewById(R.id.detail_youtube);
-        banner = (ImageView) findViewById(R.id.backdrop);
-        youtube_play_button = (ImageView) findViewById(R.id.play_button);
-
-        trailorBackground = (LinearLayout) findViewById(R.id.trailorBackground);
-
-        trailorView = (FrameLayout) findViewById(R.id.trailorView);
-        allDetails = (FrameLayout) findViewById(R.id.all_details_container);
-        newMain = (FrameLayout) findViewById(R.id.new_main);
-        main_content = (FrameLayout) findViewById(R.id.all_details_container);
-        headerContainer = (FrameLayout) findViewById(R.id.header_container);
-
         breathingProgress = (BreathingProgress) findViewById(R.id.breathingProgress);
-
-        main = (RelativeLayout) findViewById(R.id.main);
-        header = (RelativeLayout) findViewById(R.id.header);
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
         quality = prefrence.getString("image_quality", "w780");
@@ -125,8 +137,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         getDataFromIntent(intent);
 
         if (savedInstanceState == null)
-            RevealAnimation.performReveal(allDetails);
-
+            RevealAnimation.performReveal(main_content);
     }
 
     @Override
@@ -273,7 +284,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movie_tagline = tagline;
             show_centre_img_url = banner_for_full_activity;
 
-            movieMap = new HashMap<String, String>();
+            movieMap = new HashMap<>();
             movieMap.put("imdb_id", movie_id_final);
             movieMap.put("title", movie_title);
             movieMap.put("tagline", tagline);
@@ -348,8 +359,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                         Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                             public void onGenerated(Palette p) {
                                 // Use generated instance
-                                Palette.Swatch swatch = p.getVibrantSwatch();
-                                Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
+                                Palette.Swatch swatch = p.getMutedSwatch();
+                                Palette.Swatch trailorSwatch = p.getDarkMutedSwatch();
+                                if (swatch == null) {
+                                    swatch = p.getVibrantSwatch();
+                                    trailorSwatch = p.getDarkVibrantSwatch();
+                                }
 
                                 if (swatch != null) {
                                     header.setBackgroundColor(swatch.getRgb());
@@ -478,7 +493,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             trailer = data.getString(trailer_index);
             String posterLink = data.getString(poster_link_index);
 
-            String rating = (data.getString(rating_index)) + " mins";
+            String rating = (data.getString(rating_index));
             String runtime = data.getString(runtime_index);
             String released = data.getString(released_index);
             String certification = data.getString(certification_index);
@@ -630,7 +645,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                             Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                                 public void onGenerated(Palette p) {
                                     Palette.Swatch swatch = p.getMutedSwatch();
-                                    Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
+                                    Palette.Swatch trailorSwatch = p.getDarkMutedSwatch();
+                                    if (swatch == null) {
+                                        swatch = p.getVibrantSwatch();
+                                        trailorSwatch = p.getDarkVibrantSwatch();
+                                    }
 
                                     if (swatch != null) {
 
@@ -704,14 +723,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         } else {
             super.onBackPressed();
         }
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.movie_detail_menu, menu);
-
         menu.findItem(R.id.action_save).setVisible(!savedDatabaseApplicable);
 
         return true;
@@ -751,20 +768,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     @Override
     public void dataFetched(String response, int code) {
-
-
         switch (code) {
-
 
             case GetDataFromNetwork.MOVIE_DETAILS_CODE:
 
                 parseMovieDetails(response);
                 // showCastFragment();
-
                 break;
 
             case GetDataFromNetwork.CAST_CODE:
-
 
                 break;
 
@@ -774,7 +786,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     private void shareMovie() {
         String movie_imdb = getResources().getString(R.string.imdb_link_prefix) + movie_id_final;
-        if (!(movie_title.equals(null) && movie_rating.equals("null") && movie_id_final.equals("null"))) {
+        if (!(movie_title == null && movie_rating.equals("null") && movie_id_final.equals("null"))) {
             Intent myIntent = new Intent(Intent.ACTION_SEND);
             myIntent.setType("text/plain");
             myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_imdb + "\n");
@@ -796,11 +808,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         return id;
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
-
     }
 
 

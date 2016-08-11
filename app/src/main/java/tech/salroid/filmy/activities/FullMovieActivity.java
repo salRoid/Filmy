@@ -43,8 +43,7 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
 
         CharacterDetailActivityParseWork par = new CharacterDetailActivityParseWork(this, movie_result);
         List<CharacterDetailsData> char_list = par.char_parse_cast();
-        Boolean size = false;
-        CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, size);
+        CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, false);
         char_adapter.setClickListener(this);
         full_movie_recycler.setAdapter(char_adapter);
 

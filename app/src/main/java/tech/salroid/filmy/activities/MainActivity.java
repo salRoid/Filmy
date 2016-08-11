@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Extract data included in the Intent
-            int statusCode = intent.getIntExtra("message", 00);
+            int statusCode = intent.getIntExtra("message", 0);
 
             Toast.makeText(context, "Failed to get latest movies.", Toast.LENGTH_SHORT).show();
 

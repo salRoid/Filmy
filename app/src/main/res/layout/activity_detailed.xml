@@ -28,6 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:background="@color/dark"
+                    android:contentDescription="@string/banner_image"
                     android:scaleType="centerCrop" />
             </FrameLayout>
 
@@ -141,6 +142,7 @@
                                 android:id="@+id/detail_youtube"
                                 android:layout_width="match_parent"
                                 android:layout_height="180dp"
+                                android:contentDescription="@string/trailer"
                                 android:scaleType="centerCrop" />
 
 
@@ -151,6 +153,7 @@
                                 android:layout_gravity="center"
                                 android:alpha="0.8"
                                 android:background="@drawable/ic_play_circle_filled_white_48dp"
+                                android:contentDescription="@string/play"
                                 android:visibility="invisible" />
 
                         </FrameLayout>

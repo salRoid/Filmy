@@ -34,16 +34,18 @@
         android:visibility="gone">
 
         <ImageView
+            android:contentDescription="@string/no_saved_movies"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_gravity="center"
             android:src="@drawable/empty_folder" />
 
         <TextView
+            android:contentDescription="@string/saved_movies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="You saved movies appear here."
+            android:text="@string/you_saved_movies_appear_here"
             android:textColor="#BDBDBD" />
 
     </LinearLayout>

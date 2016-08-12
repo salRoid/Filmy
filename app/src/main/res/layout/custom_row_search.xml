@@ -56,7 +56,6 @@
                     android:paddingBottom="8dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:text="Release Date"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textStyle="bold" />
 

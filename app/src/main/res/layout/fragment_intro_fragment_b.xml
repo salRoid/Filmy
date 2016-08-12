@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Categorized"
+        android:text="@string/categorized"
         android:textColor="#ffffff"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -27,7 +27,7 @@
         android:layout_marginRight="32dp"
         android:layout_marginTop="15dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Get different movies in different categories at one place."
+        android:text="@string/get_different_movies_in_different_categories_at_one_place"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 

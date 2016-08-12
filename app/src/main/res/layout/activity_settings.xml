@@ -11,7 +11,7 @@
         android:background="@color/primaryColor"
         android:elevation="2dp"
         app:popupTheme="@style/Theme.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Light"></android.support.v7.widget.Toolbar>
+        app:theme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <FrameLayout
         android:id="@+id/container"

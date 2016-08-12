@@ -13,7 +13,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Offline movies"
+        android:text="@string/offline_movies"
         android:textColor="#ffffff"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -27,7 +27,7 @@
         android:layout_marginRight="32dp"
         android:layout_marginTop="15dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Save movies locally to see various details even if you don't have internet."
+        android:text="@string/save_movies_locally_to_see_various_details_even_if_you_don_t_have_internet"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 

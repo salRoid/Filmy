@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Exploration"
+        android:text="@string/exploration"
         android:textColor="#ffffff"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -26,7 +26,7 @@
         android:layout_marginRight="32dp"
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Search through the large sea of movies and know about different casts."
+        android:text="@string/search_through_the_large_sea_of_movies_and_know_about_different_casts"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 

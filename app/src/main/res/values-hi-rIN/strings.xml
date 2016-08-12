@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_activity_detailed">DetailedActivity</string>
+    <string name="title_activity_detailed__cast">Detailed_Cast</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_full_cast">FullCastActivity</string>
+    <string name="title_activity_full_movie">FullMovieActivity</string>
+    <string name="title_activity_full_screen_image">FullScreenImage</string>
+
+    <string name="app_name">फिल्मी</string>
+    <string name="title_activity_settings">सेटिंग्स</string>
+    <string name="title_activity_saved_movies">ऑफ़लाइन फिल्में</string>
+    <string name="image_quality">मध्यम</string>
+    <string name="error_title_damn">कुछ  गलत  हो  गया  है !</string>
+    <string name="info_retrying">पुनः प्रयास करें ।</string>
+    <string name="rating">रेटिंग</string>
+    <string name="movies">चलचित्र</string>
+    <string name="cast">कलाकार</string>
+    <string name="dash">- - - -</string>
+    <string name="more">अधिक</string>
+    <string name="runtime">क्रम</string>
+    <string name="genre">शैली</string>
+    <string name="language">भाषा</string>
+    <string name="release_date">रिलीज़ की  तारीख</string>
+    <string name="play">प्ले</string>
+    <string name="trailer">ट्रेलर</string>
+    <string name="banner_image">बैनर छवि</string>
+    <string name="you_saved_movies_appear_here">तुम्हारी ऑफ़लाइन फिल्में यहाँ दिखाई जाएँगाी |</string>
+    <string name="no_saved_movies">कोई भी ऑफ़लाइन फिल्म नही है ।</string>
+    <string name="saved_movies">ऑफलाइन सिनेमा</string>
+    <string name="welcome_to_filmy">फिल्मी में आपका स्वागत है</string>
+    <string name="filmy_is_your_new_movie_app">फिल्मी अपनी  नई फिल्म ऐप  है |</string>
+    <string name="categorized">वर्गीकृत</string>
+    <string name="get_different_movies_in_different_categories_at_one_place">एक  साथ अलग अलग श्रेणियों  की विभिन्न फिल्में |</string>
+    <string name="offline_movies">ऑफलाइन सिनेमा</string>
+    <string name="save_movies_locally_to_see_various_details_even_if_you_don_t_have_internet">कुछ फिल्मों की जानकारी आपको बिना  इंटरनेट के मिल जाएगी अगर आपने उसे ऑफ़लाइन की सूची में डाल दिया  तो ।</string>
+    <string name="exploration">अन्वेषण</string>
+    <string name="search_through_the_large_sea_of_movies_and_know_about_different_casts">फिल्मों  के  बड़े  संग्रह से अपनी पसंद  की फिल्मों  को खोजें और  साथ ही पाऐं  उनके  कलाकारों  की जानकारी  |</string>
+    <string name="close_description">बंद विवरण</string>
+    <string name="low">कम</string>
+    <string name="high">उच्च</string>
+    <string name="image">छवि गुणवत्ता</string>
+    <string name="liscense">लाइसेंस</string>
+    <string name="version">संस्करण</string>
+    <string name="about">के बारे में</string>
+    <string name="madefor">फिल्म प्रेमियों के लिए  खास बनाया  गया ।</string>
+    <string name="error_details">फिल्मों को लाने में असमर्थ। \n इंटरनेट कनेक्शन हो तो फिर कोशिश करें |</string>
+    <string name="trending">ट्रेंडिंग</string>
+    <string name="theatres">सिनेमा घरों में</string>
+    <string name="upcoming">आगामी</string>
+    <string name="details">विवरण</string>
+    <string name="error_retry">पुनः प्रयास करें।</string>
+
+
+</resources>

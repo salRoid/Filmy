@@ -4,29 +4,30 @@
     <SwitchPreference
         android:defaultValue="true"
         android:key="imagequality"
-        android:summaryOff="Low"
-        android:summaryOn="High"
-        android:title="Image Quality" />
+        android:summaryOff="@string/low"
+        android:summaryOn="@string/high"
+        android:title="@string/image" />
+
 
     <Preference
         android:enabled="true"
         android:key="license"
         android:selectable="true"
         android:summary=""
-        android:title="License" />
+        android:title="@string/liscense" />
 
     <Preference
         android:enabled="true"
         android:key="Version"
         android:selectable="true"
         android:summary="0.0.1"
-        android:title="Version" />
+        android:title="@string/version" />
 
     <Preference
         android:enabled="true"
         android:key="About"
         android:selectable="true"
-        android:summary="Made for Cinephiles"
-        android:title="About" />
+        android:summary="@string/madefor"
+        android:title="@string/about" />
 
 </PreferenceScreen>

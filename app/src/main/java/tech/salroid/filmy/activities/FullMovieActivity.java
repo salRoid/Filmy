@@ -35,6 +35,7 @@ import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 
 public class FullMovieActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.full_movie_recycler)
     RecyclerView full_movie_recycler;
     private String movie_result;
@@ -45,8 +46,6 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         setContentView(R.layout.activity_full_movie);
         ButterKnife.bind(this);
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 

@@ -1,24 +1,10 @@
 <resources>
-    <string name="app_name">Filmy</string>
-    <string name="title_activity_detailed">DetailedActivity</string>
-    <string name="title_activity_detailed__cast">Detailed_Cast</string>
-
     <string name="api_key">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_full_cast">FullCastActivity</string>
-    <string name="title_activity_full_movie">FullMovieActivity</string>
-    <string name="title_activity_full_screen_image">FullScreenImage</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_saved_movies">Saved Movies</string>
-
-    <string name="image_quality">medium</string>
-
     <string name="trakt_base_url">https://api.trakt.tv/people/</string>
     <string name="trakt_movie_base_url">https://api.trakt.tv/movies/</string>
     <string name="trakt_cast_suffix">/people?extended=images</string>
     <string name="tmdb_movie_base_url">http://api.themoviedb.org/3/movie/</string>
     <string name="tmdb_api_key">api_key=b640f55eb6ecc47b3433cfe98d0675b1</string>
-
     <string name="person_details_suffix">extended=full,images</string>
     <string name="person_movies_details">/movies?extended=images,full</string>
     <string name="imdb_link_prefix">http://www.imdb.com/title/</string>
@@ -34,10 +20,21 @@
     <string name="sync_account_type">filmy.salroid.com</string>
     <string name="content_authority">tech.salroid.filmy</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="app_name">Filmy</string>
+    <string name="title_activity_detailed">DetailedActivity</string>
+    <string name="title_activity_detailed__cast">Detailed_Cast</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_full_cast">FullCastActivity</string>
+    <string name="title_activity_full_movie">FullMovieActivity</string>
+    <string name="title_activity_full_screen_image">FullScreenImage</string>
+
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_saved_movies">Offline Movies</string>
+    <string name="image_quality">medium</string>
     <string name="error_title_damn">Something went wrong !</string>
     <string name="info_retrying">Retrying</string>
+    <string name="error_retry">RETRY</string>
     <string name="rating">Rating</string>
     <string name="movies">Movies</string>
     <string name="cast">Cast</string>
@@ -52,7 +49,7 @@
     <string name="banner_image">Banner Image</string>
     <string name="you_saved_movies_appear_here">You saved movies appear here.</string>
     <string name="no_saved_movies">No Saved Movies</string>
-    <string name="saved_movies">Saved Movies</string>
+    <string name="saved_movies">offline Movies</string>
     <string name="welcome_to_filmy">Welcome to Filmy</string>
     <string name="filmy_is_your_new_movie_app">Filmy is your new movie app.</string>
     <string name="categorized">Categorized</string>
@@ -62,6 +59,272 @@
     <string name="exploration">Exploration</string>
     <string name="search_through_the_large_sea_of_movies_and_know_about_different_casts">Search through the large sea of movies and know about different casts.</string>
     <string name="close_description">Close description</string>
+    <string name="low">Low</string>
+    <string name="high">High</string>
+    <string name="image">Image Quality</string>
+    <string name="liscense">License</string>
+    <string name="version">Version</string>
+    <string name="about">About</string>
+    <string name="madefor">Made for Cinephiles</string>
+    <string name="error_details">Unable to fetch movies.\nCheck internet connection then try again.</string>
+    <string name="trending">TRENDING</string>
+    <string name="theatres">IN THEATERS</string>
+    <string name="upcoming">UPCOMING</string>
+    <string name="details">Details</string>
+
+
+
+    <string name="glide"><![CDATA[
+    <b>Glide
+    </b>
+     <br>
+     <pre>
+
+      License for everything not in third_party and not otherwise marked:
+
+Copyright 2014 Google, Inc. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are
+permitted provided that the following conditions are met:
+
+   1. Redistributions of source code must retain the above copyright notice, this list of
+         conditions and the following disclaimer.
+
+   2. Redistributions in binary form must reproduce the above copyright notice, this list
+         of conditions and the following disclaimer in the documentation and/or other materials
+         provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY GOOGLE, INC. ``AS IS\'\' AND ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GOOGLE, INC. OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The views and conclusions contained in the software and documentation are those of the
+authors and should not be interpreted as representing official policies, either expressed
+or implied, of Google, Inc.
+-----------------------------------------------------------------------
+
+License for third_party/disklrucache:
+
+Copyright 2012 Jake Wharton
+Copyright 2011 The Android Open Source Project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+------------------------------------------------------------------------
+
+License for third_party/gif_decoder:
+
+Copyright © 2013 Xcellent Creations, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+------------------------------------------------------------------------
+
+License for third_party/gif_encoder/AnimatedGifEncoder.java and
+third_party/gif_encoder/LZWEncoder.java:
+
+No copyright asserted on the source code of this class. May be used for any
+purpose, however, refer to the Unisys LZW patent for restrictions on use of
+the associated LZWEncoder class. Please forward any corrections to
+kweiner@fmsware.com.
+
+------------------------------------------------------------------------
+
+License for third_party/gif_encoder/NeuQuant.java
+
+Copyright © 1994 Anthony Dekker
+
+NEUQUANT Neural-Net quantization algorithm by Anthony Dekker, 1994. See
+"Kohonen neural networks for optimal colour quantization" in "Network:
+Computation in Neural Systems" Vol. 5 (1994) pp 351-367. for a discussion of
+the algorithm.
+
+Any party obtaining a copy of these files from the author, directly or
+indirectly, is granted, free of charge, a full and unrestricted irrevocable,
+world-wide, paid up, royalty-free, nonexclusive right and license to deal in
+this software and documentation files (the "Software"), including without
+limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons who
+receive copies from any such party to do so, with the only requirement being
+that this copyright notice remain intact.
+</pre>
+    ]]></string>
+
+
+     <string name="circularimageview"><![CDATA[
+    <b>Circular Image View
+    </b>
+     <br>
+     <pre>
+
+     CircularImageView by Lopez Mikhael is licensed under a Apache License 2.0.
+</pre>]]></string>
+
+
+     <string name="tatarka"><![CDATA[
+    <b>Job Scheduler
+    </b>
+     <br>
+     <pre>
+
+      Job Scheduler by Evan Tatarka
+      https://github.com/evant/JobSchedulerCompat
+</pre>]]></string>
+
+
+    <string name="appintro"><![CDATA[
+    <b>App Intro
+    </b>
+     <br>
+     <pre>
+
+      App Intro by PaoloRotolo
+      https://github.com/PaoloRotolo/AppIntro
+</pre>]]></string>
+
+      <string name="crashlytics"><![CDATA[
+    <b>Crashlytics
+    </b>
+     <br>
+     <pre>
+
+      SDK:
+protobuf-c http://code.google.com/p/protobuf-c/source/browse/trunk/LICENSE
+
+Copyright © 2008-2011, Dave Benson.
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with
+or without modification, are permitted provided that the
+following conditions are met:
+
+* Redistributions of source code must retain the above
+copyright notice, this list of conditions and the following
+disclaimer.
+* Redistributions in binary form must reproduce
+the above copyright notice, this list of conditions and
+the following disclaimer in the documentation and/or other
+materials provided with the distribution.
+* Neither the name
+of "protobuf-c" nor the names of its contributors
+may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER
+OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+</pre>]]></string>
+
+    <string name="butterknife"><![CDATA[
+    <b>Butter Knife
+    </b>
+     <br>
+     <pre>
+
+     Copyright 2013 Jake Wharton
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+</pre>]]></string>
+
+
+
+     <string name="errorview"><![CDATA[
+    <b>Error View
+    </b>
+     <br>
+     <pre>
+
+         Copyright © 2015 Ihsan Isik
+     Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+</pre>]]></string>
+
+
+
+    <string name="materialsearch"><![CDATA[
+    <b>Material Search View
+    </b>
+     <br>
+     <pre>
+
+     Copyright 2015 Miguel Catalan Bañuls
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</pre>]]></string>
+
 
 
 </resources>

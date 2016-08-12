@@ -1,5 +1,6 @@
 package tech.salroid.filmy.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -98,6 +99,16 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
                 }
             });
+
+            Preference liscence=(Preference) findPreference("license");
+            liscence.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(new Intent(getActivity(),License.class));
+                    return false;
+                }
+            });
+
 
         }
 

@@ -135,6 +135,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
         Vh(View itemView) {
 
             super(itemView);
+            ButterKnife.bind(this,itemView);
 
             ButterKnife.bind(this,itemView);
 

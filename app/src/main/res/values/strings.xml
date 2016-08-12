@@ -25,7 +25,7 @@
     <string name="trailer_img_prefix">http://img.youtube.com/vi/</string>
     <string name="trailer_img_suffix">/0.jpg</string>
     <string name="poster_prefix_185">http://image.tmdb.org/t/p/w185</string>
-    <string name="poster_prefix_500">http://image.tmdb.org/t/p/w500</string>
+    <string name="poster_prefix_500">http://image.tmdb.org/t/p/w780</string>
     <string name="poster_prefix_add_quality">http://image.tmdb.org/t/p/</string>
     <string name="trailer_link_prefix">https://www.youtube.com/watch?v=</string>
 

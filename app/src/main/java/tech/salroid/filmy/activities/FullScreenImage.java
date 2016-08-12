@@ -12,25 +12,45 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import butterknife.BindView;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.customs.BreathingProgress;
 
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 public class FullScreenImage extends AppCompatActivity {
 
+    @BindView(R.id.cen_img)
+    ImageView centreimg;
+    @BindView(R.id.breathingProgress)
+    BreathingProgress breathingProgress;
+
     private String image_url;
-    private ImageView centreimg;
-    private BreathingProgress breathingProgress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_image);
 
-        breathingProgress = (BreathingProgress) findViewById(R.id.breathingProgress);
         breathingProgress.setVisibility(View.VISIBLE);
 
-
-        centreimg = (ImageView) findViewById(R.id.cen_img);
 
         Intent intent = getIntent();
         if (intent != null) {

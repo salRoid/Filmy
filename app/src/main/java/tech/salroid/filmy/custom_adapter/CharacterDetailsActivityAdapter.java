@@ -14,8 +14,26 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.data_classes.CharacterDetailsData;
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<CharacterDetailsActivityAdapter.Fo> {
 
@@ -39,9 +57,7 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
     public Fo onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.char_custom_row, parent, false);
 
-        Fo holder = new Fo(view);
-
-        return holder;
+        return new Fo(view);
     }
 
     @Override
@@ -85,16 +101,14 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
     class Fo extends RecyclerView.ViewHolder {
 
-        TextView mov_char, mov_name;
-        CircularImageView mov_img;
+        @BindView(R.id.movie_poster) CircularImageView  mov_img;
+        @BindView(R.id.movie_name) TextView mov_name;
+        @BindView(R.id.movie_description) TextView mov_char;
 
         Fo(View itemView) {
-
             super(itemView);
+            ButterKnife.bind(this,itemView);
 
-            mov_img = (CircularImageView) itemView.findViewById(R.id.movie_poster);
-            mov_name = (TextView) itemView.findViewById(R.id.movie_name);
-            mov_char = (TextView) itemView.findViewById(R.id.movie_description);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

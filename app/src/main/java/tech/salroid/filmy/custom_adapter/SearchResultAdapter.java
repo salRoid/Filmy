@@ -15,17 +15,33 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.data_classes.SearchData;
 
-/**
- * Created by Home on 7/27/2016.
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.Dh> {
 
     private final LayoutInflater inflater;
-    List<SearchData> data = new ArrayList<>();
-    Context fro;
+    private List<SearchData> data = new ArrayList<>();
+    private Context fro;
     private ClickListener clickListener;
     private String query_name, query_type, query_poster, query_id, query_date, query_extra;
 
@@ -39,9 +55,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     @Override
     public Dh onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.custom_row_search, parent, false);
-        Dh holder = new Dh(view);
-
-        return holder;
+        return new Dh(view);
     }
 
     @Override
@@ -85,19 +99,18 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     class Dh extends RecyclerView.ViewHolder {
 
-        TextView movie_name, date;
+        @BindView(R.id.title)
+        TextView movie_name;
+        @BindView(R.id.poster)
         ImageView movie_poster;
+        @BindView(R.id.date)
+        TextView date;
+        @BindView(R.id.main)
         FrameLayout main;
 
-        public Dh(View itemView) {
-
-
+        Dh(View itemView) {
             super(itemView);
-
-            movie_name = (TextView) itemView.findViewById(R.id.title);
-            movie_poster = (ImageView) itemView.findViewById(R.id.poster);
-            date = (TextView) itemView.findViewById(R.id.date);
-            main = (FrameLayout) itemView.findViewById(R.id.main);
+            ButterKnife.bind(this, itemView);
 
 
             main.setOnClickListener(new View.OnClickListener() {

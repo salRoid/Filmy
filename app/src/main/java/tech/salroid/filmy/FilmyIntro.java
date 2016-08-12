@@ -47,9 +47,9 @@ public class FilmyIntro extends AppIntro2 {
         setProgressButtonEnabled(true);
 
 
-        //setZoomAnimation(); // OR
-        //setFlowAnimation(); // OR
-        //setSlideOverAnimation(); // OR
+        //setZoomAnimation(); //OR
+        //setFlowAnimation(); //OR
+        //setSlideOverAnimation(); //OR
         setDepthAnimation();
 
     }

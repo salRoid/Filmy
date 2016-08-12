@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent i = new Intent(MainActivity.this, FilmyIntro.class);
                     startActivity(i);
                     SharedPreferences.Editor e = getPrefs.edit();
-                    e.putBoolean("firstStart", false);
+                    e.putBoolean("firstStart", true);
                     e.apply();
                 }
             }

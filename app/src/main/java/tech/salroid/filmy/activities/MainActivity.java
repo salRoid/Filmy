@@ -118,8 +118,8 @@ public class MainActivity extends AppCompatActivity {
         mErrorView.setConfig(ErrorView.Config.create()
                 .title(getString(R.string.error_title_damn))
                 .titleColor(ContextCompat.getColor(this, R.color.dark))
-                .subtitle("Unable to fetch movies.\nCheck internet connection then try again.")
-                .retryText(getString(R.string.error_view_retry))
+                .subtitle(getString(R.string.error_details))
+                .retryText(getString(R.string.error_retry))
                 .build());
 
 
@@ -303,9 +303,9 @@ public class MainActivity extends AppCompatActivity {
         UpComing upComingFragment = new UpComing();
 
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(trendingFragment, "TRENDING");
-        adapter.addFragment(inTheatersFragment, "IN THEATERS");
-        adapter.addFragment(upComingFragment, "UPCOMING");
+        adapter.addFragment(trendingFragment, getString(R.string.trending));
+        adapter.addFragment(inTheatersFragment, getString(R.string.theatres));
+        adapter.addFragment(upComingFragment, getString(R.string.upcoming));
         viewPager.setAdapter(adapter);
 
     }

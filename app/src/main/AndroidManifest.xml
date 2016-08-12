@@ -49,7 +49,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.CharacterDetailsActivity"
-            android:label="Details"
+            android:label="@string/details"
             android:theme="@style/AppTheme.Base" />
 
         <provider

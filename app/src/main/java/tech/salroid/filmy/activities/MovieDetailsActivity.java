@@ -22,20 +22,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -51,6 +47,22 @@ import tech.salroid.filmy.fragment.FullReadFragment;
 import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
 import tech.salroid.filmy.utility.NullChecker;
 
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 public class MovieDetailsActivity extends AppCompatActivity implements
         View.OnClickListener,
@@ -86,6 +98,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.play_button)
     ImageView youtube_play_button;
 
+    @BindView(R.id.breathingProgress) BreathingProgress breathingProgress;
 
     @BindView(R.id.trailorBackground)
     LinearLayout trailorBackground;
@@ -104,7 +117,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
 
     Context context = this;
-    BreathingProgress breathingProgress;
     FullReadFragment fullReadFragment;
     HashMap<String, String> movieMap;
     boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
@@ -124,7 +136,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        breathingProgress = (BreathingProgress) findViewById(R.id.breathingProgress);
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
         quality = prefrence.getString("image_quality", "w780");
@@ -338,8 +349,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                    String released, String certification, String language) {
 
 
+        if(tagline==null)
+            det_tagline.setVisibility(View.GONE);
+        else
+            det_tagline.setText(tagline);
+
         det_title.setText(title);
-        det_tagline.setText(tagline);
         det_overview.setText(overview);
         det_rating.setText(rating);
         det_runtime.setText(runtime);
@@ -501,8 +516,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             movie_id_final = data.getString(id_index);
 
+            if(tagline==null)
+                det_tagline.setVisibility(View.GONE);
+            else
+                det_tagline.setText(tagline);
+
             det_title.setText(title);
-            det_tagline.setText(tagline);
             det_overview.setText(overview);
             det_rating.setText(rating);
             det_runtime.setText(runtime);

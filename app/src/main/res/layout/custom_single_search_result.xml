@@ -43,7 +43,6 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text=" "
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textStyle="bold" />
 

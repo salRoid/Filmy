@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,12 +22,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
 import tech.salroid.filmy.data_classes.CharacterDetailsData;
@@ -36,16 +35,40 @@ import tech.salroid.filmy.fragment.FullReadFragment;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 public class CharacterDetailsActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 
 
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.more) TextView more ;
+    @BindView(R.id.actor) TextView ch_name;
+    @BindView(R.id.desc) TextView ch_desc ;
+    @BindView(R.id.birth) TextView ch_birth;
+    @BindView(R.id.birth_place) TextView ch_place;
+    @BindView(R.id.character_movies) RecyclerView char_recycler;
+    @BindView(R.id.header_container) FrameLayout headerContainer;
+    @BindView(R.id.cast_img_small) ImageView character_small;
+
     Context co = this;
-    FrameLayout headerContainer;
     private String character_id;
-    private ImageView character_small;
-    private RecyclerView char_recycler;
     private String character_title = null, movie_json = null;
-    private TextView more;
     private String character_bio;
     private FullReadFragment fullReadFragment;
 
@@ -53,13 +76,9 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_cast);
+        ButterKnife.bind(this);
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        more = (TextView) findViewById(R.id.more);
-
 
         if (getActionBar() != null)
             getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -80,11 +99,10 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             }
         });
 
-        char_recycler = (RecyclerView) findViewById(R.id.character_movies);
+
         char_recycler.setLayoutManager(new LinearLayoutManager(CharacterDetailsActivity.this));
         char_recycler.setNestedScrollingEnabled(false);
 
-        headerContainer = (FrameLayout) findViewById(R.id.header_container);
         headerContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,7 +130,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             character_id = intent.getStringExtra("id");
         }
 
-        character_small = (ImageView) findViewById(R.id.cast_img_small);
 
         getDetailedMovieAndCast();
 
@@ -209,15 +226,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             String char_birthday = jsonObject.getString("birthday");
             String char_birthplace = jsonObject.getString("birthplace");
 
-
             character_title = char_name;
             character_bio = char_desc;
-
-            TextView ch_name = (TextView) findViewById(R.id.actor);
-            TextView ch_desc = (TextView) findViewById(R.id.desc);
-            TextView ch_birth = (TextView) findViewById(R.id.birth);
-            TextView ch_place = (TextView) findViewById(R.id.birth_place);
-
 
             ch_name.setText(char_name);
             if (char_birthday.equals("null"))

@@ -14,14 +14,31 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import butterknife.BindView;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.database.FilmContract;
 
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.Vh> {
 
     private final LayoutInflater inflater;
-    Context context;
+    private Context context;
     private ClickListener clickListener;
     private Cursor dataCursor;
     private LongClickListener longclickListener;
@@ -38,9 +55,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
     @Override
     public Vh onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.custom_row, parent, false);
-        Vh holder = new Vh(view);
-
-        return holder;
+        return new Vh(view);
     }
 
     @Override
@@ -108,17 +123,17 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
     class Vh extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.title)
         TextView title;
+        @BindView(R.id.poster)
         ImageView poster;
+        @BindView(R.id.main)
         FrameLayout main;
 
-        public Vh(View itemView) {
+
+        Vh(View itemView) {
 
             super(itemView);
-
-            title = (TextView) itemView.findViewById(R.id.title);
-            poster = (ImageView) itemView.findViewById(R.id.poster);
-            main = (FrameLayout) itemView.findViewById(R.id.main);
 
 
             main.setOnClickListener(new View.OnClickListener() {

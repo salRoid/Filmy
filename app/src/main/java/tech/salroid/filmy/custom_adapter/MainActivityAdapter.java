@@ -13,8 +13,27 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.database.FilmContract;
+
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapter.Vh> {
 
@@ -35,15 +54,15 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     @Override
     public Vh onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.custom_row, parent, false);
-        Vh holder = new Vh(view);
 
-        return holder;
+        return new Vh(view);
     }
 
     @Override
     public void onBindViewHolder(Vh holder, int position) {
 
-        String movie_title, imdb_id, movie_poster;
+        String movie_title, movie_poster;
+        String imdb_id;
         int movie_year;
 
 
@@ -58,7 +77,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
         movie_title = dataCursor.getString(title_index);
         movie_poster = dataCursor.getString(poster_index);
-       imdb_id = dataCursor.getString(id_index);
+        imdb_id = dataCursor.getString(id_index);
         movie_year = dataCursor.getInt(year_index);
 
 
@@ -101,18 +120,21 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
     class Vh extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.title)
         TextView title;
+        @BindView(R.id.poster)
         ImageView poster;
+        @BindView(R.id.main)
         FrameLayout main;
-       // TextView year;
 
-         Vh(View itemView) {
+        // TextView year;
+
+        Vh(View itemView) {
 
             super(itemView);
+            ButterKnife.bind(this, itemView);
 
-            title = (TextView) itemView.findViewById(R.id.title);
-            poster = (ImageView) itemView.findViewById(R.id.poster);
-            main = (FrameLayout) itemView.findViewById(R.id.main);
+
             //year = (TextView) itemView.findViewById(R.id.movie_year);
 
 

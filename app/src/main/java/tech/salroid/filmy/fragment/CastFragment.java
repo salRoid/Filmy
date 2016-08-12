@@ -22,6 +22,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.FullCastActivity;
@@ -29,19 +31,32 @@ import tech.salroid.filmy.custom_adapter.MovieDetailsActivityAdapter;
 import tech.salroid.filmy.data_classes.MovieDetailsData;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
-
-/**
- * Created by R Ankit on 05-08-2016.
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 
 public class CastFragment extends Fragment implements View.OnClickListener, MovieDetailsActivityAdapter.ClickListener {
 
 
     private String cast_json;
-    private RecyclerView cast_recycler;
-    private TextView more;
     private String movieId, movieTitle;
 
+    @BindView(R.id.more) TextView  more ;
+    @BindView(R.id.cast_recycler) RecyclerView cast_recycler ;
 
     public static CastFragment newInstance(String movie_Id, String movie_Title) {
         CastFragment fragment = new CastFragment();
@@ -57,10 +72,9 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.cast_fragment, container, false);
+        ButterKnife.bind(this,view);
 
-        more = (TextView) view.findViewById(R.id.more);
 
-        cast_recycler = (RecyclerView) view.findViewById(R.id.cast_recycler);
         cast_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         cast_recycler.setNestedScrollingEnabled(false);
         more.setOnClickListener(this);
@@ -123,8 +137,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), cast_result);
         List<MovieDetailsData> cast_list = par.parse_cast();
-        Boolean size = true;
-        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, size);
+        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, true);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
         more.setVisibility(View.VISIBLE);

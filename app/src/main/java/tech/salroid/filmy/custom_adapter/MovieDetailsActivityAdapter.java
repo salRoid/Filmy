@@ -14,8 +14,27 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.data_classes.MovieDetailsData;
+
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetailsActivityAdapter.Ho> {
 
@@ -37,8 +56,7 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
 
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.cast_custom_row, parent, false);
-        Ho holder = new Ho(view);
-        return holder;
+        return new Ho(view);
     }
 
     @Override
@@ -83,16 +101,14 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
 
     class Ho extends RecyclerView.ViewHolder {
 
-        TextView cast_name, cast_description;
-        CircularImageView cast_poster;
+       @BindView(R.id.cast_name) TextView cast_name;
+        @BindView(R.id.cast_description) TextView cast_description ;
+        @BindView(R.id.cast_poster) CircularImageView cast_poster ;
 
         Ho(View itemView) {
 
             super(itemView);
-
-            cast_name = (TextView) itemView.findViewById(R.id.cast_name);
-            cast_description = (TextView) itemView.findViewById(R.id.cast_description);
-            cast_poster = (CircularImageView) itemView.findViewById(R.id.cast_poster);
+            ButterKnife.bind(this,itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

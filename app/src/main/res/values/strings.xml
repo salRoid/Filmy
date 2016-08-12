@@ -25,7 +25,7 @@
     <string name="trailer_img_prefix">http://img.youtube.com/vi/</string>
     <string name="trailer_img_suffix">/0.jpg</string>
     <string name="poster_prefix_185">http://image.tmdb.org/t/p/w185</string>
-    <string name="poster_prefix_500">http://image.tmdb.org/t/p/w500</string>
+    <string name="poster_prefix_500">http://image.tmdb.org/t/p/w780</string>
     <string name="poster_prefix_add_quality">http://image.tmdb.org/t/p/</string>
     <string name="trailer_link_prefix">https://www.youtube.com/watch?v=</string>
 
@@ -47,6 +47,21 @@
     <string name="genre">Genre</string>
     <string name="language">Language</string>
     <string name="release_date">Release Date</string>
+    <string name="play">Play</string>
+    <string name="trailer">Trailer</string>
+    <string name="banner_image">Banner Image</string>
+    <string name="you_saved_movies_appear_here">You saved movies appear here.</string>
+    <string name="no_saved_movies">No Saved Movies</string>
+    <string name="saved_movies">Saved Movies</string>
+    <string name="welcome_to_filmy">Welcome to Filmy</string>
+    <string name="filmy_is_your_new_movie_app">Filmy is your new movie app.</string>
+    <string name="categorized">Categorized</string>
+    <string name="get_different_movies_in_different_categories_at_one_place">Get different movies in different categories at one place.</string>
+    <string name="offline_movies">Offline movies</string>
+    <string name="save_movies_locally_to_see_various_details_even_if_you_don_t_have_internet">Save movies locally to see various details even if you don\'t have internet.</string>
+    <string name="exploration">Exploration</string>
+    <string name="search_through_the_large_sea_of_movies_and_know_about_different_casts">Search through the large sea of movies and know about different casts.</string>
+    <string name="close_description">Close description</string>
 
 
 </resources>

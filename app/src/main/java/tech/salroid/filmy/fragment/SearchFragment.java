@@ -21,6 +21,8 @@ import org.json.JSONArray;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
@@ -29,13 +31,33 @@ import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.SearchData;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.SearchResultParseWork;
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 public class SearchFragment extends Fragment implements SearchResultAdapter.ClickListener {
 
-    BreathingProgress breathingProgress;
+
     SearchResultAdapter sadapter;
-    private RecyclerView recycler;
     private Intent intent;
+
+    @BindView((R.id.search_results_recycler))
+    RecyclerView recycler;
+    @BindView(R.id.breathingProgress)
+    BreathingProgress breathingProgress;
 
     @Nullable
     @Override
@@ -43,10 +65,9 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
 
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+        ButterKnife.bind(this, view);
 
-        recycler = (RecyclerView) view.findViewById(R.id.search_results_recycler);
         recycler.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
-        breathingProgress = (BreathingProgress) view.findViewById(R.id.breathingProgress);
 
 
         return view;

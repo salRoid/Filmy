@@ -137,6 +137,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
             super(itemView);
             ButterKnife.bind(this,itemView);
 
+            ButterKnife.bind(this,itemView);
 
             main.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -8,6 +8,7 @@
         android:summaryOn="@string/high"
         android:title="@string/image" />
 
+
     <Preference
         android:enabled="true"
         android:key="license"

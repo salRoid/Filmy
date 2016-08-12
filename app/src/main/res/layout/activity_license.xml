@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primaryColor"
+        android:elevation="2dp"
+        app:popupTheme="@style/Theme.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Light"/>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="wrap_content"
+    android:layout_below="@id/toolbar"
+android:layout_height="wrap_content"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
         android:id="@+id/activity_license"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,8 +32,29 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="tech.salroid.filmy.activities.License">
 
+        <LinearLayout
+            android:id="@+id/powered"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_below="@+id/container"
+            android:padding="16dp"
+            android:weightSum="2">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/tmdb" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/trakt" />
+        </LinearLayout>
 
         <TextView
+            android:layout_marginTop="32dp"
             android:id="@+id/butterknife"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -72,3 +110,4 @@
             android:paddingTop="8dp" />
     </LinearLayout>
 </ScrollView>
+    </RelativeLayout>

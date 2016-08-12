@@ -374,12 +374,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                         Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                             public void onGenerated(Palette p) {
                                 // Use generated instance
-                                Palette.Swatch swatch = p.getMutedSwatch();
-                                Palette.Swatch trailorSwatch = p.getDarkMutedSwatch();
-                                if (swatch == null) {
-                                    swatch = p.getVibrantSwatch();
-                                    trailorSwatch = p.getDarkVibrantSwatch();
-                                }
+                                Palette.Swatch swatch = p.getVibrantSwatch();
+                                Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                 if (swatch != null) {
                                     header.setBackgroundColor(swatch.getRgb());
@@ -545,7 +541,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                             Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                                 public void onGenerated(Palette p) {
                                     // Use generated instance
-                                    Palette.Swatch swatch = p.getMutedSwatch();
+                                    Palette.Swatch swatch = p.getVibrantSwatch();
                                     Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                     if (swatch != null) {
@@ -663,12 +659,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
                             Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                                 public void onGenerated(Palette p) {
-                                    Palette.Swatch swatch = p.getMutedSwatch();
-                                    Palette.Swatch trailorSwatch = p.getDarkMutedSwatch();
-                                    if (swatch == null) {
-                                        swatch = p.getVibrantSwatch();
-                                        trailorSwatch = p.getDarkVibrantSwatch();
-                                    }
+                                    Palette.Swatch swatch = p.getVibrantSwatch();
+                                    Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
                                     if (swatch != null) {
 

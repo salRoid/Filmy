@@ -84,7 +84,9 @@
             android:name="io.fabric.ApiKey"
             android:value="62707285253d6b217b66e97e6e602bcab0edc463" />
 
-        <activity android:name=".activities.License"></activity>
+        <activity android:name=".activities.License"
+            android:label="@string/liscense"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

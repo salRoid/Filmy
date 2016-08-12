@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1B5E20"
+    android:background="@color/black"
     tools:context="tech.salroid.filmy.fragment.intro_fragments.IntroFragmentC">
 
 
@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/categorized"
         android:textColor="#ffffff"
@@ -23,16 +23,16 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/intro_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/get_different_movies_in_different_categories_at_one_place"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
     <ImageView
-        android:layout_width="320dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/intro_b" />

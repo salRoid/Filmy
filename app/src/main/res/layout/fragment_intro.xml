@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3F51B5"
+    android:background="@color/black"
     tools:context="tech.salroid.filmy.fragment.intro_fragments.IntroFragmentA">
 
 
@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/welcome_to_filmy"
         android:textColor="#ffffff"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/intro_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/filmy_is_your_new_movie_app"
         android:textColor="#ffffff"
@@ -35,6 +35,6 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/intro_a" />
+        android:src="@drawable/splash" />
 
 </RelativeLayout>

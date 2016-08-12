@@ -24,11 +24,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.FilmyIntro;
@@ -100,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme_Base);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);

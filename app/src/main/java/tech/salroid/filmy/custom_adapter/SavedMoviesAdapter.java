@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.database.FilmContract;
 
@@ -135,6 +136,7 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
             super(itemView);
 
+            ButterKnife.bind(this,itemView);
 
             main.setOnClickListener(new View.OnClickListener() {
                 @Override

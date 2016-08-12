@@ -13,6 +13,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.customs.BreathingProgress;
 
@@ -48,6 +49,7 @@ public class FullScreenImage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_screen_image);
+        ButterKnife.bind(this);
 
         breathingProgress.setVisibility(View.VISIBLE);
 

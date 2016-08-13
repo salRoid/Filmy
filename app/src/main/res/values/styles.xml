@@ -56,4 +56,5 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
+
 </resources>

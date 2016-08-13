@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.customs.CustomToast;
 
 /*
  * Filmy Application for Android
@@ -130,7 +131,7 @@ public class OfflineMovies {
 
                                         if (movieRowId != -1) {
                                             //inserted
-                                            Snackbar.make(main_content, "Movie Saved", Snackbar.LENGTH_SHORT).show();
+                                            CustomToast.show(context,"Movie saved successfully.",false);
 
                                         } else {
 
@@ -163,13 +164,15 @@ public class OfflineMovies {
 
                     if (movieRowId != -1) {
 
-                        Snackbar.make(main_content, "Movie Saved", Snackbar.LENGTH_SHORT).show();
+                        CustomToast.show(context,"Movie saved successfully.",false);
+
 
                         // Toast.makeText(MovieDetailsActivity.this, "Movie Inserted", Toast.LENGTH_SHORT).show();
 
                     } else {
 
-                        Snackbar.make(main_content, "Movie Not Saved", Snackbar.LENGTH_SHORT).show();
+                        CustomToast.show(context,"Failed to save movie.",false);
+
 
                     }
                 }

@@ -20,6 +20,15 @@
     <string name="sync_account_type">filmy.salroid.com</string>
     <string name="content_authority">tech.salroid.filmy</string>
 
+    <string name="ramankit">Ramankit Singh</string>
+    <string name="sajal">Sajal Gupta</string>
+    <string name="email">Send Email</string>
+    <string name="gplus">Google+</string>
+    <string name="github">GitHub</string>
+
+    <string name="ramankit_bio">I love Android, designing and music.</string>
+    <string name="sajal_bio">I like Android and playing Counter Strike.</string>
+
 
     <string name="app_name">Filmy</string>
     <string name="title_activity_detailed">DetailedActivity</string>
@@ -49,7 +58,7 @@
     <string name="banner_image">Banner Image</string>
     <string name="you_saved_movies_appear_here">You saved movies appear here.</string>
     <string name="no_saved_movies">No Saved Movies</string>
-    <string name="saved_movies">offline Movies</string>
+    <string name="saved_movies">Offline Movies</string>
     <string name="welcome_to_filmy">Welcome to Filmy</string>
     <string name="filmy_is_your_new_movie_app">Filmy is your new movie app.</string>
     <string name="categorized">Categorized</string>
@@ -324,7 +333,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 </pre>]]></string>
-
 
 
 </resources>

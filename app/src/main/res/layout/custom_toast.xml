@@ -1,0 +1,42 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toast_layout_root"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="32dp"
+    android:padding="10dp"
+    card_view:cardBackgroundColor="@color/grey"
+    card_view:cardElevation="5dp"
+    card_view:cardCornerRadius="20dp"
+    card_view:cardPreventCornerOverlap="false"
+    >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="32dp"
+            android:tint="@color/dark"
+            android:src="@drawable/error_view_cloud" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32dp"
+            android:padding="16dp"
+            android:layout_marginRight="32dp"
+            android:layout_toRightOf="@id/image"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Failed once again."
+            android:textColor="@color/dark" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

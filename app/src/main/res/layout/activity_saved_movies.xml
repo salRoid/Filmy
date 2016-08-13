@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".activities.SavedMovies">
 
     <android.support.v7.widget.Toolbar
@@ -14,7 +13,17 @@
         android:background="?attr/colorPrimary"
         android:padding="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:theme="@style/ThemeOverlay.AppCompat" />
+        app:theme="@style/ThemeOverlay.AppCompat">
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/saved_movies"
+            android:textColor="#757575"
+            android:textSize="20sp" />
+
+    </android.support.v7.widget.Toolbar>
 
 
     <android.support.v7.widget.RecyclerView
@@ -22,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
@@ -35,8 +45,8 @@
 
         <ImageView
             android:contentDescription="@string/no_saved_movies"
-            android:layout_width="85dp"
-            android:layout_height="85dp"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
             android:layout_gravity="center"
             android:src="@drawable/empty_folder" />
 
@@ -44,9 +54,9 @@
             android:contentDescription="@string/saved_movies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:text="@string/you_saved_movies_appear_here"
-            android:textColor="#BDBDBD" />
+            android:textColor="@color/primaryColorDark" />
 
     </LinearLayout>
 

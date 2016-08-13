@@ -21,6 +21,7 @@ import tech.salroid.filmy.activities.MainActivity;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
+import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.database.MovieSelection;
 
@@ -105,7 +106,10 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
             breathingProgress.setVisibility(View.GONE);
 
         } else if (!((MainActivity) getActivity()).fetchingFromNetwork) {
+
+            CustomToast.show(getActivity(),"Failed to get latest movies.",true);
             ((MainActivity) getActivity()).cantProceed(-1);
+
         }
 
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +51,8 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     RecyclerView my_saved_movies_recycler;
     @BindView(R.id.emptyContainer)
     LinearLayout emptyContainer;
+    @BindView(R.id.logo)
+    TextView logo;
 
 
     private static final int SAVED_DETAILS_LOADER = 3;
@@ -81,8 +85,14 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         setSupportActionBar(toolbar);
 
 
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("");
+        }
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        logo.setTypeface(typeface);
+
 
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);

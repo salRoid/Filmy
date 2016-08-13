@@ -40,8 +40,9 @@
                 android:clickable="true"
                 android:foreground="?android:selectableItemBackground">
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/header"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#ffffff"
@@ -58,7 +59,6 @@
                         android:id="@+id/detail_tagline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/detail_title"
                         android:fontFamily="sans-serif-condensed"
                         android:textAppearance="?android:textAppearanceMedium" />
 
@@ -67,7 +67,6 @@
                         android:id="@+id/detail_overview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/detail_tagline"
                         android:layout_marginTop="8dp"
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-condensed"
@@ -75,7 +74,7 @@
                         android:textAppearance="?android:textAppearanceSmall" />
 
 
-                </RelativeLayout>
+                </LinearLayout>
             </FrameLayout>
 
             <LinearLayout

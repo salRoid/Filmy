@@ -29,23 +29,25 @@ public class RevealAnimation {
 
     public static void performReveal(final FrameLayout allDetails) {
 
-        if (allDetails != null) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN) {
+            if (allDetails != null) {
 
-            ViewTreeObserver viewTreeObserver = allDetails.getViewTreeObserver();
-            if (viewTreeObserver.isAlive()) {
-                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        circularRevealActivity(allDetails);
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                            allDetails.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        } else {
-                            allDetails.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                ViewTreeObserver viewTreeObserver = allDetails.getViewTreeObserver();
+                if (viewTreeObserver.isAlive()) {
+                    viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            circularRevealActivity(allDetails);
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                                allDetails.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            } else {
+                                allDetails.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
 
+            }
         }
 
     }

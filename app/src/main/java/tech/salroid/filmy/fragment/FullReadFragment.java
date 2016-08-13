@@ -67,14 +67,15 @@ public class FullReadFragment extends Fragment implements View.OnClickListener {
                 // get the hypothenuse so the radius is from one corner to the other
                 int radius = (int) Math.hypot(right, bottom);
 
-                Animator reveal = null;
+                Animator reveal;
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     reveal = ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, radius);
+                    reveal.setInterpolator(new DecelerateInterpolator(2f));
+                    reveal.setDuration(1000);
+                    reveal.start();
                 }
-                reveal.setInterpolator(new DecelerateInterpolator(2f));
-                reveal.setDuration(1000);
-                reveal.start();
+
             }
         });
 

@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,16 +23,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -98,7 +103,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.play_button)
     ImageView youtube_play_button;
 
-    @BindView(R.id.breathingProgress) BreathingProgress breathingProgress;
+    @BindView(R.id.breathingProgress)
+    BreathingProgress breathingProgress;
 
     @BindView(R.id.trailorBackground)
     LinearLayout trailorBackground;
@@ -113,7 +119,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.main)
     RelativeLayout main;
     @BindView(R.id.header)
-    RelativeLayout header;
+    LinearLayout header;
 
 
     Context context = this;
@@ -349,11 +355,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                    String released, String certification, String language) {
 
 
-        if(tagline==null)
-            det_tagline.setVisibility(View.GONE);
-        else
-            det_tagline.setText(tagline);
 
+        det_tagline.setText(tagline);
         det_title.setText(title);
         det_overview.setText(overview);
         det_rating.setText(rating);
@@ -510,13 +513,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             String certification = data.getString(certification_index);
             String language = data.getString(language_index);
 
+
             movie_id_final = data.getString(id_index);
 
-            if(tagline==null)
-                det_tagline.setVisibility(View.GONE);
-            else
-                det_tagline.setText(tagline);
-
+            det_tagline.setText(tagline);
             det_title.setText(title);
             det_overview.setText(overview);
             det_rating.setText(rating);
@@ -624,14 +624,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             String certification = data.getString(certification_index);
             String language = data.getString(language_index);
 
+
             if (NullChecker.isSettable(title))
                 det_title.setText(title);
 
             if (NullChecker.isSettable(tagline))
-                det_tagline.setText(tagline);
+           det_tagline.setVisibility(View.VISIBLE);
 
             if (NullChecker.isSettable(overview))
                 det_overview.setText(overview);
+
             if (NullChecker.isSettable(rating))
                 det_rating.setText(rating);
 

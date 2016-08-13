@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
             int statusCode = intent.getIntExtra("message", 0);
 
 
+
+
             CustomToast.show(context,"Failed to get latest movies.",true);
 
             cantProceed(statusCode);

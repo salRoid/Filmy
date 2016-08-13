@@ -629,7 +629,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 det_title.setText(title);
 
             if (NullChecker.isSettable(tagline))
-           det_tagline.setVisibility(View.VISIBLE);
+              det_tagline.setText(tagline);
 
             if (NullChecker.isSettable(overview))
                 det_overview.setText(overview);

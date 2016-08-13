@@ -84,10 +84,7 @@
                 android:layout_below="@+id/header_container"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="0dp">
+
 
                     <LinearLayout
                         android:id="@+id/trailorBackground"
@@ -161,8 +158,6 @@
                     </LinearLayout>
 
 
-                </android.support.v7.widget.CardView>
-
                 <include layout="@layout/extra_info_movie_detail" />
 
             </LinearLayout>
@@ -181,7 +176,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="@dimen/toolbar_margin"
         android:background="#00ffffff"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />

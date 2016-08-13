@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <SwitchPreference
         android:defaultValue="true"
@@ -23,11 +25,12 @@
         android:summary="0.0.1"
         android:title="@string/version" />
 
+
     <Preference
         android:enabled="true"
         android:key="About"
         android:selectable="true"
-        android:summary="@string/madefor"
         android:title="@string/about" />
+
 
 </PreferenceScreen>

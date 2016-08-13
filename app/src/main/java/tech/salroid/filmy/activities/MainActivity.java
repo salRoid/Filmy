@@ -23,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -31,6 +30,7 @@ import butterknife.ButterKnife;
 import tech.salroid.filmy.FilmyIntro;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
+import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.fragment.InTheaters;
 import tech.salroid.filmy.fragment.SearchFragment;
 import tech.salroid.filmy.fragment.Trending;
@@ -87,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
             // Extract data included in the Intent
             int statusCode = intent.getIntExtra("message", 0);
 
-            Toast.makeText(context, "Failed to get latest movies.", Toast.LENGTH_SHORT).show();
+
+            CustomToast.show(context,"Failed to get latest movies.",true);
 
             cantProceed(statusCode);
 
@@ -205,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
             fetchingFromNetwork = true;
             setScheduler();
         }
+
 
     }
 

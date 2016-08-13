@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/grey"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:padding="0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:theme="@style/ThemeOverlay.AppCompat">
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/madefor"
+            android:textColor="#757575"
+            android:textSize="20sp" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/sajal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardPreventCornerOverlap="false"
+        card_view:cardCornerRadius="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#dddddd"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ramankit_banner_min"
+                />
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/dp"
+                android:layout_marginTop="55dp"
+                android:layout_width="100dp"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/ramankit"
+                android:layout_alignParentLeft="true"
+                android:layout_height="100dp" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_toRightOf="@id/dp"
+                android:layout_marginTop="95dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ramankit"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-condensed"
+                android:padding="16dp"
+                />
+
+
+
+            <TextView
+                android:id="@+id/bio"
+                android:layout_below="@id/dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ramankit_bio"
+                />
+
+
+            <LinearLayout
+                android:layout_below="@id/bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_margin="16dp"
+                >
+
+
+                <Button
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email"
+                    android:background="#00ffffff"
+                    android:textColor="@color/colorAccent"
+                    android:fontFamily="sans-serif-condensed"
+                    android:id="@+id/email"
+                    android:onClick="sendEmail"
+                    />
+
+                <Button
+                    android:id="@+id/github"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:text="@string/github"
+                    android:background="#00ffffff"
+                    android:textColor="@color/colorAccent"
+                    android:fontFamily="sans-serif-condensed"
+                    android:onClick="openGithub"
+                    />
+
+                <Button
+                    android:id="@+id/gplus"
+                    android:onClick="openGplus"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gplus"
+                    android:background="#00ffffff"
+                    android:textColor="@color/colorAccent"
+                    android:fontFamily="sans-serif-condensed"
+
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/ramankit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sajal"
+        android:layout_marginTop="8dp"
+        card_view:cardCornerRadius="0dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/banner2"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#dddddd"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sajal_banner"
+            />
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/dp2"
+            android:layout_marginTop="55dp"
+            android:layout_width="100dp"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/sajal"
+            android:layout_alignParentLeft="true"
+            android:layout_height="100dp" />
+
+        <TextView
+            android:id="@+id/name2"
+            android:layout_toRightOf="@id/dp2"
+            android:layout_marginTop="95dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sajal"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-condensed"
+            android:padding="16dp"
+            />
+
+
+            <TextView
+                android:id="@+id/bio2"
+                android:layout_below="@id/dp2"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sajal_bio"
+                />
+
+        <LinearLayout
+            android:layout_below="@id/bio2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:layout_margin="16dp"
+            >
+
+
+            <Button
+                android:id="@+id/email2"
+                android:onClick="sendEmail"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:background="#00ffffff"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="sans-serif-condensed"
+                />
+
+            <Button
+                android:id="@+id/github2"
+                android:onClick="openGithub"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:text="@string/github"
+                android:background="#00ffffff"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="sans-serif-condensed"
+                />
+
+            <Button
+                android:id="@+id/gplus2"
+                android:onClick="openGplus"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/gplus"
+                android:background="#00ffffff"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="sans-serif-condensed"
+
+                />
+
+        </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

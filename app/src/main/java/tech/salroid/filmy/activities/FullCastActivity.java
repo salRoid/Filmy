@@ -17,7 +17,7 @@ import tech.salroid.filmy.data_classes.MovieDetailsData;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
 /*
- * Filny Application for Android
+ * Filmy Application for Android
  * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

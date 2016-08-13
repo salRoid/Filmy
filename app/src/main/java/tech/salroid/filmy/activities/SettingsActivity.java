@@ -2,6 +2,7 @@ package tech.salroid.filmy.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -10,7 +11,7 @@ import android.preference.SwitchPreference;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -36,6 +37,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.logo)
+    TextView logo;
+
 
 
     @Override
@@ -46,8 +50,15 @@ public class SettingsActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null){
+
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("");
+        }
+
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        logo.setTypeface(typeface);
 
         getFragmentManager().beginTransaction().
                 replace(R.id.container,
@@ -75,6 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preference);
+
 
             final SharedPreferences.Editor my_prefrence = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
 
@@ -105,10 +117,18 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     startActivity(new Intent(getActivity(),License.class));
-                    return false;
+                    return true;
                 }
             });
 
+            Preference about =(Preference) findPreference("About");
+            about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(new Intent(getActivity(),AboutActivity.class));
+                    return true;
+                }
+            });
 
         }
 

@@ -248,16 +248,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                cantProceed = true;
+                if(trendingFragment!=null && !trendingFragment.isShowingFromDatabase){
 
-                tabLayout.setVisibility(View.GONE);
-                viewPager.setVisibility(View.GONE);
-                mErrorView.setError(status);
-                mErrorView.setVisibility(View.VISIBLE);
+                    cantProceed = true;
 
-                //disable toolbar scrolling
-                disableToolbarScrolling();
+                    tabLayout.setVisibility(View.GONE);
+                    viewPager.setVisibility(View.GONE);
+                    mErrorView.setError(status);
+                    mErrorView.setVisibility(View.VISIBLE);
 
+                    //disable toolbar scrolling
+                    disableToolbarScrolling();
+                }
             }
         }, 1000);
 

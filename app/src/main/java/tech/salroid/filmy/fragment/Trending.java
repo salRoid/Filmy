@@ -50,7 +50,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
     RecyclerView recycler;
 
     private MainActivityAdapter mainActivityAdapter;
-
+    public boolean isShowingFromDatabase;
 
 
     public Trending() {
@@ -102,12 +102,13 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
         if (cursor != null && cursor.getCount() > 0) {
 
+            isShowingFromDatabase = true;
             mainActivityAdapter.swapCursor(cursor);
             breathingProgress.setVisibility(View.GONE);
 
         } else if (!((MainActivity) getActivity()).fetchingFromNetwork) {
 
-            CustomToast.show(getActivity(),"Failed to get latest movies.",true);
+            CustomToast.show(getActivity(), "Failed to get latest movies.", true);
             ((MainActivity) getActivity()).cantProceed(-1);
 
         }

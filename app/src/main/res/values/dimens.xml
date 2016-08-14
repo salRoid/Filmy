@@ -4,5 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="toolbar_margin">00dp</dimen>
+    <dimen name="widget_margin">8dp</dimen>
 
 </resources>

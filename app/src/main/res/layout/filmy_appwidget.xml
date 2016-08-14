@@ -1,0 +1,73 @@
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <FrameLayout
+        android:id="@+id/activity_opener"
+        android:background="#88000000"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            >
+
+            <ImageView
+                android:id="@+id/widget_movie_image"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:scaleType="centerCrop"
+                />
+
+            <RelativeLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:background="@color/colorAccent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:background="@color/colorAccentDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="TRENDING"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-condensed"
+                    />
+
+
+                <LinearLayout
+                    android:layout_below="@id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:id="@+id/widget_movie_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:text=" "
+                        android:fontFamily="sans-serif-condensed"
+
+                        />
+
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
+</FrameLayout>

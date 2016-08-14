@@ -20,7 +20,7 @@ import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
 import tech.salroid.filmy.database.FilmContract;
-import tech.salroid.filmy.database.MovieSelection;
+import tech.salroid.filmy.database.MovieProjection;
 /*
  * Filmy Application for Android
  * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
@@ -72,7 +72,7 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
     public void onResume() {
         super.onResume();
 
-        getActivity().getSupportLoaderManager().initLoader(MovieSelection.INTHEATERS_MOVIE_LOADER, null, this);
+        getActivity().getSupportLoaderManager().initLoader(MovieProjection.INTHEATERS_MOVIE_LOADER, null, this);
 
     }
 
@@ -83,7 +83,7 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
 
         return new CursorLoader(getActivity(),
                 moviesForTheUri,
-                MovieSelection.MOVIE_COLUMNS,
+                MovieProjection.MOVIE_COLUMNS,
                 null,
                 null,
                 null);

@@ -14,7 +14,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,7 +44,7 @@ import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.database.MovieDetailsUpdation;
 import tech.salroid.filmy.database.MovieLoaders;
-import tech.salroid.filmy.database.MovieSelection;
+import tech.salroid.filmy.database.MovieProjection;
 import tech.salroid.filmy.database.OfflineMovies;
 import tech.salroid.filmy.fragment.CastFragment;
 import tech.salroid.filmy.fragment.FullReadFragment;
@@ -334,7 +333,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             } finally {
 
                 if (databaseApplicable) {
+
                     MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this, type, movieMap, movie_id);
+
                 } else {
 
                     showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
@@ -431,21 +432,21 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
                     cursorloader = new CursorLoader(this,
                             FilmContract.MoviesEntry.buildMovieWithMovieId(movie_id),
-                            MovieSelection.GET_MOVIE_COLUMNS, null, null, null);
+                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null);
                     break;
 
                 case 1:
 
                     cursorloader = new CursorLoader(this,
                             FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movie_id),
-                            MovieSelection.GET_MOVIE_COLUMNS, null, null, null);
+                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null);
                     break;
 
                 case 2:
 
                     cursorloader = new CursorLoader(this,
                             FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movie_id),
-                            MovieSelection.GET_MOVIE_COLUMNS, null, null, null);
+                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null);
                     break;
 
             }
@@ -457,7 +458,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             String[] selectionArgs = {movie_id};
 
             cursorloader = new CursorLoader(this, FilmContract.SaveEntry.CONTENT_URI,
-                    MovieSelection.GET_SAVE_COLUMNS, selection, selectionArgs, null);
+                    MovieProjection.GET_SAVE_COLUMNS, selection, selectionArgs, null);
 
         }
 
@@ -712,6 +713,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             case android.R.id.home:
                 finish();
+
+                if(type==-1){
+
+                    startActivity(new Intent(this,MainActivity.class));
+
+                }
+
                 break;
 
             case R.id.action_share:
@@ -734,7 +742,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         if (fragment != null && fragment.isVisible()) {
             getSupportFragmentManager().beginTransaction().remove(fullReadFragment).commit();
         } else {
-            super.onBackPressed();
+
+
+            if(type==-1){
+
+                startActivity(new Intent(this,MainActivity.class));
+                finish();
+
+            }else {
+                super.onBackPressed();
+            }
         }
     }
 

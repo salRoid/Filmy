@@ -17,7 +17,7 @@ package tech.salroid.filmy.database;
  * limitations under the License.
  */
 
-public class MovieSelection {
+public class MovieProjection {
 
     public static final int TRENDING_MOVIE_LOADER = 1;
     public static final int INTHEATERS_MOVIE_LOADER = 2;

@@ -10,3 +10,17 @@ Open sourced awesome material designed movie app.
 #APIs
 Filmy is powered by the tmdb and trakt.
 
+#Implementations
+Contains various api implementations to make high quality production ready app.
+
+<ul>
+<li>SQLite Database</li>
+<li>Content Providers</li>
+<li>Cursor Loaders</li>
+<li>Accessbility Features</li>
+<li>Localised content</li>
+<li>Animations</li>
+<li>App Widgets</li>
+<li>Custom Views - BreathingProgress, CustomToast</li>
+<ul>
+

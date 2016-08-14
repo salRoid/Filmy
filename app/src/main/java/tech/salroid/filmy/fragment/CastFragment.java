@@ -57,6 +57,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
     @BindView(R.id.more) TextView  more ;
     @BindView(R.id.cast_recycler) RecyclerView cast_recycler ;
+    @BindView(R.id.card_holder) TextView card_holder;
 
     public static CastFragment newInstance(String movie_Id, String movie_Title) {
         CastFragment fragment = new CastFragment();
@@ -74,11 +75,9 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
         View view = inflater.inflate(R.layout.cast_fragment, container, false);
         ButterKnife.bind(this,view);
 
-
         cast_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         cast_recycler.setNestedScrollingEnabled(false);
         more.setOnClickListener(this);
-
 
         return view;
     }
@@ -114,7 +113,6 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
                         cast_json = response.toString();
                         cast_parseOutput(response.toString());
 
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -140,7 +138,14 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
         MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, true);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
+        if(cast_list.size()>4)
         more.setVisibility(View.VISIBLE);
+        else if (cast_list.size()==0){
+            more.setVisibility(View.INVISIBLE);
+            card_holder.setVisibility(View.INVISIBLE);
+        }
+        else
+            more.setVisibility(View.INVISIBLE);
 
     }
 

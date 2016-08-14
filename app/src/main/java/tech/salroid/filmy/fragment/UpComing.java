@@ -19,7 +19,7 @@ import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
 import tech.salroid.filmy.database.FilmContract;
-import tech.salroid.filmy.database.MovieSelection;
+import tech.salroid.filmy.database.MovieProjection;
 
 /*
  * Filmy Application for Android
@@ -70,7 +70,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getSupportLoaderManager().initLoader(MovieSelection.UPCOMING_MOVIE_LOADER, null, this);
+        getActivity().getSupportLoaderManager().initLoader(MovieProjection.UPCOMING_MOVIE_LOADER, null, this);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
 
         return new CursorLoader(getActivity(),
                 moviesForTheUri,
-                MovieSelection.MOVIE_COLUMNS,
+                MovieProjection.MOVIE_COLUMNS,
                 null,
                 null,
                 null);

@@ -23,7 +23,7 @@ import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.database.FilmContract;
-import tech.salroid.filmy.database.MovieSelection;
+import tech.salroid.filmy.database.MovieProjection;
 
 /*
  * Filmy Application for Android
@@ -78,7 +78,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().getSupportLoaderManager().initLoader(MovieSelection.TRENDING_MOVIE_LOADER, null, this);
+        getActivity().getSupportLoaderManager().initLoader(MovieProjection.TRENDING_MOVIE_LOADER, null, this);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
         return new CursorLoader(getActivity(),
                 moviesForTheUri,
-                MovieSelection.MOVIE_COLUMNS,
+                MovieProjection.MOVIE_COLUMNS,
                 null,
                 null,
                 null);
@@ -144,7 +144,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
     public void retryLoading() {
 
-        getActivity().getSupportLoaderManager().restartLoader(MovieSelection.TRENDING_MOVIE_LOADER, null, this);
+        getActivity().getSupportLoaderManager().restartLoader(MovieProjection.TRENDING_MOVIE_LOADER, null, this);
 
     }
 

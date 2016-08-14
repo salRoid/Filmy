@@ -26,11 +26,10 @@ Contains various api implementations that make it high quality app.
 <li>Animations</li>
 <li>App Widgets</li>
 <li>Custom Views - BreathingProgress, CustomToast</li>
-<ul>
+</ul>
 
 
-
-## License
+##License
 
 ```
 Filmy for Android

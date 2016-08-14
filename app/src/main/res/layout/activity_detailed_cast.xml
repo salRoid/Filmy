@@ -19,7 +19,16 @@
                 android:layout_height="wrap_content"
                 android:background="@color/primaryColor"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:theme="@style/ThemeOverlay.AppCompat.Light" />
+                app:theme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/details"
+                android:textColor="#757575"
+                android:textSize="20sp" />
+            </android.support.v7.widget.Toolbar>
 
 
             <RelativeLayout

@@ -2,6 +2,7 @@ package tech.salroid.filmy.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -65,6 +66,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     @BindView(R.id.character_movies) RecyclerView char_recycler;
     @BindView(R.id.header_container) FrameLayout headerContainer;
     @BindView(R.id.cast_img_small) ImageView character_small;
+    @BindView(R.id.logo)
+    TextView logo;
 
     Context co = this;
     private String character_id;
@@ -80,8 +83,14 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         setSupportActionBar(toolbar);
 
-        if (getActionBar() != null)
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        logo.setTypeface(typeface);
 
         more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,7 +281,10 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, true);
         char_adapter.setClickListener(this);
         char_recycler.setAdapter(char_adapter);
+        if (char_list.size()>4)
         more.setVisibility(View.VISIBLE);
+        else
+            more.setVisibility(View.INVISIBLE);
 
     }
 

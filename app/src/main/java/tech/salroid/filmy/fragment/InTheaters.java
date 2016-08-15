@@ -17,9 +17,11 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.activities.MainActivity;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
+import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.database.MovieProjection;
 /*
@@ -43,7 +45,11 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
 
 
     private MainActivityAdapter mainActivityAdapter;
+    public boolean isShowingFromDatabase;
 
+
+    @BindView(R.id.breathingProgress)
+    BreathingProgress breathingProgress;
     @BindView((R.id.recycler))
     RecyclerView recycler;
 
@@ -93,7 +99,18 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mainActivityAdapter.swapCursor(cursor);
+        if (cursor != null && cursor.getCount() > 0) {
+
+            isShowingFromDatabase = true;
+            mainActivityAdapter.swapCursor(cursor);
+            breathingProgress.setVisibility(View.GONE);
+
+        } else if (!((MainActivity) getActivity()).fetchingFromNetwork) {
+
+            CustomToast.show(getActivity(), "Failed to get In Theaters movies.", true);
+            ((MainActivity) getActivity()).cantProceed(-1);
+
+        }
     }
 
     @Override

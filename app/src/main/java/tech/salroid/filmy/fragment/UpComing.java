@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.activities.MainActivity;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
+import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.database.MovieProjection;
 
@@ -41,10 +43,14 @@ import tech.salroid.filmy.database.MovieProjection;
 
 public class UpComing extends Fragment implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
+    @BindView(R.id.breathingProgress)
+    BreathingProgress breathingProgress;
     private MainActivityAdapter mainActivityAdapter;
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
+
+    public boolean isShowingFromDatabase;
     public UpComing() {
         // Required empty public constructor
     }
@@ -107,8 +113,18 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (mainActivityAdapter != null)
+        if (cursor != null && cursor.getCount() > 0) {
+
+            isShowingFromDatabase = true;
             mainActivityAdapter.swapCursor(cursor);
+            breathingProgress.setVisibility(View.GONE);
+
+        } else if (!((MainActivity) getActivity()).fetchingFromNetwork) {
+
+            CustomToast.show(getActivity(), "Failed to get Upcoming movies.", true);
+            ((MainActivity) getActivity()).cantProceed(-1);
+
+        }
     }
 
     @Override

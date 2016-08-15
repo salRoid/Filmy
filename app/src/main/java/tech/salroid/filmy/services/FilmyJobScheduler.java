@@ -2,6 +2,7 @@ package tech.salroid.filmy.services;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.util.Log;
 
 import me.tatarka.support.job.JobInfo;
 import me.tatarka.support.job.JobScheduler;
@@ -43,6 +44,7 @@ public class FilmyJobScheduler {
 
     public void createJob() {
 
+
         syncImmediately();
 
         JobInfo.Builder jobBuilder = new JobInfo.Builder(JOB_ID, new ComponentName(context, FilmyJobService.class));
@@ -50,19 +52,21 @@ public class FilmyJobScheduler {
         //PersistableBundle persistableBundle = new PersistableBundle();
 
         jobBuilder.setPeriodic(SYNC_INTERVAL)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                 .setPersisted(true);
 
         jobScheduler.schedule(jobBuilder.build());
+
 
     }
 
     private void syncImmediately() {
 
         JobInfo.Builder jobBuilder = new JobInfo.Builder(JOB_ID_IMMEDIATE, new ComponentName(context, FilmyJobService.class));
-        jobBuilder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+        jobBuilder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                 .setPersisted(true);
         jobScheduler.schedule(jobBuilder.build());
+
 
     }
 

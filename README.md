@@ -11,7 +11,7 @@ Open sourced awesome material designed movie app.
 Filmy is powered by the tmdb and trakt.
 
 #Implementations
-Contains various api implementations that make it high quality app.
+Contains various advanced api implementations that make it high quality app.
 
 <ul>
 <li>Unit Testing</li>

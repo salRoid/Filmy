@@ -2,6 +2,7 @@ package tech.salroid.filmy.parser;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,7 +97,7 @@ public class MainActivityParseWork {
 
             }
 
-            // Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
+             //Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {
@@ -160,7 +161,6 @@ public class MainActivityParseWork {
 
             }
 
-            // Log.d("webi", "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {
@@ -220,8 +220,6 @@ public class MainActivityParseWork {
                 inserted = context.getContentResolver().bulkInsert(FilmContract.InTheatersMoviesEntry.CONTENT_URI, cvArray);
 
             }
-
-            // Log.d(LOG_TAG, "Fetching Complete. " + inserted + " Inserted");
 
 
         } catch (JSONException e1) {

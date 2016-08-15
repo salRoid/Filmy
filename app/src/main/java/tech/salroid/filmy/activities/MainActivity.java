@@ -23,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import butterknife.BindView;

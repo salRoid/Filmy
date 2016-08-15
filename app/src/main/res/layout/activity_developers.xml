@@ -162,7 +162,7 @@
             android:layout_height="100dp"
             android:background="#dddddd"
             android:scaleType="centerCrop"
-            android:src="@drawable/sajal_ba"
+            android:src="@drawable/sajal_banner"
             />
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/dp2"

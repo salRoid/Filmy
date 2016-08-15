@@ -1,24 +1,24 @@
 <resources>
-    <string name="api_key">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
-    <string name="trakt_base_url">https://api.trakt.tv/people/</string>
-    <string name="trakt_movie_base_url">https://api.trakt.tv/movies/</string>
-    <string name="trakt_cast_suffix">/people?extended=images</string>
-    <string name="tmdb_movie_base_url">http://api.themoviedb.org/3/movie/</string>
-    <string name="tmdb_api_key">api_key=b640f55eb6ecc47b3433cfe98d0675b1</string>
-    <string name="person_details_suffix">extended=full,images</string>
-    <string name="person_movies_details">/movies?extended=images,full</string>
-    <string name="imdb_link_prefix">http://www.imdb.com/title/</string>
-    <string name="trailer_img_prefix">http://img.youtube.com/vi/</string>
-    <string name="trailer_img_suffix">/0.jpg</string>
-    <string name="poster_prefix_185">http://image.tmdb.org/t/p/w185</string>
-    <string name="poster_prefix_500">http://image.tmdb.org/t/p/w780</string>
-    <string name="poster_prefix_add_quality">http://image.tmdb.org/t/p/</string>
-    <string name="trailer_link_prefix">https://www.youtube.com/watch?v=</string>
+    <string translatable="false" name="api_key">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
+    <string translatable="false" name="trakt_base_url">https://api.trakt.tv/people/</string>
+    <string translatable="false" name="trakt_movie_base_url">https://api.trakt.tv/movies/</string>
+    <string translatable="false" name="trakt_cast_suffix">/people?extended=images</string>
+    <string translatable="false" name="tmdb_movie_base_url">http://api.themoviedb.org/3/movie/</string>
+    <string translatable="false" name="tmdb_api_key">api_key=b640f55eb6ecc47b3433cfe98d0675b1</string>
+    <string translatable="false" name="person_details_suffix">extended=full,images</string>
+    <string translatable="false" name="person_movies_details">/movies?extended=images,full</string>
+    <string translatable="false" name="imdb_link_prefix">http://www.imdb.com/title/</string>
+    <string translatable="false" name="trailer_img_prefix">http://img.youtube.com/vi/</string>
+    <string translatable="false" name="trailer_img_suffix">/0.jpg</string>
+    <string translatable="false" name="poster_prefix_185">http://image.tmdb.org/t/p/w185</string>
+    <string translatable="false" name="poster_prefix_500">http://image.tmdb.org/t/p/w780</string>
+    <string translatable="false" name="poster_prefix_add_quality">http://image.tmdb.org/t/p/</string>
+    <string translatable="false" name="trailer_link_prefix">https://www.youtube.com/watch?v=</string>
 
 
     <!-- SyncAdapter related -->
-    <string name="sync_account_type">filmy.salroid.com</string>
-    <string name="content_authority">tech.salroid.filmy</string>
+    <string translatable="false" name="sync_account_type">filmy.salroid.com</string>
+    <string translatable="false" name="content_authority">tech.salroid.filmy</string>
 
     <string name="ramankit">Ramankit Singh</string>
     <string name="sajal">Sajal Gupta</string>
@@ -83,7 +83,7 @@
 
 
 
-    <string name="glide"><![CDATA[
+    <string translatable="false" name="glide"><![CDATA[
     <b>Glide
     </b>
      <br>
@@ -191,7 +191,7 @@ that this copyright notice remain intact.
     ]]></string>
 
 
-     <string name="circularimageview"><![CDATA[
+     <string translatable="false" name="circularimageview"><![CDATA[
     <b>Circular Image View
     </b>
      <br>
@@ -201,7 +201,7 @@ that this copyright notice remain intact.
 </pre>]]></string>
 
 
-     <string name="tatarka"><![CDATA[
+     <string translatable="false" name="tatarka"><![CDATA[
     <b>Job Scheduler
     </b>
      <br>
@@ -212,7 +212,7 @@ that this copyright notice remain intact.
 </pre>]]></string>
 
 
-    <string name="appintro"><![CDATA[
+    <string translatable="false" name="appintro"><![CDATA[
     <b>App Intro
     </b>
      <br>
@@ -222,7 +222,7 @@ that this copyright notice remain intact.
       https://github.com/PaoloRotolo/AppIntro
 </pre>]]></string>
 
-      <string name="crashlytics"><![CDATA[
+      <string translatable="false" name="crashlytics"><![CDATA[
     <b>Crashlytics
     </b>
      <br>
@@ -267,7 +267,7 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 </pre>]]></string>
 
-    <string name="butterknife"><![CDATA[
+    <string translatable="false" name="butterknife"><![CDATA[
     <b>Butter Knife
     </b>
      <br>
@@ -290,7 +290,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 
-     <string name="errorview"><![CDATA[
+     <string translatable="false" name="errorview"><![CDATA[
     <b>Error View
     </b>
      <br>
@@ -313,7 +313,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 
-    <string name="materialsearch"><![CDATA[
+    <string translatable="false" name="materialsearch"><![CDATA[
     <b>Material Search View
     </b>
      <br>

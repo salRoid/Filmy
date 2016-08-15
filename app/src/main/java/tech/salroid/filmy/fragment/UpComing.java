@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
+import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.database.MovieProjection;
 
@@ -46,7 +47,6 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
-
     public UpComing() {
         // Required empty public constructor
     }

@@ -53,4 +53,15 @@
     <string name="error_retry">पुनः प्रयास करें।</string>
 
 
+    <string name="ramankit">रामांकित सिंह</string>
+    <string name="sajal">सजल गुप्ता</string>
+    <string name="email">ईमेल भेजें</string>
+    <string name="gplus">गूगल+</string>
+    <string name="github">गिटहब</string>
+
+    <string name="ramankit_bio">मुझे एंड्रॉयड,डिजाइन और संगीत से प्यार है।</string>
+    <string name="sajal_bio">मुझे एंड्रॉयड और काउंटर स्ट्राइक खेलना पसंद है </string>
+
+
+
 </resources>

@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme.Base">
         <activity
             android:name=".FilmyIntro"
+            android:screenOrientation="portrait"
             android:label=" " />
         <activity
             android:name=".activities.MainActivity"

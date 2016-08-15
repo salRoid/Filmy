@@ -1,6 +1,7 @@
 package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,8 +66,37 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
         ButterKnife.bind(this, view);
 
-        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        recycler.setLayoutManager(gridLayoutManager);
+
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+
+        if (tabletSize) {
+
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(6,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+            } else {
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(8,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+            }
+
+
+        } else {
+
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+            } else {
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(5,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+            }
+
+        }
 
         mainActivityAdapter = new MainActivityAdapter(getActivity(), null);
         recycler.setAdapter(mainActivityAdapter);

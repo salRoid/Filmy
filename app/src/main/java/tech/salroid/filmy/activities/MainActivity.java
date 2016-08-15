@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
             int statusCode = intent.getIntExtra("message", 0);
 
 
-
-
             CustomToast.show(context,"Failed to get latest movies.",true);
 
             cantProceed(statusCode);
@@ -324,7 +322,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
 
         getMenuInflater().inflate(R.menu.main_menu, menu);
         MenuItem item = menu.findItem(R.id.action_search);

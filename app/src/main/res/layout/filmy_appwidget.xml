@@ -33,6 +33,7 @@
 
                 <TextView
                     android:id="@+id/title"
+                    android:gravity="center_horizontal"
                     android:background="@color/colorAccentDark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

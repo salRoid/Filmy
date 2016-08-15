@@ -14,6 +14,7 @@ Filmy is powered by the tmdb and trakt.
 Contains various api implementations that make it high quality app.
 
 <ul>
+<li>Unit Testing</li>
 <li>SQLite Database</li>
 <li>Content Providers</li>
 <li>Cursor Loaders</li>

@@ -1,6 +1,7 @@
 package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -60,10 +62,39 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_up_coming, container, false);
-        ButterKnife.bind(this,view);
-        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        recycler.setLayoutManager(gridLayoutManager);
+        ButterKnife.bind(this, view);
 
+
+
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+
+        if (tabletSize) {
+
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(6,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+            } else {
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(8,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+            }
+
+        } else {
+
+            if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+            } else {
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(5,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+            }
+
+        }
         mainActivityAdapter = new MainActivityAdapter(getActivity(), null);
         recycler.setAdapter(mainActivityAdapter);
         mainActivityAdapter.setClickListener(this);

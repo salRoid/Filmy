@@ -96,12 +96,14 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
         }
 
-        getCastFromNetwork();
+
+        if(movieId!=null)
+          getCastFromNetwork(movieId);
 
     }
 
 
-    private void getCastFromNetwork() {
+    public void getCastFromNetwork(String movieId) {
 
 
         final String BASE_MOVIE_CAST_DETAILS = new String("https://api.trakt.tv/movies/" + movieId + "/people?extended=images");

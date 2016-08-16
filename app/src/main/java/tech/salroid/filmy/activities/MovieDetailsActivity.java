@@ -129,6 +129,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     private String movie_id, trailer = null, movie_desc, quality, movie_tagline,
             movie_rating, show_centre_img_url, movie_title, movie_id_final;
 
+    private CastFragment castFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +158,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             RevealAnimation.performReveal(main_content);
             performDataFetching();
         }
+
+        showCastFragment();
+
     }
 
     @Override
@@ -200,11 +205,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     private void showCastFragment() {
 
-        CastFragment castFragment = CastFragment.newInstance(movie_id_final, movie_title);
+        castFragment = CastFragment.newInstance(null, movie_title);
+
         getSupportFragmentManager().
                 beginTransaction().
                 replace(R.id.cast_container, castFragment)
-                .commitAllowingStateLoss();
+                .commit();
 
     }
 
@@ -225,7 +231,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             language = jsonObject.getString("original_language");
 
             movie_id_final = jsonObject.getString("imdb_id");
-            showCastFragment();
+
+            if (castFragment!=null)
+              castFragment.getCastFromNetwork(movie_id_final);
 
             movie_rating = jsonObject.getString("vote_average");
 
@@ -873,6 +881,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @Override
     protected void onStop() {
         super.onStop();
+        castFragment=null;
+
     }
 
 

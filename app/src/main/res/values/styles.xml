@@ -15,6 +15,10 @@
         <item name="colorPrimaryDark">#000000</item>
     </style>
 
+    <style name="DetailsActivityTheme" parent="AppTheme">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 
     <style name="MyToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">#FFFFFF</item>

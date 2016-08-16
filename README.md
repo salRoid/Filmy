@@ -29,12 +29,8 @@ Contains various advanced api implementations that make it high quality app.
 <li>Custom Views - BreathingProgress, CustomToast</li>
 </ul>
 
-##Download
-<a href="#" onclick='window.open("https://play.google.com/store/apps/details?id=tech.salroid.filmy");return false;'
-href="javascript:void(0);"
->
-Download
-</a>
+<a href='https://play.google.com/store/apps/details?id=tech.salroid.filmy&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="200px" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+
 
 ##License
 

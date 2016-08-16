@@ -80,9 +80,13 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
 
 
         holder.title.setText(movie_title);
+
+        try{
         Glide.with(context).load(movie_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.poster);
 
-
+    } catch (Exception e) {
+        //Log.d(LOG_TAG, e.getMessage());
+    }
     }
 
 

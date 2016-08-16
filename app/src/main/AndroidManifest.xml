@@ -42,7 +42,7 @@
         <activity
             android:name=".activities.MovieDetailsActivity"
             android:label=" "
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/DetailsActivityTheme" />
         <activity
             android:name=".activities.CharacterDetailsActivity"
             android:label="@string/details"

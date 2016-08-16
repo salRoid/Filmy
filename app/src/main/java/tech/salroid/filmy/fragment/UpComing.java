@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -126,6 +127,10 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
         intent.putExtra("network_applicable", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
+            getActivity().overridePendingTransition(0,0);
+
     }
 
     @Override

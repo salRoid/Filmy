@@ -29,6 +29,12 @@ Contains various advanced api implementations that make it high quality app.
 <li>Custom Views - BreathingProgress, CustomToast</li>
 </ul>
 
+##Download
+<a href="#" onclick='window.open("https://play.google.com/store/apps/details?id=tech.salroid.filmy");return false;'
+href="javascript:void(0);"
+>
+Download
+</a>
 
 ##License
 

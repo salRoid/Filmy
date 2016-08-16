@@ -335,4 +335,12 @@ limitations under the License.
 </pre>]]></string>
 
 
+    <string translatable="false" name="app_share_link">https://play.google.com/store/apps/details?id=tech.salroid.filmy</string>
+    <string  translatable="false"   name="ramzplus">https://plus.google.com/u/0/+RamankitSinghWebianks</string>
+    <string  translatable="false"  name="sajjuplus">https://plus.google.com/u/0/+sajalguptasajju</string>
+    <string translatable="false"  name="webianksgit">https://github.com/webianks</string>
+    <string translatable="false"  name="salroidgit">https://github.com/salroid</string>
+    <string name="shareappdetails">Share this App</string>
+
+
 </resources>

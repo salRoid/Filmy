@@ -70,11 +70,15 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
         holder.cast_name.setText(ct_name);
         holder.cast_description.setText(ct_desc);
 
-        Glide.with(context)
-                .load(ct_profile)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .fitCenter()
-                .into(holder.cast_poster);
+        try {
+            Glide.with(context)
+                    .load(ct_profile)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter()
+                    .into(holder.cast_poster);
+        } catch (Exception e){
+        }
+
     }
 
 
@@ -101,14 +105,17 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
 
     class Ho extends RecyclerView.ViewHolder {
 
-       @BindView(R.id.cast_name) TextView cast_name;
-        @BindView(R.id.cast_description) TextView cast_description ;
-        @BindView(R.id.cast_poster) CircularImageView cast_poster ;
+        @BindView(R.id.cast_name)
+        TextView cast_name;
+        @BindView(R.id.cast_description)
+        TextView cast_description;
+        @BindView(R.id.cast_poster)
+        CircularImageView cast_poster;
 
         Ho(View itemView) {
 
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

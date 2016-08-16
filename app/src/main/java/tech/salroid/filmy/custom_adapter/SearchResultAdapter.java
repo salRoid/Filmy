@@ -76,9 +76,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             holder.date.setVisibility(View.INVISIBLE);
         }
 
-
+try{
         Glide.with(fro).load(query_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.movie_poster);
-
+    } catch (Exception e) {
+        //Log.d(LOG_TAG, e.getMessage());
+    }
     }
 
     @Override

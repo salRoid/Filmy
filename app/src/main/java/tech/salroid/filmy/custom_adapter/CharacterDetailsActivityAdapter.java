@@ -6,14 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -75,8 +72,12 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
         holder.mov_name.setText(m_name);
         holder.mov_char.setText(m_desc);
-        Glide.with(con).load(m_profile).diskCacheStrategy(DiskCacheStrategy.NONE).fitCenter().into(holder.mov_img);
 
+        try {
+            Glide.with(con).load(m_profile).diskCacheStrategy(DiskCacheStrategy.NONE).fitCenter().into(holder.mov_img);
+        } catch (Exception e) {
+            //Log.d(LOG_TAG, e.getMessage());
+        }
     }
 
     @Override
@@ -101,13 +102,16 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
     class Fo extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.movie_poster) CircularImageView  mov_img;
-        @BindView(R.id.movie_name) TextView mov_name;
-        @BindView(R.id.movie_description) TextView mov_char;
+        @BindView(R.id.movie_poster)
+        CircularImageView mov_img;
+        @BindView(R.id.movie_name)
+        TextView mov_name;
+        @BindView(R.id.movie_description)
+        TextView mov_char;
 
         Fo(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

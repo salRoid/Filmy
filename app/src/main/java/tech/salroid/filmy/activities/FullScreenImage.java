@@ -58,6 +58,7 @@ public class FullScreenImage extends AppCompatActivity {
         if (intent != null) {
             image_url = intent.getStringExtra("img_url");
         }
+        try{
 
         Glide.with(this)
                 .load(image_url)
@@ -70,6 +71,9 @@ public class FullScreenImage extends AppCompatActivity {
                         breathingProgress.setVisibility(View.INVISIBLE);
                     }
                 });
+    } catch (Exception e) {
+        //Log.d(LOG_TAG, e.getMessage());
+    }
 
     }
 

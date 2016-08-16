@@ -54,7 +54,7 @@ public class OfflineMovies {
 
             final ContentValues saveValues = new ContentValues();
 
-            saveValues.put(FilmContract.SaveEntry.SAVE_ID, movie_id_final);
+            saveValues.put(FilmContract.SaveEntry.SAVE_ID, movie_id);
             saveValues.put(FilmContract.SaveEntry.SAVE_TITLE, movieMap.get("title"));
             saveValues.put(FilmContract.SaveEntry.SAVE_TAGLINE, movieMap.get("tagline"));
             saveValues.put(FilmContract.SaveEntry.SAVE_DESCRIPTION, movieMap.get("overview"));
@@ -79,7 +79,8 @@ public class OfflineMovies {
 
             if (alreadyCursor.moveToFirst()) {
                 //Already present in databse
-                Snackbar.make(main_content, "Already present in database", Snackbar.LENGTH_SHORT).show();
+                CustomToast.show(context,"Already present in database",false);
+                //Snackbar.make(main_content, "Already present in database", Snackbar.LENGTH_SHORT).show();
 
             } else {
 

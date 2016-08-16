@@ -152,14 +152,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         getDataFromIntent(intent);
 
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
             RevealAnimation.performReveal(main_content);
+            performDataFetching();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        performDataFetching();
     }
 
     private void performDataFetching() {
@@ -198,11 +199,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
     private void showCastFragment() {
+
         CastFragment castFragment = CastFragment.newInstance(movie_id_final, movie_title);
         getSupportFragmentManager().
                 beginTransaction().
                 replace(R.id.cast_container, castFragment)
-                .commit();
+                .commitAllowingStateLoss();
 
     }
 
@@ -356,7 +358,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                    String released, String certification, String language) {
 
 
-
         det_tagline.setText(tagline);
         det_title.setText(title);
         det_overview.setText(overview);
@@ -366,52 +367,63 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         det_certification.setText(certification);
         det_language.setText(language);
 
-        Glide.with(context)
-                .load(banner_profile)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
-                        banner.setImageBitmap(resource);
-                        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                            public void onGenerated(Palette p) {
-                                // Use generated instance
-                                Palette.Swatch swatch = p.getVibrantSwatch();
-                                Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
+        try {
+            Glide.with(context)
+                    .load(banner_profile)
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
-                                if (swatch != null) {
-                                    header.setBackgroundColor(swatch.getRgb());
-                                    det_title.setTextColor(swatch.getTitleTextColor());
-                                    det_tagline.setTextColor(swatch.getBodyTextColor());
-                                    det_overview.setTextColor(swatch.getBodyTextColor());
+                            banner.setImageBitmap(resource);
+                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                                public void onGenerated(Palette p) {
+                                    // Use generated instance
+                                    Palette.Swatch swatch = p.getVibrantSwatch();
+                                    Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
+
+                                    if (swatch != null) {
+                                        header.setBackgroundColor(swatch.getRgb());
+                                        det_title.setTextColor(swatch.getTitleTextColor());
+                                        det_tagline.setTextColor(swatch.getBodyTextColor());
+                                        det_overview.setTextColor(swatch.getBodyTextColor());
+                                    }
+                                    if (trailorSwatch != null) {
+                                        trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
+                                        tvRating.setTextColor(trailorSwatch.getTitleTextColor());
+                                        det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                    }
                                 }
-                                if (trailorSwatch != null) {
-                                    trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
-                                    tvRating.setTextColor(trailorSwatch.getTitleTextColor());
-                                    det_rating.setTextColor(trailorSwatch.getBodyTextColor());
-                                }
-                            }
-                        });
+                            });
 
-                    }
-                });
+                        }
+                    });
+
+        } catch (Exception e) {
+            //Log.d(LOG_TAG, e.getMessage());
+        }
 
 
-        Glide.with(context)
-                .load(img_url)
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        youtube_link.setImageBitmap(resource);
-                        if (trailer_boolean)
-                            youtube_play_button.setVisibility(View.VISIBLE);
-                    }
+        try {
 
-                });
+            Glide.with(context)
+                    .load(img_url)
+                    .asBitmap()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            youtube_link.setImageBitmap(resource);
+                            if (trailer_boolean)
+                                youtube_play_button.setVisibility(View.VISIBLE);
+                        }
+
+                    });
+        } catch (Exception e) {
+            //Log.d(LOG_TAG, e.getMessage());
+        }
 
         main.setVisibility(View.VISIBLE);
         breathingProgress.setVisibility(View.INVISIBLE);
@@ -529,38 +541,42 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movie_desc = overview;
             show_centre_img_url = banner_url;
 
+            try {
 
-            Glide.with(context)
-                    .load(banner_url)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                Glide.with(context)
+                        .load(banner_url)
+                        .asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
-                            banner.setImageBitmap(resource);
-                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                                public void onGenerated(Palette p) {
-                                    // Use generated instance
-                                    Palette.Swatch swatch = p.getVibrantSwatch();
-                                    Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
+                                banner.setImageBitmap(resource);
+                                Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                                    public void onGenerated(Palette p) {
+                                        // Use generated instance
+                                        Palette.Swatch swatch = p.getVibrantSwatch();
+                                        Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
-                                    if (swatch != null) {
-                                        header.setBackgroundColor(swatch.getRgb());
-                                        det_title.setTextColor(swatch.getTitleTextColor());
-                                        det_tagline.setTextColor(swatch.getBodyTextColor());
-                                        det_overview.setTextColor(swatch.getBodyTextColor());
+                                        if (swatch != null) {
+                                            header.setBackgroundColor(swatch.getRgb());
+                                            det_title.setTextColor(swatch.getTitleTextColor());
+                                            det_tagline.setTextColor(swatch.getBodyTextColor());
+                                            det_overview.setTextColor(swatch.getBodyTextColor());
+                                        }
+                                        if (trailorSwatch != null) {
+                                            trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
+                                            tvRating.setTextColor(trailorSwatch.getTitleTextColor());
+                                            det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                        }
                                     }
-                                    if (trailorSwatch != null) {
-                                        trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
-                                        tvRating.setTextColor(trailorSwatch.getTitleTextColor());
-                                        det_rating.setTextColor(trailorSwatch.getBodyTextColor());
-                                    }
-                                }
-                            });
+                                });
 
-                        }
-                    });
+                            }
+                        });
+            } catch (Exception e) {
+                //Log.d(LOG_TAG, e.getMessage());
+            }
 
 
             String thumbNail = null;
@@ -579,20 +595,25 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             }
 
 
-            Glide.with(context)
-                    .load(thumbNail)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            youtube_link.setImageBitmap(resource);
-                            if (trailer_boolean)
-                                youtube_play_button.setVisibility(View.VISIBLE);
-                        }
+            try {
 
-                    });
+                Glide.with(context)
+                        .load(thumbNail)
+                        .asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                youtube_link.setImageBitmap(resource);
+                                if (trailer_boolean)
+                                    youtube_play_button.setVisibility(View.VISIBLE);
+                            }
 
+                        });
+
+            } catch (Exception e) {
+                //Log.d(LOG_TAG, e.getMessage());
+            }
 
         }
 
@@ -630,7 +651,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 det_title.setText(title);
 
             if (NullChecker.isSettable(tagline))
-              det_tagline.setText(tagline);
+                det_tagline.setText(tagline);
 
             if (NullChecker.isSettable(overview))
                 det_overview.setText(overview);
@@ -650,52 +671,63 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             if (NullChecker.isSettable(language))
                 det_language.setText(language);
 
-            Glide.with(context)
-                    .load(banner_url)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
-                            banner.setImageBitmap(resource);
+            try {
+                Glide.with(context)
+                        .load(banner_url)
+                        .asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
-                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                                public void onGenerated(Palette p) {
-                                    Palette.Swatch swatch = p.getVibrantSwatch();
-                                    Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
+                                banner.setImageBitmap(resource);
 
-                                    if (swatch != null) {
+                                Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                                    public void onGenerated(Palette p) {
+                                        Palette.Swatch swatch = p.getVibrantSwatch();
+                                        Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
 
-                                        header.setBackgroundColor(swatch.getRgb());
-                                        det_title.setTextColor(swatch.getTitleTextColor());
-                                        det_tagline.setTextColor(swatch.getBodyTextColor());
-                                        det_overview.setTextColor(swatch.getBodyTextColor());
+                                        if (swatch != null) {
+
+                                            header.setBackgroundColor(swatch.getRgb());
+                                            det_title.setTextColor(swatch.getTitleTextColor());
+                                            det_tagline.setTextColor(swatch.getBodyTextColor());
+                                            det_overview.setTextColor(swatch.getBodyTextColor());
+                                        }
+                                        if (trailorSwatch != null) {
+                                            trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
+                                            tvRating.setTextColor(trailorSwatch.getTitleTextColor());
+                                            det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                        }
                                     }
-                                    if (trailorSwatch != null) {
-                                        trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
-                                        tvRating.setTextColor(trailorSwatch.getTitleTextColor());
-                                        det_rating.setTextColor(trailorSwatch.getBodyTextColor());
-                                    }
-                                }
-                            });
+                                });
 
-                        }
-                    });
+                            }
+                        });
+            } catch (Exception e) {
+                //Log.d(LOG_TAG, e.getMessage());
+            }
 
-            Glide.with(context)
-                    .load(trailer)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            youtube_link.setImageBitmap(resource);
-                            if (trailer_boolean)
-                                youtube_play_button.setVisibility(View.VISIBLE);
-                        }
 
-                    });
+            try {
+
+                Glide.with(context)
+                        .load(trailer)
+                        .asBitmap()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                youtube_link.setImageBitmap(resource);
+                                if (trailer_boolean)
+                                    youtube_play_button.setVisibility(View.VISIBLE);
+                            }
+
+                        });
+            } catch (Exception e) {
+                //Log.d(LOG_TAG, e.getMessage());
+            }
 
 
         }
@@ -714,9 +746,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             case android.R.id.home:
                 finish();
 
-                if(type==-1){
+                if (type == -1) {
 
-                    startActivity(new Intent(this,MainActivity.class));
+                    startActivity(new Intent(this, MainActivity.class));
 
                 }
 
@@ -744,12 +776,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         } else {
 
 
-            if(type==-1){
+            if (type == -1) {
 
-                startActivity(new Intent(this,MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
                 finish();
 
-            }else {
+            } else {
                 super.onBackPressed();
             }
         }

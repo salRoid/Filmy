@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -71,6 +72,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
 
+
     public void sendEmail(View view) {
 
       switch (view.getId()){
@@ -99,8 +101,8 @@ public class AboutActivity extends AppCompatActivity {
 
 
     public void openGithub(View view) {
-        String url = "https://github.com/webianks";
-        String url2 = "https://github.com/salroid";
+        String url = getString(R.string.webianksgit);
+        String url2 = getString(R.string.salroidgit);
 
         switch (view.getId()){
 
@@ -123,8 +125,8 @@ public class AboutActivity extends AppCompatActivity {
 
     public void openGplus(View view) {
 
-        String url = "https://plus.google.com/u/0/+RamankitSinghWebianks";
-        String url2 = "https://plus.google.com/u/0/+sajalguptasajju";
+        String url = getString(R.string.ramzplus);
+        String url2 = getString(R.string.sajjuplus);
 
         switch (view.getId()){
 
@@ -138,4 +140,6 @@ public class AboutActivity extends AppCompatActivity {
 
 
     }
+
+
 }

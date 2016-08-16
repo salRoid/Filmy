@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,8 +24,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -57,15 +60,24 @@ import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 public class CharacterDetailsActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.more) TextView more ;
-    @BindView(R.id.actor) TextView ch_name;
-    @BindView(R.id.desc) TextView ch_desc ;
-    @BindView(R.id.birth) TextView ch_birth;
-    @BindView(R.id.birth_place) TextView ch_place;
-    @BindView(R.id.character_movies) RecyclerView char_recycler;
-    @BindView(R.id.header_container) FrameLayout headerContainer;
-    @BindView(R.id.cast_img_small) ImageView character_small;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.more)
+    TextView more;
+    @BindView(R.id.actor)
+    TextView ch_name;
+    @BindView(R.id.desc)
+    TextView ch_desc;
+    @BindView(R.id.birth)
+    TextView ch_birth;
+    @BindView(R.id.birth_place)
+    TextView ch_place;
+    @BindView(R.id.character_movies)
+    RecyclerView char_recycler;
+    @BindView(R.id.header_container)
+    FrameLayout headerContainer;
+    @BindView(R.id.cast_img_small)
+    ImageView character_small;
     @BindView(R.id.logo)
     TextView logo;
 
@@ -74,6 +86,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     private String character_title = null, movie_json = null;
     private String character_bio;
     private FullReadFragment fullReadFragment;
+
+    private String LOG_TAG = CharacterDetailsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +110,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             @Override
             public void onClick(View view) {
 
-                if (!(movie_json==null && character_title==null)) {
+                if (!(movie_json == null && character_title == null)) {
                     Intent intent = new Intent(CharacterDetailsActivity.this, FullMovieActivity.class);
                     intent.putExtra("cast_json", movie_json);
                     intent.putExtra("toolbar_title", character_title);
@@ -262,11 +276,18 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                     .fitCenter()
                   .into(character_banner);*/
 
-            Glide.with(co)
-                    .load(char_face)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .fitCenter()
-                    .into(character_small);
+
+            try {
+
+                Glide.with(co)
+                        .load(char_face)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .fitCenter().into(character_small);
+
+            } catch (Exception e) {
+                //Log.d(LOG_TAG, e.getMessage());
+            }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -281,8 +302,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, true);
         char_adapter.setClickListener(this);
         char_recycler.setAdapter(char_adapter);
-        if (char_list.size()>4)
-        more.setVisibility(View.VISIBLE);
+        if (char_list.size() > 4)
+            more.setVisibility(View.VISIBLE);
         else
             more.setVisibility(View.INVISIBLE);
 
@@ -311,4 +332,9 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     }
 
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Glide.clear(character_small);
+    }
 }

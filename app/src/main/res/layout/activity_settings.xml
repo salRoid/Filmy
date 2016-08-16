@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:padding="0dp"
+        android:elevation="2dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:theme="@style/ThemeOverlay.AppCompat">
 
@@ -27,6 +28,7 @@
 
         <RelativeLayout
             android:layout_below="@id/toolbar"
+            android:paddingTop="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

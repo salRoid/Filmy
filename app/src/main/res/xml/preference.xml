@@ -25,6 +25,13 @@
         android:summary="1.0.0"
         android:title="@string/version" />
 
+    <Preference
+        android:enabled="true"
+        android:key="Share"
+        android:selectable="true"
+        android:title="@string/shareappdetails" />
+
+
 
     <Preference
         android:enabled="true"

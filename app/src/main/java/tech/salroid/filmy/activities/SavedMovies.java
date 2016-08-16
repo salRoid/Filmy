@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,8 +97,41 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
 
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-        my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
+        /*GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        my_saved_movies_recycler.setLayoutManager(gridLayoutManager);*/
+
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+
+        if (tabletSize) {
+
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(6,
+                        StaggeredGridLayoutManager.VERTICAL);
+                my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
+            } else {
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(8,
+                        StaggeredGridLayoutManager.VERTICAL);
+                my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
+            }
+
+        } else {
+
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3,
+                        StaggeredGridLayoutManager.VERTICAL);
+                my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
+            } else {
+                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(5,
+                        StaggeredGridLayoutManager.VERTICAL);
+                my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
+            }
+
+        }
+
+
+
 
         mainActivityAdapter = new SavedMoviesAdapter(this, null);
         my_saved_movies_recycler.setAdapter(mainActivityAdapter);

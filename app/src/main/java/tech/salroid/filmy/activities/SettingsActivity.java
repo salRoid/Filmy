@@ -121,6 +121,28 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
 
+
+            Preference share=(Preference) findPreference("Share");
+            share.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+
+                    String app_share_details = getResources().getString(R.string.app_share_link);
+                    if (!(app_share_details.equals(null))) {
+                        Intent myIntent = new Intent(Intent.ACTION_SEND);
+                        myIntent.setType("text/plain");
+                        myIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome movie app.\n"+"*filmy*\n"+app_share_details);
+                        startActivity(Intent.createChooser(myIntent, "Share with"));
+                    }
+                    return true;
+                }
+            });
+
+
+
+
+
+
             Preference about =(Preference) findPreference("About");
             about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override

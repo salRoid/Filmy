@@ -341,6 +341,7 @@ limitations under the License.
     <string translatable="false"  name="webianksgit">https://github.com/webianks</string>
     <string translatable="false"  name="salroidgit">https://github.com/salroid</string>
     <string name="shareappdetails">Share this App</string>
+    <string name="dark">dark mode</string>
 
 
 </resources>

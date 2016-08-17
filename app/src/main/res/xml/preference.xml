@@ -10,6 +10,11 @@
         android:summaryOn="@string/high"
         android:title="@string/image" />
 
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="dark"
+        android:title="@string/dark" />
+
 
     <Preference
         android:enabled="true"

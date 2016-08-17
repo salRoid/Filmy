@@ -80,6 +80,13 @@ public class FilmyJobService extends JobService {
 
                         intheatresparseOutput(response.toString(), 2);
 
+                        taskFinished++;
+
+                        if (taskFinished==3){
+                            jobFinished(jobParameters,false);
+                            taskFinished = 0;
+                        }
+
                     }
 
                 }, new Response.ErrorListener() {
@@ -107,6 +114,14 @@ public class FilmyJobService extends JobService {
                     public void onResponse(JSONObject response) {
 
                         upcomingparseOutput(response.toString());
+
+                        taskFinished++;
+
+                        if (taskFinished==3){
+                            jobFinished(jobParameters,false);
+                            taskFinished = 0;
+                        }
+
 
                     }
 
@@ -137,6 +152,13 @@ public class FilmyJobService extends JobService {
                     public void onResponse(JSONArray response) {
 
                         parseOutput(response.toString());
+
+                        taskFinished++;
+                        if (taskFinished==3){
+                            jobFinished(jobParameters,false);
+                            taskFinished = 0;
+                        }
+
 
                     }
                 }, new Response.ErrorListener() {

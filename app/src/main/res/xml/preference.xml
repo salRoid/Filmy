@@ -15,9 +15,6 @@
         android:key="dark"
         android:title="@string/dark" />
 
-
-
-
     <Preference
         android:enabled="true"
         android:key="license"

@@ -1,11 +1,9 @@
-package tech.salroid.filmy.services;
+package tech.salroid.filmy.network_stuff;
 
+import android.content.Context;
 import android.content.Intent;
-import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,15 +11,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import me.tatarka.support.job.JobParameters;
-import me.tatarka.support.job.JobService;
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
-import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.MainActivityParseWork;
+import tech.salroid.filmy.services.FilmyJobScheduler;
 
 /*
  * Filmy Application for Android
@@ -40,33 +33,25 @@ import tech.salroid.filmy.parser.MainActivityParseWork;
  * limitations under the License.
  */
 
+public class FirstFetch {
 
-public class FilmyJobService extends JobService {
 
-
+    private Context context;
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
-    private JobParameters jobParameters;
 
-    private int taskFinished;
+    public FirstFetch(Context context){
+        this.context = context;
+    }
 
-
-    @Override
-    public boolean onStartJob(JobParameters params) {
-
-        jobParameters = params;
+    public void start(){
 
         syncNowTrending();
         syncNowInTheaters();
         syncNowUpComing();
 
-        return true;
-    }
-
-
-    @Override
-    public boolean onStopJob(JobParameters params) {
-        return false;
+        FilmyJobScheduler filmyJobScheduler = new FilmyJobScheduler(context);
+        filmyJobScheduler.createJob();
     }
 
 
@@ -81,15 +66,6 @@ public class FilmyJobService extends JobService {
                     public void onResponse(JSONObject response) {
 
                         intheatresparseOutput(response.toString(), 2);
-
-                        taskFinished++;
-
-                        if (taskFinished==3){
-
-                            jobFinished(jobParameters,false);
-                            taskFinished = 0;
-                        }
-
                     }
 
                 }, new Response.ErrorListener() {
@@ -117,15 +93,6 @@ public class FilmyJobService extends JobService {
                     public void onResponse(JSONObject response) {
 
                         upcomingparseOutput(response.toString());
-
-                        taskFinished++;
-
-                        if (taskFinished==3){
-                            jobFinished(jobParameters,false);
-                            taskFinished = 0;
-                        }
-
-
                     }
 
                 }, new Response.ErrorListener() {
@@ -155,15 +122,6 @@ public class FilmyJobService extends JobService {
                     public void onResponse(JSONArray response) {
 
                         parseOutput(response.toString());
-
-                        taskFinished++;
-
-                        if (taskFinished==3){
-                            jobFinished(jobParameters,false);
-                            taskFinished = 0;
-                        }
-
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -186,23 +144,22 @@ public class FilmyJobService extends JobService {
 
     }
 
-
     private void intheatresparseOutput(String s, int type) {
 
-        MainActivityParseWork pa = new MainActivityParseWork(this, s);
+        MainActivityParseWork pa = new MainActivityParseWork(context, s);
         pa.intheatres();
 
     }
 
     private void upcomingparseOutput(String result_upcoming) {
-        MainActivityParseWork pa = new MainActivityParseWork(this, result_upcoming);
+        MainActivityParseWork pa = new MainActivityParseWork(context, result_upcoming);
         pa.parseupcoming();
     }
 
 
     private void parseOutput(String result) {
 
-        MainActivityParseWork pa = new MainActivityParseWork(this, result);
+        MainActivityParseWork pa = new MainActivityParseWork(context, result);
         pa.parse();
     }
 
@@ -210,7 +167,7 @@ public class FilmyJobService extends JobService {
 
         Intent intent = new Intent("fetch-failed");
         intent.putExtra("message", message);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
 
     }
 

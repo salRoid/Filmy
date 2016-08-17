@@ -37,6 +37,7 @@ import tech.salroid.filmy.fragment.InTheaters;
 import tech.salroid.filmy.fragment.SearchFragment;
 import tech.salroid.filmy.fragment.Trending;
 import tech.salroid.filmy.fragment.UpComing;
+import tech.salroid.filmy.network_stuff.FirstFetch;
 import tech.salroid.filmy.services.FilmyJobScheduler;
 import tech.salroid.filmy.utility.Network;
 import tr.xip.errorview.ErrorView;
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 if (Network.isNetworkConnected(MainActivity.this)) {
 
                     fetchingFromNetwork = true;
+
                     setScheduler();
 
                 }
@@ -239,8 +241,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setScheduler() {
 
-        FilmyJobScheduler filmyJobScheduler = new FilmyJobScheduler(this);
-        filmyJobScheduler.createJob();
+
+        FirstFetch firstFetch = new FirstFetch(this);
+        firstFetch.start();
 
     }
 

@@ -28,10 +28,9 @@ import me.tatarka.support.job.JobScheduler;
 public class FilmyJobScheduler {
 
 
-    public static final int SYNC_INTERVAL = 60 * 180;
+    public static final long SYNC_INTERVAL = 21600000;
     private JobScheduler jobScheduler;
     private int JOB_ID = 456;
-    private int JOB_ID_IMMEDIATE = 654;
     private Context context;
 
     public FilmyJobScheduler(Context context) {
@@ -45,26 +44,15 @@ public class FilmyJobScheduler {
     public void createJob() {
 
 
-        syncImmediately();
 
         JobInfo.Builder jobBuilder = new JobInfo.Builder(JOB_ID, new ComponentName(context, FilmyJobService.class));
 
         //PersistableBundle persistableBundle = new PersistableBundle();
 
         jobBuilder.setPeriodic(SYNC_INTERVAL)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .setPersisted(true);
 
-        jobScheduler.schedule(jobBuilder.build());
-
-
-    }
-
-    private void syncImmediately() {
-
-        JobInfo.Builder jobBuilder = new JobInfo.Builder(JOB_ID_IMMEDIATE, new ComponentName(context, FilmyJobService.class));
-        jobBuilder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setPersisted(true);
         jobScheduler.schedule(jobBuilder.build());
 
 

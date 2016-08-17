@@ -80,6 +80,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static class MyPreferenceFragment extends PreferenceFragment {
 
         private SwitchPreference imagePref;
+        private SwitchPreference darkPref;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -111,6 +112,35 @@ public class SettingsActivity extends AppCompatActivity {
                     return true;
                 }
             });
+
+
+            final SharedPreferences.Editor dark_prefrence = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+
+            darkPref = (SwitchPreference) findPreference("dark");
+            darkPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    String dark=null;
+
+                    SwitchPreference switchPreference = (SwitchPreference) preference;
+
+                    if (!switchPreference.isChecked()) {
+
+                    } else {
+
+                    }
+
+
+                    my_prefrence.putString("dark_theme",dark);
+                    my_prefrence.apply();
+
+                    return true;
+                }
+            });
+
+
+
+
 
             Preference liscence=(Preference) findPreference("license");
             liscence.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

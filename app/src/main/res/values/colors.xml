@@ -8,6 +8,9 @@
     <color name="grey">#f5f5f5</color>
     <color name="dark">#616161</color>
     <color name="black">#212121</color>
+    <color name="fullBlack">#000000</color>
     <color name="colorAccentDark">#0288D1</color>
+    <color name="dividerColor">#f5f5f5</color>
+    <color name="dividerColorDarkTheme">#4b4b4b</color>
 
 </resources>

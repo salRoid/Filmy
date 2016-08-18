@@ -11,10 +11,9 @@
         android:title="@string/image" />
 
     <SwitchPreference
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="dark"
         android:title="@string/dark" />
-
 
 
 
@@ -23,13 +22,13 @@
         android:key="license"
         android:selectable="true"
         android:summary=""
-        android:title="@string/liscense" />
+        android:title="@string/license" />
 
     <Preference
         android:enabled="true"
         android:key="Version"
         android:selectable="true"
-        android:summary="1.0.1"
+        android:summary="1.0.2"
         android:title="@string/version" />
 
     <Preference

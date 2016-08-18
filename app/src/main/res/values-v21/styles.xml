@@ -6,6 +6,7 @@
 
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
 
     </style>
 
@@ -19,6 +20,14 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+
+
+    <style name="AppTheme.Dark" parent="AppTheme.Base.Dark">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">

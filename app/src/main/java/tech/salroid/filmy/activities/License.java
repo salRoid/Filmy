@@ -1,6 +1,12 @@
 package tech.salroid.filmy.activities;
 
+import android.annotation.TargetApi;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -50,39 +56,82 @@ public class License extends AppCompatActivity {
     TextView crashlytics;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.logo)
+    TextView logo;
+
+
+    private boolean nightMode;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
+
         setContentView(R.layout.activity_license);
+
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)
+
+        if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("");
+        }
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        logo.setTypeface(typeface);
+
+
+
+        if (nightMode)
+            allThemeLogic();
 
 
         if (Build.VERSION.SDK_INT >= 24) {
-            glide.setText(Html.fromHtml(getString(R.string.glide), Html.FROM_HTML_MODE_LEGACY));
-            material.setText(Html.fromHtml(getString(R.string.materialsearch), Html.FROM_HTML_MODE_LEGACY));
-            circularimageview.setText(Html.fromHtml(getString(R.string.circularimageview), Html.FROM_HTML_MODE_LEGACY));
-            tatarka.setText(Html.fromHtml(getString(R.string.tatarka), Html.FROM_HTML_MODE_LEGACY));
-            error.setText(Html.fromHtml(getString(R.string.errorview), Html.FROM_HTML_MODE_LEGACY));
-            appintro.setText(Html.fromHtml(getString(R.string.appintro), Html.FROM_HTML_MODE_LEGACY));
-            butterknife.setText(Html.fromHtml(getString(R.string.butterknife), Html.FROM_HTML_MODE_LEGACY));
-            crashlytics.setText(Html.fromHtml(getString(R.string.crashlytics), Html.FROM_HTML_MODE_LEGACY));
+          v24Setup();
         } else {
-            glide.setText(Html.fromHtml(getString(R.string.glide)));
-            material.setText(Html.fromHtml(getString(R.string.materialsearch)));
-            circularimageview.setText(Html.fromHtml(getString(R.string.circularimageview)));
-            tatarka.setText(Html.fromHtml(getString(R.string.tatarka)));
-            error.setText(Html.fromHtml(getString(R.string.errorview)));
-            appintro.setText(Html.fromHtml(getString(R.string.appintro)));
-            butterknife.setText(Html.fromHtml(getString(R.string.butterknife)));
-            crashlytics.setText(Html.fromHtml(getString(R.string.crashlytics)));
+            normalSetup();
         }
 
 
 
+    }
+
+    private void normalSetup() {
+
+        glide.setText(Html.fromHtml(getString(R.string.glide)));
+        material.setText(Html.fromHtml(getString(R.string.materialsearch)));
+        circularimageview.setText(Html.fromHtml(getString(R.string.circularimageview)));
+        tatarka.setText(Html.fromHtml(getString(R.string.tatarka)));
+        error.setText(Html.fromHtml(getString(R.string.errorview)));
+        appintro.setText(Html.fromHtml(getString(R.string.appintro)));
+        butterknife.setText(Html.fromHtml(getString(R.string.butterknife)));
+        crashlytics.setText(Html.fromHtml(getString(R.string.crashlytics)));
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    private void v24Setup() {
+
+        glide.setText(Html.fromHtml(getString(R.string.glide), Html.FROM_HTML_MODE_LEGACY));
+        material.setText(Html.fromHtml(getString(R.string.materialsearch), Html.FROM_HTML_MODE_LEGACY));
+        circularimageview.setText(Html.fromHtml(getString(R.string.circularimageview), Html.FROM_HTML_MODE_LEGACY));
+        tatarka.setText(Html.fromHtml(getString(R.string.tatarka), Html.FROM_HTML_MODE_LEGACY));
+        error.setText(Html.fromHtml(getString(R.string.errorview), Html.FROM_HTML_MODE_LEGACY));
+        appintro.setText(Html.fromHtml(getString(R.string.appintro), Html.FROM_HTML_MODE_LEGACY));
+        butterknife.setText(Html.fromHtml(getString(R.string.butterknife), Html.FROM_HTML_MODE_LEGACY));
+        crashlytics.setText(Html.fromHtml(getString(R.string.crashlytics), Html.FROM_HTML_MODE_LEGACY));
+    }
+
+    private void allThemeLogic() {
+        logo.setTextColor(Color.parseColor("#bdbdbd"));
     }
 
     @Override
@@ -93,5 +142,16 @@ public class License extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean nightModeNew = sp.getBoolean("dark", false);
+        if (nightMode!=nightModeNew)
+            recreate();
     }
 }

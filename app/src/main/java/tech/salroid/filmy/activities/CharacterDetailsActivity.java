@@ -2,9 +2,12 @@ package tech.salroid.filmy.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,7 +68,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     Toolbar toolbar;
     @BindView(R.id.more)
     TextView more;
-    @BindView(R.id.actor)
+    @BindView(R.id.cast_name)
     TextView ch_name;
     @BindView(R.id.desc)
     TextView ch_desc;
@@ -76,8 +80,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     RecyclerView char_recycler;
     @BindView(R.id.header_container)
     FrameLayout headerContainer;
-    @BindView(R.id.cast_img_small)
-    ImageView character_small;
+    @BindView(R.id.cast_poster)
+    CircularImageView character_small;
     @BindView(R.id.logo)
     TextView logo;
 
@@ -88,9 +92,18 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     private FullReadFragment fullReadFragment;
 
     private String LOG_TAG = CharacterDetailsActivity.class.getSimpleName();
+    private boolean nightMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_cast);
         ButterKnife.bind(this);
@@ -105,6 +118,11 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
+
+
+
+        if (nightMode)
+            allThemeLogic();
 
         more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,12 +176,16 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
     }
 
+    private void allThemeLogic() {logo.setTextColor(Color.parseColor("#bdbdbd"));}
 
     @Override
     protected void onResume() {
         super.onResume();
 
-
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean nightModeNew = sp.getBoolean("dark", false);
+        if (nightMode!=nightModeNew)
+            recreate();
     }
 
     private void getDetailedMovieAndCast() {
@@ -313,7 +335,12 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            finish();
+
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                //reverse transition
+                supportFinishAfterTransition();
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -330,6 +357,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             super.onBackPressed();
         }
     }
+
 
 
     @Override

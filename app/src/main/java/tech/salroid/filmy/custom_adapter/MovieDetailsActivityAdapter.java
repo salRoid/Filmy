@@ -99,7 +99,7 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
 
     public interface ClickListener {
 
-        void itemClicked(MovieDetailsData setterGetter, int position);
+        void itemClicked(MovieDetailsData setterGetter, int position,View view);
 
     }
 
@@ -121,7 +121,7 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null) {
-                        clickListener.itemClicked(cast.get(getPosition()), getPosition());
+                        clickListener.itemClicked(cast.get(getPosition()), getPosition(),view);
                     }
                 }
             });

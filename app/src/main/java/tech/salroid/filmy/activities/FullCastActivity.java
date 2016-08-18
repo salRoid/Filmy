@@ -1,11 +1,19 @@
 package tech.salroid.filmy.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.List;
 
@@ -40,10 +48,20 @@ public class FullCastActivity extends AppCompatActivity implements MovieDetailsA
 
 
     private String cast_result;
+    private boolean nightMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
+        
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_full_cast);
         ButterKnife.bind(this);
 
@@ -69,9 +87,31 @@ public class FullCastActivity extends AppCompatActivity implements MovieDetailsA
     }
 
     @Override
-    public void itemClicked(MovieDetailsData setterGetter, int position) {
+    public void itemClicked(MovieDetailsData setterGetter, int position, View view) {
         Intent intent = new Intent(this, CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCast_id());
-        startActivity(intent);
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+
+            Pair<View, String> p1 = Pair.create(view.findViewById(R.id.cast_poster), "profile");
+            Pair<View, String> p2 = Pair.create(view.findViewById(R.id.cast_name), "name");
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(this, p1, p2);
+            startActivity(intent, options.toBundle());
+
+        } else {
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean nightModeNew = sp.getBoolean("dark", false);
+        if (nightMode!=nightModeNew)
+            recreate();
     }
 }

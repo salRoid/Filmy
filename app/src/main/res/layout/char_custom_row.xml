@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/movie_poster"
         android:fontFamily="sans-serif-condensed"
         android:textAppearance="?android:textAppearanceMedium" />
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_name"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/movie_poster"
         android:fontFamily="sans-serif-condensed"
         android:textAppearance="?android:textAppearanceSmall" />

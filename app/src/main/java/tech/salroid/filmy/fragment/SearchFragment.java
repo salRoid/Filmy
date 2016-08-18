@@ -1,9 +1,12 @@
 package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -60,6 +64,10 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     RecyclerView recycler;
     @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;
+    @BindView(R.id.fragment_rl)
+    RelativeLayout fragmentRelativeLayout;
+
+    private boolean nightMode;
 
     @Nullable
     @Override
@@ -69,6 +77,14 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, view);
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        nightMode = sp.getBoolean("dark", false);
+
+
+        if (nightMode)
+            fragmentRelativeLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.black));
+        else
+            fragmentRelativeLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.grey));
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
 
@@ -100,9 +116,11 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
         }
 
-
         return view;
     }
+
+
+
 
 
     @Override

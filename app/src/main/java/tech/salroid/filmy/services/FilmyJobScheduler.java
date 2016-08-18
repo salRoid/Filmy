@@ -33,6 +33,8 @@ public class FilmyJobScheduler {
     private int JOB_ID = 456;
     private Context context;
 
+    public static final long time = System.currentTimeMillis();
+
     public FilmyJobScheduler(Context context) {
 
 

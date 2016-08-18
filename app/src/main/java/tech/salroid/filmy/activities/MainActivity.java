@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -23,8 +25,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import butterknife.BindView;
@@ -38,7 +38,6 @@ import tech.salroid.filmy.fragment.SearchFragment;
 import tech.salroid.filmy.fragment.Trending;
 import tech.salroid.filmy.fragment.UpComing;
 import tech.salroid.filmy.network_stuff.FirstFetch;
-import tech.salroid.filmy.services.FilmyJobScheduler;
 import tech.salroid.filmy.utility.Network;
 import tr.xip.errorview.ErrorView;
 
@@ -83,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private Trending trendingFragment;
     private SearchFragment searchFragment;
     private boolean cantProceed;
+    private boolean nightMode;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             int statusCode = intent.getIntExtra("message", 0);
 
 
-            CustomToast.show(context,"Failed to get latest movies.",true);
+            CustomToast.show(context, "Failed to get latest movies.", true);
 
             cantProceed(statusCode);
 
@@ -101,7 +101,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme_Base);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -116,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
+
+        if (nightMode)
+            allThemeLogic();
 
         mErrorView.setConfig(ErrorView.Config.create()
                 .title(getString(R.string.error_title_damn))
@@ -214,6 +224,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    private void allThemeLogic() {
+
+        tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"),Color.parseColor("#e0e0e0"));
+        logo.setTextColor(Color.parseColor("#E0E0E0"));
+        materialSearchView.setBackgroundColor(getResources().getColor(R.color.colorDarkThemePrimary));
+        materialSearchView.setBackIcon(getResources().getDrawable(R.drawable.ic_action_navigation_arrow_back_inverted));
+        materialSearchView.setCloseIcon(getResources().getDrawable(R.drawable.ic_action_navigation_close_inverted));
+        materialSearchView.setTextColor(Color.parseColor("#ffffff"));
+
+    }
+
+
     private void introLogic() {
 
         Thread t = new Thread(new Runnable() {
@@ -253,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                if(trendingFragment!=null && !trendingFragment.isShowingFromDatabase){
+                if (trendingFragment != null && !trendingFragment.isShowingFromDatabase) {
 
                     cantProceed = true;
 
@@ -328,10 +351,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        materialSearchView.setMenuItem(item);
+
+        MenuItem itemSearch = menu.findItem(R.id.action_search);
+        MenuItem itemBook = menu.findItem(R.id.ic_collection);
+
+        if (nightMode){
+            itemSearch.setIcon(R.drawable.ic_action_action_search);
+            itemBook.setIcon(R.drawable.ic_action_action_book2);
+        }
+
+        materialSearchView.setMenuItem(itemSearch);
         return true;
+
+
     }
 
     @Override
@@ -383,6 +417,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean nightModeNew = sp.getBoolean("dark", false);
+
+        if (nightMode!=nightModeNew)
+            recreate();
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("fetch-failed"));

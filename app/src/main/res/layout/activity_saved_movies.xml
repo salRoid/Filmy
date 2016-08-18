@@ -44,6 +44,7 @@
         android:visibility="gone">
 
         <ImageView
+            android:id="@+id/database_image"
             android:contentDescription="@string/no_saved_movies"
             android:layout_width="125dp"
             android:layout_height="125dp"

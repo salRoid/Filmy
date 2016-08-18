@@ -71,7 +71,7 @@
     <string name="low">Low</string>
     <string name="high">High</string>
     <string name="image">Image Quality</string>
-    <string name="liscense">License</string>
+    <string name="license">License</string>
     <string name="version">Version</string>
     <string name="about">About</string>
     <string name="madefor">Made for Cinephiles</string>
@@ -341,7 +341,7 @@ limitations under the License.
     <string translatable="false"  name="webianksgit">https://github.com/webianks</string>
     <string translatable="false"  name="salroidgit">https://github.com/salroid</string>
     <string name="shareappdetails">Share this App</string>
-    <string name="dark">dark mode</string>
+    <string name="dark">Night Mode</string>
 
 
 </resources>

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -121,6 +122,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     LinearLayout header;
     @BindView(R.id.extraDetails)
     RelativeLayout extraDetails;
+    @BindView(R.id.cast_divider)
+    View castDivider;
 
 
     Context context = this;
@@ -153,9 +156,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         if (!nightMode)
             allThemeLogic();
+        else
+           castDivider.setVisibility(View.GONE);
 
 
-        setSupportActionBar(toolbar);
+            setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -191,7 +196,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         super.onResume();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean nightModeNew = sp.getBoolean("dark", false);
-        if (nightMode!=nightModeNew)
+        if (nightMode != nightModeNew)
             recreate();
     }
 

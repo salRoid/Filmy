@@ -29,11 +29,17 @@
     </style>
 
     <style name="DetailsActivityTheme" parent="AppTheme">
-    <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="DetailsActivityThemeDark" parent="AppTheme.Dark">
+    <style name="DetailsActivityThemeDark" parent="Theme.AppCompat.NoActionBar">
+
+        <item name="colorPrimary">@color/colorDarkThemePrimary</item>
+        <item name="colorPrimaryDark">@color/colorDarkThemePrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="divider">@color/dividerColorDarkTheme</item>
+
     </style>
+
 
 
     <style name="MyToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

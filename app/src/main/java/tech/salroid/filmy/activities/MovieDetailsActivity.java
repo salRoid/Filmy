@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -156,8 +157,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         if (!nightMode)
             allThemeLogic();
-        else
-           castDivider.setVisibility(View.GONE);
+        else{
+            nightModeLogic();
+            castDivider.setVisibility(View.GONE);
+        }
+
 
 
             setSupportActionBar(toolbar);
@@ -184,8 +188,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     }
 
+    private void nightModeLogic() {
+
+        main_content.setBackgroundColor(Color.parseColor("#212121"));
+        headerContainer.setBackgroundColor(Color.parseColor("#212121"));
+        extraDetails.setBackgroundColor(Color.parseColor("#212121"));
+
+    }
+
     private void allThemeLogic() {
 
+        main_content.setBackgroundColor(Color.parseColor("#f5f5f5"));
         headerContainer.setBackgroundColor(getResources().getColor(R.color.primaryColor));
         extraDetails.setBackgroundColor(getResources().getColor(R.color.primaryColor));
 

@@ -30,6 +30,7 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
+
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>

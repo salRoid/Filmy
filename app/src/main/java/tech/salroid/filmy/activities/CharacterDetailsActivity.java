@@ -341,6 +341,9 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                 supportFinishAfterTransition();
             }
 
+            else
+                finish();
+
         }
 
         return super.onOptionsItemSelected(item);

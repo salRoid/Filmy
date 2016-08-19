@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_activity_detailed">DetailedActivity</string>
+    <string name="title_activity_detailed__cast">Detailed_Cast</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_full_cast">FullCastActivity</string>
+    <string name="title_activity_full_movie">FullMovieActivity</string>
+    <string name="title_activity_full_screen_image">FullScreenImage</string>
+
+    <string name="app_name">Película</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="title_activity_saved_movies">Películas fuera de línea</string>
+    <string name="image_quality">medio</string>
+    <string name="error_title_damn">Algo salió mal!</string>
+    <string name="info_retrying">Inténtelo de nuevo.</string>
+    <string name="rating">Clasificación</string>
+    <string name="movies">Película</string>
+    <string name="cast">artista</string>
+    <string name="dash">- - - -</string>
+    <string name="more">más</string>
+    <string name="runtime">Tiempo de ejecución</string>
+    <string name="genre">Género</string>
+    <string name="language">Idioma</string>
+    <string name="release_date">Fecha de lanzamiento</string>
+    <string name="play">Jugar</string>
+    <string name="trailer">remolque</string>
+    <string name="banner_image">Imagen del Anuncio</string>
+    <string name="you_saved_movies_appear_here">Sus películas fuera de línea aparecen aquí Jaaagai.</string>
+    <string name="no_saved_movies">No hay película fuera de línea.</string>
+    <string name="saved_movies">Películas Online</string>
+    <string name="welcome_to_filmy">la bienvenida a Película</string>
+    <string name="filmy_is_your_new_movie_app">vaporoso es su nueva aplicación de películas</string>
+    <string name="categorized">categorizado</string>
+    <string name="get_different_movies_in_different_categories_at_one_place">Varias películas de diferentes categorías juntas</string>
+    <string name="offline_movies">Películas Online</string>
+    <string name="save_movies_locally_to_see_various_details_even_if_you_don_t_have_internet">Va a encontrar más información en Internet sin algunas películas que tienen que ponerlo en la lista fuera de línea.</string>
+    <string name="exploration">exploración</string>
+    <string name="search_through_the_large_sea_of_movies_and_know_about_different_casts">Encuentra una gran colección de películas de cine , así como los detalles de sus artistas habían enviado .</string>
+    <string name="close_description">Cerrar detalles</string>
+    <string name="low">bajo</string>
+    <string name="high">alto</string>
+    <string name="image">calidad de la imagen</string>
+    <string name="license">licencia</string>
+    <string name="version">versión</string>
+    <string name="about">acerca de</string>
+    <string name="madefor">Hecho para cinéfilos</string>
+    <string name="error_details">No es posible obtener películas . \n Compruebe conexión a Internet y vuelva a intentarlo .</string>
+    <string name="trending">tendencias</string>
+    <string name="theatres">en los cines</string>
+    <string name="upcoming">próximo</string>
+    <string name="details">detalles</string>
+    <string name="error_retry">REVER</string>
+
+
+    <string name="ramankit">Ramankit Singh</string>
+    <string name="sajal">Sajal Gupta</string>
+    <string name="email">enviar Email</string>
+    <string name="gplus">Google+</string>
+    <string name="github">GitHub</string>
+
+    <string name="ramankit_bio">Yo androide , diseño y música amor .</string>
+    <string name="sajal_bio">Me gusta Android y para jugar Counter Strike.</string>
+
+    <string name="shareappdetails">Comparte esta aplicación</string>
+    <string name="dark">modo nocturno</string>
+
+
+</resources>

@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:theme="@style/ThemeOverlay.AppCompat">
+
+        <TextView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/details"
+            android:textColor="#757575"
+            android:textSize="20sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -13,22 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/primaryColor"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:theme="@style/ThemeOverlay.AppCompat.Light">
-
-            <TextView
-                android:id="@+id/logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/details"
-                android:textColor="#757575"
-                android:textSize="20sp" />
-            </android.support.v7.widget.Toolbar>
 
 
             <RelativeLayout
@@ -37,22 +41,24 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/toolbar"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/cast_img_small"
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/cast_poster"
                     android:layout_width="100dp"
-                    android:layout_height="120dp" />
+                    android:layout_margin="16dp"
+                    android:transitionName="profile"
+                    android:layout_height="100dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/cast_img_small"
+                    android:layout_toRightOf="@+id/cast_poster"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/actor"
+                        android:id="@+id/cast_name"
+                        android:transitionName="name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -84,7 +90,7 @@
                     android:id="@+id/header_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/cast_img_small"
+                    android:layout_below="@id/cast_poster"
                     android:layout_marginTop="8dp"
                     android:clickable="true"
                     android:foreground="?android:selectableItemBackground"
@@ -147,6 +153,7 @@
                         android:layout_height="match_parent"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
+                        android:layout_marginBottom="16dp"
                         android:layout_below="@+id/card_holder" />
 
                 </RelativeLayout>
@@ -156,4 +163,4 @@
         </RelativeLayout>
 
     </ScrollView>
-</FrameLayout>
+</RelativeLayout>

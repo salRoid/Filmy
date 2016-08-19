@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="0dp"
-    app:cardCornerRadius="0dp">
+    android:id="@+id/extraDetails"
+    android:padding="16dp"
+    >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
 
         <TextView
             android:id="@+id/runtime_holder"
@@ -95,6 +90,5 @@
             android:text=""
             android:textAppearance="?android:textAppearanceSmall" />
 
-    </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+    </RelativeLayout>

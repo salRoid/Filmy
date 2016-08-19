@@ -119,6 +119,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     RelativeLayout main;
     @BindView(R.id.header)
     LinearLayout header;
+    @BindView(R.id.extraDetails)
+    RelativeLayout extraDetails;
 
 
     Context context = this;
@@ -130,13 +132,27 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movie_rating, show_centre_img_url, movie_title, movie_id_final;
 
     private CastFragment castFragment;
+    private boolean nightMode;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.DetailsActivityThemeDark);
+        else
+            setTheme(R.style.DetailsActivityTheme);
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
         ButterKnife.bind(this);
+
+        if (!nightMode)
+            allThemeLogic();
 
 
         setSupportActionBar(toolbar);
@@ -163,9 +179,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     }
 
+    private void allThemeLogic() {
+
+        headerContainer.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+        extraDetails.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean nightModeNew = sp.getBoolean("dark", false);
+        if (nightMode!=nightModeNew)
+            recreate();
     }
 
     private void performDataFetching() {
@@ -232,8 +259,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             movie_id_final = jsonObject.getString("imdb_id");
 
-            if (castFragment!=null)
-              castFragment.getCastFromNetwork(movie_id_final);
+            if (castFragment != null)
+                castFragment.getCastFromNetwork(movie_id_final);
 
             movie_rating = jsonObject.getString("vote_average");
 
@@ -881,7 +908,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        castFragment=null;
+        castFragment = null;
 
     }
 

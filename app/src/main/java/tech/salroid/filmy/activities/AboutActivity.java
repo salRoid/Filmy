@@ -1,8 +1,11 @@
 package tech.salroid.filmy.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -37,11 +40,20 @@ public class AboutActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.logo)
     TextView logo;
+    private boolean nightMode;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
+
         setContentView(R.layout.activity_developers);
 
 
@@ -58,6 +70,16 @@ public class AboutActivity extends AppCompatActivity {
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
+
+
+
+        if (nightMode)
+            allThemeLogic();
+
+    }
+
+    private void allThemeLogic() {
+        logo.setTextColor(Color.parseColor("#bdbdbd"));
     }
 
 
@@ -142,4 +164,14 @@ public class AboutActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean nightModeNew = sp.getBoolean("dark", false);
+
+        if (nightMode!=nightModeNew)
+            recreate();
+    }
 }

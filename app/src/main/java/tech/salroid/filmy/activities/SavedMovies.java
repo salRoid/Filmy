@@ -4,10 +4,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -19,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -55,6 +60,8 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     LinearLayout emptyContainer;
     @BindView(R.id.logo)
     TextView logo;
+    @BindView(R.id.database_image)
+    ImageView dataImageView;
 
 
     private static final int SAVED_DETAILS_LOADER = 3;
@@ -77,11 +84,21 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     };
 
     private SavedMoviesAdapter mainActivityAdapter;
+    private boolean nightMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
+
         setContentView(R.layout.activity_saved_movies);
+
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
@@ -96,6 +113,8 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         logo.setTypeface(typeface);
 
 
+        if (nightMode)
+            allThemeLogic();
 
         /*GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         my_saved_movies_recycler.setLayoutManager(gridLayoutManager);*/
@@ -142,6 +161,16 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         getSupportLoaderManager().initLoader(SAVED_DETAILS_LOADER, null, this);
 
     }
+
+
+
+
+    private void allThemeLogic() {
+        logo.setTextColor(Color.parseColor("#bdbdbd"));
+        dataImageView.setColorFilter(Color.parseColor("#757575"), PorterDuff.Mode.MULTIPLY);
+
+    }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -229,5 +258,15 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean nightModeNew = sp.getBoolean("dark", false);
+        if (nightMode!=nightModeNew)
+            recreate();
     }
 }

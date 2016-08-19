@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     tools:context="tech.salroid.filmy.activities.FullCastActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primaryColor"
-        app:popupTheme="@style/AppTheme.Base.PopupOverlay" />
+        android:background="?attr/colorPrimary"
+        android:padding="0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:theme="@style/ThemeOverlay.AppCompat"  />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/full_cast_recycler"

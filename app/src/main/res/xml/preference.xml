@@ -10,13 +10,19 @@
         android:summaryOn="@string/high"
         android:title="@string/image" />
 
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="dark"
+        android:title="@string/dark" />
+
+
 
     <Preference
         android:enabled="true"
         android:key="license"
         android:selectable="true"
         android:summary=""
-        android:title="@string/liscense" />
+        android:title="@string/license" />
 
     <Preference
         android:enabled="true"

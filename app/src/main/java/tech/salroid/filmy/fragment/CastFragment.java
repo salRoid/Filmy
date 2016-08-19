@@ -1,15 +1,19 @@
 package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -17,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONObject;
 
@@ -55,9 +60,12 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     private String cast_json;
     private String movieId, movieTitle;
 
-    @BindView(R.id.more) TextView  more ;
-    @BindView(R.id.cast_recycler) RecyclerView cast_recycler ;
-    @BindView(R.id.card_holder) TextView card_holder;
+    @BindView(R.id.more)
+    TextView more;
+    @BindView(R.id.cast_recycler)
+    RecyclerView cast_recycler;
+    @BindView(R.id.card_holder)
+    TextView card_holder;
 
     public static CastFragment newInstance(String movie_Id, String movie_Title) {
         CastFragment fragment = new CastFragment();
@@ -73,7 +81,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.cast_fragment, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         cast_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         cast_recycler.setNestedScrollingEnabled(false);
@@ -97,8 +105,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
         }
 
 
-        if(movieId!=null)
-          getCastFromNetwork(movieId);
+        if (movieId != null)
+            getCastFromNetwork(movieId);
 
     }
 
@@ -140,13 +148,12 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
         MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, true);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
-        if(cast_list.size()>4)
-        more.setVisibility(View.VISIBLE);
-        else if (cast_list.size()==0){
+        if (cast_list.size() > 4)
+            more.setVisibility(View.VISIBLE);
+        else if (cast_list.size() == 0) {
             more.setVisibility(View.INVISIBLE);
             card_holder.setVisibility(View.INVISIBLE);
-        }
-        else
+        } else
             more.setVisibility(View.INVISIBLE);
 
     }
@@ -170,10 +177,23 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     }
 
     @Override
-    public void itemClicked(MovieDetailsData setterGetter, int position) {
+    public void itemClicked(MovieDetailsData setterGetter, int position, View view) {
         Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCast_id());
-        startActivity(intent);
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+
+            Pair<View, String> p1 = Pair.create(view.findViewById(R.id.cast_poster), "profile");
+            Pair<View, String> p2 = Pair.create(view.findViewById(R.id.cast_name), "name");
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(getActivity(), p1, p2);
+            startActivity(intent, options.toBundle());
+
+        } else {
+            startActivity(intent);
+        }
+
     }
 
 }

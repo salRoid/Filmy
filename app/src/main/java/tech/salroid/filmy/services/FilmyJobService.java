@@ -154,7 +154,6 @@ public class FilmyJobService extends JobService {
                         parseOutput(response.toString());
 
                         taskFinished++;
-
                         if (taskFinished==3){
                             jobFinished(jobParameters,false);
                             taskFinished = 0;

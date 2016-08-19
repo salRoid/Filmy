@@ -1,7 +1,9 @@
 package tech.salroid.filmy.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,9 +41,18 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
     @BindView(R.id.full_movie_recycler)
     RecyclerView full_movie_recycler;
     private String movie_result;
+    private boolean nightMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_movie);
         ButterKnife.bind(this);
@@ -79,5 +90,14 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean nightModeNew = sp.getBoolean("dark", false);
+        if (nightMode!=nightModeNew)
+            recreate();
+    }
 }

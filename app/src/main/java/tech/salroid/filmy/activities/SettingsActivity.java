@@ -2,8 +2,10 @@ package tech.salroid.filmy.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -39,12 +41,20 @@ public class SettingsActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.logo)
     TextView logo;
-
+    private boolean nightMode;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
+
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
 
@@ -60,11 +70,19 @@ public class SettingsActivity extends AppCompatActivity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
 
+
+        if (nightMode)
+            allThemeLogic();
+
         getFragmentManager().beginTransaction().
                 replace(R.id.container,
                         new MyPreferenceFragment()).commit();
 
 
+    }
+
+    private void allThemeLogic() {
+        logo.setTextColor(Color.parseColor("#bdbdbd"));
     }
 
     @Override
@@ -80,6 +98,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static class MyPreferenceFragment extends PreferenceFragment {
 
         private SwitchPreference imagePref;
+        private SwitchPreference darkPref;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -113,7 +132,16 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
 
+            darkPref = (SwitchPreference) findPreference("dark");
+            darkPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
 
+                   recreateActivity();
+
+                    return true;
+                }
+            });
 
             Preference liscence=(Preference) findPreference("license");
             liscence.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -157,6 +185,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
 
+        private void recreateActivity() {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    getActivity().recreate();
+                }
+            },300);
+
+        }
 
     }
 

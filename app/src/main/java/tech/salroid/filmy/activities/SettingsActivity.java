@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -60,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("");
@@ -98,7 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static class MyPreferenceFragment extends PreferenceFragment {
 
         private SwitchPreference imagePref;
-        private SwitchPreference darkPref;
+        private CheckBoxPreference darkPref;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -132,28 +133,28 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
 
-            darkPref = (SwitchPreference) findPreference("dark");
+            darkPref = (CheckBoxPreference) findPreference("dark");
             darkPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object o) {
 
-                   recreateActivity();
+                    recreateActivity();
 
                     return true;
                 }
             });
 
-            Preference liscence=(Preference) findPreference("license");
+            Preference liscence = (Preference) findPreference("license");
             liscence.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(),License.class));
+                    startActivity(new Intent(getActivity(), License.class));
                     return true;
                 }
             });
 
 
-            Preference share=(Preference) findPreference("Share");
+            Preference share = (Preference) findPreference("Share");
             share.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -162,7 +163,7 @@ public class SettingsActivity extends AppCompatActivity {
                     if (!(app_share_details.equals(null))) {
                         Intent myIntent = new Intent(Intent.ACTION_SEND);
                         myIntent.setType("text/plain");
-                        myIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome movie app.\n"+"*filmy*\n"+app_share_details);
+                        myIntent.putExtra(Intent.EXTRA_TEXT, "Check out this awesome movie app.\n" + "*filmy*\n" + app_share_details);
                         startActivity(Intent.createChooser(myIntent, "Share with"));
                     }
                     return true;
@@ -170,15 +171,11 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
 
-
-
-
-
-            Preference about =(Preference) findPreference("About");
+            Preference about = (Preference) findPreference("About");
             about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(),AboutActivity.class));
+                    startActivity(new Intent(getActivity(), AboutActivity.class));
                     return true;
                 }
             });
@@ -186,15 +183,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         private void recreateActivity() {
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    getActivity().recreate();
-                }
-            },300);
-
+           getActivity().recreate();
         }
 
     }

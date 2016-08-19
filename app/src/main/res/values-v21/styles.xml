@@ -25,6 +25,7 @@
 
 
     <style name="DetailsActivityThemeDark" parent="AppTheme.Base.Dark">
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowContentTransitions">true</item>

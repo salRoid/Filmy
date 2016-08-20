@@ -74,7 +74,10 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
         holder.mov_char.setText(m_desc);
 
         try {
-            Glide.with(con).load(m_profile).diskCacheStrategy(DiskCacheStrategy.NONE).fitCenter().into(holder.mov_img);
+            Glide.with(con)
+                    .load(m_profile)
+                    .fitCenter()
+                    .into(holder.mov_img);
         } catch (Exception e) {
             //Log.d(LOG_TAG, e.getMessage());
         }

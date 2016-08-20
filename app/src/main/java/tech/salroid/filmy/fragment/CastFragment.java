@@ -163,7 +163,9 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
         if (view.getId() == R.id.more) {
 
+            Log.d("webi",""+movieTitle);
             if (cast_json != null && movieTitle != null) {
+
 
                 Intent intent = new Intent(getActivity(), FullCastActivity.class);
                 intent.putExtra("cast_json", cast_json);

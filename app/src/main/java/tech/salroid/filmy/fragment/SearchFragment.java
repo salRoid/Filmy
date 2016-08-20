@@ -2,16 +2,13 @@ package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +55,6 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
 
     SearchResultAdapter sadapter;
-    private Intent intent;
 
     @BindView((R.id.search_results_recycler))
     RecyclerView recycler;
@@ -66,8 +62,6 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     BreathingProgress breathingProgress;
     @BindView(R.id.fragment_rl)
     RelativeLayout fragmentRelativeLayout;
-
-    private boolean nightMode;
 
     @Nullable
     @Override
@@ -78,7 +72,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         ButterKnife.bind(this, view);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        nightMode = sp.getBoolean("dark", false);
+        boolean nightMode = sp.getBoolean("dark", false);
 
 
         if (nightMode)
@@ -132,8 +126,9 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         else {
             intent = new Intent(getActivity(), MovieDetailsActivity.class);
             intent.putExtra("network_applicable", true);
-        }
 
+        }
+        intent.putExtra("title",setterGetter.getMovie());
         intent.putExtra("id", setterGetter.getId());
         intent.putExtra("activity", false);
 

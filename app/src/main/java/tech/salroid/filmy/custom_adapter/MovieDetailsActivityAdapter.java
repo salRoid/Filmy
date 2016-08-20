@@ -73,7 +73,8 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
         try {
             Glide.with(context)
                     .load(ct_profile)
-                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter()
                     .into(holder.cast_poster);
         } catch (Exception e){
         }

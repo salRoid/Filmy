@@ -1,9 +1,9 @@
+<img src="https://img.shields.io/badge/Android%20Arsenal-Filmy-blue.svg?style=flat">
+
 # Filmy
 Open sourced awesome material designed movie app.
 
 <img src="http://www.webianks.com/filmy/launcher.png" height="128" width="128" >
-
-<img src="https://img.shields.io/badge/Android%20Arsenal-Filmy-blue.svg?style=flat">
 
 #Screens
 <img src="http://www.webianks.com/filmy/filmy2.png" align="left" height="700" width="400" >

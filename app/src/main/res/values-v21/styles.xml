@@ -8,7 +8,10 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowContentTransitions">true</item>
 
+
     </style>
+
+
 
     <style name="MyToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">#FFFFFF</item>

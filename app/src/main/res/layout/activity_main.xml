@@ -62,9 +62,9 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginTop="2dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <tr.xip.errorview.ErrorView

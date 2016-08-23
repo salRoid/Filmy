@@ -10,10 +10,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import me.tatarka.support.job.JobParameters;
 import me.tatarka.support.job.JobService;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;

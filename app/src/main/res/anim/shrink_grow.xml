@@ -4,6 +4,7 @@
     android:fillBefore="false"
     android:shareInterpolator="true">
 
+
     <scale
         android:duration="1000"
         android:fillAfter="true"

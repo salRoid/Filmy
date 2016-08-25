@@ -53,5 +53,5 @@ limitations under the License.
 ```
 ##Contributing
 
-Please fork this repository and contribute back using pull requests.
+Please fork this repository and contribute back using <a href="https://github.com/salroid/Filmy/pulls">pull requests.<br>
 Any contributions, large or small, major features, bug fixes, additional language translations, unit/integration tests are welcomed.

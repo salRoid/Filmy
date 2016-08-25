@@ -51,3 +51,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+##Contributing
+
+Please fork this repository and contribute back using pull requests.
+Any contributions, large or small, major features, bug fixes, additional language translations, unit/integration tests are welcomed.

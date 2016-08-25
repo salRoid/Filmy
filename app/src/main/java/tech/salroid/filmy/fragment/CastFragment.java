@@ -33,6 +33,7 @@ import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.FullCastActivity;
 import tech.salroid.filmy.custom_adapter.MovieDetailsActivityAdapter;
+import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.MovieDetailsData;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
@@ -66,6 +67,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     RecyclerView cast_recycler;
     @BindView(R.id.card_holder)
     TextView card_holder;
+    @BindView(R.id.breathingProgressFragment)
+    BreathingProgress breathingProgress;
 
     public static CastFragment newInstance(String movie_Id, String movie_Title) {
         CastFragment fragment = new CastFragment();
@@ -85,7 +88,11 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
         cast_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         cast_recycler.setNestedScrollingEnabled(false);
+
+        cast_recycler.setVisibility(View.INVISIBLE);
+
         more.setOnClickListener(this);
+
 
         return view;
     }
@@ -130,6 +137,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
                 Log.e("webi", "Volley Error: " + error.getCause());
 
+                breathingProgress.setVisibility(View.GONE);
+
             }
         }
         );
@@ -155,6 +164,10 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
             card_holder.setVisibility(View.INVISIBLE);
         } else
             more.setVisibility(View.INVISIBLE);
+
+        breathingProgress.setVisibility(View.GONE);
+        cast_recycler.setVisibility(View.VISIBLE);
+
 
     }
 

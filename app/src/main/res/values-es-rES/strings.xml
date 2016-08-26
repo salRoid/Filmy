@@ -8,7 +8,7 @@
     <string name="title_activity_full_movie">FullMovieActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
 
-    <string name="app_name">Película</string>
+    <string name="app_name">película</string>
     <string name="title_activity_settings">Ajustes</string>
     <string name="title_activity_saved_movies">Películas fuera de línea</string>
     <string name="image_quality">medio</string>

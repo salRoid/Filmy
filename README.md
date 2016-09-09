@@ -21,7 +21,7 @@ Contains various advanced api implementations that make it high quality app.
 <li>Content Providers</li>
 <li>Cursor Loaders</li>
 <li>Job Schedulers</li>
-<li>Dependency Injection - ButterKnife</li>
+<li>View Binding - ButterKnife</li>
 <li>Volley - for networking</li>
 <li>Glide - for images</li>
 <li>Accessbility Features</li>

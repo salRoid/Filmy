@@ -13,15 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONObject;
 
@@ -176,7 +173,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
         if (view.getId() == R.id.more) {
 
-            Log.d("webi",""+movieTitle);
+           // Log.d("webi",""+movieTitle);
+
             if (cast_json != null && movieTitle != null) {
 
 

@@ -111,9 +111,9 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
         this.longclickListener = longclickListener;
     }
 
-    public void setClickListener(ClickListener clickListener) {
-        this.clickListener = clickListener;
-    }
+        public void setClickListener(ClickListener clickListener) {
+            this.clickListener = clickListener;
+        }
 
     public interface ClickListener {
 

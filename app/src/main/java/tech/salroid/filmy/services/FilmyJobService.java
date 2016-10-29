@@ -138,16 +138,14 @@ public class FilmyJobService extends JobService {
 
     private void syncNowTrending() {
 
-        VolleySingleton volleySingleton = VolleySingleton.getInstance();
-        RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.trakt.tv/movies/trending?extended=images,page=1&limit=30";
+        final String BASE_URL = "https://api.themoviedb.org/3/movie/popular?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
 
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
-                new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
+                new Response.Listener<JSONObject>() {
                     @Override
 
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
 
                         parseOutput(response.toString());
 
@@ -176,7 +174,7 @@ public class FilmyJobService extends JobService {
         }
         );
 
-        requestQueue.add(jsonObjectRequest);
+        tmdbrequestQueue.add(jsonObjectRequest);
 
     }
 

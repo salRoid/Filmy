@@ -17,13 +17,13 @@ repositories {
 
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "tech.salroid.filmy"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 6
         versionName "1.0.5"
         multiDexEnabled true
@@ -38,16 +38,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.android.support:design:24.1.1'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.android.support:recyclerview-v7:24.1.1'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.mikhaellopez:circularimageview:3.0.2'
-    compile 'com.android.support:palette-v7:24.1.1'
+    compile 'com.android.support:palette-v7:25.0.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
-    compile 'com.android.support:cardview-v7:24.1.1'
-    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:cardview-v7:25.0.0'
     testCompile 'junit:junit:4.12'
     compile 'me.tatarka.support:jobscheduler:0.1.1'
     compile 'com.github.xiprox.errorview:library:2.+'
@@ -55,6 +53,6 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') {
         transitive = true;
     }
-    compile 'com.jakewharton:butterknife:8.2.1'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }

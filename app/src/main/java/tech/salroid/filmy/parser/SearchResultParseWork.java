@@ -4,6 +4,7 @@ import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +48,17 @@ public class SearchResultParseWork {
         try {
 
 
-            JSONArray jsonArray = new JSONArray(result);
+            JSONObject jsonobject = new JSONObject(result);
+
+            JSONArray jsonArray = jsonobject.getJSONArray("results");
+
+
             for (int i = 0; i < jsonArray.length(); i++) {
                 searchData = new SearchData();
 
                 String type_name, type, id, movie_poster, date, extra;
 
-                type = jsonArray.getJSONObject(i).getString("type");
+               /* type = jsonArray.getJSONObject(i).getString("type");
 
 
                 if (type.equals("person")) {
@@ -74,15 +79,22 @@ public class SearchResultParseWork {
                 id = jsonArray.getJSONObject(i).getJSONObject(type).getJSONObject("ids").getString(getId);
                 movie_poster = jsonArray.getJSONObject(i).getJSONObject(type).getJSONObject("images").getJSONObject(getImage).getString("thumb");
                 date = jsonArray.getJSONObject(i).getJSONObject(type).getString(getDate);
-                extra = jsonArray.getJSONObject(i).getJSONObject(type).getString(getExtra);
+                extra = jsonArray.getJSONObject(i).getJSONObject(type).getString(getExtra);*/
+
+                id=jsonArray.getJSONObject(i).getString("id");
+                date=jsonArray.getJSONObject(i).getString("release_date");
+                movie_poster="http://image.tmdb.org/t/p/w185"+jsonArray.getJSONObject(i).getString("poster_path");
+                type_name=jsonArray.getJSONObject(i).getString("original_title");
+                type="movie";
 
 
-                if (!(movie_poster.equals("null") && date.equals("null") && extra.equals("null"))) {
+
+                if (!(movie_poster.equals("null") && date.equals("null"))) {
                     searchData.setId(id);
-                    searchData.setExtra(extra);
+                   // searchData.setExtra(extra);
                     searchData.setDate(date);
                     searchData.setType(type);
-                    searchData.setMovie(type_name);
+                   searchData.setMovie(type_name);
                     searchData.setPoster(movie_poster);
                     searchArray.add(searchData);
                 }

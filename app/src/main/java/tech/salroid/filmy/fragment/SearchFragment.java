@@ -20,8 +20,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -143,17 +145,18 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         String trimmedQuery = query.trim();
         String finalQuery = trimmedQuery.replace(" ", "-");
 
+
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         final RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.trakt.tv/search/movie,person?query=" + finalQuery + "&extended=images,full";
+        final String BASE_URL = "https://api.themoviedb.org/3/search/movie?api_key=b640f55eb6ecc47b3433cfe98d0675b1&query="+finalQuery;
 
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
-                new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(JSONObject response) {
 
-                        Log.d("webi", response.toString());
+                      //  Log.d("webi", response.toString());
                         parseSearchedOutput(response.toString());
                     }
                 }, new Response.ErrorListener() {

@@ -19,10 +19,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -147,15 +145,13 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         final RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-
-
         final String BASE_URL = "https://api.trakt.tv/search/movie,person?query=" + finalQuery + "&extended=images,full";
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, BASE_URL, null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                       // Log.d("webi", response.toString());
+                    public void onResponse(JSONArray response) {
+                        // Log.d("webi", response.toString());
                         parseSearchedOutput(response.toString());
                     }
                 }, new Response.ErrorListener() {

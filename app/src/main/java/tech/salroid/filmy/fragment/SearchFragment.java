@@ -149,7 +149,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
 
 
-        final String BASE_URL = "https://api.themoviedb.org/3/search/movie?api_key=b640f55eb6ecc47b3433cfe98d0675b1&query="+finalQuery;
+        final String BASE_URL = "https://api.trakt.tv/search/movie,person?query=" + finalQuery + "&extended=images,full";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
                 new Response.Listener<JSONObject>() {

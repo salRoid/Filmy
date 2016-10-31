@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,6 +41,7 @@ import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
 import tech.salroid.filmy.data_classes.CharacterDetailsData;
 import tech.salroid.filmy.fragment.FullReadFragment;
+import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 
@@ -191,13 +193,12 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     private void getDetailedMovieAndCast() {
 
 
-        VolleySingleton volleySingleton = VolleySingleton.getInstance();
+        TmdbVolleySingleton volleySingleton = TmdbVolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
         final String BASE_URL = getResources().getString(R.string.trakt_base_url);
 
-        final String BASE_URL_PERSON_DETAIL = BASE_URL + character_id + "?" +
-                getResources().getString(R.string.person_details_suffix);
+        final String BASE_URL_PERSON_DETAIL = "https://api.themoviedb.org/3/person/"+character_id+"?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
 
         final String BASE_URL_PEOPLE_MOVIES = BASE_URL + character_id +
                 getResources().getString(R.string.person_movies_details);
@@ -265,11 +266,13 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         try {
             JSONObject jsonObject = new JSONObject(detailsResult);
 
+            Toast.makeText(this,character_id,Toast.LENGTH_SHORT).show();
+
             String char_name = jsonObject.getString("name");
-            String char_face = jsonObject.getJSONObject("images").getJSONObject("headshot").getString("thumb");
+            String char_face = "http://image.tmdb.org/t/p/w185"+jsonObject.getString("profile_path");
             String char_desc = jsonObject.getString("biography");
             String char_birthday = jsonObject.getString("birthday");
-            String char_birthplace = jsonObject.getString("birthplace");
+            String char_birthplace = jsonObject.getString("place_of_birth");
 
             character_title = char_name;
             character_bio = char_desc;

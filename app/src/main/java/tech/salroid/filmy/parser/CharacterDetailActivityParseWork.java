@@ -57,9 +57,10 @@ public class CharacterDetailActivityParseWork {
                 String role, movie, mov_id, img;
 
                 role = jsonArray.getJSONObject(i).getString("character");
-                movie = jsonArray.getJSONObject(i).getJSONObject("movie").getString("title");
-                mov_id = (jsonArray.getJSONObject(i).getJSONObject("movie")).getJSONObject("ids").getString("imdb");
-                img = jsonArray.getJSONObject(i).getJSONObject("movie").getJSONObject("images").getJSONObject("poster").getString("thumb");
+                movie = jsonArray.getJSONObject(i).getString("original_title");
+                mov_id = jsonArray.getJSONObject(i).getString("id");
+                img = "http://image.tmdb.org/t/p/w45"
+                        +jsonArray.getJSONObject(i).getString("poster_path");
 
                 setterGetterchar.setChar_movie(movie);
                 setterGetterchar.setChar_id(mov_id);

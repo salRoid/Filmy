@@ -200,8 +200,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         final String BASE_URL_PERSON_DETAIL = "https://api.themoviedb.org/3/person/"+character_id+"?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
 
-        final String BASE_URL_PEOPLE_MOVIES = BASE_URL + character_id +
-                getResources().getString(R.string.person_movies_details);
+        final String BASE_URL_PEOPLE_MOVIES = "https://api.themoviedb.org/3/person/"+character_id+"/movie_credits?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
 
         JsonObjectRequest personDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PERSON_DETAIL, null,
                 new Response.Listener<JSONObject>() {
@@ -265,8 +264,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         try {
             JSONObject jsonObject = new JSONObject(detailsResult);
-
-            Toast.makeText(this,character_id,Toast.LENGTH_SHORT).show();
 
             String char_name = jsonObject.getString("name");
             String char_face = "http://image.tmdb.org/t/p/w185"+jsonObject.getString("profile_path");

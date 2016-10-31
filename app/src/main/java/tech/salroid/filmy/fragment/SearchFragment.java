@@ -145,6 +145,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         String trimmedQuery = query.trim();
         String finalQuery = trimmedQuery.replace(" ", "-");
 
+
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         final RequestQueue requestQueue = volleySingleton.getRequestQueue();
 

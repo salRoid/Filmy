@@ -59,13 +59,13 @@ public class SearchResultParseWork {
                 if (type.equals("person")) {
                     getString = "name";
                     getImage = "headshot";
-                    getId = "trakt";
+                    getId = "tmdb";
                     getDate = "birthday";
                     getExtra = "birthplace";
                 } else {
                     getString = "title";
                     getImage = "poster";
-                    getId = "imdb";
+                    getId = "tmdb";
                     getDate = "released";
                     getExtra = "tagline";
                 }

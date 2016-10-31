@@ -273,7 +273,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             runtime = jsonObject.getString("runtime") + " mins";
             language = jsonObject.getString("original_language");
 
-            movie_id_final = jsonObject.getString("imdb_id");
+            movie_id_final = jsonObject.getString("id");
 
             if (castFragment != null)
                 castFragment.getCastFromNetwork(movie_id_final);

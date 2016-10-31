@@ -1,8 +1,9 @@
 <resources>
+
     <string translatable="false" name="api_key">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
     <string translatable="false" name="trakt_base_url">https://api.trakt.tv/people/</string>
-    <string translatable="false" name="trakt_movie_base_url">https://api.trakt.tv/movies/</string>
     <string translatable="false" name="trakt_cast_suffix">/people?extended=images</string>
+
     <string translatable="false" name="tmdb_movie_base_url">http://api.themoviedb.org/3/movie/</string>
     <string translatable="false" name="tmdb_api_key">api_key=b640f55eb6ecc47b3433cfe98d0675b1</string>
     <string translatable="false" name="person_details_suffix">extended=full,images</string>
@@ -76,7 +77,7 @@
     <string name="about">About</string>
     <string name="madefor">Made for Cinephiles</string>
     <string name="error_details">Unable to fetch movies.\nCheck internet connection then try again.</string>
-    <string name="trending">TRENDING</string>
+    <string name="trending">POPULAR</string>
     <string name="theatres">IN THEATERS</string>
     <string name="upcoming">UPCOMING</string>
     <string name="details">Details</string>

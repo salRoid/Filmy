@@ -162,8 +162,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             castDivider.setVisibility(View.GONE);
         }
 
-
-
             setSupportActionBar(toolbar);
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -929,6 +927,5 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         castFragment = null;
 
     }
-
 
 }

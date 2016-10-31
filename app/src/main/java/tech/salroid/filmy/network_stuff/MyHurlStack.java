@@ -9,8 +9,8 @@ import java.net.URL;
 import tech.salroid.filmy.FilmyApplication;
 import tech.salroid.filmy.R;
 
-/*
- * Filmy Application for Android
+
+ /** Filmy Application for Android
  * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

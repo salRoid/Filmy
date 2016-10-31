@@ -45,7 +45,7 @@
             <LinearLayout
                 android:id="@+id/powered"
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
+                android:layout_height="88dp"
                 android:layout_below="@+id/container"
                 android:padding="16dp"
                 android:weightSum="2">
@@ -55,12 +55,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/tmdb" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@drawable/trakt" />
             </LinearLayout>
 
             <TextView

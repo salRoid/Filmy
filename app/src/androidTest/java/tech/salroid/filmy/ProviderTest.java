@@ -18,7 +18,7 @@ import tech.salroid.filmy.providers.FilmProvider;
 /**
  * Created by Home on 7/24/2016.
  */
-public class ProviderTest extends AndroidTestCase {
+    public class ProviderTest extends AndroidTestCase {
 
     static final String TAG = ProviderTest.class.getSimpleName();
     static private final int BULK_INSERT_RECORDS_TO_INSERT = 10;

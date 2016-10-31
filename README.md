@@ -25,7 +25,7 @@ Contains various advanced api implementations that make it high quality app.
 <li>Volley - for networking</li>
 <li>Glide - for images</li>
 <li>Accessbility Features</li>
-<li>Localised content</li>
+<li>Localised Content</li>
 <li>Animations</li>
 <li>App Widgets</li>
 <li>Custom Views - BreathingProgress, CustomToast</li>

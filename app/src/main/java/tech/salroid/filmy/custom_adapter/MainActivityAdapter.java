@@ -98,17 +98,17 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         return (dataCursor == null) ? 0 : dataCursor.getCount();
     }
 
-    public Cursor swapCursor(Cursor cursor) {
-        if (dataCursor == cursor) {
-            return null;
+        public Cursor swapCursor(Cursor cursor) {
+            if (dataCursor == cursor) {
+                return null;
+            }
+            Cursor oldCursor = dataCursor;
+            this.dataCursor = cursor;
+            if (cursor != null) {
+                this.notifyDataSetChanged();
+            }
+            return oldCursor;
         }
-        Cursor oldCursor = dataCursor;
-        this.dataCursor = cursor;
-        if (cursor != null) {
-            this.notifyDataSetChanged();
-        }
-        return oldCursor;
-    }
 
     public void setClickListener(ClickListener clickListener) {
         this.clickListener = clickListener;

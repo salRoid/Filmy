@@ -1,6 +1,7 @@
 package tech.salroid.filmy.parser;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,10 +53,13 @@ public class MovieDetailsActivityParseWork {
 
                 setterGettercast = new MovieDetailsData();
 
-                String id = (jsonArray.getJSONObject(i)).getJSONObject("person").getJSONObject("ids").getString("trakt");
+                String id = (jsonArray.getJSONObject(i)).getString("id");
                 String character = (jsonArray.getJSONObject(i)).getString("character");
-                String name = (jsonArray.getJSONObject(i)).getJSONObject("person").getString("name");
-                String cast_poster = (jsonArray.getJSONObject(i)).getJSONObject("person").getJSONObject("images").getJSONObject("headshot").getString("thumb");
+                String name = (jsonArray.getJSONObject(i)).getString("name");
+                String cast_poster = (jsonArray.getJSONObject(i)).getString("profile_path");
+
+                cast_poster="http://image.tmdb.org/t/p/w45"+cast_poster;
+
 
                 setterGettercast.setCast_character(character);
                 setterGettercast.setCast_name(name);

@@ -32,6 +32,7 @@ import tech.salroid.filmy.activities.FullCastActivity;
 import tech.salroid.filmy.custom_adapter.MovieDetailsActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.MovieDetailsData;
+import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 /*
@@ -118,7 +119,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     public void getCastFromNetwork(String movieId) {
 
 
-        final String BASE_MOVIE_CAST_DETAILS = new String("https://api.trakt.tv/movies/" + movieId + "/people?extended=images");
+        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId+"/casts?api_key=b640f55eb6ecc47b3433cfe98d0675b1");
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(Request.Method.GET, BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -141,7 +142,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
         );
 
 
-        VolleySingleton volleySingleton = VolleySingleton.getInstance();
+        TmdbVolleySingleton volleySingleton = TmdbVolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
         requestQueue.add(jsonObjectRequestForMovieCastDetails);
     }

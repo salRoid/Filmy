@@ -181,6 +181,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cast_container" />
 
+            <FrameLayout
+                android:id="@+id/similar_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/crew_container" />
+
         </RelativeLayout>
 
     </ScrollView>

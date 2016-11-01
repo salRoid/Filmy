@@ -137,6 +137,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     private CastFragment castFragment;
     private boolean nightMode;
+    private String movie_imdb_id;
 
 
     @Override
@@ -274,6 +275,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             language = jsonObject.getString("original_language");
 
             movie_id_final = jsonObject.getString("id");
+            movie_imdb_id = jsonObject.getString("imdb_id");
 
             if (castFragment != null)
                 castFragment.getCastFromNetwork(movie_id_final);
@@ -898,8 +900,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
     private void shareMovie() {
-        String movie_imdb = getResources().getString(R.string.imdb_link_prefix) + movie_id_final;
-        if (!(movie_title == null && movie_rating.equals("null") && movie_id_final.equals("null"))) {
+        String movie_imdb = getResources().getString(R.string.imdb_link_prefix) + movie_imdb_id;
+        if (!(movie_title == null && movie_rating.equals("null") && movie_imdb_id.equals("null"))) {
             Intent myIntent = new Intent(Intent.ACTION_SEND);
             myIntent.setType("text/plain");
             myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_imdb + "\n");

@@ -154,6 +154,8 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
     public void itemClicked(SimilarMoviesData setterGetter, int position, View view) {
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra("id", setterGetter.getMovie_id());
+        intent.putExtra("network_applicable", true);
+        intent.putExtra("activity", false);
 
             startActivity(intent);
 

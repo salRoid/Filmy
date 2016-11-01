@@ -12,6 +12,7 @@ import java.util.List;
 
 import tech.salroid.filmy.data_classes.CastDetailsData;
 import tech.salroid.filmy.data_classes.CrewDetailsData;
+import tech.salroid.filmy.data_classes.SimilarMoviesData;
 
 /*
  * Filmy Application for Android
@@ -109,4 +110,46 @@ public class MovieDetailsActivityParseWork {
         return setterGettercastArray;
     }
 
+    public List<SimilarMoviesData> parse_similar_movies() {
+
+        final List<SimilarMoviesData> setterGettersimilarArray = new ArrayList<SimilarMoviesData>();
+        SimilarMoviesData setterGettersimilar = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(cast_result);
+
+            JSONArray jsonArray = jsonObject.getJSONArray("results");;
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                setterGettersimilar = new SimilarMoviesData();
+
+                String id= (jsonArray.getJSONObject(i)).getString("id");
+                String title = (jsonArray.getJSONObject(i)).getString("original_title");
+                String movie_poster = "http://image.tmdb.org/t/p/w185"+(jsonArray.getJSONObject(i)).getString("poster_path");
+
+                if(movie_poster.contains("null")){
+
+                }
+
+                else {
+                    setterGettersimilar.setMovie_id(id);
+                    setterGettersimilar.setMovie_banner(movie_poster);
+                    setterGettersimilar.setMovie_title(title);
+
+                    setterGettersimilarArray.add(setterGettersimilar);
+                }
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        return setterGettersimilarArray;
+    }
 }

@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -51,6 +50,7 @@ import tech.salroid.filmy.database.OfflineMovies;
 import tech.salroid.filmy.fragment.CastFragment;
 import tech.salroid.filmy.fragment.CrewFragment;
 import tech.salroid.filmy.fragment.FullReadFragment;
+import tech.salroid.filmy.fragment.SimilarFragment;
 import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
 import tech.salroid.filmy.utility.NullChecker;
 
@@ -140,6 +140,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     private boolean nightMode;
     private String movie_imdb_id;
     private CrewFragment crewFragment;
+    private SimilarFragment similarFragment;
 
 
     @Override
@@ -186,8 +187,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         }
 
         showCastFragment();
+        showSimilarFragment();
 
     }
+
+
 
     private void nightModeLogic() {
 
@@ -258,7 +262,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 replace(R.id.cast_container, castFragment)
                 .commit();
 
+    }
 
+    private void showSimilarFragment() {
+
+
+        similarFragment = SimilarFragment.newInstance(null,movie_title);
+
+        getSupportFragmentManager().
+                beginTransaction().
+                replace(R.id.similar_container, similarFragment)
+                .commit();
     }
 
     void parseMovieDetails(String movieDetails) {
@@ -282,6 +296,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             if (castFragment != null)
                 castFragment.getCastFromNetwork(movie_id_final);
+
+            if(similarFragment!=null)
+                similarFragment.getSimilarFromNetwork(movie_id_final);
 
             movie_rating = jsonObject.getString("vote_average");
 
@@ -930,6 +947,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     protected void onStop() {
         super.onStop();
         castFragment = null;
+        similarFragment=null;
 
     }
 

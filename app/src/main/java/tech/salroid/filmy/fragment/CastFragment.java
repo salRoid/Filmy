@@ -31,9 +31,8 @@ import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.FullCastActivity;
 import tech.salroid.filmy.custom_adapter.MovieDetailsActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
-import tech.salroid.filmy.data_classes.MovieDetailsData;
+import tech.salroid.filmy.data_classes.CastDetailsData;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
-import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 /*
  * Filmy Application for Android
@@ -151,7 +150,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     private void cast_parseOutput(String cast_result) {
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), cast_result);
-        List<MovieDetailsData> cast_list = par.parse_cast();
+        List<CastDetailsData> cast_list = par.parse_cast();
         MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, true);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
@@ -191,7 +190,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     }
 
     @Override
-    public void itemClicked(MovieDetailsData setterGetter, int position, View view) {
+    public void itemClicked(CastDetailsData setterGetter, int position, View view) {
         Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCast_id());
 

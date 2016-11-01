@@ -17,7 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.data_classes.MovieDetailsData;
+import tech.salroid.filmy.data_classes.CastDetailsData;
 
 /*
  * Filmy Application for Android
@@ -39,11 +39,11 @@ import tech.salroid.filmy.data_classes.MovieDetailsData;
 public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetailsActivityAdapter.Ho> {
 
     private final Boolean ret_size;
-    private List<MovieDetailsData> cast = new ArrayList<>();
+    private List<CastDetailsData> cast = new ArrayList<>();
     private Context context;
     private ClickListener clickListener;
 
-    public MovieDetailsActivityAdapter(Context context, List<MovieDetailsData> cast, Boolean size) {
+    public MovieDetailsActivityAdapter(Context context, List<CastDetailsData> cast, Boolean size) {
 
         this.context = context;
         this.cast = cast;
@@ -99,7 +99,7 @@ public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetai
 
     public interface ClickListener {
 
-        void itemClicked(MovieDetailsData setterGetter, int position,View view);
+        void itemClicked(CastDetailsData setterGetter, int position, View view);
 
     }
 

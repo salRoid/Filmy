@@ -16,7 +16,7 @@ package tech.salroid.filmy.data_classes;
  * limitations under the License.
  */
 
-public class MovieDetailsData {
+public class CastDetailsData {
 
 
     String cast_name, cast_character, cast_profile, cast_id;

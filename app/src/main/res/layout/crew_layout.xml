@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:minHeight="300dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/card_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:padding="16dp"
+                android:text="@string/crew"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/crew_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="?android:selectableItemBackground"
+                android:fontFamily="sans-serif-condensed"
+                android:padding="16dp"
+                android:text="@string/more"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/colorMore"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+
+            <android.support.v7.widget.RecyclerView
+
+                android:id="@+id/crew_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/card_holder"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

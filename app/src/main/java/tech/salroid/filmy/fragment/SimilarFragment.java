@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -70,7 +71,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
         View view = inflater.inflate(R.layout.similar_fragment, container, false);
         ButterKnife.bind(this, view);
 
-        similar_recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        similar_recycler.setLayoutManager(new GridLayoutManager(getActivity(),1, GridLayoutManager.HORIZONTAL, false));
         similar_recycler.setNestedScrollingEnabled(false);
 
         similar_recycler.setVisibility(View.INVISIBLE);

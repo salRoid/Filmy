@@ -6,14 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -36,14 +33,14 @@ import tech.salroid.filmy.data_classes.CastDetailsData;
  * limitations under the License.
  */
 
-public class MovieDetailsActivityAdapter extends RecyclerView.Adapter<MovieDetailsActivityAdapter.Ho> {
+public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
 
     private final Boolean ret_size;
     private List<CastDetailsData> cast = new ArrayList<>();
     private Context context;
     private ClickListener clickListener;
 
-    public MovieDetailsActivityAdapter(Context context, List<CastDetailsData> cast, Boolean size) {
+    public CastAdapter(Context context, List<CastDetailsData> cast, Boolean size) {
 
         this.context = context;
         this.cast = cast;

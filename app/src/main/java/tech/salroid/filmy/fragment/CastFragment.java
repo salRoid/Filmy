@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.FullCastActivity;
-import tech.salroid.filmy.custom_adapter.MovieDetailsActivityAdapter;
+import tech.salroid.filmy.custom_adapter.CastAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.CastDetailsData;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
@@ -52,7 +53,7 @@ import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
  */
 
 
-public class CastFragment extends Fragment implements View.OnClickListener, MovieDetailsActivityAdapter.ClickListener {
+public class CastFragment extends Fragment implements View.OnClickListener, CastAdapter.ClickListener {
 
 
     private String cast_json;
@@ -66,6 +67,9 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     TextView card_holder;
     @BindView(R.id.breathingProgressFragment)
     BreathingProgress breathingProgress;
+
+    private GotCrewListener gotCrewListener;
+
 
     public static CastFragment newInstance(String movie_Id, String movie_Title) {
         CastFragment fragment = new CastFragment();
@@ -95,6 +99,13 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     }
 
 
+    public void setGotCrewListener(GotCrewListener gotCrewListener){
+
+        this.gotCrewListener = gotCrewListener;
+
+    }
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,14 +129,18 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     public void getCastFromNetwork(String movieId) {
 
 
-        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId+"/casts?api_key=b640f55eb6ecc47b3433cfe98d0675b1");
+        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=b640f55eb6ecc47b3433cfe98d0675b1");
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(Request.Method.GET, BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
                         cast_json = response.toString();
+
                         cast_parseOutput(response.toString());
+
+                        if (gotCrewListener!=null)
+                          gotCrewListener.gotCrew(response.toString());
 
                     }
                 }, new Response.ErrorListener() {
@@ -147,11 +162,12 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
     }
 
 
+
     private void cast_parseOutput(String cast_result) {
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), cast_result);
         List<CastDetailsData> cast_list = par.parse_cast();
-        MovieDetailsActivityAdapter cast_adapter = new MovieDetailsActivityAdapter(getActivity(), cast_list, true);
+        CastAdapter cast_adapter = new CastAdapter(getActivity(), cast_list, true);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
         if (cast_list.size() > 4)
@@ -173,7 +189,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
 
         if (view.getId() == R.id.more) {
 
-           // Log.d("webi",""+movieTitle);
+            // Log.d("webi",""+movieTitle);
 
             if (cast_json != null && movieTitle != null) {
 
@@ -207,6 +223,12 @@ public class CastFragment extends Fragment implements View.OnClickListener, Movi
             startActivity(intent);
         }
 
+    }
+
+
+
+    public interface GotCrewListener{
+        void gotCrew(String crewData);
     }
 
 }

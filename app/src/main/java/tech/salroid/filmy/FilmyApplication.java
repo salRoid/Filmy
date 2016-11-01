@@ -32,7 +32,6 @@ public class FilmyApplication extends Application {
 
     public static Context getContext() {
         return instance.getApplicationContext();
-
     }
 
     @Override

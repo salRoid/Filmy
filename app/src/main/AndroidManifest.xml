@@ -58,6 +58,12 @@
             android:name=".activities.FullCastActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
+
+        <activity
+            android:name=".activities.FullCrewActivity"
+            android:label=" "
+            android:theme="@style/AppTheme.Base" />
+
         <activity
             android:name=".activities.FullMovieActivity"
             android:label="@string/title_activity_full_movie"

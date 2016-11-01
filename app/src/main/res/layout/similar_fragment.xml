@@ -21,11 +21,12 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:padding="16dp"
-        android:text="@string/cast"
+        android:text="@string/similar"
         android:textAppearance="?android:textAppearanceMedium"
         android:textStyle="bold" />
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/card_holder"
         android:id="@+id/similar_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

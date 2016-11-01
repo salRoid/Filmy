@@ -19,7 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.CastAdapter;
+import tech.salroid.filmy.custom_adapter.CrewAdapter;
 import tech.salroid.filmy.data_classes.CastDetailsData;
+import tech.salroid.filmy.data_classes.CrewDetailsData;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
 /*
@@ -39,13 +41,13 @@ import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
  * limitations under the License.
  */
 
-public class FullCastActivity extends AppCompatActivity implements CastAdapter.ClickListener {
+public class FullCrewActivity extends AppCompatActivity implements CrewAdapter.ClickListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.full_cast_recycler) RecyclerView full_cast_recycler;
+    @BindView(R.id.full_cast_recycler) RecyclerView full_crew_recycler;
 
 
-    private String cast_result;
+    private String crew_result;
     private boolean nightMode;
 
     @Override
@@ -65,34 +67,35 @@ public class FullCastActivity extends AppCompatActivity implements CastAdapter.C
 
         setSupportActionBar(toolbar);
 
-        full_cast_recycler.setLayoutManager(new LinearLayoutManager(FullCastActivity.this));
+        full_crew_recycler.setLayoutManager(new LinearLayoutManager(FullCrewActivity.this));
 
 
         Intent intent = getIntent();
         if (intent != null) {
-            cast_result = intent.getStringExtra("cast_json");
+            crew_result = intent.getStringExtra("crew_json");
             if(getSupportActionBar()!=null)
             getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
         }
 
 
-        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(this, cast_result);
-        List<CastDetailsData> cast_list = par.parse_cast();
-        CastAdapter full_cast_adapter = new CastAdapter(this, cast_list, false);
-        full_cast_adapter.setClickListener(this);
-        full_cast_recycler.setAdapter(full_cast_adapter);
+        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(this, crew_result);
+        List<CrewDetailsData> crew_list = par.parse_crew();
+        CrewAdapter full_crew_adapter = new CrewAdapter(this, crew_list, false);
+        full_crew_adapter.setClickListener(this);
+        full_crew_recycler.setAdapter(full_crew_adapter);
 
     }
 
     @Override
-    public void itemClicked(CastDetailsData setterGetter, int position, View view) {
+    public void itemClicked(CrewDetailsData setterGetter, int position, View view) {
+
         Intent intent = new Intent(this, CharacterDetailsActivity.class);
-        intent.putExtra("id", setterGetter.getCast_id());
+        intent.putExtra("id", setterGetter.getCrew_id());
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
 
-            Pair<View, String> p1 = Pair.create(view.findViewById(R.id.cast_poster), "profile");
-            Pair<View, String> p2 = Pair.create(view.findViewById(R.id.cast_name), "name");
+            Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
+            Pair<View, String> p2 = Pair.create(view.findViewById(R.id.crew_name), "name");
 
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(this, p1, p2);

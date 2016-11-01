@@ -71,7 +71,8 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
         View view = inflater.inflate(R.layout.similar_fragment, container, false);
         ButterKnife.bind(this, view);
 
-        similar_recycler.setLayoutManager(new GridLayoutManager(getActivity(),1, GridLayoutManager.HORIZONTAL, false));
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        similar_recycler.setLayoutManager(llm);
         similar_recycler.setNestedScrollingEnabled(false);
 
         similar_recycler.setVisibility(View.INVISIBLE);
@@ -102,7 +103,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
 
     public void getSimilarFromNetwork(String movieId) {
 
-        final String BASE_MOVIE_CAST_DETAILS = new String(" https://api.themoviedb.org/3/movie/" +movieId+ "/similar?api_key=b640f55eb6ecc47b3433cfe98d0675b1");
+        final String BASE_MOVIE_CAST_DETAILS = new String(" https://api.themoviedb.org/3/movie/" + movieId + "/similar?api_key=b640f55eb6ecc47b3433cfe98d0675b1");
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(Request.Method.GET, BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -141,7 +142,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
         similar_adapter.setClickListener(this);
         similar_recycler.setAdapter(similar_adapter);
 
-         if (similar_list.size() == 0) {
+        if (similar_list.size() == 0) {
             card_holder.setVisibility(View.INVISIBLE);
         }
 
@@ -158,7 +159,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
         intent.putExtra("network_applicable", true);
         intent.putExtra("activity", false);
 
-            startActivity(intent);
+        startActivity(intent);
 
     }
 }

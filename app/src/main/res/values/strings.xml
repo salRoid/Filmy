@@ -343,7 +343,8 @@ limitations under the License.
     <string translatable="false"  name="salroidgit">https://github.com/salroid</string>
     <string name="shareappdetails">Share this App</string>
     <string name="dark">Night Mode</string>
-    <string name="crew">crew</string>
+    <string name="crew">Crew</string>
+    <string name="similar">Similar Movies</string>
 
 
 </resources>

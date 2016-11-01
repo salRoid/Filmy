@@ -33,11 +33,11 @@ import tech.salroid.filmy.data_classes.SimilarMoviesData;
 public class MovieDetailsActivityParseWork {
 
     private Context context;
-    private String cast_result;
+    private String result;
 
-    public MovieDetailsActivityParseWork(Context context, String cast_result) {
+    public MovieDetailsActivityParseWork(Context context, String result) {
         this.context = context;
-        this.cast_result = cast_result;
+        this.result = result;
     }
 
     public List<CastDetailsData> parse_cast() {
@@ -46,14 +46,9 @@ public class MovieDetailsActivityParseWork {
         final List<CastDetailsData> setterGettercastArray = new ArrayList<CastDetailsData>();
         CastDetailsData setterGettercast = null;
 
-        final List<CrewDetailsData> setterGettercrewArray = new ArrayList<CrewDetailsData>();
-        CrewDetailsData setterGettercrew = null;
-
         try {
-            JSONObject jsonObject = new JSONObject(cast_result);
-
+            JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("cast");
-            JSONArray crewArray=jsonObject.getJSONArray("crew");
 
             for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -64,7 +59,7 @@ public class MovieDetailsActivityParseWork {
                 String name = (jsonArray.getJSONObject(i)).getString("name");
                 String cast_poster = (jsonArray.getJSONObject(i)).getString("profile_path");
 
-                cast_poster="http://image.tmdb.org/t/p/w45"+cast_poster;
+                cast_poster="http://image.tmdb.org/t/p/w185"+cast_poster;
 
 
                 setterGettercast.setCast_character(character);
@@ -77,27 +72,45 @@ public class MovieDetailsActivityParseWork {
 
             }
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return setterGettercastArray;
+    }
+
+    public List<CrewDetailsData> parse_crew() {
+
+        final List<CrewDetailsData> setterGettercrewArray = new ArrayList<CrewDetailsData>();
+        CrewDetailsData setterGetterCrew = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+
+            JSONArray crewArray = jsonObject.getJSONArray("crew");
+
             for (int i=0;i<crewArray.length();i++){
 
-                setterGettercrew=new CrewDetailsData();
+                setterGetterCrew = new CrewDetailsData();
 
                 String crew_id = (crewArray.getJSONObject(i)).getString("id");
                 String crew_job = (crewArray.getJSONObject(i)).getString("job");
                 String crew_name = (crewArray.getJSONObject(i)).getString("name");
-                String crew_poster = "http://image.tmdb.org/t/p/w45"+(crewArray.getJSONObject(i)).getString("profile_path");
+                String crew_poster = "http://image.tmdb.org/t/p/w185"+(crewArray.getJSONObject(i))
+                        .getString("profile_path");
 
 
 
-                if (crew_poster.contains("null")){
-                 //don't put it into the list .
-                }
-                else {
-                    Toast.makeText(context,crew_job,Toast.LENGTH_SHORT).show();
-                    setterGettercrew.setCrew_id(crew_id);
-                    setterGettercrew.setCrew_job(crew_job);
-                    setterGettercrew.setCrew_name(crew_name);
-                    setterGettercrew.setCrew_profile(crew_poster);
-                    setterGettercrewArray.add(setterGettercrew);
+                if (!crew_poster.contains("null")){
+
+                    //Toast.makeText(context,crew_job,Toast.LENGTH_SHORT).show();
+
+                    setterGetterCrew.setCrew_id(crew_id);
+                    setterGetterCrew.setCrew_job(crew_job);
+                    setterGetterCrew.setCrew_name(crew_name);
+                    setterGetterCrew.setCrew_profile(crew_poster);
+                    setterGettercrewArray.add(setterGetterCrew);
 
                 }
             }
@@ -107,7 +120,7 @@ public class MovieDetailsActivityParseWork {
         }
 
 
-        return setterGettercastArray;
+        return setterGettercrewArray;
     }
 
     public List<SimilarMoviesData> parse_similar_movies() {
@@ -116,7 +129,7 @@ public class MovieDetailsActivityParseWork {
         SimilarMoviesData setterGettersimilar = null;
 
         try {
-            JSONObject jsonObject = new JSONObject(cast_result);
+            JSONObject jsonObject = new JSONObject(result);
 
             JSONArray jsonArray = jsonObject.getJSONArray("results");;
 
@@ -152,4 +165,5 @@ public class MovieDetailsActivityParseWork {
 
         return setterGettersimilarArray;
     }
+
 }

@@ -73,7 +73,9 @@ import tech.salroid.filmy.utility.NullChecker;
 
 public class MovieDetailsActivity extends AppCompatActivity implements
         View.OnClickListener,
-        LoaderManager.LoaderCallbacks<Cursor>, GetDataFromNetwork.DataFetchedListener {
+        LoaderManager.LoaderCallbacks<Cursor>,
+        GetDataFromNetwork.DataFetchedListener,
+        CastFragment.GotCrewListener{
 
 
     @BindView(R.id.toolbar)
@@ -166,9 +168,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             castDivider.setVisibility(View.GONE);
         }
 
-            setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
+
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
@@ -177,6 +182,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         headerContainer.setOnClickListener(this);
         newMain.setOnClickListener(this);
         trailorView.setOnClickListener(this);
+
 
         Intent intent = getIntent();
         getDataFromIntent(intent);
@@ -187,10 +193,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         }
 
         showCastFragment();
+        showCrewFragment();
         showSimilarFragment();
 
     }
-
 
 
     private void nightModeLogic() {
@@ -262,7 +268,21 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 replace(R.id.cast_container, castFragment)
                 .commit();
 
+        castFragment.setGotCrewListener(this);
+
     }
+
+
+    private void showCrewFragment() {
+
+        crewFragment = CrewFragment.newInstance(null,movie_title);
+
+        getSupportFragmentManager().
+                beginTransaction().
+                replace(R.id.crew_container, crewFragment)
+                .commit();
+    }
+
 
     private void showSimilarFragment() {
 
@@ -951,4 +971,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     }
 
+    @Override
+    public void gotCrew(String crewData) {
+
+        if(crewFragment!=null)
+           crewFragment.crew_parseOutput(crewData);
+    }
 }

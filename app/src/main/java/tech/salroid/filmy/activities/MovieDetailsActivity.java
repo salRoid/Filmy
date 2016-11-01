@@ -49,6 +49,7 @@ import tech.salroid.filmy.database.MovieLoaders;
 import tech.salroid.filmy.database.MovieProjection;
 import tech.salroid.filmy.database.OfflineMovies;
 import tech.salroid.filmy.fragment.CastFragment;
+import tech.salroid.filmy.fragment.CrewFragment;
 import tech.salroid.filmy.fragment.FullReadFragment;
 import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
 import tech.salroid.filmy.utility.NullChecker;
@@ -138,6 +139,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     private CastFragment castFragment;
     private boolean nightMode;
     private String movie_imdb_id;
+    private CrewFragment crewFragment;
 
 
     @Override
@@ -255,6 +257,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 beginTransaction().
                 replace(R.id.cast_container, castFragment)
                 .commit();
+
 
     }
 

@@ -10,7 +10,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.data_classes.MovieDetailsData;
+import tech.salroid.filmy.data_classes.CastDetailsData;
+import tech.salroid.filmy.data_classes.CrewDetailsData;
 
 /*
  * Filmy Application for Android
@@ -38,20 +39,24 @@ public class MovieDetailsActivityParseWork {
         this.cast_result = cast_result;
     }
 
-    public List<MovieDetailsData> parse_cast() {
+    public List<CastDetailsData> parse_cast() {
 
 
-        final List<MovieDetailsData> setterGettercastArray = new ArrayList<MovieDetailsData>();
-        MovieDetailsData setterGettercast = null;
+        final List<CastDetailsData> setterGettercastArray = new ArrayList<CastDetailsData>();
+        CastDetailsData setterGettercast = null;
+
+        final List<CrewDetailsData> setterGettercrewArray = new ArrayList<CrewDetailsData>();
+        CrewDetailsData setterGettercrew = null;
 
         try {
             JSONObject jsonObject = new JSONObject(cast_result);
 
             JSONArray jsonArray = jsonObject.getJSONArray("cast");
+            JSONArray crewArray=jsonObject.getJSONArray("crew");
 
             for (int i = 0; i < jsonArray.length(); i++) {
 
-                setterGettercast = new MovieDetailsData();
+                setterGettercast = new CastDetailsData();
 
                 String id = (jsonArray.getJSONObject(i)).getString("id");
                 String character = (jsonArray.getJSONObject(i)).getString("character");
@@ -69,6 +74,31 @@ public class MovieDetailsActivityParseWork {
                 setterGettercastArray.add(setterGettercast);
 
 
+            }
+
+            for (int i=0;i<crewArray.length();i++){
+
+                setterGettercrew=new CrewDetailsData();
+
+                String crew_id = (crewArray.getJSONObject(i)).getString("id");
+                String crew_job = (crewArray.getJSONObject(i)).getString("job");
+                String crew_name = (crewArray.getJSONObject(i)).getString("name");
+                String crew_poster = "http://image.tmdb.org/t/p/w45"+(crewArray.getJSONObject(i)).getString("profile_path");
+
+
+
+                if (crew_poster.contains("null")){
+                 //don't put it into the list .
+                }
+                else {
+                    Toast.makeText(context,crew_job,Toast.LENGTH_SHORT).show();
+                    setterGettercrew.setCrew_id(crew_id);
+                    setterGettercrew.setCrew_job(crew_job);
+                    setterGettercrew.setCrew_name(crew_name);
+                    setterGettercrew.setCrew_profile(crew_poster);
+                    setterGettercrewArray.add(setterGettercrew);
+
+                }
             }
 
         } catch (JSONException e) {

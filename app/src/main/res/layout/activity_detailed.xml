@@ -175,6 +175,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/movie_description" />
 
+            <FrameLayout
+                android:id="@+id/crew_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cast_container" />
+
         </RelativeLayout>
 
     </ScrollView>

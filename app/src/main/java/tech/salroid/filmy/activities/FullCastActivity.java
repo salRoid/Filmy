@@ -13,15 +13,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.mikhaellopez.circularimageview.CircularImageView;
-
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.MovieDetailsActivityAdapter;
-import tech.salroid.filmy.data_classes.MovieDetailsData;
+import tech.salroid.filmy.data_classes.CastDetailsData;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
 /*
@@ -79,7 +77,7 @@ public class FullCastActivity extends AppCompatActivity implements MovieDetailsA
 
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(this, cast_result);
-        List<MovieDetailsData> cast_list = par.parse_cast();
+        List<CastDetailsData> cast_list = par.parse_cast();
         MovieDetailsActivityAdapter full_cast_adapter = new MovieDetailsActivityAdapter(this, cast_list, false);
         full_cast_adapter.setClickListener(this);
         full_cast_recycler.setAdapter(full_cast_adapter);
@@ -87,7 +85,7 @@ public class FullCastActivity extends AppCompatActivity implements MovieDetailsA
     }
 
     @Override
-    public void itemClicked(MovieDetailsData setterGetter, int position, View view) {
+    public void itemClicked(CastDetailsData setterGetter, int position, View view) {
         Intent intent = new Intent(this, CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCast_id());
 

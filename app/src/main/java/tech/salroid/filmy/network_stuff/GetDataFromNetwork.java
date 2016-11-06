@@ -1,5 +1,7 @@
 package tech.salroid.filmy.network_stuff;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -47,7 +49,7 @@ public class GetDataFromNetwork {
         final String BASE_URL_MOVIE_DETAILS = new String(FilmyApplication.getContext().getResources().getString(R.string.tmdb_movie_base_url)
                 + movie_id
                 + "?"
-                + api_key
+                + "api_key="+api_key
                 + "&append_to_response=trailers");
 
 
@@ -64,7 +66,7 @@ public class GetDataFromNetwork {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                // Log.e("webi", "Volley Error: " + error.getCause());
+                Log.e("webi", "Volley Error: " + error.getCause());
 
             }
         }

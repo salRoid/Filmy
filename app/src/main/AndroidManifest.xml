@@ -18,8 +18,8 @@
         android:theme="@style/AppTheme.Base">
         <activity
             android:name=".FilmyIntro"
-            android:screenOrientation="portrait"
-            android:label=" " />
+            android:label=" "
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/SplashTheme">
@@ -58,12 +58,10 @@
             android:name=".activities.FullCastActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
-
         <activity
             android:name=".activities.FullCrewActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
-
         <activity
             android:name=".activities.FullMovieActivity"
             android:label="@string/title_activity_full_movie"
@@ -93,15 +91,28 @@
         <activity android:name=".activities.License" />
         <activity android:name=".activities.AboutActivity" />
 
-
         <receiver android:name=".widget.FilmyWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/filmy_widget_info" />
         </receiver>
+
+        <activity android:name=".activities.AccountActivity" />
+
+        <activity android:name=".activities.LoginActivity">
+
+            <data android:scheme="http" />
+            <data android:scheme="http" android:host="salroid.tech"/>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.BROWSABLE"/>
+            <category android:name="android.intent.category.DEFAULT"/>
+
+        </activity>
+
 
     </application>
 

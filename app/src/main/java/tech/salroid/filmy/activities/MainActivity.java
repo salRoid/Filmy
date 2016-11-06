@@ -12,10 +12,13 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
@@ -25,8 +28,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.FilmyIntro;
@@ -77,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     @BindView(R.id.error_view)
     ErrorView mErrorView;
-
 
     private Trending trendingFragment;
     private SearchFragment searchFragment;
@@ -224,10 +229,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private void allThemeLogic() {
 
-        tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"),Color.parseColor("#e0e0e0"));
+        tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"));
         logo.setTextColor(Color.parseColor("#E0E0E0"));
         materialSearchView.setBackgroundColor(getResources().getColor(R.color.colorDarkThemePrimary));
         materialSearchView.setBackIcon(getResources().getDrawable(R.drawable.ic_action_navigation_arrow_back_inverted));
@@ -357,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem itemSearch = menu.findItem(R.id.action_search);
         MenuItem itemBook = menu.findItem(R.id.ic_collection);
 
-        if (nightMode){
+        if (nightMode) {
             itemSearch.setIcon(R.drawable.ic_action_action_search);
             itemBook.setIcon(R.drawable.ic_action_action_book2);
         }
@@ -372,19 +376,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_search) {
+        switch (id) {
 
-            startActivity(new Intent(this, SearchFragment.class));
+            case R.id.action_search:
+                startActivity(new Intent(this, SearchFragment.class));
+                break;
+            case R.id.ic_setting:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.ic_collection:
+                startActivity(new Intent(this, SavedMovies.class));
+                break;
+            case R.id.ic_account:
+                startActivity(new Intent(this, AccountActivity.class));
+                break;
         }
 
-        if (id == R.id.ic_setting) {
-            startActivity(new Intent(this, SettingsActivity.class));
-
-        }
-
-        if (id == R.id.ic_collection) {
-            startActivity(new Intent(this, SavedMovies.class));
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -421,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean nightModeNew = sp.getBoolean("dark", false);
 
-        if (nightMode!=nightModeNew)
+        if (nightMode != nightModeNew)
             recreate();
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,

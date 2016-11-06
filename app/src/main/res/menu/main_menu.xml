@@ -4,9 +4,9 @@
 
 
     <item
-        android:id="@+id/ic_collection"
-        android:icon="@drawable/ic_action_action_book"
-        android:title="@string/offline_movies"
+        android:id="@+id/ic_account"
+        android:icon="@drawable/ic_action_action_account_circle"
+        android:title="@string/account"
         app:showAsAction="always"
 
         />
@@ -17,6 +17,15 @@
         android:orderInCategory="100"
         android:title="@string/abc_search_hint"
         app:showAsAction="always" />
+
+
+
+    <item
+        android:id="@+id/ic_collection"
+        android:icon="@drawable/ic_action_action_book"
+        android:title="@string/offline_movies"
+        app:showAsAction="never"
+        />
 
     <item
         android:id="@+id/ic_setting"

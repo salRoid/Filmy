@@ -12,7 +12,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:minHeight="300dp"
+            android:minHeight="200dp"
             android:layout_height="wrap_content">
 
             <TextView

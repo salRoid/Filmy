@@ -13,14 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.CharacterDetailsActivity;
-import tech.salroid.filmy.activities.FullCastActivity;
 import tech.salroid.filmy.activities.FullCrewActivity;
 import tech.salroid.filmy.custom_adapter.CrewAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
@@ -60,7 +58,7 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.crew_layout, container, false);
+        View view = inflater.inflate(R.layout.crew_fragment, container, false);
         ButterKnife.bind(this, view);
 
         crew_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));

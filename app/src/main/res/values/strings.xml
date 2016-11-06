@@ -1,25 +1,25 @@
 <resources>
 
-    <string translatable="false" name="api_key">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
-    <string translatable="false" name="trakt_base_url">https://api.trakt.tv/people/</string>
-    <string translatable="false" name="trakt_cast_suffix">/people?extended=images</string>
+    <string name="api_key" translatable="false">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
+    <string name="trakt_base_url" translatable="false">https://api.trakt.tv/people/</string>
+    <string name="trakt_cast_suffix" translatable="false">/people?extended=images</string>
 
-    <string translatable="false" name="tmdb_movie_base_url">http://api.themoviedb.org/3/movie/</string>
-    <string translatable="false" name="tmdb_api_key">api_key=b640f55eb6ecc47b3433cfe98d0675b1</string>
-    <string translatable="false" name="person_details_suffix">extended=full,images</string>
-    <string translatable="false" name="person_movies_details">/movies?extended=images,full</string>
-    <string translatable="false" name="imdb_link_prefix">http://www.imdb.com/title/</string>
-    <string translatable="false" name="trailer_img_prefix">http://img.youtube.com/vi/</string>
-    <string translatable="false" name="trailer_img_suffix">/0.jpg</string>
-    <string translatable="false" name="poster_prefix_185">http://image.tmdb.org/t/p/w185</string>
-    <string translatable="false" name="poster_prefix_500">http://image.tmdb.org/t/p/w780</string>
-    <string translatable="false" name="poster_prefix_add_quality">http://image.tmdb.org/t/p/</string>
-    <string translatable="false" name="trailer_link_prefix">https://www.youtube.com/watch?v=</string>
+    <string name="tmdb_movie_base_url" translatable="false">http://api.themoviedb.org/3/movie/</string>
+    <string name="tmdb_api_key" translatable="false">api_key=b640f55eb6ecc47b3433cfe98d0675b1</string>
+    <string name="person_details_suffix" translatable="false">extended=full,images</string>
+    <string name="person_movies_details" translatable="false">/movies?extended=images,full</string>
+    <string name="imdb_link_prefix" translatable="false">http://www.imdb.com/title/</string>
+    <string name="trailer_img_prefix" translatable="false">http://img.youtube.com/vi/</string>
+    <string name="trailer_img_suffix" translatable="false">/0.jpg</string>
+    <string name="poster_prefix_185" translatable="false">http://image.tmdb.org/t/p/w185</string>
+    <string name="poster_prefix_500" translatable="false">http://image.tmdb.org/t/p/w780</string>
+    <string name="poster_prefix_add_quality" translatable="false">http://image.tmdb.org/t/p/</string>
+    <string name="trailer_link_prefix" translatable="false">https://www.youtube.com/watch?v=</string>
 
 
     <!-- SyncAdapter related -->
-    <string translatable="false" name="sync_account_type">filmy.salroid.com</string>
-    <string translatable="false" name="content_authority">tech.salroid.filmy</string>
+    <string name="sync_account_type" translatable="false">filmy.salroid.com</string>
+    <string name="content_authority" translatable="false">tech.salroid.filmy</string>
 
     <string name="ramankit">Ramankit Singh</string>
     <string name="sajal">Sajal Gupta</string>
@@ -84,7 +84,7 @@
 
 
 
-    <string translatable="false" name="glide"><![CDATA[
+    <string name="glide" translatable="false"><![CDATA[
     <b>Glide
     </b>
      <br>
@@ -192,7 +192,7 @@ that this copyright notice remain intact.
     ]]></string>
 
 
-     <string translatable="false" name="circularimageview"><![CDATA[
+     <string name="circularimageview" translatable="false"><![CDATA[
     <b>Circular Image View
     </b>
      <br>
@@ -202,7 +202,7 @@ that this copyright notice remain intact.
 </pre>]]></string>
 
 
-     <string translatable="false" name="tatarka"><![CDATA[
+     <string name="tatarka" translatable="false"><![CDATA[
     <b>Job Scheduler
     </b>
      <br>
@@ -213,7 +213,7 @@ that this copyright notice remain intact.
 </pre>]]></string>
 
 
-    <string translatable="false" name="appintro"><![CDATA[
+    <string name="appintro" translatable="false"><![CDATA[
     <b>App Intro
     </b>
      <br>
@@ -223,7 +223,7 @@ that this copyright notice remain intact.
       https://github.com/PaoloRotolo/AppIntro
 </pre>]]></string>
 
-      <string translatable="false" name="crashlytics"><![CDATA[
+      <string name="crashlytics" translatable="false"><![CDATA[
     <b>Crashlytics
     </b>
      <br>
@@ -268,7 +268,7 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 </pre>]]></string>
 
-    <string translatable="false" name="butterknife"><![CDATA[
+    <string name="butterknife" translatable="false"><![CDATA[
     <b>Butter Knife
     </b>
      <br>
@@ -291,7 +291,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 
-     <string translatable="false" name="errorview"><![CDATA[
+     <string name="errorview" translatable="false"><![CDATA[
     <b>Error View
     </b>
      <br>
@@ -314,7 +314,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 
 
-    <string translatable="false" name="materialsearch"><![CDATA[
+    <string name="materialsearch" translatable="false"><![CDATA[
     <b>Material Search View
     </b>
      <br>
@@ -336,15 +336,27 @@ limitations under the License.
 </pre>]]></string>
 
 
-    <string translatable="false" name="app_share_link">https://play.google.com/store/apps/details?id=tech.salroid.filmy</string>
-    <string  translatable="false"   name="ramzplus">https://plus.google.com/u/0/+RamankitSinghWebianks</string>
-    <string  translatable="false"  name="sajjuplus">https://plus.google.com/u/0/+sajalguptasajju</string>
-    <string translatable="false"  name="webianksgit">https://github.com/webianks</string>
-    <string translatable="false"  name="salroidgit">https://github.com/salroid</string>
+    <string name="app_share_link" translatable="false">https://play.google.com/store/apps/details?id=tech.salroid.filmy</string>
+    <string name="ramzplus" translatable="false">https://plus.google.com/u/0/+RamankitSinghWebianks</string>
+    <string name="sajjuplus" translatable="false">https://plus.google.com/u/0/+sajalguptasajju</string>
+    <string name="webianksgit" translatable="false">https://github.com/webianks</string>
+    <string name="salroidgit" translatable="false">https://github.com/salroid</string>
     <string name="shareappdetails">Share this App</string>
     <string name="dark">Night Mode</string>
-    <string translatable="false" name="crew">Crew</string>
-    <string translatable="false" name="similar">Similar Movies</string>
+    <string name="crew">Crew</string>
+    <string name="similar">Similar Movies</string>
+    <string name="ramankit_email">webianks@gmail.com</string>
+    <string name="home">Home</string>
+    <string name="favorite">Favorites</string>
+    <string name="watchlist">Watch List</string>
+    <string name="openDrawer">Drawer Opened</string>
+    <string name="closeDrawer">Drawer Closed</string>
+    <string name="account">Account</string>
+    <string name="user_holder">Not Logged in</string>
+    <string name="form_username">Username</string>
+    <string name="form_password">Password</string>
+    <string name="login">TMDB LOGIN</string>
+    <string name="login_normal">Login</string>
 
 
 </resources>

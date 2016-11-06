@@ -136,7 +136,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
     int type;
     private String movie_id, trailer = null, movie_desc, quality, movie_tagline,
-            movie_rating, show_centre_img_url, movie_title, movie_id_final;
+            movie_rating, movie_rating_tomatometer, movie_rating_audience,movie_rating_metascore, show_centre_img_url, movie_title, movie_id_final;
 
     private CastFragment castFragment;
     private boolean nightMode;
@@ -320,11 +320,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             if(similarFragment!=null)
                 similarFragment.getSimilarFromNetwork(movie_id_final);
 
-            movie_rating = jsonObject.getString("vote_average");
-
-            if (movie_rating.equals("0")) {
-                movie_rating = "N.A";
-            }
+            Rating.getRating(context,movie_imdb_id);
 
             //poster and banner
             get_poster_path_from_json = jsonObject.getString("poster_path");
@@ -977,4 +973,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         if(crewFragment!=null)
            crewFragment.crew_parseOutput(crewData);
     }
+
+
+    public void setRating(String imdb_rating , String tomatometer_rating,String audience_rating,String metascore_rating){
+
+        movie_rating = imdb_rating;
+        movie_rating_tomatometer=tomatometer_rating;
+        movie_rating_audience=audience_rating;
+        movie_rating_metascore=movie_rating_audience;
+        if (movie_rating.equals("0")) {
+            movie_rating = "N.A";
+        }
+
+        det_rating.setText(movie_rating+" "+movie_rating_tomatometer+" "+movie_rating_audience+" "+movie_rating_metascore);
+    }
+
 }

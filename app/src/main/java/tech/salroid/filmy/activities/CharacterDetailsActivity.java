@@ -37,6 +37,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
 import tech.salroid.filmy.data_classes.CharacterDetailsData;
@@ -197,10 +198,11 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
         final String BASE_URL = getResources().getString(R.string.trakt_base_url);
+        String api_key = BuildConfig.API_KEY;
 
-        final String BASE_URL_PERSON_DETAIL = "https://api.themoviedb.org/3/person/"+character_id+"?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+        final String BASE_URL_PERSON_DETAIL = "https://api.themoviedb.org/3/person/"+character_id+"?api_key="+api_key;
 
-        final String BASE_URL_PEOPLE_MOVIES = "https://api.themoviedb.org/3/person/"+character_id+"/movie_credits?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+        final String BASE_URL_PEOPLE_MOVIES = "https://api.themoviedb.org/3/person/"+character_id+"/movie_credits?api_key="+api_key;
 
         JsonObjectRequest personDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PERSON_DETAIL, null,
                 new Response.Listener<JSONObject>() {

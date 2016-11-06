@@ -29,6 +29,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.SimilarMovieActivityAdapter;
@@ -67,6 +68,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
 
     @BindView(R.id.card_holder)
     TextView card_holder;
+    private String api_key = BuildConfig.API_KEY;
 
     public static SimilarFragment newInstance(String movie_Id, String movie_Title) {
         SimilarFragment fragment = new SimilarFragment();
@@ -116,7 +118,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
 
     public void getSimilarFromNetwork(String movieId) {
 
-        final String BASE_MOVIE_CAST_DETAILS = new String(" https://api.themoviedb.org/3/movie/" + movieId + "/similar?api_key=b640f55eb6ecc47b3433cfe98d0675b1");
+        final String BASE_MOVIE_CAST_DETAILS = new String(" https://api.themoviedb.org/3/movie/" + movieId + "/similar?api_key="+api_key);
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(Request.Method.GET, BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override

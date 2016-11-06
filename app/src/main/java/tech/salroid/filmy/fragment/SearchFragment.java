@@ -29,6 +29,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
@@ -65,6 +66,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     BreathingProgress breathingProgress;
     @BindView(R.id.fragment_rl)
     RelativeLayout fragmentRelativeLayout;
+    private String api_key = BuildConfig.API_KEY;
 
     @Nullable
     @Override
@@ -149,7 +151,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         final RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.themoviedb.org/3/search/movie?api_key=b640f55eb6ecc47b3433cfe98d0675b1&query="+finalQuery;
+        final String BASE_URL = "https://api.themoviedb.org/3/search/movie?api_key="+api_key+"&query="+finalQuery;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
                 new Response.Listener<JSONObject>() {

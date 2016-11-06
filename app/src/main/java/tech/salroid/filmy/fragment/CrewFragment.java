@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.FullCrewActivity;

@@ -1,11 +1,10 @@
 <resources>
 
-    <string name="api_key" translatable="false">b5730f26b3b69cfd77bf049a3935af39541f2497b0f21c4ce3fa26f9d2aee64f</string>
     <string name="trakt_base_url" translatable="false">https://api.trakt.tv/people/</string>
     <string name="trakt_cast_suffix" translatable="false">/people?extended=images</string>
 
     <string name="tmdb_movie_base_url" translatable="false">http://api.themoviedb.org/3/movie/</string>
-    <string name="tmdb_api_key" translatable="false">api_key=b640f55eb6ecc47b3433cfe98d0675b1</string>
+
     <string name="person_details_suffix" translatable="false">extended=full,images</string>
     <string name="person_movies_details" translatable="false">/movies?extended=images,full</string>
     <string name="imdb_link_prefix" translatable="false">http://www.imdb.com/title/</string>
@@ -357,6 +356,7 @@ limitations under the License.
     <string name="form_password">Password</string>
     <string name="login">TMDB LOGIN</string>
     <string name="login_normal">Login</string>
+    <string name="trailers">Trailers</string>
 
 
 </resources>

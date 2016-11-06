@@ -95,29 +95,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
                         android:layout_weight="3"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tvRating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="sans-serif-condensed"
-                            android:text="@string/rating"
-                            android:textAppearance="?android:textAppearanceLarge" />
-
-                        <TextView
-                            android:id="@+id/detail_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvRating"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textAppearance="?android:textAppearanceLarge" />
+                        <ImageView
+                            android:id="@+id/youtube_icon"
+                            android:layout_centerInParent="true"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:src="@drawable/play_button" />
 
                     </RelativeLayout>
 

@@ -8,6 +8,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.FilmyApplication;
 import tech.salroid.filmy.R;
 
@@ -41,11 +42,12 @@ public class GetDataFromNetwork {
 
         //still here we will use the query builder
         //this String is not awesome.
+        String api_key = BuildConfig.API_KEY;
 
         final String BASE_URL_MOVIE_DETAILS = new String(FilmyApplication.getContext().getResources().getString(R.string.tmdb_movie_base_url)
                 + movie_id
                 + "?"
-                + FilmyApplication.getContext().getResources().getString(R.string.tmdb_api_key)
+                + api_key
                 + "&append_to_response=trailers");
 
 

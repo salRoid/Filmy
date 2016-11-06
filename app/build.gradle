@@ -33,6 +33,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug{
+            buildConfigField("String", "API_KEY", "\"" + TMDB_API_KEY +"\"")
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+        }
     }
 }
 

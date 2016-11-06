@@ -42,9 +42,9 @@
 
                 <LinearLayout
                     android:id="@+id/header"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <TextView
@@ -83,79 +83,78 @@
                 android:layout_below="@+id/header_container"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:id="@+id/trailorBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/divider"
+                    android:weightSum="10">
 
 
-                    <LinearLayout
-                        android:id="@+id/trailorBackground"
-                        android:layout_width="match_parent"
+                    <RelativeLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="?attr/divider"
-                        android:weightSum="10">
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="3"
+                        android:orientation="horizontal">
 
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/tvRating"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_weight="3"
-                            android:orientation="horizontal">
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="sans-serif-condensed"
+                            android:text="@string/rating"
+                            android:textAppearance="?android:textAppearanceLarge" />
 
-                            <TextView
-                                android:id="@+id/tvRating"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:fontFamily="sans-serif-condensed"
-                                android:text="@string/rating"
-                                android:textAppearance="?android:textAppearanceLarge" />
-
-                            <TextView
-                                android:id="@+id/detail_rating"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/tvRating"
-                                android:layout_centerHorizontal="true"
-                                android:fontFamily="sans-serif-condensed"
-                                android:textAppearance="?android:textAppearanceLarge" />
-
-                        </RelativeLayout>
-
-                        <FrameLayout
-                            android:id="@+id/trailorView"
-                            android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/detail_rating"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="7"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="?android:selectableItemBackground">
+                            android:layout_below="@id/tvRating"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="sans-serif-condensed"
+                            android:textAppearance="?android:textAppearanceLarge" />
+
+                    </RelativeLayout>
+
+                    <FrameLayout
+                        android:id="@+id/trailorView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:selectableItemBackground">
 
 
-                            <ImageView
-                                android:id="@+id/detail_youtube"
-                                android:layout_width="match_parent"
-                                android:layout_height="180dp"
-                                android:contentDescription="@string/trailer"
-                                android:scaleType="centerCrop" />
+                        <ImageView
+                            android:id="@+id/detail_youtube"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:contentDescription="@string/trailer"
+                            android:scaleType="centerCrop" />
 
 
-                            <ImageView
-                                android:id="@+id/play_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:alpha="0.8"
-                                android:background="@drawable/ic_play_circle_filled_white_48dp"
-                                android:contentDescription="@string/play"
-                                android:visibility="invisible" />
+                        <ImageView
+                            android:id="@+id/play_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:alpha="0.8"
+                            android:background="@drawable/ic_play_circle_filled_white_48dp"
+                            android:contentDescription="@string/play"
+                            android:visibility="invisible" />
 
-                        </FrameLayout>
+                    </FrameLayout>
 
 
-                    </LinearLayout>
+                </LinearLayout>
 
+                <include layout="@layout/ratings" />
 
                 <include layout="@layout/extra_info_movie_detail" />
 

@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -87,7 +88,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.detail_overview)
     TextView det_overview;
 
-    @BindView(R.id.imdbRating)
+    @BindView(R.id.tmdbRating)
     TextView det_rating;
 
     @BindView(R.id.tomatoRating)
@@ -99,12 +100,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.metaRating)
     TextView meta_rating;
 
-    @BindView(R.id.tmdbRating)
-    TextView tmdb_rating;
+    @BindView(R.id.imdbRating)
+    TextView rating_of_imdb;
 
     @BindView(R.id.tvRating)
     TextView tvRating;
 
+    @BindView(R.id.metaRatingView)
+    TextView metascore_setter;
 
     @BindView(R.id.detail_released)
     TextView det_released;
@@ -115,13 +118,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.detail_language)
     TextView det_language;
 
-
     @BindView(R.id.detail_youtube)
     ImageView youtube_link;
     @BindView(R.id.backdrop)
     ImageView banner;
     @BindView(R.id.play_button)
     ImageView youtube_play_button;
+
+    @BindView(R.id.tomatoRating_image)
+    ImageView tomatoRating_image;
+
+    @BindView(R.id.flixterRating_image)
+    ImageView flixterRating_image;
 
     @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;
@@ -138,12 +146,29 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     FrameLayout headerContainer;
     @BindView(R.id.main)
     RelativeLayout main;
+    @BindView(R.id.metaRating_background)
+    RelativeLayout metaRating_background;
     @BindView(R.id.header)
     LinearLayout header;
     @BindView(R.id.extraDetails)
     RelativeLayout extraDetails;
     @BindView(R.id.cast_divider)
     View castDivider;
+
+    @BindView(R.id.layout_imdb)
+    LinearLayout layout_imdb;
+
+    @BindView(R.id.layout_flixi)
+    LinearLayout layout_flixi;
+
+    @BindView(R.id.layout_meta)
+    LinearLayout layout_meta;
+
+    @BindView(R.id.layout_tmdb)
+    LinearLayout layout_tmdb;
+
+    @BindView(R.id.layout_tomato)
+    LinearLayout layout_tomato;
 
 
     Context context = this;
@@ -152,7 +177,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
     int type;
     private String movie_id,trailor = null,trailer = null, movie_desc, quality, movie_tagline,
-            movie_rating, movie_rating_tomatometer, movie_rating_audience,movie_rating_metascore, show_centre_img_url, movie_title, movie_id_final;
+            movie_rating,movie_rating_imdb,movie_rating_tmdb, movie_rating_tomatometer,movie_rating_metascore, movie_rating_audience, show_centre_img_url, movie_title, movie_id_final;
 
     private CastFragment castFragment;
     private boolean nightMode;
@@ -188,8 +213,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
@@ -330,6 +353,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movie_id_final = jsonObject.getString("id");
             movie_imdb_id = jsonObject.getString("imdb_id");
 
+            movie_rating_tmdb = jsonObject.getString("vote_average");
+
             if (castFragment != null)
                 castFragment.getCastFromNetwork(movie_id_final);
 
@@ -466,7 +491,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         det_tagline.setText(tagline);
         det_title.setText(title);
         det_overview.setText(overview);
-        det_rating.setText(rating);
+       // det_rating.setText(rating);
         det_runtime.setText(runtime);
         det_released.setText(released);
         det_certification.setText(certification);
@@ -498,7 +523,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                     if (trailorSwatch != null) {
                                         trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
                                         tvRating.setTextColor(trailorSwatch.getTitleTextColor());
-                                        det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                       // det_rating.setTextColor(trailorSwatch.getBodyTextColor());
                                     }
                                 }
                             });
@@ -637,7 +662,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             det_tagline.setText(tagline);
             det_title.setText(title);
             det_overview.setText(overview);
-            det_rating.setText(rating);
+           // det_rating.setText(rating);
             det_runtime.setText(runtime);
             det_released.setText(released);
             det_certification.setText(certification);
@@ -672,7 +697,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                         if (trailorSwatch != null) {
                                             trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
                                             tvRating.setTextColor(trailorSwatch.getTitleTextColor());
-                                            det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                            //det_rating.setTextColor(trailorSwatch.getBodyTextColor());
                                         }
                                     }
                                 });
@@ -755,8 +780,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             if (NullChecker.isSettable(overview))
                 det_overview.setText(overview);
 
-            if (NullChecker.isSettable(rating))
-                det_rating.setText(rating);
+
 
             if (runtime != null && !runtime.equals("null mins"))
                 det_runtime.setText(runtime);
@@ -797,7 +821,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                         if (trailorSwatch != null) {
                                             trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
                                             tvRating.setTextColor(trailorSwatch.getTitleTextColor());
-                                            det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                           // det_rating.setTextColor(trailorSwatch.getBodyTextColor());
                                         }
                                     }
                                 });
@@ -973,21 +997,81 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
 
-    public void setRating(String imdb_rating , String tomatometer_rating,String audience_rating,String metascore_rating){
+    public void setRating(String imdb_rating , String tomatometer_rating,String audience_rating,String metascore_rating,String image){
 
-        movie_rating = imdb_rating;
+        movie_rating_imdb = imdb_rating;
         movie_rating_tomatometer=tomatometer_rating;
         movie_rating_audience=audience_rating;
         movie_rating_metascore=metascore_rating;
-        if (movie_rating.equals("0")) {
-            movie_rating = "N.A";
+
+        Toast.makeText(context, ""+movie_rating_imdb, Toast.LENGTH_SHORT).show();
+
+        if (movie_rating_imdb.equals("N/A"))
+            layout_imdb.setVisibility(View.GONE);
+        else
+        rating_of_imdb.setText(movie_rating_imdb);
+
+
+        if (movie_rating_tomatometer.equals("N/A"))
+            layout_tomato.setVisibility(View.GONE);
+
+        else {
+
+            if (image.equals("certified")) {
+                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
+            } else if (image.equals("fresh")) {
+                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.fresh));
+            } else if (image.equals("rotten")) {
+                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));
+            }
+
+            tomato_rating.setText(movie_rating_tomatometer);
+
         }
 
-        det_rating.setText(movie_rating);
-        tomato_rating.setText(movie_rating_tomatometer);
-        flixter_rating.setText(movie_rating_audience);
-        meta_rating.setText(movie_rating_metascore);
-        tmdb_rating.setText(movie_rating);
+        if (movie_rating_audience.equals("N/A"))
+            layout_flixi.setVisibility(View.GONE);
+
+        else {
+
+            float audi_rating = Float.valueOf(audience_rating);
+
+            if (audi_rating > 3.4)
+                flixterRating_image.setImageDrawable(getResources().getDrawable(R.drawable.popcorn));
+            else
+                flixterRating_image.setImageDrawable(getResources().getDrawable(R.drawable.spilt));
+
+
+            flixter_rating.setText(movie_rating_audience);
+
+        }
+
+        if (movie_rating_metascore.equals("N/A"))
+            layout_meta.setVisibility(View.GONE);
+
+        else {
+
+            int metasco_rating = Integer.valueOf(metascore_rating);
+
+            if (metasco_rating > 60)
+                metaRating_background.setBackgroundColor(Color.parseColor("#66cc33"));
+            else if (metasco_rating > 40 && metasco_rating < 61)
+                metaRating_background.setBackgroundColor(Color.parseColor("#ffcc33"));
+            else
+                metaRating_background.setBackgroundColor(Color.parseColor("#ff0000"));
+
+
+            meta_rating.setText(movie_rating_metascore);
+            metascore_setter.setText(movie_rating_metascore);
+
+        }
+
+        if (movie_rating_tmdb.equals("0"))
+            layout_tmdb.setVisibility(View.GONE);
+
+        else
+        det_rating.setText(movie_rating_tmdb);
+
 
     }
 

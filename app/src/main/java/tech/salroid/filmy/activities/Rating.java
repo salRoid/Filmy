@@ -21,7 +21,7 @@ import tech.salroid.filmy.network_stuff.VolleySingleton;
 
 public class Rating {
 
-    public static String imdb_rating = "0",tomatometer_rating="0",audience_rating="0",metascore_rating="0";
+    public static String imdb_rating = "0",tomatometer_rating="0",audience_rating="0",metascore_rating="0",image=null;
 
     public static void getRating(final Context context, String movie_id_final) {
 
@@ -41,12 +41,14 @@ public class Rating {
                             tomatometer_rating=response.getString("tomatoRating");
                             audience_rating=response.getString("tomatoUserRating");
                             metascore_rating=response.getString("Metascore");
+                            image=response.getString("tomatoImage");
 
-                            setRatingCallback(context,imdb_rating,tomatometer_rating,audience_rating,metascore_rating);
+
+                            setRatingCallback(context,imdb_rating,tomatometer_rating,audience_rating,metascore_rating,image);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            setRatingCallback(context,imdb_rating,tomatometer_rating,audience_rating,metascore_rating);
+                            setRatingCallback(context,imdb_rating,tomatometer_rating,audience_rating,metascore_rating,image);
 
                         }
 
@@ -68,9 +70,9 @@ public class Rating {
     }
 
 
-    private static void setRatingCallback(Context context,String imdb_rating,String tomatometer_rating,String audience_rating,String metascore_rating) {
+    private static void setRatingCallback(Context context,String imdb_rating,String tomatometer_rating,String audience_rating,String metascore_rating,String image) {
 
-        ((MovieDetailsActivity)context).setRating(imdb_rating,tomatometer_rating,audience_rating,metascore_rating);
+        ((MovieDetailsActivity)context).setRating(imdb_rating,tomatometer_rating,audience_rating,metascore_rating,image);
 
     }
 

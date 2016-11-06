@@ -110,14 +110,6 @@
                             android:text="@string/rating"
                             android:textAppearance="?android:textAppearanceLarge" />
 
-                        <TextView
-                            android:id="@+id/detail_rating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvRating"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="sans-serif-condensed"
-                            android:textAppearance="?android:textAppearanceLarge" />
 
                     </RelativeLayout>
 

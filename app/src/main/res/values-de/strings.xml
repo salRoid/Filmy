@@ -19,10 +19,10 @@
     <string name="cast">Besetzung</string>
     <string name="dash">- - - -</string>
     <string name="more">Mehr</string>
-    <string name="runtime">Laufzeit</string>
-    <string name="genre">Genre</string>
-    <string name="language">Sprache</string>
-    <string name="release_date">Erscheinungsdatum</string>
+    <string name="runtime">Laufzeit:</string>
+    <string name="genre">Genre:</string>
+    <string name="language">Sprache:</string>
+    <string name="release_date">Erscheinungsdatum:</string>
     <string name="play">Abspielen</string>
     <string name="trailer">Vorschau</string>
     <string name="banner_image">Banner Bild</string>

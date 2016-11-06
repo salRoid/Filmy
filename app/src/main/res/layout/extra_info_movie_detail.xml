@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/extraDetails"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/extraDetails"
     android:padding="16dp"
+    android:background="?attr/colorPrimary"
     >
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        >
 
         <TextView
             android:id="@+id/runtime_holder"
@@ -13,19 +21,19 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/runtime"
-            android:textAppearance="?android:textAppearanceMedium" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/detail_runtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/runtime_holder"
+            android:layout_alignBaseline="@id/runtime_holder"
+            android:layout_marginLeft="8dp"
+            android:layout_toEndOf="@id/runtime_holder"
+            android:layout_toRightOf="@id/runtime_holder"
             android:fontFamily="sans-serif-condensed"
             android:text=""
-            android:textAppearance="?android:textAppearanceSmall"
-
-            />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/certification_holder"
@@ -34,40 +42,46 @@
             android:layout_below="@id/runtime_holder"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/genre"
-            android:textAppearance="?android:textAppearanceMedium" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/detail_certification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/certification_holder"
+            android:layout_alignBaseline="@id/certification_holder"
             android:layout_below="@id/detail_runtime"
+            android:layout_marginLeft="8dp"
+            android:layout_toEndOf="@id/certification_holder"
+            android:layout_toRightOf="@id/certification_holder"
             android:fontFamily="sans-serif-condensed"
             android:text=""
-            android:textAppearance="?android:textAppearanceSmall" />
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="14sp" />
 
 
         <TextView
             android:id="@+id/language_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/certification_holder"
+            android:layout_below="@id/detail_certification"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/language"
-            android:textAppearance="?android:textAppearanceMedium" />
+            android:textSize="16sp" />
 
         <TextView
 
             android:id="@+id/detail_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/language_holder"
+            android:layout_alignBaseline="@id/language_holder"
             android:layout_below="@id/detail_certification"
+            android:layout_marginLeft="8dp"
+            android:layout_toEndOf="@id/language_holder"
+            android:layout_toRightOf="@id/language_holder"
             android:fontFamily="sans-serif-condensed"
             android:text=""
-            android:textAppearance="?android:textAppearanceSmall" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/release_holder"
@@ -76,19 +90,23 @@
             android:layout_below="@id/language_holder"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/release_date"
-            android:textAppearance="?android:textAppearanceMedium" />
+            android:textSize="16sp" />
 
 
         <TextView
             android:id="@+id/detail_released"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/release_holder"
+            android:layout_alignBaseline="@id/release_holder"
             android:layout_below="@id/detail_language"
+            android:layout_marginLeft="8dp"
+            android:layout_toEndOf="@id/release_holder"
+            android:layout_toRightOf="@id/release_holder"
             android:fontFamily="sans-serif-condensed"
             android:text=""
-            android:textAppearance="?android:textAppearanceSmall" />
-
+            android:textSize="14sp" />
 
     </RelativeLayout>
+
+
+</RelativeLayout>

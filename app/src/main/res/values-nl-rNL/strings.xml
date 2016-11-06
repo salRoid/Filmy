@@ -19,10 +19,10 @@
     <string name="cast">kunstenaar</string>
     <string name="dash">- - - -</string>
     <string name="more">meer</string>
-    <string name="runtime">runtime</string>
-    <string name="genre">stijl</string>
-    <string name="language">taal</string>
-    <string name="release_date">datum van publicatie</string>
+    <string name="runtime">runtime:</string>
+    <string name="genre">stijl:</string>
+    <string name="language">taal:</string>
+    <string name="release_date">datum van publicatie:</string>
     <string name="play">spelen</string>
     <string name="trailer">aanhangwagen</string>
     <string name="banner_image">banner Afbeelding</string>

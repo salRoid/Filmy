@@ -49,10 +49,10 @@
     <string name="cast">Cast</string>
     <string name="dash">- - - -</string>
     <string name="more">More</string>
-    <string name="runtime">Runtime</string>
-    <string name="genre">Genre</string>
-    <string name="language">Language</string>
-    <string name="release_date">Release Date</string>
+    <string name="runtime">Runtime:</string>
+    <string name="genre">Genre:</string>
+    <string name="language">Language:</string>
+    <string name="release_date">Release Date:</string>
     <string name="play">Play</string>
     <string name="trailer">Trailer</string>
     <string name="banner_image">Banner Image</string>

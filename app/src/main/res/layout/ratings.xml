@@ -3,7 +3,11 @@
     android:id="@+id/extraDetails"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"

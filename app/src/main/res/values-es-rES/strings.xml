@@ -19,10 +19,10 @@
     <string name="cast">artista</string>
     <string name="dash">- - - -</string>
     <string name="more">más</string>
-    <string name="runtime">Tiempo de ejecución</string>
-    <string name="genre">Género</string>
-    <string name="language">Idioma</string>
-    <string name="release_date">Fecha de lanzamiento</string>
+    <string name="runtime">Tiempo de ejecución:</string>
+    <string name="genre">Género:</string>
+    <string name="language">Idioma:</string>
+    <string name="release_date">Fecha de lanzamiento:</string>
     <string name="play">Jugar</string>
     <string name="trailer">remolque</string>
     <string name="banner_image">Imagen del Anuncio</string>

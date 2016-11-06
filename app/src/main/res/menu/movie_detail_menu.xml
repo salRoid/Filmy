@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <item
+        android:id="@+id/action_fav"
+        android:icon="@drawable/ic_favorite_border_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/favorite"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_bookmark_border_white_24dp"

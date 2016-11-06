@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
@@ -91,7 +92,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void logInBackground() {
 
-        final String BASE_URL = "https://api.themoviedb.org/3/authentication/token/new?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+        String api_key = BuildConfig.API_KEY;
+        final String BASE_URL = "https://api.themoviedb.org/3/authentication/token/new?api_key="+api_key;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
                 new Response.Listener<JSONObject>() {
@@ -156,7 +158,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if (tokenization && requestToken!=null){
 
-            final String SESSION_QUERY = "https://api.themoviedb.org/3/authentication/session/new?api_key=b640f55eb6ecc47b3433cfe98d0675b1&request_token=" + requestToken;
+            String api_key = BuildConfig.API_KEY;
+            final String SESSION_QUERY = "https://api.themoviedb.org/3/authentication/session/new?api_key="+api_key+"&request_token=" + requestToken;
             querySession(SESSION_QUERY);
         }
 

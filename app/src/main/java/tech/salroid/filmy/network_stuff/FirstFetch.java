@@ -9,10 +9,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import org.json.JSONArray;
 import org.json.JSONObject;
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.parser.MainActivityParseWork;
 import tech.salroid.filmy.services.FilmyJobScheduler;
 
@@ -58,7 +57,9 @@ public class FirstFetch {
     private void syncNowInTheaters() {
 
 
-        final String Intheatres_Base_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+        String api_key = BuildConfig.API_KEY;
+
+        final String Intheatres_Base_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key="+api_key;
 
         JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Intheatres_Base_URL, null,
                 new Response.Listener<JSONObject>() {
@@ -85,7 +86,8 @@ public class FirstFetch {
     private void syncNowUpComing() {
 
 
-        final String Upcoming_Base_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+        String api_key = BuildConfig.API_KEY;
+        final String Upcoming_Base_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key="+api_key;
 
         JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Upcoming_Base_URL, null,
                 new Response.Listener<JSONObject>() {
@@ -110,7 +112,8 @@ public class FirstFetch {
 
     private void syncNowTrending() {
 
-        final String BASE_URL = "https://api.themoviedb.org/3/movie/popular?api_key=b640f55eb6ecc47b3433cfe98d0675b1";
+        String api_key = BuildConfig.API_KEY;
+        final String BASE_URL = "https://api.themoviedb.org/3/movie/popular?api_key="+api_key;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
                 new Response.Listener<JSONObject>() {

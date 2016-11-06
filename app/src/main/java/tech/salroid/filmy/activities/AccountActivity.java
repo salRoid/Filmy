@@ -26,6 +26,7 @@ import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 
@@ -127,8 +128,8 @@ public class AccountActivity extends AppCompatActivity {
 
     private void getProfile(String session_id) {
 
-
-        String PROFILE_URI = "https://api.themoviedb.org/3/account?api_key=b640f55eb6ecc47b3433cfe98d0675b1&session_id=" + session_id;
+        String api_key = BuildConfig.API_KEY;
+        String PROFILE_URI = "https://api.themoviedb.org/3/account?api_key="+api_key+"&session_id=" + session_id;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, PROFILE_URI, null,
                 new Response.Listener<JSONObject>() {

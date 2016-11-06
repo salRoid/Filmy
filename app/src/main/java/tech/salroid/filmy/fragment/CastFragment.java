@@ -27,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.FullCastActivity;
@@ -69,6 +70,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     BreathingProgress breathingProgress;
 
     private GotCrewListener gotCrewListener;
+    private String api_key = BuildConfig.API_KEY;
 
 
     public static CastFragment newInstance(String movie_Id, String movie_Title) {
@@ -129,7 +131,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     public void getCastFromNetwork(String movieId) {
 
 
-        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=b640f55eb6ecc47b3433cfe98d0675b1");
+        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key="+api_key);
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(Request.Method.GET, BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override

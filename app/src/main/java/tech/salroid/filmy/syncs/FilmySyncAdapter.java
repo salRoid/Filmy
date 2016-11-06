@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.FilmyApplication;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
@@ -61,6 +62,7 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
 
+    private String api_key = BuildConfig.API_KEY;
 
     public FilmySyncAdapter(Context context, boolean autoInitialize) {
 
@@ -183,7 +185,7 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncNowInTheaters() {
 
 
-        final String Intheatres_Base_URL = resource.getString(R.string.tmdb_movie_base_url) + "now_playing?" + resource.getString(R.string.tmdb_api_key);
+        final String Intheatres_Base_URL = resource.getString(R.string.tmdb_movie_base_url) + "now_playing?" + api_key;
 
         JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Intheatres_Base_URL, null,
                 new Response.Listener<JSONObject>() {
@@ -210,7 +212,7 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncNowUpComing() {
 
 
-        final String Upcoming_Base_URL = resource.getString(R.string.tmdb_movie_base_url) + "upcoming?" + resource.getString(R.string.tmdb_api_key);
+        final String Upcoming_Base_URL = resource.getString(R.string.tmdb_movie_base_url) + "upcoming?" + api_key;
 
         JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Upcoming_Base_URL, null,
                 new Response.Listener<JSONObject>() {

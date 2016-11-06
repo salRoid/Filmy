@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -76,7 +77,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         View.OnClickListener,
         LoaderManager.LoaderCallbacks<Cursor>,
         GetDataFromNetwork.DataFetchedListener,
-        CastFragment.GotCrewListener{
+        CastFragment.GotCrewListener {
 
 
     @BindView(R.id.toolbar)
@@ -118,6 +119,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.detail_language)
     TextView det_language;
 
+
     @BindView(R.id.detail_youtube)
     ImageView youtube_link;
     @BindView(R.id.backdrop)
@@ -136,6 +138,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     @BindView(R.id.trailorBackground)
     LinearLayout trailorBackground;
+
+    @BindView(R.id.youtube_icon)
+    ImageView youtubeIcon;
+
     @BindView(R.id.trailorView)
     FrameLayout trailorView;
     @BindView(R.id.new_main)
@@ -522,8 +528,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                     }
                                     if (trailorSwatch != null) {
                                         trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
-                                        tvRating.setTextColor(trailorSwatch.getTitleTextColor());
-                                       // det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                        youtubeIcon.setColorFilter(trailorSwatch.getBodyTextColor(), PorterDuff.Mode.SRC_IN);
                                     }
                                 }
                             });
@@ -696,8 +701,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                         }
                                         if (trailorSwatch != null) {
                                             trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
-                                            tvRating.setTextColor(trailorSwatch.getTitleTextColor());
-                                            //det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                            youtubeIcon.setColorFilter(trailorSwatch.getBodyTextColor(), PorterDuff.Mode.SRC_IN);
                                         }
                                     }
                                 });
@@ -820,8 +824,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                         }
                                         if (trailorSwatch != null) {
                                             trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
-                                            tvRating.setTextColor(trailorSwatch.getTitleTextColor());
-                                           // det_rating.setTextColor(trailorSwatch.getBodyTextColor());
+                                            youtubeIcon.setColorFilter(trailorSwatch.getBodyTextColor(), PorterDuff.Mode.SRC_IN);
                                         }
                                     }
                                 });

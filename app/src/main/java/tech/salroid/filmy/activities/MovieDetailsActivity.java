@@ -135,8 +135,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     HashMap<String, String> movieMap;
     boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
     int type;
-    private String movie_id, trailer = null, movie_desc, quality, movie_tagline,
-            movie_rating, show_centre_img_url, movie_title, movie_id_final;
+    private String movie_id,trailor = null,trailer = null, movie_desc, quality, movie_tagline,
+            movie_rating, movie_rating_tomatometer, movie_rating_audience,movie_rating_metascore, show_centre_img_url, movie_title, movie_id_final;
 
     private CastFragment castFragment;
     private boolean nightMode;
@@ -298,7 +298,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     void parseMovieDetails(String movieDetails) {
 
         String title, tagline, overview, banner_profile, runtime, language, released,
-                poster, img_url = null, trailor = null, get_poster_path_from_json, get_banner_from_json;
+                poster, img_url = null, get_poster_path_from_json, get_banner_from_json;
 
         try {
 
@@ -320,11 +320,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             if(similarFragment!=null)
                 similarFragment.getSimilarFromNetwork(movie_id_final);
 
-            movie_rating = jsonObject.getString("vote_average");
-
-            if (movie_rating.equals("0")) {
-                movie_rating = "N.A";
-            }
+            Rating.getRating(context,movie_imdb_id);
 
             //poster and banner
             get_poster_path_from_json = jsonObject.getString("poster_path");
@@ -413,8 +409,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             try {
                 if (trailor != null) {
                     trailer_boolean = true;
-                    String videoId = extractYoutubeId(trailer);
-                    img_url = getResources().getString(R.string.trailer_img_prefix) + videoId
+                  //  String videoId = extractYoutubeId(trailer);
+                    img_url = getResources().getString(R.string.trailer_img_prefix) + trailor
                             + getResources().getString(R.string.trailer_img_suffix);
 
                 } else {
@@ -423,7 +419,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 }
                 movieMap.put("trailer_img", img_url);
 
-            } catch (MalformedURLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
 
@@ -673,16 +669,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
 
             String thumbNail = null;
-            if ((trailer != null)) {
+            if ((trailor != null)) {
                 trailer_boolean = true;
-                try {
-                    String videoId = extractYoutubeId(trailer);
-                    thumbNail = getResources().getString(R.string.trailer_img_prefix) + videoId
+                    thumbNail = getResources().getString(R.string.trailer_img_prefix) + trailor
                             + getResources().getString(R.string.trailer_img_prefix);
-                } catch (Exception e) {
-
-                    //whatever you want to do
-                }
             } else {
                 thumbNail = posterLink;
             }
@@ -950,18 +940,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     }
 
-    public String extractYoutubeId(String url) throws MalformedURLException {
-        String query = new URL(url).getQuery();
-        String[] param = query.split("&");
-        String id = null;
-        for (String row : param) {
-            String[] param1 = row.split("=");
-            if (param1[0].equals("v")) {
-                id = param1[1];
-            }
-        }
-        return id;
-    }
 
     @Override
     protected void onStop() {
@@ -977,4 +955,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         if(crewFragment!=null)
            crewFragment.crew_parseOutput(crewData);
     }
+
+
+    public void setRating(String imdb_rating , String tomatometer_rating,String audience_rating,String metascore_rating){
+
+        movie_rating = imdb_rating;
+        movie_rating_tomatometer=tomatometer_rating;
+        movie_rating_audience=audience_rating;
+        movie_rating_metascore=metascore_rating;
+        if (movie_rating.equals("0")) {
+            movie_rating = "N.A";
+        }
+
+        det_rating.setText(movie_rating+" "+movie_rating_tomatometer+" "+movie_rating_audience+" "+movie_rating_metascore);
+    }
+
 }

@@ -86,10 +86,26 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     TextView det_tagline;
     @BindView(R.id.detail_overview)
     TextView det_overview;
-    @BindView(R.id.detail_rating)
+
+    @BindView(R.id.imdbRating)
     TextView det_rating;
+
+    @BindView(R.id.tomatoRating)
+    TextView tomato_rating;
+
+    @BindView(R.id.flixterRating)
+    TextView flixter_rating;
+
+    @BindView(R.id.metaRating)
+    TextView meta_rating;
+
+    @BindView(R.id.tmdbRating)
+    TextView tmdb_rating;
+
     @BindView(R.id.tvRating)
     TextView tvRating;
+
+
     @BindView(R.id.detail_released)
     TextView det_released;
     @BindView(R.id.detail_certification)
@@ -967,7 +983,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movie_rating = "N.A";
         }
 
-        det_rating.setText(movie_rating+" "+movie_rating_tomatometer+" "+movie_rating_audience+" "+movie_rating_metascore);
+        det_rating.setText(movie_rating);
+        tomato_rating.setText(movie_rating_tomatometer);
+        flixter_rating.setText(movie_rating_audience);
+        meta_rating.setText(movie_rating_metascore);
+        tmdb_rating.setText(movie_rating);
+
     }
 
 }

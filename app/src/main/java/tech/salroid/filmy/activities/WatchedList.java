@@ -232,7 +232,7 @@ public class WatchedList extends AppCompatActivity implements WatchlistAdapter.C
     public void itemClicked(WatchlistData watchlistData, int position) {
 
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-
+        intent.putExtra("network_applicable", true);
         intent.putExtra("title", watchlistData.getFav_title());
         intent.putExtra("id", watchlistData.getFav_id());
         intent.putExtra("activity", false);

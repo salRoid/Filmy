@@ -232,7 +232,7 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     public void itemClicked(FavouriteData favouriteData, int position) {
 
         Intent intent = new Intent(this, MovieDetailsActivity.class);
-
+        intent.putExtra("network_applicable", true);
         intent.putExtra("title", favouriteData.getFav_title());
         intent.putExtra("id", favouriteData.getFav_id());
         intent.putExtra("activity", false);

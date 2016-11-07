@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">Filmy</string>
     <string name="title_activity_detailed">DetailedActivity</string>
     <string name="title_activity_detailed__cast">Detailed_Cast</string>
     <string name="title_activity_search">SearchActivity</string>
@@ -8,7 +9,6 @@
     <string name="title_activity_full_movie">FullMovieActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
 
-    <string name="app_name">Filmy</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_saved_movies">Offline Filme</string>
     <string name="image_quality">medium</string>

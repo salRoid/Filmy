@@ -50,7 +50,7 @@
 
         <provider
             android:name=".providers.FilmProvider"
-            android:authorities="@string/content_authority"
+            android:authorities="tech.salroid.filmy"
             android:exported="false"
             android:syncable="true" />
 
@@ -106,7 +106,9 @@
         <activity android:name=".activities.LoginActivity">
 
             <data android:scheme="http" />
-            <data android:scheme="http" android:host="salroid.tech"/>
+            <data
+                android:host="salroid.tech"
+                android:scheme="http" />
             <action android:name="android.intent.action.VIEW"/>
             <category android:name="android.intent.category.BROWSABLE"/>
             <category android:name="android.intent.category.DEFAULT"/>

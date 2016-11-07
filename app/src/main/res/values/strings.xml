@@ -18,7 +18,7 @@
 
     <!-- SyncAdapter related -->
     <string name="sync_account_type" translatable="false">filmy.salroid.com</string>
-    <string name="content_authority" translatable="false">tech.salroid.filmy</string>
+
 
     <string name="ramankit">Ramankit Singh</string>
     <string name="sajal">Sajal Gupta</string>
@@ -80,7 +80,6 @@
     <string name="theatres">IN THEATERS</string>
     <string name="upcoming">UPCOMING</string>
     <string name="details">Details</string>
-
 
 
     <string name="glide" translatable="false"><![CDATA[
@@ -357,6 +356,7 @@ limitations under the License.
     <string name="login">TMDB LOGIN</string>
     <string name="login_normal">Login</string>
     <string name="trailers">Trailers</string>
+    <string name="content_authority">tech.salroid.filmy</string>
 
 
 </resources>

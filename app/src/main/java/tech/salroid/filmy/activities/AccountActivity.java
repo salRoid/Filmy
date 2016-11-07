@@ -4,9 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,7 +21,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +31,7 @@ import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 public class AccountActivity extends AppCompatActivity {
 
 
+    private final int REQUEST_CODE = 000;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.logo)
@@ -41,11 +40,8 @@ public class AccountActivity extends AppCompatActivity {
     FrameLayout loginHeader;
     @BindView(R.id.username)
     TextView tvUserName;
-
-
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
-    private final int REQUEST_CODE = 000;
     private boolean logged_in;
     private String PREF_NAME = "SESSION_PREFERENCE";
 

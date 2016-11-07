@@ -8,7 +8,7 @@
     <string name="title_activity_full_movie">FullMovieActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
 
-    <string name="app_name">ragfijn</string>
+    <string name="app_name">Filmy</string>
     <string name="title_activity_settings">instellingen</string>
     <string name="title_activity_saved_movies">offline films</string>
     <string name="image_quality">medium</string>
@@ -29,7 +29,7 @@
     <string name="you_saved_movies_appear_here">Uw offline films verschijnen hier Jaaagai |</string>
     <string name="no_saved_movies">Er is geen offline film.</string>
     <string name="saved_movies">offline bioscoop</string>
-    <string name="welcome_to_filmy">Welkom bij Film .</string>
+    <string name="welcome_to_filmy">Welkom bij Filmy.</string>
     <string name="filmy_is_your_new_movie_app">Film zijn nieuwe film App |</string>
     <string name="categorized">gecategoriseerd</string>
     <string name="get_different_movies_in_different_categories_at_one_place">Met een verscheidenheid van de verschillende categorieën Movies.</string>

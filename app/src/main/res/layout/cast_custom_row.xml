@@ -37,7 +37,9 @@
         android:layout_below="@+id/cast_name"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/cast_poster"
+        android:ellipsize="end"
         android:fontFamily="sans-serif-condensed"
+        android:maxLines="1"
         android:textAppearance="?android:textAppearanceSmall" />
 
     <View

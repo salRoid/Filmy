@@ -171,7 +171,7 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     private void getfavourites(String session_id, String id) {
 
         String Favourite_Url = "https://api.themoviedb.org/3/account/" + id
-                + "/favorite/movies?api_key=" + api_key + "&session_id=" + session_id + "&sort_by=created_at.asc";
+                + "/favorite/movies?api_key=" + api_key + "&session_id=" + session_id + "&sort_by=vote_average.asc";
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Favourite_Url, null,

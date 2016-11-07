@@ -3,9 +3,11 @@ package tech.salroid.filmy.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -50,10 +52,9 @@ public class AccountActivity extends AppCompatActivity {
     RelativeLayout favourite_layout;
     @BindView(R.id.watchlist_layout)
     RelativeLayout watchlist_layout;
-
-
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
+    private boolean nightMode;
     private boolean logged_in;
     private String PREF_NAME = "SESSION_PREFERENCE";
     /**
@@ -65,6 +66,14 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        SharedPreferences spref = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = spref.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
         setContentView(R.layout.activity_account);
         ButterKnife.bind(this);
 
@@ -75,6 +84,9 @@ public class AccountActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(" ");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        if (nightMode)
+            allThemeLogic();
 
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
@@ -236,5 +248,10 @@ public class AccountActivity extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    private void allThemeLogic() {
+        logo.setTextColor(Color.parseColor("#bdbdbd"));
+
     }
 }

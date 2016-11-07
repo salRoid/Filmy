@@ -134,8 +134,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     RelativeLayout metaRating_background;
     @BindView(R.id.header)
     LinearLayout header;
+
     @BindView(R.id.extraDetails)
     RelativeLayout extraDetails;
+
+    @BindView(R.id.ratingBar)
+    RelativeLayout ratingBar;
+
     @BindView(R.id.cast_divider)
     View castDivider;
 
@@ -224,6 +229,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         main_content.setBackgroundColor(Color.parseColor("#212121"));
         headerContainer.setBackgroundColor(Color.parseColor("#212121"));
         extraDetails.setBackgroundColor(Color.parseColor("#212121"));
+        ratingBar.setBackgroundColor(Color.parseColor("#212121"));
 
     }
 
@@ -232,7 +238,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         main_content.setBackgroundColor(Color.parseColor("#f5f5f5"));
         headerContainer.setBackgroundColor(getResources().getColor(R.color.primaryColor));
         extraDetails.setBackgroundColor(getResources().getColor(R.color.primaryColor));
-
+        ratingBar.setBackgroundColor(getResources().getColor(R.color.primaryColor));
     }
 
     @Override

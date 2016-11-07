@@ -359,11 +359,11 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         MenuItem itemSearch = menu.findItem(R.id.action_search);
-        MenuItem itemBook = menu.findItem(R.id.ic_collection);
+        MenuItem itemAccount = menu.findItem(R.id.ic_account);
 
         if (nightMode) {
             itemSearch.setIcon(R.drawable.ic_action_action_search);
-            itemBook.setIcon(R.drawable.ic_action_action_book2);
+            itemAccount.setIcon(R.drawable.ic_action_action_account_circle2);
         }
 
         materialSearchView.setMenuItem(itemSearch);

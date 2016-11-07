@@ -5,6 +5,7 @@
 
     <item
         android:id="@+id/ic_account"
+        android:orderInCategory="100"
         android:icon="@drawable/ic_action_action_account_circle"
         android:title="@string/account"
         app:showAsAction="always"
@@ -22,7 +23,6 @@
 
     <item
         android:id="@+id/ic_collection"
-        android:icon="@drawable/ic_action_action_book"
         android:title="@string/offline_movies"
         app:showAsAction="never"
         />

@@ -19,10 +19,10 @@
     <string name="cast">कलाकार</string>
     <string name="dash">- - - -</string>
     <string name="more">अधिक</string>
-    <string name="runtime">क्रम</string>
-    <string name="genre">शैली</string>
-    <string name="language">भाषा</string>
-    <string name="release_date">रिलीज़ की  तारीख</string>
+    <string name="runtime">क्रम:</string>
+    <string name="genre">शैली:</string>
+    <string name="language">भाषा:</string>
+    <string name="release_date">रिलीज़ की तारीख:</string>
     <string name="play">प्ले</string>
     <string name="trailer">ट्रेलर</string>
     <string name="banner_image">बैनर छवि</string>

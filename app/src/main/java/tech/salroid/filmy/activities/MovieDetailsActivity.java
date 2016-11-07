@@ -25,20 +25,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -88,28 +82,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     TextView det_tagline;
     @BindView(R.id.detail_overview)
     TextView det_overview;
-
     @BindView(R.id.tmdbRating)
     TextView det_rating;
-
     @BindView(R.id.tomatoRating)
     TextView tomato_rating;
-
     @BindView(R.id.flixterRating)
     TextView flixter_rating;
-
     @BindView(R.id.metaRating)
     TextView meta_rating;
-
     @BindView(R.id.imdbRating)
     TextView rating_of_imdb;
-
-    @BindView(R.id.tvRating)
-    TextView tvRating;
-
     @BindView(R.id.metaRatingView)
     TextView metascore_setter;
-
     @BindView(R.id.detail_released)
     TextView det_released;
     @BindView(R.id.detail_certification)
@@ -118,24 +102,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     TextView det_runtime;
     @BindView(R.id.detail_language)
     TextView det_language;
-
-
     @BindView(R.id.detail_youtube)
     ImageView youtube_link;
     @BindView(R.id.backdrop)
     ImageView banner;
     @BindView(R.id.play_button)
     ImageView youtube_play_button;
-
     @BindView(R.id.tomatoRating_image)
     ImageView tomatoRating_image;
-
     @BindView(R.id.flixterRating_image)
     ImageView flixterRating_image;
-
     @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;
-
     @BindView(R.id.trailorBackground)
     LinearLayout trailorBackground;
 
@@ -156,8 +134,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     RelativeLayout metaRating_background;
     @BindView(R.id.header)
     LinearLayout header;
+
     @BindView(R.id.extraDetails)
     RelativeLayout extraDetails;
+
+    @BindView(R.id.ratingBar)
+    RelativeLayout ratingBar;
+
     @BindView(R.id.cast_divider)
     View castDivider;
 
@@ -190,7 +173,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     private String movie_imdb_id;
     private CrewFragment crewFragment;
     private SimilarFragment similarFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,19 +218,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             RevealAnimation.performReveal(main_content);
             performDataFetching();
         }
-
         showCastFragment();
         showCrewFragment();
         showSimilarFragment();
 
     }
 
-
     private void nightModeLogic() {
 
         main_content.setBackgroundColor(Color.parseColor("#212121"));
         headerContainer.setBackgroundColor(Color.parseColor("#212121"));
         extraDetails.setBackgroundColor(Color.parseColor("#212121"));
+        ratingBar.setBackgroundColor(Color.parseColor("#212121"));
 
     }
 
@@ -257,7 +238,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         main_content.setBackgroundColor(Color.parseColor("#f5f5f5"));
         headerContainer.setBackgroundColor(getResources().getColor(R.color.primaryColor));
         extraDetails.setBackgroundColor(getResources().getColor(R.color.primaryColor));
-
+        ratingBar.setBackgroundColor(getResources().getColor(R.color.primaryColor));
     }
 
     @Override
@@ -314,7 +295,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 .commit();
 
         castFragment.setGotCrewListener(this);
-
     }
 
 
@@ -328,10 +308,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 .commit();
     }
 
-
     private void showSimilarFragment() {
-
-
         similarFragment = SimilarFragment.newInstance(null,movie_title);
 
         getSupportFragmentManager().
@@ -348,7 +325,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         try {
 
             JSONObject jsonObject = new JSONObject(movieDetails);
-
             title = jsonObject.getString("title");
             tagline = jsonObject.getString("tagline");
             overview = jsonObject.getString("overview");
@@ -389,7 +365,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             }
 
             //trailer
-
             JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
             JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
 
@@ -410,25 +385,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 trailer = getResources().getString(R.string.trailer_link_prefix) + trailor;
             } else
                 trailer = null;
-
-
             //genre
             String genre = "";
-
             JSONArray genreArray = jsonObject.getJSONArray("genres");
-
             for (int i = 0; i < genreArray.length(); i++) {
-
                 if (i > 3)
                     break;
-
                 String finalgenre = genreArray.getJSONObject(i).getString("name");
-
                 String punctuation = ", ";
-
                 if (i == genre.length())
                     punctuation = "";
-
                 genre = genre + punctuation + finalgenre;
 
             }
@@ -452,7 +418,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movieMap.put("banner", banner_profile);
             movieMap.put("poster", poster);
 
-
             try {
                 if (trailor != null) {
                     trailer_boolean = true;
@@ -470,17 +435,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 e.printStackTrace();
             } finally {
 
-                if (databaseApplicable) {
-
+                if (databaseApplicable)
                     MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this, type, movieMap, movie_id);
-
-                } else {
-
+                else
                     showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
-
-                }
-
-
             }
 
         } catch (JSONException e) {
@@ -493,7 +451,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                    String overview, String rating, String runtime,
                                    String released, String certification, String language) {
 
-
         det_tagline.setText(tagline);
         det_title.setText(title);
         det_overview.setText(overview);
@@ -502,7 +459,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         det_released.setText(released);
         det_certification.setText(certification);
         det_language.setText(language);
-
 
         try {
             Glide.with(context)
@@ -532,21 +488,16 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                     }
                                 }
                             });
-
                         }
                     });
 
         } catch (Exception e) {
             //Log.d(LOG_TAG, e.getMessage());
         }
-
-
         try {
 
             Glide.with(context)
-                    .load(img_url)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .load(img_url).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(new SimpleTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -559,12 +510,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         } catch (Exception e) {
             //Log.d(LOG_TAG, e.getMessage());
         }
-
         main.setVisibility(View.VISIBLE);
         breathingProgress.setVisibility(View.INVISIBLE);
 
     }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -576,21 +525,18 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             switch (type) {
 
                 case 0:
-
                     cursorloader = new CursorLoader(this,
                             FilmContract.MoviesEntry.buildMovieWithMovieId(movie_id),
                             MovieProjection.GET_MOVIE_COLUMNS, null, null, null);
                     break;
 
                 case 1:
-
                     cursorloader = new CursorLoader(this,
                             FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movie_id),
                             MovieProjection.GET_MOVIE_COLUMNS, null, null, null);
                     break;
 
                 case 2:
-
                     cursorloader = new CursorLoader(this,
                             FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movie_id),
                             MovieProjection.GET_MOVIE_COLUMNS, null, null, null);
@@ -608,9 +554,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                     MovieProjection.GET_SAVE_COLUMNS, selection, selectionArgs, null);
 
         }
-
         return cursorloader;
-
     }
 
     @Override
@@ -660,7 +604,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             String released = data.getString(released_index);
             String certification = data.getString(certification_index);
             String language = data.getString(language_index);
-
 
             movie_id_final = data.getString(id_index);
 
@@ -712,7 +655,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 //Log.d(LOG_TAG, e.getMessage());
             }
 
-
             String thumbNail = null;
             if ((trailor != null)) {
                 trailer_boolean = true;
@@ -721,7 +663,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             } else {
                 thumbNail = posterLink;
             }
-
 
             try {
 
@@ -736,16 +677,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                 if (trailer_boolean)
                                     youtube_play_button.setVisibility(View.VISIBLE);
                             }
-
                         });
 
             } catch (Exception e) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
-
         }
-
-
     }
 
     private void fetchMovieDetailsFromCursor(Cursor data) {
@@ -784,8 +721,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             if (NullChecker.isSettable(overview))
                 det_overview.setText(overview);
 
-
-
             if (runtime != null && !runtime.equals("null mins"))
                 det_runtime.setText(runtime);
 
@@ -797,7 +732,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             if (NullChecker.isSettable(language))
                 det_language.setText(language);
-
 
             try {
                 Glide.with(context)
@@ -835,7 +769,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 //Log.d(LOG_TAG, e.getMessage());
             }
 
-
             try {
 
                 Glide.with(context)
@@ -854,10 +787,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             } catch (Exception e) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
-
-
         }
-
     }
 
     @Override
@@ -877,7 +807,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                     startActivity(new Intent(this, MainActivity.class));
 
                 }
-
                 break;
 
             case R.id.action_share:
@@ -901,7 +830,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             getSupportFragmentManager().beginTransaction().remove(fullReadFragment).commit();
         } else {
 
-
             if (type == -1) {
 
                 startActivity(new Intent(this, MainActivity.class));
@@ -918,7 +846,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         getMenuInflater().inflate(R.menu.movie_detail_menu, menu);
         menu.findItem(R.id.action_save).setVisible(!savedDatabaseApplicable);
-
         return true;
     }
 
@@ -950,7 +877,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 if ((trailer_boolean))
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer)));
                 break;
-
         }
     }
 
@@ -967,9 +893,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             case GetDataFromNetwork.CAST_CODE:
 
                 break;
-
         }
-
     }
 
     private void shareMovie() {
@@ -980,9 +904,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_imdb + "\n");
             startActivity(Intent.createChooser(myIntent, "Share with"));
         }
-
     }
-
 
     @Override
     protected void onStop() {
@@ -999,15 +921,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
            crewFragment.crew_parseOutput(crewData);
     }
 
-
     public void setRating(String imdb_rating , String tomatometer_rating,String audience_rating,String metascore_rating,String image){
 
         movie_rating_imdb = imdb_rating;
         movie_rating_tomatometer=tomatometer_rating;
         movie_rating_audience=audience_rating;
         movie_rating_metascore=metascore_rating;
-
-        Toast.makeText(context, ""+movie_rating_imdb, Toast.LENGTH_SHORT).show();
 
         if (movie_rating_imdb.equals("N/A"))
             layout_imdb.setVisibility(View.GONE);
@@ -1017,19 +936,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         if (movie_rating_tomatometer.equals("N/A"))
             layout_tomato.setVisibility(View.GONE);
-
         else {
-
-            if (image.equals("certified")) {
+            if (image.equals("certified"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
-            } else if (image.equals("fresh")) {
+             else if (image.equals("fresh"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.fresh));
-            } else if (image.equals("rotten")) {
+            else if (image.equals("rotten"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));
-            }
-
             tomato_rating.setText(movie_rating_tomatometer);
-
         }
 
         if (movie_rating_audience.equals("N/A"))
@@ -1044,9 +958,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             else
                 flixterRating_image.setImageDrawable(getResources().getDrawable(R.drawable.spilt));
 
-
             flixter_rating.setText(movie_rating_audience);
-
         }
 
         if (movie_rating_metascore.equals("N/A"))

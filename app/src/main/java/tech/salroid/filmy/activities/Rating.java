@@ -29,7 +29,7 @@ public class Rating {
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
 
-        String BASE_RATING_URL = "http://www.omdbapi.com/?i=" + movie_id_final + "&plot=short&tomatoes=true&r=json";
+        String BASE_RATING_URL = "http://www.omdbapi.com/?i=" + movie_id_final + "&tomatoes=true&r=json";
 
         JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(Request.Method.GET, BASE_RATING_URL, null,
                 new Response.Listener<JSONObject>() {

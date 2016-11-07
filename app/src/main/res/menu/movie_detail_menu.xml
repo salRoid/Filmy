@@ -4,6 +4,14 @@
 
 
     <item
+        android:id="@+id/action_watch"
+        android:icon="@drawable/ic_watch_later_white_24dp"
+        android:orderInCategory="100"
+        android:title="@string/watchlist"
+        app:showAsAction="always" />
+
+
+    <item
         android:id="@+id/action_fav"
         android:icon="@drawable/ic_favorite_border_white_24dp"
         android:orderInCategory="100"

@@ -2,13 +2,9 @@ package tech.salroid.filmy.fragment;
 
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -57,17 +53,14 @@ import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
 public class SimilarFragment extends Fragment implements SimilarMovieActivityAdapter.ClickListener {
 
-    private String similar_json;
-    private String movieId, movieTitle;
-
     @BindView(R.id.similar_recycler)
     RecyclerView similar_recycler;
-
     @BindView(R.id.breathingProgressFragment)
     BreathingProgress breathingProgress;
-
     @BindView(R.id.card_holder)
     TextView card_holder;
+    private String similar_json;
+    private String movieId, movieTitle;
     private String api_key = BuildConfig.API_KEY;
 
     public static SimilarFragment newInstance(String movie_Id, String movie_Title) {
@@ -170,6 +163,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
     @Override
     public void itemClicked(SimilarMoviesData setterGetter, int position, View view) {
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+        intent.putExtra("title", setterGetter.getMovie_title());
         intent.putExtra("id", setterGetter.getMovie_id());
         intent.putExtra("network_applicable", true);
         intent.putExtra("activity", false);

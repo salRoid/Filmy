@@ -24,15 +24,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -336,6 +339,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             movie_imdb_id = jsonObject.getString("imdb_id");
 
             movie_rating_tmdb = jsonObject.getString("vote_average");
+
+            if (!(tagline.equals("")))
+                det_tagline.setVisibility(View.VISIBLE);
 
             if (castFragment != null)
                 castFragment.getCastFromNetwork(movie_id_final);

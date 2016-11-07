@@ -1,8 +1,6 @@
 package tech.salroid.filmy.activities;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -36,13 +34,11 @@ public class Rating {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-
                             imdb_rating = response.getString("imdbRating");
                             tomatometer_rating=response.getString("tomatoRating");
                             audience_rating=response.getString("tomatoUserRating");
                             metascore_rating=response.getString("Metascore");
                             image=response.getString("tomatoImage");
-
 
                             setRatingCallback(context,imdb_rating,tomatometer_rating,audience_rating,metascore_rating,image);
 

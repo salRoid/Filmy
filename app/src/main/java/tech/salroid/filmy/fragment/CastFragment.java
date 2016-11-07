@@ -57,9 +57,6 @@ import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 public class CastFragment extends Fragment implements View.OnClickListener, CastAdapter.ClickListener {
 
 
-    private String cast_json;
-    private String movieId, movieTitle;
-
     @BindView(R.id.more)
     TextView more;
     @BindView(R.id.cast_recycler)
@@ -68,7 +65,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     TextView card_holder;
     @BindView(R.id.breathingProgressFragment)
     BreathingProgress breathingProgress;
-
+    private String cast_json;
+    private String movieId, movieTitle;
     private GotCrewListener gotCrewListener;
     private String api_key = BuildConfig.API_KEY;
 
@@ -191,7 +189,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
 
         if (view.getId() == R.id.more) {
 
-            // Log.d("webi",""+movieTitle);
+            Log.d("webi", "" + movieTitle);
 
             if (cast_json != null && movieTitle != null) {
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">Filmy</string>
     <string name="title_activity_detailed">DetailedActivity</string>
     <string name="title_activity_detailed__cast">Detailed_Cast</string>
     <string name="title_activity_search">SearchActivity</string>
@@ -8,7 +9,6 @@
     <string name="title_activity_full_movie">FullMovieActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
 
-    <string name="app_name">película</string>
     <string name="title_activity_settings">Ajustes</string>
     <string name="title_activity_saved_movies">Películas fuera de línea</string>
     <string name="image_quality">medio</string>
@@ -29,7 +29,7 @@
     <string name="you_saved_movies_appear_here">Sus películas fuera de línea aparecen aquí Jaaagai.</string>
     <string name="no_saved_movies">No hay película fuera de línea.</string>
     <string name="saved_movies">Películas Online</string>
-    <string name="welcome_to_filmy">la bienvenida a Película</string>
+    <string name="welcome_to_filmy">la bienvenida a Filmy</string>
     <string name="filmy_is_your_new_movie_app">vaporoso es su nueva aplicación de películas</string>
     <string name="categorized">categorizado</string>
     <string name="get_different_movies_in_different_categories_at_one_place">Varias películas de diferentes categorías juntas</string>

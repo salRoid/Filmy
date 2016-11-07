@@ -51,6 +51,8 @@ import tech.salroid.filmy.fragment.CrewFragment;
 import tech.salroid.filmy.fragment.FullReadFragment;
 import tech.salroid.filmy.fragment.SimilarFragment;
 import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
+import tech.salroid.filmy.tmdb_account.MarkingFavorite;
+import tech.salroid.filmy.tmdb_account.MarkingWatchList;
 import tech.salroid.filmy.utility.NullChecker;
 
 /*
@@ -808,11 +810,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             case android.R.id.home:
                 finish();
 
-                if (type == -1) {
-
+                if (type == -1)
                     startActivity(new Intent(this, MainActivity.class));
-
-                }
                 break;
 
             case R.id.action_share:
@@ -823,6 +822,20 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 OfflineMovies offlineMovies = new OfflineMovies(this, main_content);
                 offlineMovies.saveMovie(movieMap, movie_id, movie_id_final);
                 break;
+
+            case R.id.action_fav:
+                MarkingFavorite markingFavorite = new MarkingFavorite();
+                markingFavorite.markThisAsFavorite(context,movie_id);
+                break;
+
+            case R.id.action_watch:
+                MarkingWatchList markingWatchList = new MarkingWatchList();
+                markingWatchList.addToWatchList(context,movie_id);
+                break;
+
+            default:
+                break;
+
         }
 
         return super.onOptionsItemSelected(item);

@@ -102,20 +102,27 @@
         </receiver>
 
         <activity android:name=".activities.AccountActivity" />
-
         <activity android:name=".activities.LoginActivity">
-
             <data android:scheme="http" />
             <data
                 android:host="salroid.tech"
                 android:scheme="http" />
-            <action android:name="android.intent.action.VIEW"/>
-            <category android:name="android.intent.category.BROWSABLE"/>
-            <category android:name="android.intent.category.DEFAULT"/>
 
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.BROWSABLE" />
+            <category android:name="android.intent.category.DEFAULT" />
         </activity>
+        <activity android:name=".activities.Favorite" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
-
+        <activity android:name=".activities.WatchedList"></activity>
     </application>
 
 </manifest>

@@ -357,6 +357,9 @@ limitations under the License.
     <string name="login_normal">Login</string>
     <string name="trailers">Trailers</string>
     <string name="content_authority">tech.salroid.filmy</string>
+    <string name="favourite">Favourite</string>
+    <string name="your_favourite_movie_appear_here">your favourite movie appear here</string>
+    <string name="your_watchlist_appear_here">your watchlist appear here</string>
 
 
 </resources>

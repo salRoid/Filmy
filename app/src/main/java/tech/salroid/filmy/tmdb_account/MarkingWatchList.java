@@ -72,7 +72,7 @@ public class MarkingWatchList {
         mBuilder = new NotificationCompat.Builder(context);
         mBuilder.setContentTitle("Filmy")
                 .setContentText("Adding to watchlist.")
-                .setSmallIcon(R.mipmap.ic_launcher);
+                .setSmallIcon(R.drawable.ic_stat_status);
         mBuilder.setProgress(0, 0, true);
         mNotifyManager.notify(NOTIFICATION_ID, mBuilder.build());
 

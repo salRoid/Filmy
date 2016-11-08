@@ -47,16 +47,16 @@
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:layout_gravity="center"
-            android:src="@drawable/empty_folder" />
+            android:src="@drawable/placeholder_empty" />
 
         <TextView
             android:id="@+id/fav_display_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/your_favourite_movie_appear_here"
+            android:text="@string/you_dont_hav_fav"
             android:textColor="@color/primaryColorDark"
-            android:visibility="gone" />
+             />
 
     </LinearLayout>
 

@@ -65,10 +65,10 @@ public class AccountActivity extends AppCompatActivity {
     FrameLayout loginHeader;
     @BindView(R.id.username)
     TextView tvUserName;
-    @BindView(R.id.favourite_layout)
-    RelativeLayout favourite_layout;
-    @BindView(R.id.watchlist_layout)
-    RelativeLayout watchlist_layout;
+    @BindView(R.id.favContainer)
+    FrameLayout favourite_layout;
+    @BindView(R.id.watchlistContainer)
+    FrameLayout watchlist_layout;
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
     private boolean nightMode;

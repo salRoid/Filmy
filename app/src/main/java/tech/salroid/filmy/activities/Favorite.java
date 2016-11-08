@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -80,6 +81,10 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     ImageView dataImageView;
     @BindView(R.id.fav_display_text)
     TextView faTextView;
+
+    @BindView(R.id.emptyContainer)
+    LinearLayout emptyContainer;
+
 
     private boolean nightMode;
     private Context context;
@@ -180,8 +185,9 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
                 hideProgress();
-                faTextView.setVisibility(View.VISIBLE);
+                emptyContainer.setVisibility(View.VISIBLE);
                 faTextView.setText("You are not logged in.");
                 Log.e("webi", "Volley Error: " + error.getCause());
 
@@ -201,13 +207,32 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        parseoutput(response.toString());
+
+                        try {
+
+                            int total_results = response.getInt("total_results");
+
+                            if (total_results>0)
+                                parseoutput(response.toString());
+                            else{
+                                hideProgress();
+                                emptyContainer.setVisibility(View.VISIBLE);
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("webi", "Volley Errorbelow: " + error.getCause());
+
+                hideProgress();
+                emptyContainer.setVisibility(View.VISIBLE);
+                faTextView.setText("Failed to get your list.");
+                Log.e("webi", "Volley Error below: " + error.getCause());
 
             }
         });
@@ -325,6 +350,10 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
         if (favouriteAdapter != null && list != null) {
             list.remove(position);
             favouriteAdapter.notifyItemRemoved(position);
+
+            if (favouriteAdapter.getItemCount()==0)
+                 emptyContainer.setVisibility(View.VISIBLE);
+
         }
 
     }

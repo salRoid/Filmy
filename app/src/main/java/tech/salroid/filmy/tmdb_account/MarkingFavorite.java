@@ -69,7 +69,7 @@ public class MarkingFavorite{
         mBuilder = new NotificationCompat.Builder(context);
         mBuilder.setContentTitle("Filmy")
                 .setContentText("Adding to favorite list.")
-                .setSmallIcon(R.mipmap.ic_launcher);
+                .setSmallIcon(R.drawable.ic_stat_status);
         mBuilder.setProgress(0, 0, true);
         mNotifyManager.notify(NOTIFICATION_ID, mBuilder.build());
 

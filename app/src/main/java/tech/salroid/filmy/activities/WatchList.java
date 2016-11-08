@@ -1,6 +1,8 @@
 package tech.salroid.filmy.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -14,7 +16,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,9 +39,12 @@ import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.WatchlistAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
+import tech.salroid.filmy.data_classes.FavouriteData;
 import tech.salroid.filmy.data_classes.WatchlistData;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.WatchListMovieParseWork;
+import tech.salroid.filmy.tmdb_account.UnMarkingFavorite;
+import tech.salroid.filmy.tmdb_account.UnMarkingWatchList;
 
 /*
  * Filmy Application for Android
@@ -56,7 +63,7 @@ import tech.salroid.filmy.parser.WatchListMovieParseWork;
  * limitations under the License.
  */
 
-public class WatchedList extends AppCompatActivity implements WatchlistAdapter.ClickListener {
+public class WatchList extends AppCompatActivity implements WatchlistAdapter.ClickListener, WatchlistAdapter.LongClickListener {
 
     WatchlistAdapter watchlistAdapter;
 
@@ -215,6 +222,7 @@ public class WatchedList extends AppCompatActivity implements WatchlistAdapter.C
             wlTextView.setVisibility(View.VISIBLE);
         my_watchlist_movies_recycler.setAdapter(watchlistAdapter);
         watchlistAdapter.setClickListener(this);
+        watchlistAdapter.setLongClickListener(this);
 
         hideProgress();
 
@@ -262,6 +270,41 @@ public class WatchedList extends AppCompatActivity implements WatchlistAdapter.C
 
         }
 
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case android.R.id.home:
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void itemLongClicked(final WatchlistData watchlistData, int position) {
+
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        arrayAdapter.add("Remove");
+        adb.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                UnMarkingWatchList unMarkingWatchList = new UnMarkingWatchList();
+                unMarkingWatchList.removeFromWatchList(context,watchlistData.getFav_id());
+
+            }
+        });
+
+        adb.show();
 
     }
 }

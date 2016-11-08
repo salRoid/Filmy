@@ -45,6 +45,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Dh> 
     private Context fro;
     private FavouriteAdapter.ClickListener clickListener;
     private String fav_title, fav_id, fav_poster;
+    private LongClickListener longClickListener;
 
 
     public FavouriteAdapter(Context context, List<FavouriteData> data) {
@@ -85,9 +86,19 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Dh> 
         this.clickListener = clickListener;
     }
 
+    public void setLongClickListener(LongClickListener clickListener) {
+        this.longClickListener = clickListener;
+    }
+
     public interface ClickListener {
 
         void itemClicked(FavouriteData favouriteData, int position);
+
+    }
+
+    public interface LongClickListener {
+
+        void itemLongClicked(FavouriteData favouriteData, int position);
 
     }
 
@@ -115,6 +126,19 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Dh> 
 
                 }
             });
+
+            main.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    if (longClickListener != null) {
+                        longClickListener.itemLongClicked(data.get(getPosition()), getPosition());
+                    }
+
+                    return true;
+                }
+            });
+
         }
     }
 }

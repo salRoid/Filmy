@@ -18,6 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.data_classes.FavouriteData;
 import tech.salroid.filmy.data_classes.WatchlistData;
 
 /*
@@ -44,7 +45,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Dh> 
     private Context fro;
     private ClickListener clickListener;
     private String fav_title, fav_id, fav_poster;
-
+    private WatchlistAdapter.LongClickListener longClickListener;
 
     public WatchlistAdapter(Context context, List<WatchlistData> data) {
         inflater = LayoutInflater.from(context);
@@ -90,6 +91,16 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Dh> 
 
     }
 
+    public void setLongClickListener(WatchlistAdapter.LongClickListener clickListener) {
+        this.longClickListener = clickListener;
+    }
+
+    public interface LongClickListener {
+
+        void itemLongClicked(WatchlistData watchlistData, int position);
+
+    }
+
     class Dh extends RecyclerView.ViewHolder {
 
         @BindView(R.id.title)
@@ -112,6 +123,18 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Dh> 
                         clickListener.itemClicked(data.get(getPosition()), getPosition());
                     }
 
+                }
+            });
+
+            main.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    if (longClickListener != null) {
+                        longClickListener.itemLongClicked(data.get(getPosition()), getPosition());
+                    }
+
+                    return true;
                 }
             });
         }

@@ -168,6 +168,8 @@ public class MarkingWatchList {
 
             if (status_code == 1){
                 CustomToast.show(context,"Movie added to the watch list.",false);
+            }else if(status_code == 12){
+                CustomToast.show(context,"Favorite list updated.",false);
             }
 
 

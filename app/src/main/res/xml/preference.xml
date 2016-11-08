@@ -28,7 +28,7 @@
         android:enabled="true"
         android:key="Version"
         android:selectable="true"
-        android:summary="1.0.6"
+        android:summary="2.0.0"
         android:title="@string/version" />
 
     <Preference

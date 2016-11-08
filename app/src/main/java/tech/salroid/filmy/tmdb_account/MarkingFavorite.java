@@ -1,7 +1,9 @@
 package tech.salroid.filmy.tmdb_account;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -15,7 +17,10 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
 import tech.salroid.filmy.BuildConfig;
+import tech.salroid.filmy.R;
 import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 
@@ -35,7 +40,7 @@ import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class MarkingFavorite {
+public class MarkingFavorite{
 
     private String api_key = BuildConfig.API_KEY;
     private String SESSION_PREF = "SESSION_PREFERENCE";
@@ -43,13 +48,32 @@ public class MarkingFavorite {
     private RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
     private Context context;
 
+    private int NOTIFICATION_ID;
+    private NotificationManager mNotifyManager;
+    private NotificationCompat.Builder mBuilder;
+
+
     public void markThisAsFavorite(Context context,String media_id){
 
         this.context = context;
         SharedPreferences sp = context.getSharedPreferences(SESSION_PREF,Context.MODE_PRIVATE);
         String session_id = sp.getString("session"," ");
-        getProfile(session_id,media_id);
 
+        //issue notification to show indeterminate progress
+
+        Random random = new Random();
+        NOTIFICATION_ID = random.nextInt(10000);
+
+        mNotifyManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder = new NotificationCompat.Builder(context);
+        mBuilder.setContentTitle("Filmy")
+                .setContentText("Adding to favorite list.")
+                .setSmallIcon(R.mipmap.ic_launcher);
+        mBuilder.setProgress(0, 0, true);
+        mNotifyManager.notify(NOTIFICATION_ID, mBuilder.build());
+
+        getProfile(session_id,media_id);
     }
 
 
@@ -159,21 +183,44 @@ public class MarkingFavorite {
 
     private void parseMarkedResponse(JSONObject response) {
 
+
         try {
             int status_code = response.getInt("status_code");
 
             if (status_code == 1){
+
                 CustomToast.show(context,"Movie added to the favorite list.",false);
+
+                mBuilder.setContentText("Movie added to the favorite list.")
+                        // Removes the progress bar
+                        .setProgress(0,0,false);
+                mNotifyManager.notify(NOTIFICATION_ID, mBuilder.build());
+                mNotifyManager.cancel(NOTIFICATION_ID);
+
             }else if(status_code == 12){
+
                 CustomToast.show(context,"Favorite list updated.",false);
+
+                mBuilder.setContentText("Favorite list updated.")
+                        // Removes the progress bar
+                        .setProgress(0,0,false);
+                mNotifyManager.notify(NOTIFICATION_ID, mBuilder.build());
+                mNotifyManager.cancel(NOTIFICATION_ID);
             }
 
         } catch (JSONException e) {
-            Log.d("webi",e.getCause().toString());
+                Log.d("webi",e.getCause().toString());
+
+            mBuilder.setContentText("Can't favorite this.")
+                    // Removes the progress bar
+                    .setProgress(0,0,false);
+            mNotifyManager.notify(NOTIFICATION_ID, mBuilder.build());
+            mNotifyManager.cancel(NOTIFICATION_ID);
+
             CustomToast.show(context,"Can't favorite this.",false);
         }
 
-
     }
+
 
 }

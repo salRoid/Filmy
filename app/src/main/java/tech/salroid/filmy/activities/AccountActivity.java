@@ -119,7 +119,7 @@ public class AccountActivity extends AppCompatActivity {
         watchlist_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AccountActivity.this, WatchedList.class));
+                startActivity(new Intent(AccountActivity.this, WatchList.class));
             }
         });
 

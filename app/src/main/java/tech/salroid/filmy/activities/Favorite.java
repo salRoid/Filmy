@@ -1,6 +1,8 @@
 package tech.salroid.filmy.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -14,7 +16,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,8 +40,10 @@ import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.FavouriteAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.FavouriteData;
+import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.FavouriteMovieParseWork;
+import tech.salroid.filmy.tmdb_account.UnMarkingFavorite;
 
 /*
  * Filmy Application for Android
@@ -56,7 +62,7 @@ import tech.salroid.filmy.parser.FavouriteMovieParseWork;
  * limitations under the License.
  */
 
-public class Favorite extends AppCompatActivity implements FavouriteAdapter.ClickListener {
+public class Favorite extends AppCompatActivity implements FavouriteAdapter.ClickListener, FavouriteAdapter.LongClickListener {
 
     FavouriteAdapter favouriteAdapter;
 
@@ -207,14 +213,15 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     }
 
     private void parseoutput(String s) {
-        Log.d("webi", "parseoutput: " + s);
+
         FavouriteMovieParseWork pw = new FavouriteMovieParseWork(context, s);
         List<FavouriteData> list = pw.parse_favourite();
         favouriteAdapter = new FavouriteAdapter(this, list);
-        if (list.size() == 0)
+        if (list.isEmpty())
             faTextView.setVisibility(View.VISIBLE);
         my_favourite_movies_recycler.setAdapter(favouriteAdapter);
         favouriteAdapter.setClickListener(this);
+        favouriteAdapter.setLongClickListener(this);
 
         hideProgress();
 
@@ -262,4 +269,44 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
 
         }
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        switch (item.getItemId()){
+
+            case android.R.id.home:
+                finish();
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+    @Override
+    public void itemLongClicked(final FavouriteData favouriteData, int position) {
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        arrayAdapter.add("Remove");
+        adb.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                UnMarkingFavorite unMarkingFavorite = new UnMarkingFavorite();
+                unMarkingFavorite.unmarkThisAsFavorite(context,favouriteData.getFav_id());
+
+            }
+        });
+
+        adb.show();
+
+    }
+
 }

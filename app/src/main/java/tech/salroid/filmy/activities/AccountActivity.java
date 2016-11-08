@@ -3,14 +3,18 @@ package tech.salroid.filmy.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -18,6 +22,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +35,23 @@ import butterknife.ButterKnife;
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
+
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -40,14 +65,32 @@ public class AccountActivity extends AppCompatActivity {
     FrameLayout loginHeader;
     @BindView(R.id.username)
     TextView tvUserName;
+    @BindView(R.id.favourite_layout)
+    RelativeLayout favourite_layout;
+    @BindView(R.id.watchlist_layout)
+    RelativeLayout watchlist_layout;
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
+    private boolean nightMode;
     private boolean logged_in;
     private String PREF_NAME = "SESSION_PREFERENCE";
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        SharedPreferences spref = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = spref.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
         setContentView(R.layout.activity_account);
         ButterKnife.bind(this);
 
@@ -59,14 +102,30 @@ public class AccountActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        if (nightMode)
+            allThemeLogic();
+
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
 
+        favourite_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AccountActivity.this, Favorite.class));
+            }
+        });
 
-        SharedPreferences sp = getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
-        String session_id = sp.getString("session","");
-        String username = sp.getString("username","Not logged in");
+        watchlist_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AccountActivity.this, WatchedList.class));
+            }
+        });
+
+        SharedPreferences sp = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String session_id = sp.getString("session", "");
+        String username = sp.getString("username", "Not logged in");
 
         loginHeader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +143,9 @@ public class AccountActivity extends AppCompatActivity {
 
         tvUserName.setText(username);
         getProfile(session_id);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -111,9 +173,9 @@ public class AccountActivity extends AppCompatActivity {
             String session_id = data.getStringExtra("session_id");
             logged_in = true;
 
-            SharedPreferences sp = getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
+            SharedPreferences sp = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
-            editor.putString("session",session_id);
+            editor.putString("session", session_id);
             editor.apply();
 
             getProfile(session_id);
@@ -125,7 +187,7 @@ public class AccountActivity extends AppCompatActivity {
     private void getProfile(String session_id) {
 
         String api_key = BuildConfig.API_KEY;
-        String PROFILE_URI = "https://api.themoviedb.org/3/account?api_key="+api_key+"&session_id=" + session_id;
+        String PROFILE_URI = "https://api.themoviedb.org/3/account?api_key=" + api_key + "&session_id=" + session_id;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, PROFILE_URI, null,
                 new Response.Listener<JSONObject>() {
@@ -156,9 +218,9 @@ public class AccountActivity extends AppCompatActivity {
             if (username != null) {
 
                 tvUserName.setText(username);
-                SharedPreferences sp = getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
+                SharedPreferences sp = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putString("username",username);
+                editor.putString("username", username);
                 editor.apply();
             }
 
@@ -168,4 +230,45 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Account Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
+    private void allThemeLogic() {
+        logo.setTextColor(Color.parseColor("#bdbdbd"));
+
+    }
 }

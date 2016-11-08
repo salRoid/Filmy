@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -80,6 +81,8 @@ public class WatchList extends AppCompatActivity implements WatchlistAdapter.Cli
     ImageView dataImageView;
     @BindView(R.id.wl_display_text)
     TextView wlTextView;
+    @BindView(R.id.emptyContainer)
+    LinearLayout emptyContainer;
 
     private boolean nightMode;
     private Context context;
@@ -182,7 +185,7 @@ public class WatchList extends AppCompatActivity implements WatchlistAdapter.Cli
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgress();
-                wlTextView.setVisibility(View.VISIBLE);
+                emptyContainer.setVisibility(View.VISIBLE);
                 wlTextView.setText("You are not logged in.");
                 Log.e("webi", "Volley Error: " + error.getCause());
 
@@ -202,14 +205,32 @@ public class WatchList extends AppCompatActivity implements WatchlistAdapter.Cli
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        parseoutput(response.toString());
+
+                        try {
+
+                            int total_results = response.getInt("total_results");
+
+                            if (total_results>0)
+                                parseoutput(response.toString());
+                            else{
+                                hideProgress();
+                                emptyContainer.setVisibility(View.VISIBLE);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
 
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("webi", "Volley Errorbelow: " + error.getCause());
-
+                //Log.e("webi", "Volley Errorbelow: " + error.getCause());
+                hideProgress();
+                emptyContainer.setVisibility(View.VISIBLE);
+                wlTextView.setText("Failed to get your list.");
             }
         });
 
@@ -218,7 +239,7 @@ public class WatchList extends AppCompatActivity implements WatchlistAdapter.Cli
     }
 
     private void parseoutput(String s) {
-        Log.d("webi", "parseoutput: " + s);
+
         WatchListMovieParseWork pw = new WatchListMovieParseWork(context, s);
         list = pw.parse_watchlist();
         watchlistAdapter = new WatchlistAdapter(this, list);
@@ -328,6 +349,10 @@ public class WatchList extends AppCompatActivity implements WatchlistAdapter.Cli
         if (watchlistAdapter != null && list != null) {
             list.remove(position);
             watchlistAdapter.notifyItemRemoved(position);
+
+            if (watchlistAdapter.getItemCount()==0)
+                emptyContainer.setVisibility(View.VISIBLE);
+
         }
     }
 }

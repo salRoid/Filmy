@@ -82,7 +82,6 @@
         android:foreground="@drawable/main_background">
 
         <RelativeLayout
-            android:id="@+id/favourite_layout"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:background="@color/colorAccent2">
@@ -104,6 +103,7 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/watchlistContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/favContainer"
@@ -113,7 +113,6 @@
 
 
         <RelativeLayout
-            android:id="@+id/watchlist_layout"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_below="@id/favContainer"

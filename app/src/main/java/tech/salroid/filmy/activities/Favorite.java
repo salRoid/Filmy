@@ -1,6 +1,7 @@
 package tech.salroid.filmy.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -62,9 +64,9 @@ import tech.salroid.filmy.tmdb_account.UnMarkingFavorite;
  * limitations under the License.
  */
 
-public class Favorite extends AppCompatActivity implements FavouriteAdapter.ClickListener, FavouriteAdapter.LongClickListener {
+public class Favorite extends AppCompatActivity implements FavouriteAdapter.ClickListener, FavouriteAdapter.LongClickListener, UnMarkingFavorite.UnmarkedListener {
 
-    FavouriteAdapter favouriteAdapter;
+    private FavouriteAdapter favouriteAdapter;
 
     @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;
@@ -88,6 +90,8 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     private String api_key = BuildConfig.API_KEY;
     private String SESSION_PREF = "SESSION_PREFERENCE";
     private String account_id;
+    private ProgressDialog progressDialog;
+    private List<FavouriteData> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,7 +219,7 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     private void parseoutput(String s) {
 
         FavouriteMovieParseWork pw = new FavouriteMovieParseWork(context, s);
-        List<FavouriteData> list = pw.parse_favourite();
+        list = pw.parse_favourite();
         favouriteAdapter = new FavouriteAdapter(this, list);
         if (list.isEmpty())
             faTextView.setVisibility(View.VISIBLE);
@@ -231,8 +235,6 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     private void allThemeLogic() {
         logo.setTextColor(Color.parseColor("#bdbdbd"));
         dataImageView.setColorFilter(Color.parseColor("#757575"), PorterDuff.Mode.MULTIPLY);
-
-
     }
 
     @Override
@@ -275,7 +277,7 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     public boolean onOptionsItemSelected(MenuItem item) {
 
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case android.R.id.home:
                 finish();
@@ -287,10 +289,8 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     }
 
 
-
-
     @Override
-    public void itemLongClicked(final FavouriteData favouriteData, int position) {
+    public void itemLongClicked(final FavouriteData favouriteData, final int position) {
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
@@ -300,7 +300,16 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 UnMarkingFavorite unMarkingFavorite = new UnMarkingFavorite();
-                unMarkingFavorite.unmarkThisAsFavorite(context,favouriteData.getFav_id());
+                unMarkingFavorite.setUnmarkedListener(Favorite.this);
+
+                progressDialog = new ProgressDialog(Favorite.this);
+                progressDialog.setTitle("Favorite");
+                progressDialog.setMessage("Removing..");
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
+                unMarkingFavorite.unmarkThisAsFavorite(context, favouriteData.getFav_id(), position);
 
             }
         });
@@ -309,4 +318,14 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
 
     }
 
+    @Override
+    public void unmarked(int position) {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+        if (favouriteAdapter != null && list != null) {
+            list.remove(position);
+            favouriteAdapter.notifyItemRemoved(position);
+        }
+
+    }
 }

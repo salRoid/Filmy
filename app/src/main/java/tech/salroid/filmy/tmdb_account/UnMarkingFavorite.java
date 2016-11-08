@@ -46,10 +46,13 @@ public class UnMarkingFavorite {
     private TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     private RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
     private Context context;
+    private UnmarkedListener listener;
+    private int position;
 
-    public void unmarkThisAsFavorite(Context context,String media_id){
+    public void unmarkThisAsFavorite(Context context,String media_id,int position){
 
         this.context = context;
+        this.position = position;
         SharedPreferences sp = context.getSharedPreferences(SESSION_PREF,Context.MODE_PRIVATE);
         String session_id = sp.getString("session"," ");
         getProfile(session_id,media_id);
@@ -163,6 +166,9 @@ public class UnMarkingFavorite {
 
     private void parseUnMarkedResponse(JSONObject response) {
 
+        if (listener!=null)
+             listener.unmarked(position);
+
         try {
             int status_code = response.getInt("status_code");
 
@@ -177,6 +183,15 @@ public class UnMarkingFavorite {
             CustomToast.show(context,"Can't remove from favorite list.",false);
         }
 
+    }
+
+
+    public void setUnmarkedListener(UnmarkedListener listener){
+        this.listener = listener;
+    }
+
+    public interface UnmarkedListener{
+        void unmarked(int position);
     }
 
 }

@@ -1,6 +1,7 @@
 package tech.salroid.filmy.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -63,7 +64,7 @@ import tech.salroid.filmy.tmdb_account.UnMarkingWatchList;
  * limitations under the License.
  */
 
-public class WatchList extends AppCompatActivity implements WatchlistAdapter.ClickListener, WatchlistAdapter.LongClickListener {
+public class WatchList extends AppCompatActivity implements WatchlistAdapter.ClickListener, WatchlistAdapter.LongClickListener, UnMarkingWatchList.UnmarkedListener {
 
     WatchlistAdapter watchlistAdapter;
 
@@ -89,6 +90,9 @@ public class WatchList extends AppCompatActivity implements WatchlistAdapter.Cli
     private String api_key = BuildConfig.API_KEY;
     private String SESSION_PREF = "SESSION_PREFERENCE";
     private String account_id;
+
+    private ProgressDialog progressDialog;
+    private List<WatchlistData> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +220,7 @@ public class WatchList extends AppCompatActivity implements WatchlistAdapter.Cli
     private void parseoutput(String s) {
         Log.d("webi", "parseoutput: " + s);
         WatchListMovieParseWork pw = new WatchListMovieParseWork(context, s);
-        List<WatchlistData> list = pw.parse_watchlist();
+        list = pw.parse_watchlist();
         watchlistAdapter = new WatchlistAdapter(this, list);
         if (list.size() == 0)
             wlTextView.setVisibility(View.VISIBLE);
@@ -288,7 +292,7 @@ public class WatchList extends AppCompatActivity implements WatchlistAdapter.Cli
 
 
     @Override
-    public void itemLongClicked(final WatchlistData watchlistData, int position) {
+    public void itemLongClicked(final WatchlistData watchlistData, final int position) {
 
 
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -299,12 +303,31 @@ public class WatchList extends AppCompatActivity implements WatchlistAdapter.Cli
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 UnMarkingWatchList unMarkingWatchList = new UnMarkingWatchList();
-                unMarkingWatchList.removeFromWatchList(context,watchlistData.getFav_id());
+                unMarkingWatchList.setUnmarkedListener(WatchList.this);
 
+                progressDialog = new ProgressDialog(WatchList.this);
+                progressDialog.setTitle("Watchlist");
+                progressDialog.setMessage("Removing..");
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
+                unMarkingWatchList.removeFromWatchList(context,watchlistData.getFav_id(),position);
             }
         });
 
         adb.show();
 
+    }
+
+    @Override
+    public void unmarked(int position) {
+
+        if (progressDialog != null)
+            progressDialog.dismiss();
+        if (watchlistAdapter != null && list != null) {
+            list.remove(position);
+            watchlistAdapter.notifyItemRemoved(position);
+        }
     }
 }

@@ -2,9 +2,13 @@ package tech.salroid.filmy.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -58,10 +62,19 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private boolean tokenization = false;
     private String requestToken;
+    private boolean nightMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        nightMode = sp.getBoolean("dark", false);
+        if (nightMode)
+            setTheme(R.style.AppTheme_Base_Dark);
+        else
+            setTheme(R.style.AppTheme_Base);
+
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);
@@ -76,8 +89,17 @@ public class LoginActivity extends AppCompatActivity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
 
+
+        if (nightMode)
+            allThemeLogic();
+
         loginNow();
 
+    }
+
+
+    private void allThemeLogic() {
+        logo.setTextColor(Color.parseColor("#bdbdbd"));
     }
 
     @Override

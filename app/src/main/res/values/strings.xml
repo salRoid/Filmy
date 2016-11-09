@@ -341,14 +341,16 @@ limitations under the License.
     <string name="salroidgit" translatable="false">https://github.com/salroid</string>
     <string name="shareappdetails">Share this App</string>
     <string name="dark">Night Mode</string>
+    <string name="content_authority" translatable="false">tech.salroid.filmy</string>
+    <string name="openDrawer" translatable="false">Drawer Opened</string>
+    <string name="closeDrawer" translatable="false">Drawer Closed</string>
+
+
     <string name="crew">Crew</string>
     <string name="similar">Similar Movies</string>
-    <string name="ramankit_email">webianks@gmail.com</string>
     <string name="home">Home</string>
     <string name="favorite">Favorites</string>
-    <string name="watchlist">Watch List</string>
-    <string name="openDrawer">Drawer Opened</string>
-    <string name="closeDrawer">Drawer Closed</string>
+    <string name="watchlist" translatable="false">Watch List</string>
     <string name="account">Account</string>
     <string name="user_holder">Not Logged in</string>
     <string name="form_username">Username</string>
@@ -356,7 +358,6 @@ limitations under the License.
     <string name="login">TMDB LOGIN</string>
     <string name="login_normal">Login</string>
     <string name="trailers">Trailers</string>
-    <string name="content_authority">tech.salroid.filmy</string>
     <string name="favourite">Favourite</string>
     <string name="your_favourite_movie_appear_here">your favourite movie appear here</string>
     <string name="your_watchlist_appear_here">your watchlist appear here</string>

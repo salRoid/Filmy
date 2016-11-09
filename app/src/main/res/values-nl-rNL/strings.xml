@@ -7,7 +7,6 @@
     <string name="title_activity_full_cast">FullCastActivity</string>
     <string name="title_activity_full_movie">FullMovieActivity</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
-
     <string name="app_name">Filmy</string>
     <string name="title_activity_settings">instellingen</string>
     <string name="title_activity_saved_movies">offline films</string>
@@ -46,7 +45,7 @@
     <string name="about">over</string>
     <string name="madefor">Speciaal ontworpen voor filmliefhebbers .</string>
     <string name="error_details">Niet in staat om films mee te nemen. \n internetverbinding en probeer het opnieuw.</string>
-    <string name="trending">Trending</string>
+    <string name="trending">populair</string>
     <string name="theatres">in theaters</string>
     <string name="upcoming">aanstaande</string>
     <string name="details">gegevens</string>
@@ -64,6 +63,22 @@
 
     <string name="shareappdetails">Deel deze app .</string>
     <string name="dark">als de nacht</string>
+
+    <string name="crew">Bemanning</string>
+    <string name="similar">Vergelijkbare Movies</string>
+    <string name="home">huis-</string>
+    <string name="favorite">favorieten</string>
+    <string name="account">Account</string>
+    <string name="user_holder">Niet ingelogd</string>
+    <string name="form_username">Gebruikersnaam</string>
+    <string name="form_password">Wachtwoord</string>
+    <string name="login">TMDB Log in</string>
+    <string name="login_normal">Log in</string>
+    <string name="trailers">trailers</string>
+    <string name="favourite">favorieten</string>
+    <string name="your_favourite_movie_appear_here">your favourite movie appears here</string>
+    <string name="your_watchlist_appear_here">uw watchlist verschijnt hier</string>
+    <string name="you_dont_hav_fav">Geen films in de lijst</string>
 
 
 

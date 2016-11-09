@@ -46,7 +46,7 @@
     <string name="about">Über</string>
     <string name="madefor">Gemacht für Kinoliebhaber</string>
     <string name="error_details">Filme konnten nicht abgerufen werden. Überprüfe die Internet Verbindung und versuche es noch einmal.</string>
-    <string name="trending">TREND</string>
+    <string name="trending">Beliebt</string>
     <string name="theatres">IN KINOS</string>
     <string name="upcoming">DEMNÄCHST ERHÄLTLICH</string>
     <string name="details">Einzelheiten</string>
@@ -64,5 +64,22 @@
 
     <string name="shareappdetails">Teile diese App</string>
     <string name="dark">Nacht Modus</string>
+
+    <string name="crew">Crew</string>
+    <string name="similar">Ähnliche Filme</string>
+    <string name="home">Zuhause</string>
+    <string name="favorite">Favoriten</string>
+    <string name="account">Konto</string>
+    <string name="user_holder">Nicht eingeloggt</string>
+    <string name="form_username">Benutzername</string>
+    <string name="form_password">Passwort</string>
+    <string name="login">TMDB Anmeldung</string>
+    <string name="login_normal">Anmeldung</string>
+    <string name="trailers">Anhänger</string>
+    <string name="favourite">Favoriten</string>
+    <string name="your_favourite_movie_appear_here">Ihr Lieblingsfilm erscheint hier</string>
+    <string name="your_watchlist_appear_here">Ihr Watchlist erscheint hier</string>
+    <string name="you_dont_hav_fav">Keine Filme in der Liste</string>
+
 
 </resources>

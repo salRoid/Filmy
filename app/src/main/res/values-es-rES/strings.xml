@@ -46,7 +46,7 @@
     <string name="about">acerca de</string>
     <string name="madefor">Hecho para cinéfilos</string>
     <string name="error_details">No es posible obtener películas . \n Compruebe conexión a Internet y vuelva a intentarlo .</string>
-    <string name="trending">tendencias</string>
+    <string name="trending">popular</string>
     <string name="theatres">en los cines</string>
     <string name="upcoming">próximo</string>
     <string name="details">detalles</string>
@@ -65,5 +65,20 @@
     <string name="shareappdetails">Comparte esta aplicación</string>
     <string name="dark">modo nocturno</string>
 
+    <string name="crew">Tripulación</string>
+    <string name="similar">Películas similares</string>
+    <string name="home">casa</string>
+    <string name="favorite">Favoritos</string>
+    <string name="account">Cuenta</string>
+    <string name="user_holder">Sin iniciar sesión</string>
+    <string name="form_username">Nombre de usuario</string>
+    <string name="form_password">Contraseña</string>
+    <string name="login">TMDB iniciar sesión</string>
+    <string name="login_normal">iniciar sesión</string>
+    <string name="trailers">Remolques</string>
+    <string name="favourite">Favoritos</string>
+    <string name="your_favourite_movie_appear_here">Tu película favorita aparece aquí</string>
+    <string name="your_watchlist_appear_here">Su lista aparece aquí</string>
+    <string name="you_dont_hav_fav">No hay películas en la lista</string>
 
 </resources>

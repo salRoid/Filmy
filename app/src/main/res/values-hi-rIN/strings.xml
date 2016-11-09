@@ -46,7 +46,7 @@
     <string name="about">के बारे में</string>
     <string name="madefor">फिल्म प्रेमियों के लिए  खास बनाया  गया ।</string>
     <string name="error_details">फिल्मों को लाने में असमर्थ। \n इंटरनेट कनेक्शन हो तो फिर कोशिश करें |</string>
-    <string name="trending">ट्रेंडिंग</string>
+    <string name="trending">लोकप्रिय</string>
     <string name="theatres">सिनेमा घरों में</string>
     <string name="upcoming">आगामी</string>
     <string name="details">विवरण</string>
@@ -65,6 +65,21 @@
     <string name="shareappdetails">इस एप को शेयर करें।</string>
     <string name="dark">रात्री स्वरुप</string>
 
+    <string name="crew">कर्मी दल</string>
+    <string name="similar">इसी तरह की फिल्में</string>
+    <string name="home">घर</string>
+    <string name="favorite">पसंदीदा</string>
+    <string name="account">लेखा</string>
+    <string name="user_holder">लोग इन नहीं है</string>
+    <string name="form_username">उपयोगकर्ता नाम</string>
+    <string name="form_password">पासवर्ड</string>
+    <string name="login">TMDB लॉग इन करें</string>
+    <string name="login_normal">लॉग इन करें</string>
+    <string name="trailers">ट्रेलरों</string>
+    <string name="favourite">पसंदीदा</string>
+    <string name="your_favourite_movie_appear_here">अपने पसंदीदा फिल्म यहाँ दिखाई</string>
+    <string name="your_watchlist_appear_here">आपकी फिल्में देखने के लिए यहाँ है</string>
+    <string name="you_dont_hav_fav">सूची में कोई भी फिल्में नहीं</string>
 
 
 </resources>

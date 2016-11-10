@@ -30,13 +30,15 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField("String", "API_KEY", "\"" + TMDB_API_KEY + "\"")
+            resValue "string", "FABRIC_KEY", FABRIC_API_KEY
         }
         debug{
             buildConfigField("String", "API_KEY", "\"" + TMDB_API_KEY +"\"")
-            minifyEnabled false
+            resValue "string", "FABRIC_KEY", FABRIC_API_KEY
+            minifyEnabled true
         }
     }
 }
@@ -61,5 +63,5 @@ dependencies {
     }
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
 }

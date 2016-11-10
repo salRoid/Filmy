@@ -27,20 +27,26 @@ android {
         versionCode 10
         versionName "2.0.0"
         multiDexEnabled true
+
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "API_KEY", "\"" + TMDB_API_KEY + "\"")
-            resValue "string", "FABRIC_KEY", FABRIC_API_KEY
+            buildConfigField("String", "API_KEY", "\"" + getApiKey() + "\"")
         }
         debug{
-            buildConfigField("String", "API_KEY", "\"" + TMDB_API_KEY +"\"")
-            resValue "string", "FABRIC_KEY", FABRIC_API_KEY
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "API_KEY", "\"" + getApiKey() +"\"")
             minifyEnabled true
         }
     }
+}
+
+def getApiKey(){
+    def Properties props = new Properties()
+    props.load(new FileInputStream(new File('secrets.properties')))
+    return props['TMDB_API_KEY']
 }
 
 dependencies {

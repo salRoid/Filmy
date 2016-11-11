@@ -27,18 +27,26 @@ android {
         versionCode 10
         versionName "2.0.0"
         multiDexEnabled true
+
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "API_KEY", "\"" + TMDB_API_KEY + "\"")
+            buildConfigField("String", "API_KEY", "\"" + getApiKey() + "\"")
         }
         debug{
-            buildConfigField("String", "API_KEY", "\"" + TMDB_API_KEY +"\"")
-            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "API_KEY", "\"" + getApiKey() +"\"")
+            minifyEnabled true
         }
     }
+}
+
+def getApiKey(){
+    def Properties props = new Properties()
+    props.load(new FileInputStream(new File('secrets.properties')))
+    return props['TMDB_API_KEY']
 }
 
 dependencies {
@@ -61,5 +69,5 @@ dependencies {
     }
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
 }

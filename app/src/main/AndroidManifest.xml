@@ -86,7 +86,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="62707285253d6b217b66e97e6e602bcab0edc463" />
+            android:value="@string/fabric_key" />
 
         <activity android:name=".activities.License" />
         <activity android:name=".activities.AboutActivity" />
@@ -102,27 +102,15 @@
         </receiver>
 
         <activity android:name=".activities.AccountActivity" />
-        <activity android:name=".activities.LoginActivity">
-            <data android:scheme="http" />
-            <data
-                android:host="salroid.tech"
-                android:scheme="http" />
-
-            <action android:name="android.intent.action.VIEW" />
-
-            <category android:name="android.intent.category.BROWSABLE" />
-            <category android:name="android.intent.category.DEFAULT" />
-        </activity>
+        <activity android:name=".activities.LoginActivity"/>
         <activity android:name=".activities.Favorite" />
-        <!--
- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
-        -->
+        <activity android:name=".activities.WatchList"/>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities.WatchList"></activity>
+
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@ Open sourced awesome material designed movie app.
 <img src="http://www.webianks.com/filmy/filmy.png"  height="700" width="400" >
 
 #APIs
-Filmy is powered by the tmdb and trakt.
+Filmy is powered by the tmdb.
 
 #Implementations
 Contains various advanced api implementations that make it high quality app.

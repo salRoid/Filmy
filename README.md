@@ -5,14 +5,14 @@ Open sourced awesome material designed movie app.
 
 <img src="http://www.webianks.com/filmy/launcher.png" height="128" width="128" >
 
-#Screens
+# Screens
 <img src="http://www.webianks.com/filmy/a.png" align="right" height="700" width="400" >
 <img src="http://www.webianks.com/filmy/filmy.png"  height="700" width="400" >
 
-#APIs
+# APIs
 Filmy is powered by the tmdb.
 
-#Implementations
+# Implementations
 Contains various advanced api implementations that make it high quality app.
 
 <ul>
@@ -34,7 +34,7 @@ Contains various advanced api implementations that make it high quality app.
 <a href='https://play.google.com/store/apps/details?id=tech.salroid.filmy&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="200px" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 
-##License
+# License
 
 ```
 Filmy for Android
@@ -53,7 +53,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-##Contributing
+## Contributing
 
 Please fork this repository and contribute back using <a href="https://github.com/salroid/Filmy/pulls">pull requests.</a><br>
 Any contributions, large or small, major features, bug fixes, additional language translations, unit/integration tests are welcomed.

@@ -31,6 +31,15 @@ Contains various advanced api implementations that make it high quality app.
 <li>Custom Views - BreathingProgress, CustomToast</li>
 </ul>
 
+## Prerequisites
+Generate your own API Keys from  the following : 
+
+<ul>
+<li><a href = 'https://www.themoviedb.org/documentation/api'>TMDB
+<li><a href = 'https://fabric.io/kits/android/crashlytics/install'>Fabric
+<li><a href= 'https://developers.google.com/youtube/v3/getting-started'>Youtube 
+</ul>
+
 <a href='https://play.google.com/store/apps/details?id=tech.salroid.filmy&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="200px" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 

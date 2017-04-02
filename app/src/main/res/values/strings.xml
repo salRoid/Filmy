@@ -362,6 +362,7 @@ limitations under the License.
     <string name="your_favourite_movie_appear_here">your favourite movie appear here</string>
     <string name="your_watchlist_appear_here">your watchlist appear here</string>
     <string name="you_dont_hav_fav">No movies in the list.</string>
+    <string name="error_string">There was an error initializing the YouTube Player</string>
 
 
 </resources>

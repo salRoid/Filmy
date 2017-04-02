@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -29,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -253,6 +253,14 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         boolean nightModeNew = sp.getBoolean("dark", false);
         if (nightMode != nightModeNew)
             recreate();
+
+
+        RevealAnimation.performReveal(main_content);
+        performDataFetching();
+
+        showCastFragment();
+        showCrewFragment();
+        showSimilarFragment();
     }
 
     private void performDataFetching() {
@@ -894,7 +902,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             case R.id.trailorView:
                 if ((trailer_boolean))
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer)));
+                startActivity(YouTubeStandalonePlayer.createVideoIntent(MovieDetailsActivity.this,
+                        getString(R.string.Youtube_Api_Key), trailor));
                 break;
         }
     }

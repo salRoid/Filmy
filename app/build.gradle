@@ -70,4 +70,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.google.android.gms:play-services-appindexing:9.8.0'
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
 }

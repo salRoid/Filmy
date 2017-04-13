@@ -86,8 +86,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="@string/Fabric_Key"
-            />
+            android:value="082feab78717cd6fd19188c71d9fb584902de95e" />
         <activity android:name=".activities.License" />
         <activity android:name=".activities.AboutActivity" />
 

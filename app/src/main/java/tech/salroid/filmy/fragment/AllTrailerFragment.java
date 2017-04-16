@@ -1,0 +1,139 @@
+package tech.salroid.filmy.fragment;
+
+/*
+ * Filmy Application for Android
+ * Copyright (c) 2017 Sajal Gupta (http://github.com/salroid).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import android.animation.Animator;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
+
+import java.util.Arrays;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import tech.salroid.filmy.R;
+import tech.salroid.filmy.activities.MovieDetailsActivity;
+import tech.salroid.filmy.custom_adapter.TrailerAdapter;
+
+public class AllTrailerFragment extends Fragment implements View.OnClickListener, TrailerAdapter.OnItemClickListener {
+
+    String titleValue;
+    String [] trailers;
+    String [] trailers_name;
+    RecyclerView recyclerView;
+
+    @BindView(R.id.textViewTitle)
+    TextView title;
+    @BindView(R.id.cross)
+    ImageView crossButton ;
+    private String TAG = AllTrailerFragment.class.getSimpleName();
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.all_trailer_layout, container, false);
+        ButterKnife.bind(this,view);
+
+        crossButton.setOnClickListener(this);
+
+        // To run the animation as soon as the view is layout in the view hierarchy we add this
+        // listener and remove it
+        // as soon as it runs to prevent multiple animations if the view changes bounds
+        view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop,
+                                       int oldRight, int oldBottom) {
+                v.removeOnLayoutChangeListener(this);
+
+                int cx = getArguments().getInt("cx");
+                int cy = getArguments().getInt("cy");
+
+                // get the hypothenuse so the radius is from one corner to the other
+                int radius = (int) Math.hypot(right, bottom);
+
+                Animator reveal;
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    reveal = ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, radius);
+                    reveal.setInterpolator(new DecelerateInterpolator(2f));
+                    reveal.setDuration(1000);
+                    reveal.start();
+                }
+
+            }
+        });
+
+        init(view);
+
+        return view;
+    }
+
+    private void init(View view) {
+       recyclerView = (RecyclerView) view.findViewById(R.id.all_trailer_recycler_view);
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        titleValue = getArguments().getString("title", " ");
+        trailers = getArguments().getStringArray("trailers");
+        trailers_name = getArguments().getStringArray("trailers_name");
+
+
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayout.VERTICAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        title.setText(titleValue);
+        TrailerAdapter trailerAdapter = new TrailerAdapter(trailers,trailers_name,getActivity());
+        trailerAdapter.setOnItemClickListener(this);
+        recyclerView.setAdapter(trailerAdapter);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+    }
+
+    @Override
+    public void itemClicked(String trailerId) {
+        startActivity(YouTubeStandalonePlayer.createVideoIntent(getActivity(),
+                getString(R.string.Youtube_Api_Key), trailerId));
+    }
+}

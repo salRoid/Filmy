@@ -9,20 +9,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -38,6 +36,8 @@ import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.SearchData;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.SearchResultParseWork;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 /*
  * Filmy Application for Android
  * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
@@ -185,6 +185,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         sadapter.setClickListener(this);
 
         hideProgress();
+        hideSoftKeyboard();
 
     }
 
@@ -210,4 +211,12 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
         }
     }
+
+    public void hideSoftKeyboard() {
+        if(getActivity().getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
 }

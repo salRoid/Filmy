@@ -184,7 +184,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     private String movie_imdb_id;
     private CrewFragment crewFragment;
     private SimilarFragment similarFragment;
-    private String TAG = MovieDetailsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

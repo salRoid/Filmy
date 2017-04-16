@@ -54,7 +54,6 @@ public class AllTrailerFragment extends Fragment implements View.OnClickListener
     TextView title;
     @BindView(R.id.cross)
     ImageView crossButton ;
-    private String TAG = AllTrailerFragment.class.getSimpleName();
 
 
     @Nullable

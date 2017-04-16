@@ -867,37 +867,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        FullReadFragment fragment = (FullReadFragment) getSupportFragmentManager().findFragmentByTag("DESC");
-        if (fragment != null && fragment.isVisible()) {
-            getSupportFragmentManager().beginTransaction().remove(fullReadFragment).commit();
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
         } else {
-
-            if (type == -1) {
-
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-
-            } else {
-                super.onBackPressed();
-            }
+            getFragmentManager().popBackStack();
         }
-
-
-        AllTrailerFragment trailer_fragment = (AllTrailerFragment) getSupportFragmentManager().findFragmentByTag("TRAILER");
-        if (trailer_fragment != null && trailer_fragment.isVisible()) {
-            getSupportFragmentManager().beginTransaction().remove(allTrailerFragment).commit();
-        } else {
-
-            if (type == -1) {
-
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-
-            } else {
-                super.onBackPressed();
-            }
-        }
-
 
     }
 
@@ -921,7 +895,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                     args.putString("desc", movie_desc);
                     fullReadFragment.setArguments(args);
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.all_details_container, fullReadFragment, "DESC").commit();
+                            .replace(R.id.all_details_container, fullReadFragment).addToBackStack("DESC").commit();
                 }
                 break;
 
@@ -949,7 +923,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                     args.putStringArray("trailers_name",trailer_array_name);
                     allTrailerFragment.setArguments(args);
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.all_details_container, allTrailerFragment, "TRAILER").commit();
+                            .replace(R.id.all_details_container, allTrailerFragment).addToBackStack("TRAILER").commit();
                 }
                 break;
         }

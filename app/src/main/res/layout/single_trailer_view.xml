@@ -13,12 +13,27 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/detail_youtube"
             android:layout_width="150dp"
             android:layout_height="100dp"
             android:contentDescription="@string/trailer"
             android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/play_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:alpha="0.8"
+                android:background="@drawable/ic_play_circle_filled_white_48dp"
+                android:contentDescription="@string/play" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/trailerTitle"

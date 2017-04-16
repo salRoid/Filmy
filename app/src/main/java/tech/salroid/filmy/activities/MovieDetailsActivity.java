@@ -15,6 +15,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -46,6 +48,7 @@ import tech.salroid.filmy.database.MovieDetailsUpdation;
 import tech.salroid.filmy.database.MovieLoaders;
 import tech.salroid.filmy.database.MovieProjection;
 import tech.salroid.filmy.database.OfflineMovies;
+import tech.salroid.filmy.fragment.AllTrailerFragment;
 import tech.salroid.filmy.fragment.CastFragment;
 import tech.salroid.filmy.fragment.CrewFragment;
 import tech.salroid.filmy.fragment.FullReadFragment;
@@ -166,18 +169,22 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
 
     Context context = this;
+    String[] trailer_array;
+    String [] trailer_array_name;
     FullReadFragment fullReadFragment;
+    AllTrailerFragment allTrailerFragment;
     HashMap<String, String> movieMap;
     boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
     int type;
-    private String movie_id,trailor = null,trailer = null, movie_desc, quality, movie_tagline,
-            movie_rating,movie_rating_imdb,movie_rating_tmdb, movie_rating_tomatometer,movie_rating_metascore, movie_rating_audience, show_centre_img_url, movie_title, movie_id_final;
+    private String movie_id, trailor = null, trailer = null, movie_desc, quality, movie_tagline,
+            movie_rating, movie_rating_imdb, movie_rating_tmdb, movie_rating_tomatometer, movie_rating_metascore, movie_rating_audience, show_centre_img_url, movie_title, movie_id_final;
 
     private CastFragment castFragment;
     private boolean nightMode;
     private String movie_imdb_id;
     private CrewFragment crewFragment;
     private SimilarFragment similarFragment;
+    private String TAG = MovieDetailsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,7 +204,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         if (!nightMode)
             allThemeLogic();
-        else{
+        else {
             nightModeLogic();
             castDivider.setVisibility(View.GONE);
         }
@@ -214,6 +221,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         headerContainer.setOnClickListener(this);
         newMain.setOnClickListener(this);
         trailorView.setOnClickListener(this);
+        youtubeIcon.setOnClickListener(this);
 
 
         Intent intent = getIntent();
@@ -313,7 +321,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     private void showCrewFragment() {
 
-        crewFragment = CrewFragment.newInstance(null,movie_title);
+        crewFragment = CrewFragment.newInstance(null, movie_title);
 
         getSupportFragmentManager().
                 beginTransaction().
@@ -322,7 +330,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
     private void showSimilarFragment() {
-        similarFragment = SimilarFragment.newInstance(null,movie_title);
+        similarFragment = SimilarFragment.newInstance(null, movie_title);
 
         getSupportFragmentManager().
                 beginTransaction().
@@ -356,10 +364,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             if (castFragment != null)
                 castFragment.getCastFromNetwork(movie_id_final);
 
-            if(similarFragment!=null)
+            if (similarFragment != null)
                 similarFragment.getSimilarFromNetwork(movie_id_final);
 
-            Rating.getRating(context,movie_imdb_id);
+            Rating.getRating(context, movie_imdb_id);
 
             //poster and banner
             get_poster_path_from_json = jsonObject.getString("poster_path");
@@ -384,20 +392,27 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
             JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
 
-            if (youTubeArray.length() != 0) {
+            trailer_array = new String[youTubeArray.length()];
+            trailer_array_name = new String[youTubeArray.length()];
 
+            if (youTubeArray.length() != 0) {
+                Boolean main_trailer = true;
                 for (int i = 0; i < youTubeArray.length(); i++) {
+
                     JSONObject singleTrailor = youTubeArray.getJSONObject(i);
+                    trailer_array[i] = singleTrailor.getString("source");
+                    trailer_array_name[i] = singleTrailor.getString("name");
+
 
                     String type = singleTrailor.getString("type");
-
-                    if (type.equals("Trailer")) {
-                        trailor = singleTrailor.getString("source");
-                        break;
-                    } else
-                        trailor = youTubeArray.getJSONObject(0).getString("source");
+                    if (main_trailer) {
+                        if (type.equals("Trailer")) {
+                            trailor = singleTrailor.getString("source");
+                            main_trailer = false;
+                        } else
+                            trailor = youTubeArray.getJSONObject(0).getString("source");
+                    }
                 }
-
                 trailer = getResources().getString(R.string.trailer_link_prefix) + trailor;
             } else
                 trailer = null;
@@ -437,7 +452,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             try {
                 if (trailor != null) {
                     trailer_boolean = true;
-                  //  String videoId = extractYoutubeId(trailer);
+                    //  String videoId = extractYoutubeId(trailer);
                     img_url = getResources().getString(R.string.trailer_img_prefix) + trailor
                             + getResources().getString(R.string.trailer_img_suffix);
 
@@ -470,7 +485,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         det_tagline.setText(tagline);
         det_title.setText(title);
         det_overview.setText(overview);
-       // det_rating.setText(rating);
+        // det_rating.setText(rating);
         det_runtime.setText(runtime);
         det_released.setText(released);
         det_certification.setText(certification);
@@ -626,7 +641,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             det_tagline.setText(tagline);
             det_title.setText(title);
             det_overview.setText(overview);
-           // det_rating.setText(rating);
+            // det_rating.setText(rating);
             det_runtime.setText(runtime);
             det_released.setText(released);
             det_certification.setText(certification);
@@ -674,8 +689,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             String thumbNail = null;
             if ((trailor != null)) {
                 trailer_boolean = true;
-                    thumbNail = getResources().getString(R.string.trailer_img_prefix) + trailor
-                            + getResources().getString(R.string.trailer_img_prefix);
+                thumbNail = getResources().getString(R.string.trailer_img_prefix) + trailor
+                        + getResources().getString(R.string.trailer_img_prefix);
             } else {
                 thumbNail = posterLink;
             }
@@ -833,12 +848,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             case R.id.action_fav:
                 MarkingFavorite markingFavorite = new MarkingFavorite();
-                markingFavorite.markThisAsFavorite(context,movie_id);
+                markingFavorite.markThisAsFavorite(context, movie_id);
                 break;
 
             case R.id.action_watch:
                 MarkingWatchList markingWatchList = new MarkingWatchList();
-                markingWatchList.addToWatchList(context,movie_id);
+                markingWatchList.addToWatchList(context, movie_id);
                 break;
 
             default:
@@ -866,6 +881,24 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 super.onBackPressed();
             }
         }
+
+
+        AllTrailerFragment trailer_fragment = (AllTrailerFragment) getSupportFragmentManager().findFragmentByTag("TRAILER");
+        if (trailer_fragment != null && trailer_fragment.isVisible()) {
+            getSupportFragmentManager().beginTransaction().remove(allTrailerFragment).commit();
+        } else {
+
+            if (type == -1) {
+
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+
+            } else {
+                super.onBackPressed();
+            }
+        }
+
+
     }
 
     @Override
@@ -902,10 +935,25 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             case R.id.trailorView:
                 if ((trailer_boolean))
-                startActivity(YouTubeStandalonePlayer.createVideoIntent(MovieDetailsActivity.this,
-                        getString(R.string.Youtube_Api_Key), trailor));
+                    startActivity(YouTubeStandalonePlayer.createVideoIntent(MovieDetailsActivity.this,
+                            getString(R.string.Youtube_Api_Key), trailor));
+
+                break;
+            case R.id.youtube_icon:
+                if (trailer_boolean) {
+                    allTrailerFragment = new AllTrailerFragment();
+                   // Log.d(TAG, "onClick: "+ Arrays.toString(trailer_array));
+                    Bundle args = new Bundle();
+                    args.putString("title", movie_title);
+                    args.putStringArray("trailers",trailer_array);
+                    args.putStringArray("trailers_name",trailer_array_name);
+                    allTrailerFragment.setArguments(args);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.all_details_container, allTrailerFragment, "TRAILER").commit();
+                }
                 break;
         }
+
     }
 
     @Override
@@ -938,28 +986,28 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     protected void onStop() {
         super.onStop();
         castFragment = null;
-        similarFragment=null;
+        similarFragment = null;
 
     }
 
     @Override
     public void gotCrew(String crewData) {
 
-        if(crewFragment!=null)
-           crewFragment.crew_parseOutput(crewData);
+        if (crewFragment != null)
+            crewFragment.crew_parseOutput(crewData);
     }
 
-    public void setRating(String imdb_rating , String tomatometer_rating,String audience_rating,String metascore_rating,String image){
+    public void setRating(String imdb_rating, String tomatometer_rating, String audience_rating, String metascore_rating, String image) {
 
         movie_rating_imdb = imdb_rating;
-        movie_rating_tomatometer=tomatometer_rating;
-        movie_rating_audience=audience_rating;
-        movie_rating_metascore=metascore_rating;
+        movie_rating_tomatometer = tomatometer_rating;
+        movie_rating_audience = audience_rating;
+        movie_rating_metascore = metascore_rating;
 
         if (movie_rating_imdb.equals("N/A"))
             layout_imdb.setVisibility(View.GONE);
         else
-        rating_of_imdb.setText(movie_rating_imdb);
+            rating_of_imdb.setText(movie_rating_imdb);
 
 
         if (movie_rating_tomatometer.equals("N/A"))
@@ -967,7 +1015,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         else {
             if (image.equals("certified"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
-             else if (image.equals("fresh"))
+            else if (image.equals("fresh"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.fresh));
             else if (image.equals("rotten"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));
@@ -1013,7 +1061,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             layout_tmdb.setVisibility(View.GONE);
 
         else
-        det_rating.setText(movie_rating_tmdb);
+            det_rating.setText(movie_rating_tmdb);
 
 
     }

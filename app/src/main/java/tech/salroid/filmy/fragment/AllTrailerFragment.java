@@ -33,14 +33,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
+
 import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.TrailerAdapter;
 
-public class AllTrailerFragment extends Fragment implements View.OnClickListener {
+public class AllTrailerFragment extends Fragment implements View.OnClickListener, TrailerAdapter.OnItemClickListener {
 
     String titleValue;
     String [] trailers;
@@ -114,10 +117,11 @@ public class AllTrailerFragment extends Fragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayout.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayout.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
         title.setText(titleValue);
         TrailerAdapter trailerAdapter = new TrailerAdapter(trailers,trailers_name,getActivity());
+        trailerAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(trailerAdapter);
 
     }
@@ -127,4 +131,9 @@ public class AllTrailerFragment extends Fragment implements View.OnClickListener
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
+    @Override
+    public void itemClicked(String trailerId) {
+        startActivity(YouTubeStandalonePlayer.createVideoIntent(getActivity(),
+                getString(R.string.Youtube_Api_Key), trailerId));
+    }
 }

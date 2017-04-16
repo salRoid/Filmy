@@ -2,6 +2,7 @@ package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +25,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.VH> {
     private String[] trailers;
     private String[] trailers_name;
     private Context context;
+    private OnItemClickListener onItemClickListener;
 
     public TrailerAdapter(String[] trailers, String[] trailers_name, Context context) {
         this.trailers = trailers;
@@ -42,9 +43,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.VH> {
     @Override
     public void onBindViewHolder(VH holder, int position) {
 
+        Log.d("webi", "called " + position);
+
         String trailer_id = trailers[position];
         String name = trailers_name[position];
-        String trailer_link = context.getResources().getString(R.string.trailer_link_prefix) + trailer_id;
         String trailer_thumbnail = context.getResources().getString(R.string.trailer_img_prefix) + trailer_id
                 + context.getResources().getString(R.string.trailer_img_suffix);
 
@@ -57,6 +59,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.VH> {
         } catch (Exception e) {
         }
 
+
         holder.trailerTitle.setText(name);
 
 
@@ -67,8 +70,12 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.VH> {
         return trailers.length;
     }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
-    public class VH extends RecyclerView.ViewHolder {
+
+    class VH extends RecyclerView.ViewHolder {
 
         @BindView(R.id.detail_youtube)
         ImageView youtube_thumbnail;
@@ -83,8 +90,16 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.VH> {
                 @Override
                 public void onClick(View v) {
 
+                    if (onItemClickListener!=null)
+                        onItemClickListener.itemClicked(trailers[getAdapterPosition()]);
                 }
             });
         }
     }
+
+   public interface OnItemClickListener {
+        void itemClicked(String trailerId);
+    }
+
+
 }

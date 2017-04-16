@@ -94,7 +94,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     private String character_bio;
     private FullReadFragment fullReadFragment;
 
-    private String LOG_TAG = CharacterDetailsActivity.class.getSimpleName();
     private boolean nightMode;
 
     @Override

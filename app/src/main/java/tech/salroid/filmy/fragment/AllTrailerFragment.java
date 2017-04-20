@@ -18,6 +18,9 @@ package tech.salroid.filmy.fragment;
  */
 
 import android.animation.Animator;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,6 +34,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
@@ -46,21 +50,36 @@ import tech.salroid.filmy.custom_adapter.TrailerAdapter;
 public class AllTrailerFragment extends Fragment implements View.OnClickListener, TrailerAdapter.OnItemClickListener {
 
     String titleValue;
-    String [] trailers;
-    String [] trailers_name;
+    String[] trailers;
+    String[] trailers_name;
     RecyclerView recyclerView;
 
     @BindView(R.id.textViewTitle)
     TextView title;
     @BindView(R.id.cross)
-    ImageView crossButton ;
+    ImageView crossButton;
+    @BindView(R.id.main_content)
+    RelativeLayout mainContent;
+
+    private boolean nightMode;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        nightMode = sp.getBoolean("dark", false);
+
+
         View view = inflater.inflate(R.layout.all_trailer_layout, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
+
+        if (!nightMode)
+            allThemeLogic();
+        else {
+            nightModeLogic();
+        }
 
         crossButton.setOnClickListener(this);
 
@@ -96,8 +115,21 @@ public class AllTrailerFragment extends Fragment implements View.OnClickListener
         return view;
     }
 
+    private void nightModeLogic() {
+        crossButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_navigation_close_inverted));
+        mainContent.setBackgroundColor(Color.parseColor("#212121"));
+        title.setTextColor(Color.parseColor("#ffffff"));
+    }
+
+    private void allThemeLogic() {
+        crossButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_close_black_48dp));
+        mainContent.setBackgroundColor(Color.parseColor("#ffffff"));
+        title.setTextColor(Color.parseColor("#000000"));
+
+    }
+
     private void init(View view) {
-       recyclerView = (RecyclerView) view.findViewById(R.id.all_trailer_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.all_trailer_recycler_view);
     }
 
 
@@ -109,17 +141,17 @@ public class AllTrailerFragment extends Fragment implements View.OnClickListener
         trailers = getArguments().getStringArray("trailers");
         trailers_name = getArguments().getStringArray("trailers_name");
 
-
     }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayout.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         title.setText(titleValue);
-        TrailerAdapter trailerAdapter = new TrailerAdapter(trailers,trailers_name,getActivity());
+        TrailerAdapter trailerAdapter = new TrailerAdapter(trailers, trailers_name, getActivity());
         trailerAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(trailerAdapter);
 

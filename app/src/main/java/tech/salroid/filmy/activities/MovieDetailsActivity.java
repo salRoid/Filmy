@@ -56,6 +56,7 @@ import tech.salroid.filmy.fragment.SimilarFragment;
 import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
 import tech.salroid.filmy.tmdb_account.MarkingFavorite;
 import tech.salroid.filmy.tmdb_account.MarkingWatchList;
+import tech.salroid.filmy.utility.Confirmation;
 import tech.salroid.filmy.utility.NullChecker;
 
 /*
@@ -176,14 +177,25 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     HashMap<String, String> movieMap;
     boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
     int type;
-    private String movie_id, trailor = null, trailer = null, movie_desc, quality, movie_tagline,
-            movie_rating, movie_rating_imdb, movie_rating_tmdb, movie_rating_tomatometer, movie_rating_metascore, movie_rating_audience, show_centre_img_url, movie_title, movie_id_final;
+    private String movie_id;
+    private String trailor = null;
+    private String trailer = null;
+    private String movie_desc;
+    private String quality;
+    private String movie_tagline;
+    private String movie_rating;
+    private String movie_rating_tmdb;
+    private String show_centre_img_url;
+    private String movie_title;
+    private String movie_id_final;
 
     private CastFragment castFragment;
     private boolean nightMode;
     private String movie_imdb_id;
     private CrewFragment crewFragment;
     private SimilarFragment similarFragment;
+    private String movie_rating_audience;
+    private String movie_rating_metascore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -846,13 +858,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 break;
 
             case R.id.action_fav:
-                MarkingFavorite markingFavorite = new MarkingFavorite();
-                markingFavorite.markThisAsFavorite(context, movie_id);
+
+                Confirmation.confirmFav(this,movie_id);
+
                 break;
 
             case R.id.action_watch:
-                MarkingWatchList markingWatchList = new MarkingWatchList();
-                markingWatchList.addToWatchList(context, movie_id);
+
+                Confirmation.confirmWatchlist(this,movie_id);
+
                 break;
 
             default:
@@ -970,10 +984,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             crewFragment.crew_parseOutput(crewData);
     }
 
-    public void setRating(String imdb_rating, String tomatometer_rating, String audience_rating, String metascore_rating, String image) {
+    public void setRating(String movie_rating_imdb, String movie_rating_tomatometer,
+                          String audience_rating, String metascore_rating, String image) {
 
-        movie_rating_imdb = imdb_rating;
-        movie_rating_tomatometer = tomatometer_rating;
         movie_rating_audience = audience_rating;
         movie_rating_metascore = metascore_rating;
 

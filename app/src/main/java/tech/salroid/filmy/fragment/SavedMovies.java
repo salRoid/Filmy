@@ -1,27 +1,21 @@
-package tech.salroid.filmy.activities;
+package tech.salroid.filmy.fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +24,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.SavedMoviesAdapter;
 import tech.salroid.filmy.database.FilmContract;
 
@@ -50,16 +45,12 @@ import tech.salroid.filmy.database.FilmContract;
  * limitations under the License.
  */
 
-public class SavedMovies extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
+public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.my_saved_recycler)
     RecyclerView my_saved_movies_recycler;
     @BindView(R.id.emptyContainer)
     LinearLayout emptyContainer;
-    @BindView(R.id.logo)
-    TextView logo;
     @BindView(R.id.database_image)
     ImageView dataImageView;
 
@@ -84,39 +75,16 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     };
 
     private SavedMoviesAdapter mainActivityAdapter;
-    private boolean nightMode;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        nightMode = sp.getBoolean("dark", false);
-        if (nightMode)
-            setTheme(R.style.AppTheme_Base_Dark);
-        else
-            setTheme(R.style.AppTheme_Base);
-
-        setContentView(R.layout.activity_saved_movies);
-
-        ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
 
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("");
-        }
+        View view = inflater.inflate(R.layout.fragment_saved_movies, container, false);
+        ButterKnife.bind(this, view);
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
-        logo.setTypeface(typeface);
-
-
-        if (nightMode)
-            allThemeLogic();
-
-        /*GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+          /*GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         my_saved_movies_recycler.setLayoutManager(gridLayoutManager);*/
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
@@ -149,33 +117,18 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
         }
 
-
-
-
-        mainActivityAdapter = new SavedMoviesAdapter(this, null);
+        mainActivityAdapter = new SavedMoviesAdapter(getActivity(), null);
         my_saved_movies_recycler.setAdapter(mainActivityAdapter);
         mainActivityAdapter.setClickListener(this);
         mainActivityAdapter.setLongClickListener(this);
 
-
-        getSupportLoaderManager().initLoader(SAVED_DETAILS_LOADER, null, this);
-
+        return view;
     }
-
-
-
-
-    private void allThemeLogic() {
-        logo.setTextColor(Color.parseColor("#bdbdbd"));
-        dataImageView.setColorFilter(Color.parseColor("#757575"), PorterDuff.Mode.MULTIPLY);
-
-    }
-
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        return new CursorLoader(this, FilmContract.SaveEntry.CONTENT_URI, GET_SAVE_COLUMNS, null, null, "_ID DESC");
+        return new CursorLoader(getActivity(), FilmContract.SaveEntry.CONTENT_URI, GET_SAVE_COLUMNS, null, null, "_ID DESC");
     }
 
     @Override
@@ -200,7 +153,7 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     public void itemClicked(String movieId, String title) {
 
 
-        Intent intent = new Intent(this, MovieDetailsActivity.class);
+        Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra("saved_database_applicable", true);
         intent.putExtra("network_applicable", true);
         intent.putExtra("title", title);
@@ -215,13 +168,13 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
     public void itemLongClicked(final Cursor mycursor, final int position) {
 
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(SavedMovies.this);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SavedMovies.this, android.R.layout.simple_list_item_1);
+        AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
 
         arrayAdapter.add("Remove");
 
 
-        final Context context = this;
+        final Context context = getActivity();
 
         adb.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
             @Override
@@ -250,23 +203,10 @@ public class SavedMovies extends AppCompatActivity implements LoaderManager.Load
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean nightModeNew = sp.getBoolean("dark", false);
-        if (nightMode!=nightModeNew)
-            recreate();
+        getActivity().getSupportLoaderManager().initLoader(SAVED_DETAILS_LOADER, null, this);
     }
 }

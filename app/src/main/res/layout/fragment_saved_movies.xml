@@ -4,33 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SavedMovies">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:padding="0dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:theme="@style/ThemeOverlay.AppCompat">
-
-        <TextView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/saved_movies"
-            android:textColor="#757575"
-            android:textSize="20sp" />
-
-    </android.support.v7.widget.Toolbar>
+    tools:context=".fragment.SavedMovies">
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_saved_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

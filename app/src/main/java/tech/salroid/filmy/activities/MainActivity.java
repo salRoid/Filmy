@@ -12,15 +12,11 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -40,6 +36,7 @@ import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
 import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.fragment.InTheaters;
+import tech.salroid.filmy.fragment.SavedMovies;
 import tech.salroid.filmy.fragment.SearchFragment;
 import tech.salroid.filmy.fragment.Trending;
 import tech.salroid.filmy.fragment.UpComing;
@@ -388,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SavedMovies.class));
                 break;
             case R.id.ic_account:
-                startActivity(new Intent(this, AccountActivity.class));
+                startActivity(new Intent(this, CollectionsActivity.class));
                 break;
         }
 

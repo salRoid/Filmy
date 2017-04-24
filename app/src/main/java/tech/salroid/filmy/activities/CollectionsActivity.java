@@ -8,13 +8,14 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -34,6 +35,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
+import tech.salroid.filmy.fragment.Favorite;
+import tech.salroid.filmy.fragment.SavedMovies;
+import tech.salroid.filmy.fragment.Trending;
+import tech.salroid.filmy.fragment.WatchList;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 
 /*
@@ -53,7 +59,7 @@ import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
  * limitations under the License.
  */
 
-public class AccountActivity extends AppCompatActivity {
+public class CollectionsActivity extends AppCompatActivity {
 
 
     private final int REQUEST_CODE = 000;
@@ -61,6 +67,10 @@ public class AccountActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.logo)
     TextView logo;
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
     @BindView(R.id.header)
     FrameLayout loginHeader;
     @BindView(R.id.username)
@@ -74,10 +84,6 @@ public class AccountActivity extends AppCompatActivity {
     private boolean nightMode;
     private boolean logged_in;
     private String PREF_NAME = "SESSION_PREFERENCE";
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client;
 
     @Override
@@ -91,7 +97,7 @@ public class AccountActivity extends AppCompatActivity {
             setTheme(R.style.AppTheme_Base_Dark);
         else
             setTheme(R.style.AppTheme_Base);
-        setContentView(R.layout.activity_account);
+        setContentView(R.layout.activity_collections);
         ButterKnife.bind(this);
 
 
@@ -109,17 +115,20 @@ public class AccountActivity extends AppCompatActivity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
 
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+
         favourite_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AccountActivity.this, Favorite.class));
+                startActivity(new Intent(CollectionsActivity.this, Favorite.class));
             }
         });
 
         watchlist_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AccountActivity.this, WatchList.class));
+                startActivity(new Intent(CollectionsActivity.this, WatchList.class));
             }
         });
 
@@ -133,7 +142,7 @@ public class AccountActivity extends AppCompatActivity {
 
                 if (!logged_in) {
 
-                    Intent intent = new Intent(AccountActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(CollectionsActivity.this, LoginActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
 
                 }
@@ -143,6 +152,7 @@ public class AccountActivity extends AppCompatActivity {
 
         tvUserName.setText(username);
         getProfile(session_id);
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -157,6 +167,19 @@ public class AccountActivity extends AppCompatActivity {
             finish();
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    private void setupViewPager(ViewPager viewPager) {
+
+
+        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new SavedMovies(), getString(R.string.offline));
+        adapter.addFragment(new Trending(), getString(R.string.favorite));
+        adapter.addFragment(new Trending(), getString(R.string.watchlist));
+        viewPager.setAdapter(adapter);
+
     }
 
 

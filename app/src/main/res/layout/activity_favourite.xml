@@ -5,7 +5,7 @@
     android:id="@+id/activity_favourite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tech.salroid.filmy.activities.Favorite">
+    tools:context="tech.salroid.filmy.fragment.Favorite">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

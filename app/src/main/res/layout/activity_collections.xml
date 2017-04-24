@@ -1,40 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_account"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="tech.salroid.filmy.activities.AccountActivity">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:padding="0dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:theme="@style/ThemeOverlay.AppCompat">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/account"
-            android:textColor="#757575"
-            android:textSize="20sp" />
+            android:background="?attr/colorPrimary"
+            android:padding="0dp"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:theme="@style/ThemeOverlay.AppCompat">
 
-    </android.support.v7.widget.Toolbar>
+            <TextView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saved"
+                android:textColor="#757575"
+                android:textSize="20sp" />
 
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/dark"
+            app:tabIndicatorHeight="3dp"
+            app:tabMode="fixed" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <FrameLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="@drawable/main_background">
+        android:foreground="@drawable/main_background"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -71,7 +91,6 @@
 
     </FrameLayout>
 
-
     <FrameLayout
         android:id="@+id/favContainer"
         android:layout_width="match_parent"
@@ -79,7 +98,8 @@
         android:layout_below="@id/header"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="@drawable/main_background">
+        android:foreground="@drawable/main_background"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -109,7 +129,8 @@
         android:layout_below="@id/favContainer"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="@drawable/main_background">
+        android:foreground="@drawable/main_background"
+        android:visibility="gone">
 
 
         <RelativeLayout
@@ -132,6 +153,4 @@
         </RelativeLayout>
     </FrameLayout>
 
-
-</RelativeLayout>
-
+</android.support.design.widget.CoordinatorLayout>

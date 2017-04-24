@@ -13,7 +13,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,14 +47,10 @@ import tech.salroid.filmy.database.FilmContract;
 
 public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.my_saved_recycler)
     RecyclerView my_saved_movies_recycler;
     @BindView(R.id.emptyContainer)
     LinearLayout emptyContainer;
-    @BindView(R.id.logo)
-    TextView logo;
     @BindView(R.id.database_image)
     ImageView dataImageView;
 
@@ -80,8 +75,6 @@ public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbac
     };
 
     private SavedMoviesAdapter mainActivityAdapter;
-    private boolean nightMode;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

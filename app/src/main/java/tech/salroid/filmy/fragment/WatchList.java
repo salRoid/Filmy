@@ -1,4 +1,4 @@
-package tech.salroid.filmy.activities;
+package tech.salroid.filmy.fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -22,7 +23,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -40,13 +40,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.custom_adapter.FavouriteAdapter;
+import tech.salroid.filmy.activities.MovieDetailsActivity;
+import tech.salroid.filmy.custom_adapter.WatchlistAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
-import tech.salroid.filmy.data_classes.FavouriteData;
-import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.data_classes.WatchlistData;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
-import tech.salroid.filmy.parser.FavouriteMovieParseWork;
-import tech.salroid.filmy.tmdb_account.UnMarkingFavorite;
+import tech.salroid.filmy.parser.WatchListMovieParseWork;
+import tech.salroid.filmy.tmdb_account.UnMarkingWatchList;
 
 /*
  * Filmy Application for Android
@@ -65,9 +65,9 @@ import tech.salroid.filmy.tmdb_account.UnMarkingFavorite;
  * limitations under the License.
  */
 
-public class Favorite extends AppCompatActivity implements FavouriteAdapter.ClickListener, FavouriteAdapter.LongClickListener, UnMarkingFavorite.UnmarkedListener {
+public class WatchList extends Fragment implements WatchlistAdapter.ClickListener, WatchlistAdapter.LongClickListener, UnMarkingWatchList.UnmarkedListener {
 
-    private FavouriteAdapter favouriteAdapter;
+    WatchlistAdapter watchlistAdapter;
 
     @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;
@@ -75,16 +75,14 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     Toolbar toolbar;
     @BindView(R.id.logo)
     TextView logo;
-    @BindView(R.id.my_fav_recycler)
-    RecyclerView my_favourite_movies_recycler;
+    @BindView(R.id.my_watchlist_recycler)
+    RecyclerView my_watchlist_movies_recycler;
     @BindView(R.id.fav_image)
     ImageView dataImageView;
-    @BindView(R.id.fav_display_text)
-    TextView faTextView;
-
+    @BindView(R.id.wl_display_text)
+    TextView wlTextView;
     @BindView(R.id.emptyContainer)
     LinearLayout emptyContainer;
-
 
     private boolean nightMode;
     private Context context;
@@ -95,12 +93,14 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     private String api_key = BuildConfig.API_KEY;
     private String SESSION_PREF = "SESSION_PREFERENCE";
     private String account_id;
+
     private ProgressDialog progressDialog;
-    private List<FavouriteData> list;
+    private List<WatchlistData> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         context = this;
         SharedPreferences spref = context.getSharedPreferences(SESSION_PREF, Context.MODE_PRIVATE);
@@ -114,7 +114,7 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
         else
             setTheme(R.style.AppTheme_Base);
 
-        setContentView(R.layout.activity_favourite);
+        setContentView(R.layout.activity_watched_list);
 
         showProgress();
 
@@ -142,11 +142,11 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
 
                 StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(6,
                         StaggeredGridLayoutManager.VERTICAL);
-                my_favourite_movies_recycler.setLayoutManager(gridLayoutManager);
+                my_watchlist_movies_recycler.setLayoutManager(gridLayoutManager);
             } else {
                 StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(8,
                         StaggeredGridLayoutManager.VERTICAL);
-                my_favourite_movies_recycler.setLayoutManager(gridLayoutManager);
+                my_watchlist_movies_recycler.setLayoutManager(gridLayoutManager);
             }
 
         } else {
@@ -155,15 +155,14 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
 
                 StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3,
                         StaggeredGridLayoutManager.VERTICAL);
-                my_favourite_movies_recycler.setLayoutManager(gridLayoutManager);
+                my_watchlist_movies_recycler.setLayoutManager(gridLayoutManager);
             } else {
                 StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(5,
                         StaggeredGridLayoutManager.VERTICAL);
-                my_favourite_movies_recycler.setLayoutManager(gridLayoutManager);
+                my_watchlist_movies_recycler.setLayoutManager(gridLayoutManager);
             }
 
         }
-
     }
 
     private void getProfile(final String session_id) {
@@ -185,10 +184,9 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 hideProgress();
                 emptyContainer.setVisibility(View.VISIBLE);
-                faTextView.setText("You are not logged in.");
+                wlTextView.setText("You are not logged in.");
                 Log.e("webi", "Volley Error: " + error.getCause());
 
             }
@@ -200,7 +198,7 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     private void getfavourites(String session_id, String id) {
 
         String Favourite_Url = "https://api.themoviedb.org/3/account/" + id
-                + "/favorite/movies?api_key=" + api_key + "&session_id=" + session_id + "&sort_by=vote_average.asc";
+                + "/watchlist/movies?api_key=" + api_key + "&session_id=" + session_id + "&sort_by=vote_average.asc";
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Favourite_Url, null,
@@ -219,21 +217,20 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
                                 emptyContainer.setVisibility(View.VISIBLE);
                             }
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+
                     }
 
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                //Log.e("webi", "Volley Errorbelow: " + error.getCause());
                 hideProgress();
                 emptyContainer.setVisibility(View.VISIBLE);
-                faTextView.setText("Failed to get your list.");
-                Log.e("webi", "Volley Error below: " + error.getCause());
-
+                wlTextView.setText("Failed to get your list.");
             }
         });
 
@@ -243,14 +240,14 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
 
     private void parseoutput(String s) {
 
-        FavouriteMovieParseWork pw = new FavouriteMovieParseWork(context, s);
-        list = pw.parse_favourite();
-        favouriteAdapter = new FavouriteAdapter(this, list);
-        if (list.isEmpty())
-            faTextView.setVisibility(View.VISIBLE);
-        my_favourite_movies_recycler.setAdapter(favouriteAdapter);
-        favouriteAdapter.setClickListener(this);
-        favouriteAdapter.setLongClickListener(this);
+        WatchListMovieParseWork pw = new WatchListMovieParseWork(context, s);
+        list = pw.parse_watchlist();
+        watchlistAdapter = new WatchlistAdapter(getActivity(), list);
+        if (list.size() == 0)
+            wlTextView.setVisibility(View.VISIBLE);
+        my_watchlist_movies_recycler.setAdapter(watchlistAdapter);
+        watchlistAdapter.setClickListener(this);
+        watchlistAdapter.setLongClickListener(this);
 
         hideProgress();
 
@@ -260,15 +257,17 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     private void allThemeLogic() {
         logo.setTextColor(Color.parseColor("#bdbdbd"));
         dataImageView.setColorFilter(Color.parseColor("#757575"), PorterDuff.Mode.MULTIPLY);
+
+
     }
 
     @Override
-    public void itemClicked(FavouriteData favouriteData, int position) {
+    public void itemClicked(WatchlistData watchlistData, int position) {
 
-        Intent intent = new Intent(this, MovieDetailsActivity.class);
+        Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra("network_applicable", true);
-        intent.putExtra("title", favouriteData.getFav_title());
-        intent.putExtra("id", favouriteData.getFav_id());
+        intent.putExtra("title", watchlistData.getFav_title());
+        intent.putExtra("id", watchlistData.getFav_id());
         intent.putExtra("activity", false);
 
         startActivity(intent);
@@ -278,10 +277,10 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
     public void showProgress() {
 
 
-        if (breathingProgress != null && my_favourite_movies_recycler != null) {
+        if (breathingProgress != null && my_watchlist_movies_recycler != null) {
 
             breathingProgress.setVisibility(View.VISIBLE);
-            my_favourite_movies_recycler.setVisibility(View.INVISIBLE);
+            my_watchlist_movies_recycler.setVisibility(View.INVISIBLE);
 
         }
     }
@@ -289,53 +288,39 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
 
     public void hideProgress() {
 
-        if (breathingProgress != null && my_favourite_movies_recycler != null) {
+        if (breathingProgress != null && my_watchlist_movies_recycler != null) {
 
             breathingProgress.setVisibility(View.INVISIBLE);
-            my_favourite_movies_recycler.setVisibility(View.VISIBLE);
+            my_watchlist_movies_recycler.setVisibility(View.VISIBLE);
 
         }
+
+
     }
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void itemLongClicked(final WatchlistData watchlistData, final int position) {
 
 
-        switch (item.getItemId()) {
-
-            case android.R.id.home:
-                finish();
-                break;
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public void itemLongClicked(final FavouriteData favouriteData, final int position) {
-
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
         arrayAdapter.add("Remove");
         adb.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                UnMarkingFavorite unMarkingFavorite = new UnMarkingFavorite();
-                unMarkingFavorite.setUnmarkedListener(Favorite.this);
+                UnMarkingWatchList unMarkingWatchList = new UnMarkingWatchList();
+                unMarkingWatchList.setUnmarkedListener(WatchList.this);
 
-                progressDialog = new ProgressDialog(Favorite.this);
-                progressDialog.setTitle("Favorite");
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setTitle("Watchlist");
                 progressDialog.setMessage("Removing..");
                 progressDialog.setIndeterminate(true);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
-                unMarkingFavorite.unmarkThisAsFavorite(context, favouriteData.getFav_id(), position);
-
+                unMarkingWatchList.removeFromWatchList(context,watchlistData.getFav_id(),position);
             }
         });
 
@@ -345,16 +330,16 @@ public class Favorite extends AppCompatActivity implements FavouriteAdapter.Clic
 
     @Override
     public void unmarked(int position) {
+
         if (progressDialog != null)
             progressDialog.dismiss();
-        if (favouriteAdapter != null && list != null) {
+        if (watchlistAdapter != null && list != null) {
             list.remove(position);
-            favouriteAdapter.notifyItemRemoved(position);
+            watchlistAdapter.notifyItemRemoved(position);
 
-            if (favouriteAdapter.getItemCount()==0)
-                 emptyContainer.setVisibility(View.VISIBLE);
+            if (watchlistAdapter.getItemCount()==0)
+                emptyContainer.setVisibility(View.VISIBLE);
 
         }
-
     }
 }

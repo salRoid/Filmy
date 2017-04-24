@@ -101,10 +101,10 @@
                 android:resource="@xml/filmy_widget_info" />
         </receiver>
 
-        <activity android:name=".activities.SavedActivity" />
+        <activity android:name=".activities.CollectionsActivity" />
         <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.Favorite" />
-        <activity android:name=".activities.WatchList" />
+        <activity android:name=".fragment.Favorite" />
+        <activity android:name=".fragment.WatchList" />
 
         <meta-data
             android:name="com.google.android.gms.version"

@@ -385,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, SavedMovies.class));
                 break;
             case R.id.ic_account:
-                startActivity(new Intent(this, SavedActivity.class));
+                startActivity(new Intent(this, CollectionsActivity.class));
                 break;
         }
 

@@ -36,10 +36,10 @@ import butterknife.ButterKnife;
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
-import tech.salroid.filmy.fragment.InTheaters;
+import tech.salroid.filmy.fragment.Favorite;
 import tech.salroid.filmy.fragment.SavedMovies;
 import tech.salroid.filmy.fragment.Trending;
-import tech.salroid.filmy.fragment.UpComing;
+import tech.salroid.filmy.fragment.WatchList;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 
 /*
@@ -59,7 +59,7 @@ import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
  * limitations under the License.
  */
 
-public class SavedActivity extends AppCompatActivity {
+public class CollectionsActivity extends AppCompatActivity {
 
 
     private final int REQUEST_CODE = 000;
@@ -97,7 +97,7 @@ public class SavedActivity extends AppCompatActivity {
             setTheme(R.style.AppTheme_Base_Dark);
         else
             setTheme(R.style.AppTheme_Base);
-        setContentView(R.layout.activity_saved);
+        setContentView(R.layout.activity_collections);
         ButterKnife.bind(this);
 
 
@@ -121,14 +121,14 @@ public class SavedActivity extends AppCompatActivity {
         favourite_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SavedActivity.this, Favorite.class));
+                startActivity(new Intent(CollectionsActivity.this, Favorite.class));
             }
         });
 
         watchlist_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SavedActivity.this, WatchList.class));
+                startActivity(new Intent(CollectionsActivity.this, WatchList.class));
             }
         });
 
@@ -142,7 +142,7 @@ public class SavedActivity extends AppCompatActivity {
 
                 if (!logged_in) {
 
-                    Intent intent = new Intent(SavedActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(CollectionsActivity.this, LoginActivity.class);
                     startActivityForResult(intent, REQUEST_CODE);
 
                 }

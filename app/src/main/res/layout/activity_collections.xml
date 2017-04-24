@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_account"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="tech.salroid.filmy.activities.SavedActivity">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="0dp">
-
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -48,11 +45,7 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/header"
-        android:layout_toEndOf="@+id/header" />
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <FrameLayout
         android:id="@+id/header"
@@ -60,8 +53,8 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="gone"
-        android:foreground="@drawable/main_background">
+        android:foreground="@drawable/main_background"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -105,8 +98,8 @@
         android:layout_below="@id/header"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="gone"
-        android:foreground="@drawable/main_background">
+        android:foreground="@drawable/main_background"
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -136,8 +129,8 @@
         android:layout_below="@id/favContainer"
         android:clickable="true"
         android:focusable="true"
-        android:visibility="gone"
-        android:foreground="@drawable/main_background">
+        android:foreground="@drawable/main_background"
+        android:visibility="gone">
 
 
         <RelativeLayout
@@ -160,6 +153,4 @@
         </RelativeLayout>
     </FrameLayout>
 
-
-</RelativeLayout>
-
+</android.support.design.widget.CoordinatorLayout>

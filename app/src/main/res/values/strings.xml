@@ -365,8 +365,8 @@ limitations under the License.
 
     <string name="error_string" translatable="false">There was an error initializing the YouTube Player</string>
     <string name="Youtube_Api_Key" translatable="false">AIzaSyBtyakzoKg3sueLC1mfKSZqSYs7sUIqVG4</string>
-    <string name="saved" translatable="false">Saved</string>
     <string name="offline" translatable="false">Offline</string>
+    <string name="collections" translatable="false">Collections</string>
 
 
 </resources>

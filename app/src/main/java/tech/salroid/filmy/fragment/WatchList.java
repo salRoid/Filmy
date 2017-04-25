@@ -2,24 +2,17 @@ package tech.salroid.filmy.fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,10 +64,6 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
 
     @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.logo)
-    TextView logo;
     @BindView(R.id.my_watchlist_recycler)
     RecyclerView my_watchlist_movies_recycler;
     @BindView(R.id.fav_image)
@@ -84,55 +73,26 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
     @BindView(R.id.emptyContainer)
     LinearLayout emptyContainer;
 
-    private boolean nightMode;
-    private Context context;
 
     private TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     private RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
 
     private String api_key = BuildConfig.API_KEY;
-    private String SESSION_PREF = "SESSION_PREFERENCE";
     private String account_id;
 
     private ProgressDialog progressDialog;
     private List<WatchlistData> list;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
 
-        context = this;
-        SharedPreferences spref = context.getSharedPreferences(SESSION_PREF, Context.MODE_PRIVATE);
-        String session_id = spref.getString("session", " ");
-        getProfile(session_id);
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        nightMode = sp.getBoolean("dark", false);
-        if (nightMode)
-            setTheme(R.style.AppTheme_Base_Dark);
-        else
-            setTheme(R.style.AppTheme_Base);
-
-        setContentView(R.layout.activity_watched_list);
+        View view = inflater.inflate(R.layout.fragment_watch_list, container, false);
+        ButterKnife.bind(this, view);
 
         showProgress();
-
-        ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("");
-        }
-
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
-        logo.setTypeface(typeface);
-
-        if (nightMode)
-            allThemeLogic();
-
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
 
@@ -163,6 +123,15 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
             }
 
         }
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getProfile(null);
     }
 
     private void getProfile(final String session_id) {
@@ -210,9 +179,9 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
 
                             int total_results = response.getInt("total_results");
 
-                            if (total_results>0)
+                            if (total_results > 0)
                                 parseoutput(response.toString());
-                            else{
+                            else {
                                 hideProgress();
                                 emptyContainer.setVisibility(View.VISIBLE);
                             }
@@ -240,7 +209,7 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
 
     private void parseoutput(String s) {
 
-        WatchListMovieParseWork pw = new WatchListMovieParseWork(context, s);
+        WatchListMovieParseWork pw = new WatchListMovieParseWork(getActivity(), s);
         list = pw.parse_watchlist();
         watchlistAdapter = new WatchlistAdapter(getActivity(), list);
         if (list.size() == 0)
@@ -253,13 +222,6 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
 
     }
 
-
-    private void allThemeLogic() {
-        logo.setTextColor(Color.parseColor("#bdbdbd"));
-        dataImageView.setColorFilter(Color.parseColor("#757575"), PorterDuff.Mode.MULTIPLY);
-
-
-    }
 
     @Override
     public void itemClicked(WatchlistData watchlistData, int position) {
@@ -320,7 +282,7 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
                 progressDialog.setCancelable(false);
                 progressDialog.show();
 
-                unMarkingWatchList.removeFromWatchList(context,watchlistData.getFav_id(),position);
+                unMarkingWatchList.removeFromWatchList(getActivity(), watchlistData.getFav_id(), position);
             }
         });
 
@@ -337,7 +299,7 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
             list.remove(position);
             watchlistAdapter.notifyItemRemoved(position);
 
-            if (watchlistAdapter.getItemCount()==0)
+            if (watchlistAdapter.getItemCount() == 0)
                 emptyContainer.setVisibility(View.VISIBLE);
 
         }

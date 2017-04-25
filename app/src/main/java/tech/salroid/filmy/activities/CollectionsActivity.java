@@ -176,8 +176,8 @@ public class CollectionsActivity extends AppCompatActivity {
 
         MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new SavedMovies(), getString(R.string.offline));
-        adapter.addFragment(new Trending(), getString(R.string.favorite));
-        adapter.addFragment(new Trending(), getString(R.string.watchlist));
+        adapter.addFragment(new Favorite(), getString(R.string.favorite));
+        adapter.addFragment(new WatchList(), getString(R.string.watchlist));
         viewPager.setAdapter(adapter);
 
     }

@@ -5,32 +5,12 @@
     android:id="@+id/activity_favourite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tech.salroid.filmy.fragment.Favorite">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:padding="0dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:theme="@style/ThemeOverlay.AppCompat">
-
-        <TextView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/favourite"
-            android:textColor="#757575"
-            android:textSize="20sp" />
-
-    </android.support.v7.widget.Toolbar>
+    tools:context="tech.salroid.filmy.fragment.WatchList">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_fav_recycler"
+        android:id="@+id/my_watchlist_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
@@ -50,13 +30,13 @@
             android:src="@drawable/placeholder_empty" />
 
         <TextView
-            android:id="@+id/fav_display_text"
+            android:id="@+id/wl_display_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="@string/you_dont_hav_fav"
             android:textColor="@color/primaryColorDark"
-             />
+          />
 
     </LinearLayout>
 

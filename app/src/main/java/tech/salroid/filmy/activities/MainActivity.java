@@ -356,11 +356,11 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         MenuItem itemSearch = menu.findItem(R.id.action_search);
-        MenuItem itemAccount = menu.findItem(R.id.ic_account);
+        MenuItem itemAccount = menu.findItem(R.id.ic_collections);
 
         if (nightMode) {
             itemSearch.setIcon(R.drawable.ic_action_action_search);
-            itemAccount.setIcon(R.drawable.ic_action_action_account_circle2);
+            itemAccount.setIcon(R.drawable.ic_action_collections_bookmark2);
         }
 
         materialSearchView.setMenuItem(itemSearch);
@@ -381,10 +381,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.ic_setting:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.ic_collection:
-                startActivity(new Intent(this, SavedMovies.class));
-                break;
-            case R.id.ic_account:
+            case R.id.ic_collections:
                 startActivity(new Intent(this, CollectionsActivity.class));
                 break;
         }

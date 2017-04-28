@@ -949,7 +949,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             case GetDataFromNetwork.MOVIE_DETAILS_CODE:
 
                 parseMovieDetails(response);
-                // showCastFragment();
+                // showCastFragment();%
                 break;
 
             case GetDataFromNetwork.CAST_CODE:
@@ -963,7 +963,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         if (!(movie_title == null && movie_rating.equals("null") && movie_imdb_id.equals("null"))) {
             Intent myIntent = new Intent(Intent.ACTION_SEND);
             myIntent.setType("text/plain");
-            myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\nRating: " + movie_rating + " / 10\n" + movie_imdb + "\n");
+            myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\n"+ movie_imdb + "\n");
             startActivity(Intent.createChooser(myIntent, "Share with"));
         }
     }

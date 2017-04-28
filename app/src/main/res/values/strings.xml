@@ -56,7 +56,7 @@
     <string name="play">Play</string>
     <string name="trailer">Trailer</string>
     <string name="banner_image">Banner Image</string>
-    <string name="you_saved_movies_appear_here">You saved movies appear here.</string>
+    <string name="you_saved_movies_appear_here">Your saved movies appear here.</string>
     <string name="no_saved_movies">No Saved Movies</string>
     <string name="saved_movies">Offline Movies</string>
     <string name="welcome_to_filmy">Welcome to Filmy</string>
@@ -367,6 +367,8 @@ limitations under the License.
     <string name="Youtube_Api_Key" translatable="false">AIzaSyBtyakzoKg3sueLC1mfKSZqSYs7sUIqVG4</string>
     <string name="collections" translatable="false">Collections</string>
     <string name="offline" translatable="false">Offline</string>
+    <string name="your_fav_movies_appear_here">Your favorite movies appear here.</string>
+    <string name="your_watchlist_movies_appear_here">Your watchlist movies appear here.</string>
 
 
 </resources>

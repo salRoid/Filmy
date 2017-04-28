@@ -102,7 +102,7 @@ public class WatchList extends Fragment implements LoaderManager.LoaderCallbacks
                              Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.fragment_saved_movies, container, false);
+        View view = inflater.inflate(R.layout.fragment_watch_movies, container, false);
         ButterKnife.bind(this, view);
 
           /*GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);

@@ -39,15 +39,14 @@ public class WatchListMovieParseWork {
     }
 
     public List<WatchlistData> parse_watchlist() {
+
         final List<WatchlistData> favouriteArray = new ArrayList<WatchlistData>();
         WatchlistData favouriteData = null;
-
 
         try {
 
 
             JSONObject jsonobject = new JSONObject(result);
-
             JSONArray jsonArray = jsonobject.getJSONArray("results");
 
             for (int i = 0; i < jsonArray.length(); i++) {

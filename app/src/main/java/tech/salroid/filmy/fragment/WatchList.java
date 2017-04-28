@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,7 +135,6 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
 
 
     private void getfavourites() {
-
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, null, null,
                 new Response.Listener<JSONObject>() {

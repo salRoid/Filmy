@@ -72,6 +72,7 @@ public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbac
             FilmContract.SaveEntry.SAVE_CERTIFICATION,
             FilmContract.SaveEntry.SAVE_RUNTIME,
             FilmContract.SaveEntry.SAVE_POSTER_LINK,
+            FilmContract.SaveEntry.SAVE_FLAG
     };
 
     private SavedMoviesAdapter mainActivityAdapter;
@@ -183,10 +184,13 @@ public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbac
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_ID + " = ? ";
+                final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_ID + " = ? AND "+
+                FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_FLAG + " = ? ";
 
+                int flag_index = mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_FLAG);
+                int flag = mycursor.getInt(flag_index);
 
-                final String[] deletionArgs = {mycursor.getString(mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID))};
+                final String[] deletionArgs = {mycursor.getString(mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID)), String.valueOf(flag)};
 
                 long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
 
@@ -198,6 +202,7 @@ public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbac
                         my_saved_movies_recycler.setVisibility(View.GONE);
 
                 }
+                mycursor.close();
             }
         });
 

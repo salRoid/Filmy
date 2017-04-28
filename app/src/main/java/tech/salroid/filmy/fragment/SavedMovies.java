@@ -202,7 +202,6 @@ public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbac
                         my_saved_movies_recycler.setVisibility(View.GONE);
 
                 }
-                mycursor.close();
             }
         });
 

@@ -102,7 +102,7 @@ public class Favorite extends Fragment implements LoaderManager.LoaderCallbacks<
                              Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.fragment_saved_movies, container, false);
+        View view = inflater.inflate(R.layout.fragment_fav_movies, container, false);
         ButterKnife.bind(this, view);
 
           /*GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
@@ -220,8 +220,6 @@ public class Favorite extends Fragment implements LoaderManager.LoaderCallbacks<
 
                     if (mainActivityAdapter.getItemCount() == 1)
                         my_saved_movies_recycler.setVisibility(View.GONE);
-
-
                 }
             }
         });

@@ -131,46 +131,14 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
     public void onResume() {
         super.onResume();
 
-        getProfile(null);
+        getfavourites();
     }
 
-    private void getProfile(final String session_id) {
 
-        String PROFILE_URI = "https://api.themoviedb.org/3/account?api_key=" + api_key + "&session_id=" + session_id;
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, PROFILE_URI, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            account_id = response.getString("id");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        getfavourites(session_id, account_id);
-                    }
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgress();
-                emptyContainer.setVisibility(View.VISIBLE);
-                wlTextView.setText("You are not logged in.");
-                Log.e("webi", "Volley Error: " + error.getCause());
-
-            }
-        });
-
-        tmdbrequestQueue.add(jsonObjectRequest);
-    }
-
-    private void getfavourites(String session_id, String id) {
-
-        String Favourite_Url = "https://api.themoviedb.org/3/account/" + id
-                + "/watchlist/movies?api_key=" + api_key + "&session_id=" + session_id + "&sort_by=vote_average.asc";
+    private void getfavourites() {
 
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Favourite_Url, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, null, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

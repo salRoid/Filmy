@@ -198,6 +198,7 @@ public class FilmContract {
         public static final String SAVE_RELEASED = "save_release";
         public static final String SAVE_CERTIFICATION = "save_certification";
         public static final String SAVE_LANGUAGE = "save_language";
+        public static final String SAVE_FLAG = "save_flag";
 
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SAVE).build();

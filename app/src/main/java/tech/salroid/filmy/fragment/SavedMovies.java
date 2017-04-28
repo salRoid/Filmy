@@ -197,7 +197,6 @@ public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbac
                     if (mainActivityAdapter.getItemCount() == 1)
                         my_saved_movies_recycler.setVisibility(View.GONE);
 
-
                 }
             }
         });

@@ -57,6 +57,7 @@ import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
 import tech.salroid.filmy.tmdb_account.MarkingFavorite;
 import tech.salroid.filmy.tmdb_account.MarkingWatchList;
 import tech.salroid.filmy.utility.Confirmation;
+import tech.salroid.filmy.utility.Constants;
 import tech.salroid.filmy.utility.NullChecker;
 
 /*
@@ -854,7 +855,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             case R.id.action_save:
                 OfflineMovies offlineMovies = new OfflineMovies(this, main_content);
-                offlineMovies.saveMovie(movieMap, movie_id, movie_id_final);
+                offlineMovies.saveMovie(movieMap, movie_id, movie_id_final, Constants.FLAG_OFFLINE);
                 break;
 
             case R.id.action_fav:

@@ -27,6 +27,7 @@ import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.SavedMoviesAdapter;
 import tech.salroid.filmy.database.FilmContract;
+import tech.salroid.filmy.utility.Constants;
 
 /*
  * Filmy Application for Android
@@ -128,7 +129,10 @@ public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbac
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        return new CursorLoader(getActivity(), FilmContract.SaveEntry.CONTENT_URI, GET_SAVE_COLUMNS, null, null, "_ID DESC");
+        String selection = FilmContract.SaveEntry.TABLE_NAME+"."+ FilmContract.SaveEntry.SAVE_FLAG + "= ?";
+        String[] selectionArgs = {String.valueOf(Constants.FLAG_OFFLINE)};
+
+        return new CursorLoader(getActivity(), FilmContract.SaveEntry.CONTENT_URI, GET_SAVE_COLUMNS, selection, selectionArgs, "_ID DESC");
     }
 
     @Override

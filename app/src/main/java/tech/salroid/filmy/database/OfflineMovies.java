@@ -47,7 +47,7 @@ public class OfflineMovies {
 
     }
 
-    public void saveMovie(HashMap<String, String> movieMap, String movie_id, String movie_id_final) {
+    public void saveMovie(HashMap<String, String> movieMap, String movie_id, String movie_id_final,int flag) {
 
         if (movieMap != null && !movieMap.isEmpty()) {
 
@@ -67,6 +67,7 @@ public class OfflineMovies {
             saveValues.put(FilmContract.SaveEntry.SAVE_CERTIFICATION, movieMap.get("certification"));
             saveValues.put(FilmContract.SaveEntry.SAVE_LANGUAGE, movieMap.get("language"));
             saveValues.put(FilmContract.SaveEntry.SAVE_RELEASED, movieMap.get("released"));
+            saveValues.put(FilmContract.SaveEntry.SAVE_FLAG, flag);
 
 
             final String selection =
@@ -167,14 +168,11 @@ public class OfflineMovies {
 
                         CustomToast.show(context,"Movie saved successfully.",false);
 
-
                         // Toast.makeText(MovieDetailsActivity.this, "Movie Inserted", Toast.LENGTH_SHORT).show();
 
                     } else {
 
                         CustomToast.show(context,"Failed to save movie.",false);
-
-
                     }
                 }
             }

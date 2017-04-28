@@ -24,7 +24,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class FilmDbHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "filmy.db";
-    private static final int DB_VERSION = 789;
+    private static final int DB_VERSION = 790;
 
 
     public FilmDbHelper(Context context) {
@@ -74,7 +74,8 @@ public class FilmDbHelper extends SQLiteOpenHelper {
                 + FilmContract.SaveEntry.SAVE_DESCRIPTION + " VARCHAR (255) ,"
                 + FilmContract.SaveEntry.SAVE_TAGLINE + " VARCHAR(255) ,"
                 + FilmContract.SaveEntry.SAVE_TRAILER + " VARCHAR(255) ,"
-                + FilmContract.SaveEntry.SAVE_RATING + " VARCHAR (255));";
+                + FilmContract.SaveEntry.SAVE_RATING + " VARCHAR(255) ,"
+                + FilmContract.SaveEntry.SAVE_FLAG + " int(2));";
 
 
         final String SQL_CREATE_INTHEATERS_MOVIE_TABLE = "CREATE TABLE " + FilmContract.InTheatersMoviesEntry.TABLE_NAME

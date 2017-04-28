@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.customs.CustomToast;
+import tech.salroid.filmy.utility.Constants;
 
 /*
  * Filmy Application for Android
@@ -74,103 +75,107 @@ public class OfflineMovies {
             //  boolean deletePermission = false;
             Cursor alreadyCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, selection, selectionArgs, null);
 
-            if (alreadyCursor.moveToFirst()) {
+            boolean found = false;
+            while (alreadyCursor.moveToNext()) {
                 //Already present in databse
-                CustomToast.show(context,"Already present in database",false);
 
-            } else {
+                int flag_index = alreadyCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_FLAG);
+                int flag_got = alreadyCursor.getInt(flag_index);
 
-                final Cursor returnedCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, null, null, null);
-
-
-                if (returnedCursor.moveToFirst() && returnedCursor.getCount() == 10) {
-                    //No space to fill more. Have to delete oldest entry to save this Agree?
-
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                    alertDialog.setTitle("Remove");
-                    alertDialog.setIcon(R.drawable.ic_delete_sweep_black_24dp);
-
-                    final TextView input = new TextView(context);
-                    FrameLayout container = new FrameLayout(context);
-                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(96, 48, 96, 48);
-                    input.setLayoutParams(params);
-
-                    input.setText("Save Limit reached , want to remove the oldest movie and save this one ?");
-                    input.setTextColor(Color.parseColor("#303030"));
-
-                    container.addView(input);
-
-
-                    alertDialog.setView(container);
-                    alertDialog.setPositiveButton("Okay",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry._ID + " = ? ";
-
-                                    returnedCursor.moveToFirst();
-
-                                    //Log.d(LOG_TAG, "This is the last index value which is going to be deleted "+returnedCursor.getInt(0));
-
-                                    final String[] deletionArgs = {String.valueOf(returnedCursor.getInt(0))};
-
-
-                                    long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
-
-                                    if (deletion_id != -1) {
-
-                                        // Log.d(LOG_TAG, "We deleted this row" + deletion_id);
-
-                                        Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
-
-                                        long movieRowId = ContentUris.parseId(uri);
-
-                                        if (movieRowId != -1) {
-                                            //inserted
-                                            CustomToast.show(context,"Movie saved successfully.",false);
-
-                                        } else {
-
-                                            // Log.d(LOG_TAG, "row not Inserted in database");
-                                        }
-
-                                    } else {
-
-                                        //delete was unsuccessful
-                                    }
-
-                                    dialog.cancel();
-                                }
-                            });
-
-                    alertDialog.setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // Write your code here to execute after dialog
-                                    dialog.cancel();
-                                }
-                            });
-
-                    alertDialog.show();
-                } else {
-
-                    Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
-
-                    long movieRowId = ContentUris.parseId(uri);
-
-                    if (movieRowId != -1) {
-
-                        CustomToast.show(context,"Movie saved successfully.",false);
-
-                        // Toast.makeText(MovieDetailsActivity.this, "Movie Inserted", Toast.LENGTH_SHORT).show();
-
-                    } else {
-
-                        CustomToast.show(context,"Failed to save movie.",false);
-                    }
-                }
+                if (flag_got == flag)
+                    found = true;
             }
+
+            if (!found)
+                addToDatabase(saveValues);
+            else
+                CustomToast.show(context,"Already present.",false);
+        }
+    }
+
+    private void addToDatabase(final ContentValues saveValues) {
+
+        final Cursor returnedCursor = context.getContentResolver().query(FilmContract.SaveEntry.CONTENT_URI, null, null, null, null);
+        if (returnedCursor.moveToFirst() && returnedCursor.getCount() == 30) {
+            //No space to fill more. Have to delete oldest entry to save this Agree?
+
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            alertDialog.setTitle("Remove");
+            alertDialog.setIcon(R.drawable.ic_delete_sweep_black_24dp);
+
+            final TextView input = new TextView(context);
+            FrameLayout container = new FrameLayout(context);
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(96, 48, 96, 48);
+            input.setLayoutParams(params);
+
+            input.setText("Save Limit reached , want to remove the oldest movie and save this one ?");
+            input.setTextColor(Color.parseColor("#303030"));
+
+            container.addView(input);
+
+
+            alertDialog.setView(container);
+            alertDialog.setPositiveButton("Okay",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry._ID + " = ? ";
+
+                            returnedCursor.moveToFirst();
+
+                            //Log.d(LOG_TAG, "This is the last index value which is going to be deleted "+returnedCursor.getInt(0));
+
+                            final String[] deletionArgs = {String.valueOf(returnedCursor.getInt(0))};
+
+
+                            long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
+
+                            if (deletion_id != -1) {
+
+                                // Log.d(LOG_TAG, "We deleted this row" + deletion_id);
+
+                                Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
+
+                                long movieRowId = ContentUris.parseId(uri);
+
+                                if (movieRowId != -1) {
+                                    //inserted
+                                    CustomToast.show(context,"Movie saved successfully.",false);
+
+                                } else {
+
+                                    // Log.d(LOG_TAG, "row not Inserted in database");
+                                }
+
+                            } else {
+
+                                //delete was unsuccessful
+                            }
+
+                            dialog.cancel();
+                        }
+                    });
+
+            alertDialog.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to execute after dialog
+                            dialog.cancel();
+                        }
+                    });
+
+            alertDialog.show();
+        } else {
+
+            Uri uri = context.getContentResolver().insert(FilmContract.SaveEntry.CONTENT_URI, saveValues);
+            long movieRowId = ContentUris.parseId(uri);
+
+            if (movieRowId != -1)
+                CustomToast.show(context,"Movie saved successfully.",false);
+            else
+                CustomToast.show(context,"Failed to save movie.",false);
+
         }
     }
 

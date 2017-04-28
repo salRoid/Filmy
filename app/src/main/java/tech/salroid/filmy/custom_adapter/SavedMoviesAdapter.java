@@ -78,7 +78,6 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
         imdb_id = dataCursor.getString(id_index);
         movie_year = dataCursor.getInt(year_index);
 
-
         holder.title.setText(movie_title);
 
         try{
@@ -153,7 +152,8 @@ public class SavedMoviesAdapter extends RecyclerView.Adapter<SavedMoviesAdapter.
                     int movie_title_index = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
 
                     if (clickListener != null) {
-                        clickListener.itemClicked(dataCursor.getString(movie_id_index), dataCursor.getString(movie_title_index));
+                        clickListener.itemClicked(dataCursor.getString(movie_id_index),
+                                dataCursor.getString(movie_title_index));
                     }
 
                 }

@@ -3,10 +3,9 @@ package tech.salroid.filmy.utility;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.widget.FrameLayout;
+import java.util.HashMap;
 
-import tech.salroid.filmy.tmdb_account.MarkingFavorite;
-import tech.salroid.filmy.tmdb_account.MarkingWatchList;
+import tech.salroid.filmy.database.OfflineMovies;
 
 /**
  * Created by R Ankit on 20-04-2017.
@@ -14,7 +13,8 @@ import tech.salroid.filmy.tmdb_account.MarkingWatchList;
 
 public class Confirmation {
 
-    public static void confirmFav(final Context context, final String movie_id) {
+    public static void confirmFav(final Context context, final HashMap<String, String> movieMap,
+                                  final String movie_id, final String movie_id_final, final int flagFavorite) {
 
         new AlertDialog.Builder(context)
                 .setTitle("Favorite")
@@ -22,8 +22,8 @@ public class Confirmation {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        MarkingFavorite markingFavorite = new MarkingFavorite();
-                        markingFavorite.markThisAsFavorite(context, movie_id);
+                        OfflineMovies offlineMovies = new OfflineMovies(context);
+                        offlineMovies.saveMovie(movieMap, movie_id, movie_id_final, flagFavorite);
 
                     }
                 })
@@ -36,7 +36,9 @@ public class Confirmation {
 
     }
 
-    public static void confirmWatchlist(final Context context, final String movie_id) {
+    public static void confirmWatchlist(final Context context, final HashMap<String, String> movieMap,
+                                        final String movie_id, final String movie_id_final,
+                                        final int flagWatchlist) {
 
         new AlertDialog.Builder(context)
                 .setTitle("WatchList")
@@ -45,8 +47,8 @@ public class Confirmation {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        MarkingWatchList markingWatchList = new MarkingWatchList();
-                        markingWatchList.addToWatchList(context, movie_id);
+                        OfflineMovies offlineMovies = new OfflineMovies(context);
+                        offlineMovies.saveMovie(movieMap, movie_id, movie_id_final, flagWatchlist);
 
                     }
                 })

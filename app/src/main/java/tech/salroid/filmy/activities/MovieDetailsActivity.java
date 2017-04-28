@@ -54,8 +54,6 @@ import tech.salroid.filmy.fragment.CrewFragment;
 import tech.salroid.filmy.fragment.FullReadFragment;
 import tech.salroid.filmy.fragment.SimilarFragment;
 import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
-import tech.salroid.filmy.tmdb_account.MarkingFavorite;
-import tech.salroid.filmy.tmdb_account.MarkingWatchList;
 import tech.salroid.filmy.utility.Confirmation;
 import tech.salroid.filmy.utility.Constants;
 import tech.salroid.filmy.utility.NullChecker;
@@ -854,19 +852,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 break;
 
             case R.id.action_save:
-                OfflineMovies offlineMovies = new OfflineMovies(this, main_content);
+                OfflineMovies offlineMovies = new OfflineMovies(this);
                 offlineMovies.saveMovie(movieMap, movie_id, movie_id_final, Constants.FLAG_OFFLINE);
                 break;
 
             case R.id.action_fav:
 
-                Confirmation.confirmFav(this,movie_id);
+                Confirmation.confirmFav(this,movieMap,movie_id,movie_id_final,Constants.FLAG_FAVORITE);
 
                 break;
 
             case R.id.action_watch:
 
-                Confirmation.confirmWatchlist(this,movie_id);
+                Confirmation.confirmWatchlist(this,movieMap,movie_id,movie_id_final,Constants.FLAG_WATCHLIST);
 
                 break;
 

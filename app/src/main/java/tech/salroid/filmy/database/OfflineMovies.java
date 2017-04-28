@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.design.widget.Snackbar;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -38,13 +37,10 @@ import tech.salroid.filmy.customs.CustomToast;
 public class OfflineMovies {
 
     private Context context;
-    private FrameLayout main_content;
 
-    public OfflineMovies(Context context, FrameLayout main_content) {
+    public OfflineMovies(Context context) {
 
         this.context = context;
-        this.main_content = main_content;
-
     }
 
     public void saveMovie(HashMap<String, String> movieMap, String movie_id, String movie_id_final,int flag) {
@@ -81,7 +77,6 @@ public class OfflineMovies {
             if (alreadyCursor.moveToFirst()) {
                 //Already present in databse
                 CustomToast.show(context,"Already present in database",false);
-                //Snackbar.make(main_content, "Already present in database", Snackbar.LENGTH_SHORT).show();
 
             } else {
 

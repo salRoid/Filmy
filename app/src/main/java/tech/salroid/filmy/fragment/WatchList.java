@@ -2,11 +2,16 @@ package tech.salroid.filmy.fragment;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -33,12 +38,15 @@ import butterknife.ButterKnife;
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
+import tech.salroid.filmy.custom_adapter.SavedMoviesAdapter;
 import tech.salroid.filmy.custom_adapter.WatchlistAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.WatchlistData;
+import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.WatchListMovieParseWork;
 import tech.salroid.filmy.tmdb_account.UnMarkingWatchList;
+import tech.salroid.filmy.utility.Constants;
 
 /*
  * Filmy Application for Android
@@ -57,41 +65,47 @@ import tech.salroid.filmy.tmdb_account.UnMarkingWatchList;
  * limitations under the License.
  */
 
-public class WatchList extends Fragment implements WatchlistAdapter.ClickListener, WatchlistAdapter.LongClickListener, UnMarkingWatchList.UnmarkedListener {
+public class WatchList extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
 
-    WatchlistAdapter watchlistAdapter;
-
-    @BindView(R.id.breathingProgress)
-    BreathingProgress breathingProgress;
-    @BindView(R.id.my_watchlist_recycler)
-    RecyclerView my_watchlist_movies_recycler;
-    @BindView(R.id.fav_image)
-    ImageView dataImageView;
-    @BindView(R.id.wl_display_text)
-    TextView wlTextView;
+    @BindView(R.id.my_saved_recycler)
+    RecyclerView my_saved_movies_recycler;
     @BindView(R.id.emptyContainer)
     LinearLayout emptyContainer;
+    @BindView(R.id.database_image)
+    ImageView dataImageView;
 
 
-    private TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
-    private RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
+    private static final int SAVED_DETAILS_LOADER = 5;
+    private static final String[] GET_SAVE_COLUMNS = {
 
-    private String api_key = BuildConfig.API_KEY;
-    private String account_id;
+            FilmContract.SaveEntry.SAVE_ID,
+            FilmContract.SaveEntry.SAVE_TITLE,
+            FilmContract.SaveEntry.SAVE_BANNER,
+            FilmContract.SaveEntry.SAVE_DESCRIPTION,
+            FilmContract.SaveEntry.SAVE_TAGLINE,
+            FilmContract.SaveEntry.SAVE_TRAILER,
+            FilmContract.SaveEntry.SAVE_RATING,
+            FilmContract.SaveEntry.SAVE_LANGUAGE,
+            FilmContract.SaveEntry.SAVE_RELEASED,
+            FilmContract.SaveEntry._ID,
+            FilmContract.SaveEntry.SAVE_YEAR,
+            FilmContract.SaveEntry.SAVE_CERTIFICATION,
+            FilmContract.SaveEntry.SAVE_RUNTIME,
+            FilmContract.SaveEntry.SAVE_POSTER_LINK,
+    };
 
-    private ProgressDialog progressDialog;
-    private List<WatchlistData> list;
-
+    private SavedMoviesAdapter mainActivityAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.fragment_watch_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_saved_movies, container, false);
         ButterKnife.bind(this, view);
 
-        showProgress();
+          /*GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        my_saved_movies_recycler.setLayoutManager(gridLayoutManager);*/
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
 
@@ -101,11 +115,11 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
 
                 StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(6,
                         StaggeredGridLayoutManager.VERTICAL);
-                my_watchlist_movies_recycler.setLayoutManager(gridLayoutManager);
+                my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
             } else {
                 StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(8,
                         StaggeredGridLayoutManager.VERTICAL);
-                my_watchlist_movies_recycler.setLayoutManager(gridLayoutManager);
+                my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
             }
 
         } else {
@@ -114,141 +128,97 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
 
                 StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3,
                         StaggeredGridLayoutManager.VERTICAL);
-                my_watchlist_movies_recycler.setLayoutManager(gridLayoutManager);
+                my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
             } else {
                 StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(5,
                         StaggeredGridLayoutManager.VERTICAL);
-                my_watchlist_movies_recycler.setLayoutManager(gridLayoutManager);
+                my_saved_movies_recycler.setLayoutManager(gridLayoutManager);
             }
 
         }
+
+        mainActivityAdapter = new SavedMoviesAdapter(getActivity(), null);
+        my_saved_movies_recycler.setAdapter(mainActivityAdapter);
+        mainActivityAdapter.setClickListener(this);
+        mainActivityAdapter.setLongClickListener(this);
 
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        getfavourites();
+        String selection = FilmContract.SaveEntry.TABLE_NAME+"."+ FilmContract.SaveEntry.SAVE_FLAG + "= ?";
+        String[] selectionArgs = {String.valueOf(Constants.FLAG_WATCHLIST)};
+
+        return new CursorLoader(getActivity(), FilmContract.SaveEntry.CONTENT_URI, GET_SAVE_COLUMNS, selection, selectionArgs, "_ID DESC");
     }
-
-
-    private void getfavourites() {
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, null, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-
-                            int total_results = response.getInt("total_results");
-
-                            if (total_results > 0)
-                                parseoutput(response.toString());
-                            else {
-                                hideProgress();
-                                emptyContainer.setVisibility(View.VISIBLE);
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-                    }
-
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Log.e("webi", "Volley Errorbelow: " + error.getCause());
-                hideProgress();
-                emptyContainer.setVisibility(View.VISIBLE);
-                wlTextView.setText("Failed to get your list.");
-            }
-        });
-
-        tmdbrequestQueue.add(jsonObjectRequest);
-
-    }
-
-    private void parseoutput(String s) {
-
-        WatchListMovieParseWork pw = new WatchListMovieParseWork(getActivity(), s);
-        list = pw.parse_watchlist();
-        watchlistAdapter = new WatchlistAdapter(getActivity(), list);
-        if (list.size() == 0)
-            wlTextView.setVisibility(View.VISIBLE);
-        my_watchlist_movies_recycler.setAdapter(watchlistAdapter);
-        watchlistAdapter.setClickListener(this);
-        watchlistAdapter.setLongClickListener(this);
-
-        hideProgress();
-
-    }
-
 
     @Override
-    public void itemClicked(WatchlistData watchlistData, int position) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+
+        if (cursor != null && cursor.getCount() > 0)
+            mainActivityAdapter.swapCursor(cursor);
+        else
+            emptyContainer.setVisibility(View.VISIBLE);
+
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mainActivityAdapter.swapCursor(null);
+        emptyContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void itemClicked(String movieId, String title) {
+
 
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+        intent.putExtra("saved_database_applicable", true);
         intent.putExtra("network_applicable", true);
-        intent.putExtra("title", watchlistData.getFav_title());
-        intent.putExtra("id", watchlistData.getFav_id());
-        intent.putExtra("activity", false);
+        intent.putExtra("title", title);
+        intent.putExtra("id", movieId);
 
         startActivity(intent);
 
     }
 
-    public void showProgress() {
-
-
-        if (breathingProgress != null && my_watchlist_movies_recycler != null) {
-
-            breathingProgress.setVisibility(View.VISIBLE);
-            my_watchlist_movies_recycler.setVisibility(View.INVISIBLE);
-
-        }
-    }
-
-
-    public void hideProgress() {
-
-        if (breathingProgress != null && my_watchlist_movies_recycler != null) {
-
-            breathingProgress.setVisibility(View.INVISIBLE);
-            my_watchlist_movies_recycler.setVisibility(View.VISIBLE);
-
-        }
-
-
-    }
-
 
     @Override
-    public void itemLongClicked(final WatchlistData watchlistData, final int position) {
+    public void itemLongClicked(final Cursor mycursor, final int position) {
 
 
         AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
+
         arrayAdapter.add("Remove");
+
+
+        final Context context = getActivity();
+
         adb.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                UnMarkingWatchList unMarkingWatchList = new UnMarkingWatchList();
-                unMarkingWatchList.setUnmarkedListener(WatchList.this);
+                final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_ID + " = ? ";
 
-                progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setTitle("Watchlist");
-                progressDialog.setMessage("Removing..");
-                progressDialog.setIndeterminate(true);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
 
-                unMarkingWatchList.removeFromWatchList(getActivity(), watchlistData.getFav_id(), position);
+                final String[] deletionArgs = {mycursor.getString(mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID))};
+
+                long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
+
+                if (deletion_id != -1) {
+
+                    mainActivityAdapter.notifyItemRemoved(position);
+
+                    if (mainActivityAdapter.getItemCount() == 1)
+                        my_saved_movies_recycler.setVisibility(View.GONE);
+
+
+                }
             }
         });
 
@@ -256,18 +226,10 @@ public class WatchList extends Fragment implements WatchlistAdapter.ClickListene
 
     }
 
+
     @Override
-    public void unmarked(int position) {
-
-        if (progressDialog != null)
-            progressDialog.dismiss();
-        if (watchlistAdapter != null && list != null) {
-            list.remove(position);
-            watchlistAdapter.notifyItemRemoved(position);
-
-            if (watchlistAdapter.getItemCount() == 0)
-                emptyContainer.setVisibility(View.VISIBLE);
-
-        }
+    public void onResume() {
+        super.onResume();
+        getActivity().getSupportLoaderManager().initLoader(SAVED_DETAILS_LOADER, null, this);
     }
 }

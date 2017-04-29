@@ -170,7 +170,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
     Context context = this;
     String[] trailer_array;
-    String [] trailer_array_name;
+    String[] trailer_array_name;
     FullReadFragment fullReadFragment;
     AllTrailerFragment allTrailerFragment;
     HashMap<String, String> movieMap;
@@ -218,7 +218,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             nightModeLogic();
             castDivider.setVisibility(View.GONE);
         }
-        RevealAnimation.performReveal(main_content);
+
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null)
@@ -272,12 +272,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         if (nightMode != nightModeNew)
             recreate();
 
-
         performDataFetching();
 
-        showCastFragment();
+        /*showCastFragment(); TODO :: salroid finds it un-necessary
         showCrewFragment();
-        showSimilarFragment();
+        showSimilarFragment();*/
     }
 
     private void performDataFetching() {
@@ -857,13 +856,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             case R.id.action_fav:
 
-                Confirmation.confirmFav(this,movieMap,movie_id,movie_id_final,Constants.FLAG_FAVORITE);
+                Confirmation.confirmFav(this, movieMap, movie_id, movie_id_final, Constants.FLAG_FAVORITE);
 
                 break;
 
             case R.id.action_watch:
 
-                Confirmation.confirmWatchlist(this,movieMap,movie_id,movie_id_final,Constants.FLAG_WATCHLIST);
+                Confirmation.confirmWatchlist(this, movieMap, movie_id, movie_id_final, Constants.FLAG_WATCHLIST);
 
                 break;
 
@@ -927,11 +926,11 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             case R.id.youtube_icon:
                 if (trailer_boolean) {
                     allTrailerFragment = new AllTrailerFragment();
-                   // Log.d(TAG, "onClick: "+ Arrays.toString(trailer_array));
+                    // Log.d(TAG, "onClick: "+ Arrays.toString(trailer_array));
                     Bundle args = new Bundle();
                     args.putString("title", movie_title);
-                    args.putStringArray("trailers",trailer_array);
-                    args.putStringArray("trailers_name",trailer_array_name);
+                    args.putStringArray("trailers", trailer_array);
+                    args.putStringArray("trailers_name", trailer_array_name);
                     allTrailerFragment.setArguments(args);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.all_details_container, allTrailerFragment).addToBackStack("TRAILER").commit();
@@ -963,7 +962,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         if (!(movie_title == null && movie_rating.equals("null") && movie_imdb_id.equals("null"))) {
             Intent myIntent = new Intent(Intent.ACTION_SEND);
             myIntent.setType("text/plain");
-            myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\n"+ movie_imdb + "\n");
+            myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\n" + movie_imdb + "\n");
             startActivity(Intent.createChooser(myIntent, "Share with"));
         }
     }

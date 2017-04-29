@@ -218,7 +218,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             nightModeLogic();
             castDivider.setVisibility(View.GONE);
         }
-
+        RevealAnimation.performReveal(main_content);
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null)
@@ -273,7 +273,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             recreate();
 
 
-        RevealAnimation.performReveal(main_content);
         performDataFetching();
 
         showCastFragment();
@@ -947,6 +946,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         switch (code) {
 
             case GetDataFromNetwork.MOVIE_DETAILS_CODE:
+
 
                 parseMovieDetails(response);
                 // showCastFragment();%

@@ -24,8 +24,8 @@ android {
         applicationId "tech.salroid.filmy"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 15
-        versionName "2.1.0"
+        versionCode 13
+        versionName "2.1.1"
         multiDexEnabled true
 
     }

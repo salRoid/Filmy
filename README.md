@@ -6,8 +6,8 @@ Open sourced awesome material designed movie app.
 <img src="http://www.webianks.com/filmy/launcher.png" height="128" width="128" >
 
 # Screens
-<img src="http://www.webianks.com/filmy/filmy.png" height="500" width="300">
-<img src="http://www.webianks.com/filmy/a.png"  height="500" width="300" >
+<img src="https://lh3.googleusercontent.com/YWhVvwlf_rjzLrhvMIz-6lRAwoIqR9NL7stzeRIk-i4DLqslQzEPis1dtJNO34J0den8=h900-rw" align= "left" height="500" width="300">
+<img src="https://lh3.googleusercontent.com/IGUXeiHkl4EcGESmj9gJhv5isXTapXtnZ9Lw1H0MmWK6-ARgPm3CWDHlc6hXeYMSCSCJ=h900-rw"  height="500" width="300" >
 
 # APIs
 Filmy is powered by the tmdb.

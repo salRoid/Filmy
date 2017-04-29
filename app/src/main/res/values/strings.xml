@@ -359,16 +359,15 @@ limitations under the License.
     <string name="login_normal">Login</string>
     <string name="trailers">Trailers</string>
     <string name="favourite">Favourite</string>
-    <string name="your_favourite_movie_appear_here">your favourite movie appear here</string>
-    <string name="your_watchlist_appear_here">your watchlist appear here</string>
+    <string name="your_fav_movies_appear_here">Your favourite movie appear here.</string>
+    <string name="your_watchlist_movies_appear_here">Your watchlist appear here.</string>
     <string name="you_dont_hav_fav">No movies in the list.</string>
 
     <string name="error_string" translatable="false">There was an error initializing the YouTube Player</string>
     <string name="Youtube_Api_Key" translatable="false">AIzaSyBtyakzoKg3sueLC1mfKSZqSYs7sUIqVG4</string>
     <string name="collections" translatable="false">Collections</string>
     <string name="offline" translatable="false">Offline</string>
-    <string name="your_fav_movies_appear_here">Your favorite movies appear here.</string>
-    <string name="your_watchlist_movies_appear_here">Your watchlist movies appear here.</string>
+
 
 
 </resources>

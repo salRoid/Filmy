@@ -77,8 +77,8 @@
     <string name="login_normal">लॉग इन करें</string>
     <string name="trailers">ट्रेलरों</string>
     <string name="favourite">पसंदीदा</string>
-    <string name="your_favourite_movie_appear_here">अपने पसंदीदा फिल्म यहाँ दिखाई</string>
-    <string name="your_watchlist_appear_here">आपकी फिल्में देखने के लिए यहाँ है</string>
+    <string name="your_fav_movies_appear_here">अपने पसंदीदा फिल्म यहाँ दिखाई</string>
+    <string name="your_watchlist_movies_appear_here">आपकी फिल्में देखने के लिए यहाँ है</string>
     <string name="you_dont_hav_fav">सूची में कोई भी फिल्में नहीं</string>
 
 

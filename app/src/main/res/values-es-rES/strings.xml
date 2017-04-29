@@ -77,8 +77,9 @@
     <string name="login_normal">iniciar sesión</string>
     <string name="trailers">Remolques</string>
     <string name="favourite">Favoritos</string>
-    <string name="your_favourite_movie_appear_here">Tu película favorita aparece aquí</string>
-    <string name="your_watchlist_appear_here">Su lista aparece aquí</string>
+    <string name="your_fav_movies_appear_here">Tu película favorita aparece aquí</string>
+    <string name="your_watchlist_movies_appear_here">Su lista aparece aquí</string>
     <string name="you_dont_hav_fav">No hay películas en la lista</string>
+
 
 </resources>

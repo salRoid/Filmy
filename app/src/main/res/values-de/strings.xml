@@ -77,9 +77,10 @@
     <string name="login_normal">Anmeldung</string>
     <string name="trailers">Anhänger</string>
     <string name="favourite">Favoriten</string>
-    <string name="your_favourite_movie_appear_here">Ihr Lieblingsfilm erscheint hier</string>
-    <string name="your_watchlist_appear_here">Ihr Watchlist erscheint hier</string>
+    <string name="your_fav_movies_appear_here">Ihr Lieblingsfilm erscheint hier</string>
+    <string name="your_watchlist_movies_appear_here">Ihr Watchlist erscheint hier</string>
     <string name="you_dont_hav_fav">Keine Filme in der Liste</string>
+
 
 
 </resources>

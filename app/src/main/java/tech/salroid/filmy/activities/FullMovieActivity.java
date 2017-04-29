@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import java.util.List;
 
@@ -60,15 +61,18 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         setSupportActionBar(toolbar);
 
 
+
         full_movie_recycler.setLayoutManager(new LinearLayoutManager(FullMovieActivity.this));
 
 
         Intent intent = getIntent();
         if (intent != null) {
             movie_result = intent.getStringExtra("cast_json");
-            if (getSupportActionBar() != null)
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
-        }
+            }
+            }
 
 
         CharacterDetailActivityParseWork par = new CharacterDetailActivityParseWork(this, movie_result);
@@ -99,5 +103,15 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         boolean nightModeNew = sp.getBoolean("dark", false);
         if (nightMode!=nightModeNew)
             recreate();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        if (item.getItemId() == android.R.id.home)
+            finish();
+
+        return super.onOptionsItemSelected(item);
     }
 }

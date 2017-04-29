@@ -76,8 +76,8 @@
     <string name="login_normal">Log in</string>
     <string name="trailers">trailers</string>
     <string name="favourite">favorieten</string>
-    <string name="your_favourite_movie_appear_here">your favourite movie appears here</string>
-    <string name="your_watchlist_appear_here">uw watchlist verschijnt hier</string>
+    <string name="your_fav_movies_appear_here">your favourite movie appears here</string>
+    <string name="your_watchlist_movies_appear_here">uw watchlist verschijnt hier</string>
     <string name="you_dont_hav_fav">Geen films in de lijst</string>
 
 

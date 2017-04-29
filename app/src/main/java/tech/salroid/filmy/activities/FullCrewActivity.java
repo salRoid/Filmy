@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.List;
@@ -73,8 +74,10 @@ public class FullCrewActivity extends AppCompatActivity implements CrewAdapter.C
         Intent intent = getIntent();
         if (intent != null) {
             crew_result = intent.getStringExtra("crew_json");
-            if(getSupportActionBar()!=null)
-            getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
+            }
         }
 
 
@@ -114,5 +117,15 @@ public class FullCrewActivity extends AppCompatActivity implements CrewAdapter.C
         boolean nightModeNew = sp.getBoolean("dark", false);
         if (nightMode!=nightModeNew)
             recreate();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+        if (item.getItemId() == android.R.id.home)
+            finish();
+
+        return super.onOptionsItemSelected(item);
     }
 }

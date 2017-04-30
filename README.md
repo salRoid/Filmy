@@ -1,6 +1,8 @@
-<img src="https://img.shields.io/badge/Android%20Arsenal-Filmy-blue.svg?style=flat">
+![Image](/img/banner.png)
 
 # Filmy
+<img src="https://img.shields.io/badge/Android%20Arsenal-Filmy-blue.svg?style=flat">
+
 Open sourced awesome material designed movie app.
 
 <img src="http://www.webianks.com/filmy/launcher.png" height="128" width="128" >

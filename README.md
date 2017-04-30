@@ -6,8 +6,12 @@ Open sourced awesome material designed movie app.
 <img src="http://www.webianks.com/filmy/launcher.png" height="128" width="128" >
 
 # Screens
-<img src="http://www.webianks.com/filmy/a.png" align="right" height="700" width="400" >
-<img src="http://www.webianks.com/filmy/filmy.png"  height="700" width="400" >
+<img src="https://lh3.googleusercontent.com/IvLr6X2Lw6CRMW_s39aNyboAydOL13ej0lvXIRkMIKhWtl23rjWXkXTD_wqpwLqIMQo=h900-rw" vspace="5" align= "left" height="500" width="275">
+<img src="https://lh3.googleusercontent.com/1Zczu4BJq9LZJSlRJhyaLHcbxumkqJ2aBtleggQFB_fZVMLzvqdB6Cog7xEXpBK2o7sb=h900-rw" vspace="5" align= "left"  height="500" width="275" >
+<img src="https://lh3.googleusercontent.com/BNkmfAAy2QQrbwxRNRZNNWzzFPuXFNT4jxlvIGsK8MLdUqTnAG28nJxJasl9084Sgw=h900-rw" vspace="5" height="500" width="275" >
+<img src="https://lh3.googleusercontent.com/cN0MSLn_Kw1ntrNUg1kFXNZ_fBQES1sD6OcgKxhNVO6dbhDVGFP7L3ApxeSAIC8vIrk=h900-rw" vspace="5" align= "left" height="500" width="275" >
+<img src="https://lh3.googleusercontent.com/ChKb8vTf_9H4Aks6daLgVqe9uCOwUyZhiCv9qq8ts1n69Q2BaPNBIsMvBqyVxF7BYQ=h900-rw" align= "left" vspace="5" height="500" width="275" >
+<img src="https://lh3.googleusercontent.com/ZtExC3U6289UgbAbCcQRyae4dmihU-QijHESpL2CVoBLo8dFOCzL0kJuhn71bU5K6BNk=h900-rw" vspace="5" height="500" width="275" >
 
 # APIs
 Filmy is powered by the tmdb.
@@ -47,7 +51,7 @@ Generate your own API Keys from  the following :
 
 ```
 Filmy for Android
-Copyright (c) 2016 Sajal Gupta (http://github.com/salroid) ,
+Copyright (c) 2017 Sajal Gupta (http://github.com/salroid) ,
 Ramankit Singh (http://github.com.webianks).
 
 Licensed under the Apache License, Version 2.0 (the "License");

@@ -23,11 +23,11 @@
     <string name="ramankit">Ramankit Singh</string>
     <string name="sajal">Sajal Gupta</string>
     <string name="email">Send Email</string>
-    <string name="gplus">Google+</string>
+    <string name="gplus">Website</string>
     <string name="github">GitHub</string>
 
     <string name="ramankit_bio">I love Android, designing and music.</string>
-    <string name="sajal_bio">I like Android and playing Counter Strike.</string>
+    <string name="sajal_bio">The one with devil on the other side of mirror.</string>
 
 
     <string name="app_name">Filmy</string>
@@ -335,8 +335,8 @@ limitations under the License.
 
 
     <string name="app_share_link" translatable="false">https://play.google.com/store/apps/details?id=tech.salroid.filmy</string>
-    <string name="ramzplus" translatable="false">https://plus.google.com/u/0/+RamankitSinghWebianks</string>
-    <string name="sajjuplus" translatable="false">https://plus.google.com/u/0/+sajalguptasajju</string>
+    <string name="ramzplus" translatable="false">http://www.webianks.com</string>
+    <string name="sajjuplus" translatable="false">http://www.salroid.me</string>
     <string name="webianksgit" translatable="false">https://github.com/webianks</string>
     <string name="salroidgit" translatable="false">https://github.com/salroid</string>
     <string name="shareappdetails">Share this App</string>

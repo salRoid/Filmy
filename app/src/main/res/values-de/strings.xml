@@ -56,11 +56,11 @@
     <string name="ramankit">Ramankit Singh</string>
     <string name="sajal">Sajal Gupta</string>
     <string name="email">Sende eine Email</string>
-    <string name="gplus">Google+</string>
+    <string name="gplus">Webseite</string>
     <string name="github">Github</string>
 
     <string name="ramankit_bio">Ich mag Android, Design und Musik.</string>
-    <string name="sajal_bio">Ich mag Android und Counter Strike.</string>
+    <string name="sajal_bio">Der mit Teufel auf der anderen Seite des Spiegels.</string>
 
     <string name="shareappdetails">Teile diese App</string>
     <string name="dark">Nacht Modus</string>

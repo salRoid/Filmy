@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -111,7 +113,7 @@ public class AboutActivity extends AppCompatActivity {
           case R.id.email2:
 
               Intent emailIntent2 = new Intent(Intent.ACTION_SENDTO);
-              emailIntent2.setData(Uri.parse("mailto: salroid@yahoo.com"));
+              emailIntent2.setData(Uri.parse("mailto: gupta.sajal631@gmail.com"));
               startActivity(Intent.createChooser(emailIntent2, "Send feedback"));
 
               break;
@@ -129,10 +131,16 @@ public class AboutActivity extends AppCompatActivity {
         switch (view.getId()){
 
             case R.id.github:
-                viewIntent(url);
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(this, R.color.black));
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(this, Uri.parse(url));
                 break;
             case R.id.github2:
-                viewIntent(url2);
+                CustomTabsIntent.Builder builder1 = new CustomTabsIntent.Builder();
+                builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black));
+                CustomTabsIntent customTabsIntent1 = builder1.build();
+                customTabsIntent1.launchUrl(this, Uri.parse(url2));
                 break;
         }
 
@@ -153,10 +161,16 @@ public class AboutActivity extends AppCompatActivity {
         switch (view.getId()){
 
             case R.id.gplus:
-                viewIntent(url);
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent));
+                CustomTabsIntent customTabsIntent = builder.build();
+                customTabsIntent.launchUrl(this, Uri.parse(url));
                 break;
             case R.id.gplus2:
-                viewIntent(url2);
+                CustomTabsIntent.Builder builder1 = new CustomTabsIntent.Builder();
+                builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black));
+                CustomTabsIntent customTabsIntent1 = builder1.build();
+                customTabsIntent1.launchUrl(this, Uri.parse(url2));
                 break;
         }
 

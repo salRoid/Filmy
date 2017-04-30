@@ -1,6 +1,5 @@
-![Image](/img/banner.png)
+![Image](/img/banner_github.png)
 
-# Filmy
 <img src="https://img.shields.io/badge/Android%20Arsenal-Filmy-blue.svg?style=flat">
 
 Open sourced awesome material designed movie app.

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -55,6 +56,8 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
     TextView card_holder;
     @BindView(R.id.breathingProgressFragment)
     BreathingProgress breathingProgress;
+    @BindView(R.id.detail_fragment_views_layout)
+    RelativeLayout relativeLayout;
     private String crew_json;
     private String movieId, movieTitle;
 
@@ -127,7 +130,7 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
         breathingProgress.setVisibility(View.GONE);
         crew_recycler.setVisibility(View.VISIBLE);
 
-
+        relativeLayout.setMinimumHeight(0);
     }
 
 

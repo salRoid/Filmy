@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -59,6 +60,8 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
     BreathingProgress breathingProgress;
     @BindView(R.id.card_holder)
     TextView card_holder;
+    @BindView(R.id.detail_fragment_views_layout)
+    RelativeLayout relativeLayout;
     private String similar_json;
     private String movieId, movieTitle;
     private String api_key = BuildConfig.API_KEY;
@@ -157,7 +160,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
         breathingProgress.setVisibility(View.GONE);
         similar_recycler.setVisibility(View.VISIBLE);
 
-
+        relativeLayout.setMinimumHeight(0);
     }
 
     @Override

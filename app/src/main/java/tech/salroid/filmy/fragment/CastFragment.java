@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -65,6 +66,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     TextView card_holder;
     @BindView(R.id.breathingProgressFragment)
     BreathingProgress breathingProgress;
+    @BindView(R.id.detail_fragment_views_layout)
+    RelativeLayout relativeLayout;
     private String cast_json;
     private String movieId, movieTitle;
     private GotCrewListener gotCrewListener;
@@ -181,7 +184,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
         breathingProgress.setVisibility(View.GONE);
         cast_recycler.setVisibility(View.VISIBLE);
 
-
+        relativeLayout.setMinimumHeight(0);
     }
 
     @Override

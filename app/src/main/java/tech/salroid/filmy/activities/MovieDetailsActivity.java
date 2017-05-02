@@ -274,7 +274,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         performDataFetching();
 
-        /*showCastFragment(); TODO :: salroid finds it un-necessary
+        /* showCastFragment(); //TODO :: salroid finds it un-necessary
         showCrewFragment();
         showSimilarFragment();*/
     }

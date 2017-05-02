@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,7 +136,7 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
 
         if (view.getId() == R.id.crew_more) {
 
-            // Log.d("webi",""+movieTitle);
+            Log.d("webi",""+movieTitle);
 
             if (crew_json != null && movieTitle != null) {
 

@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -131,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
         String api_key = BuildConfig.API_KEY;
         final String BASE_URL = "https://api.themoviedb.org/3/authentication/token/new?api_key="+api_key;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(BASE_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -204,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void querySession(String session_query) {
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, session_query, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(session_query, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

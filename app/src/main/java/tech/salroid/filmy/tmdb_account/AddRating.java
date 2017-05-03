@@ -7,7 +7,6 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -84,7 +83,7 @@ public class AddRating {
 
         String PROFILE_URI = "https://api.themoviedb.org/3/account?api_key=" + api_key + "&session_id=" + session_id;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, PROFILE_URI, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(PROFILE_URI, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -140,7 +139,7 @@ public class AddRating {
         final String mRequestBody = jsonBody.toString();
 
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, query, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(query, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

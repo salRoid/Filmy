@@ -4,13 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
 import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONObject;
+
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.parser.MainActivityParseWork;
 import tech.salroid.filmy.services.FilmyJobScheduler;
@@ -61,7 +63,7 @@ public class FirstFetch {
 
         final String Intheatres_Base_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key="+api_key;
 
-        JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Intheatres_Base_URL, null,
+        JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(Intheatres_Base_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -89,7 +91,7 @@ public class FirstFetch {
         String api_key = BuildConfig.API_KEY;
         final String Upcoming_Base_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key="+api_key;
 
-        JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Request.Method.GET, Upcoming_Base_URL, null,
+        JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Upcoming_Base_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -115,7 +117,7 @@ public class FirstFetch {
         String api_key = BuildConfig.API_KEY;
         final String BASE_URL = "https://api.themoviedb.org/3/movie/popular?api_key="+api_key;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(BASE_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
 

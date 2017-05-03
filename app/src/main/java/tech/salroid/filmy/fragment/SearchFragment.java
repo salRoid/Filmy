@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -153,7 +152,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
         final String BASE_URL = "https://api.themoviedb.org/3/search/movie?api_key="+api_key+"&query="+finalQuery;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL, null,
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(BASE_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

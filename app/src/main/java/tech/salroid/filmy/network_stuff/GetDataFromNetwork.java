@@ -2,7 +2,6 @@ package tech.salroid.filmy.network_stuff;
 
 import android.util.Log;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -53,7 +52,7 @@ public class GetDataFromNetwork {
                 + "&append_to_response=trailers");
 
 
-        JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(Request.Method.GET, BASE_URL_MOVIE_DETAILS, null,
+        JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(BASE_URL_MOVIE_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

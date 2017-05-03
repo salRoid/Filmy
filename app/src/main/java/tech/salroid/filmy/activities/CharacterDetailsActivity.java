@@ -17,11 +17,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -43,7 +40,6 @@ import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
 import tech.salroid.filmy.data_classes.CharacterDetailsData;
 import tech.salroid.filmy.fragment.FullReadFragment;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
-import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 
 /*
@@ -203,7 +199,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         final String BASE_URL_PEOPLE_MOVIES = "https://api.themoviedb.org/3/person/"+character_id+"/movie_credits?api_key="+api_key;
 
-        JsonObjectRequest personDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PERSON_DETAIL, null,
+        JsonObjectRequest personDetailRequest = new JsonObjectRequest(BASE_URL_PERSON_DETAIL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -222,7 +218,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         }
         );
 
-        JsonObjectRequest personMovieDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PEOPLE_MOVIES, null,
+        JsonObjectRequest personMovieDetailRequest = new JsonObjectRequest(BASE_URL_PEOPLE_MOVIES, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

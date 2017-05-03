@@ -12,6 +12,7 @@
         app:cardCornerRadius="0dp">
 
     <RelativeLayout
+        android:id="@+id/detail_fragment_views_layout"
         android:layout_width="match_parent"
         android:minHeight="300dp"
         android:layout_height="wrap_content">

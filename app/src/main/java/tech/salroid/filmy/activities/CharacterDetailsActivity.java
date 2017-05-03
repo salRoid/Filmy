@@ -17,11 +17,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -43,7 +40,6 @@ import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
 import tech.salroid.filmy.data_classes.CharacterDetailsData;
 import tech.salroid.filmy.fragment.FullReadFragment;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
-import tech.salroid.filmy.network_stuff.VolleySingleton;
 import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 
 /*
@@ -88,6 +84,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     @BindView(R.id.logo)
     TextView logo;
 
+
     Context co = this;
     private String character_id;
     private String character_title = null, movie_json = null;
@@ -120,7 +117,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
         logo.setTypeface(typeface);
-
 
 
         if (nightMode)
@@ -178,7 +174,9 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
     }
 
-    private void allThemeLogic() {logo.setTextColor(Color.parseColor("#bdbdbd"));}
+    private void allThemeLogic() {
+        logo.setTextColor(Color.parseColor("#bdbdbd"));
+    }
 
     @Override
     protected void onResume() {
@@ -186,7 +184,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean nightModeNew = sp.getBoolean("dark", false);
-        if (nightMode!=nightModeNew)
+        if (nightMode != nightModeNew)
             recreate();
     }
 
@@ -196,14 +194,13 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         TmdbVolleySingleton volleySingleton = TmdbVolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = getResources().getString(R.string.trakt_base_url);
         String api_key = BuildConfig.API_KEY;
 
-        final String BASE_URL_PERSON_DETAIL = "https://api.themoviedb.org/3/person/"+character_id+"?api_key="+api_key;
+        final String BASE_URL_PERSON_DETAIL = "https://api.themoviedb.org/3/person/" + character_id + "?api_key=" + api_key;
 
-        final String BASE_URL_PEOPLE_MOVIES = "https://api.themoviedb.org/3/person/"+character_id+"/movie_credits?api_key="+api_key;
+        final String BASE_URL_PEOPLE_MOVIES = "https://api.themoviedb.org/3/person/" + character_id + "/movie_credits?api_key=" + api_key;
 
-        JsonObjectRequest personDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PERSON_DETAIL, null,
+        JsonObjectRequest personDetailRequest = new JsonObjectRequest(BASE_URL_PERSON_DETAIL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -222,7 +219,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         }
         );
 
-        JsonObjectRequest personMovieDetailRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL_PEOPLE_MOVIES, null,
+        JsonObjectRequest personMovieDetailRequest = new JsonObjectRequest(BASE_URL_PEOPLE_MOVIES, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -254,7 +251,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     public void itemClicked(CharacterDetailsData setterGetterchar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("id", setterGetterchar.getChar_id());
-        intent.putExtra("title",setterGetterchar.getChar_movie());
+        intent.putExtra("title", setterGetterchar.getChar_movie());
         intent.putExtra("network_applicable", true);
         intent.putExtra("activity", false);
         startActivity(intent);
@@ -268,7 +265,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             JSONObject jsonObject = new JSONObject(detailsResult);
 
             String char_name = jsonObject.getString("name");
-            String char_face = "http://image.tmdb.org/t/p/w185"+jsonObject.getString("profile_path");
+            String char_face = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path");
             String char_desc = jsonObject.getString("biography");
             String char_birthday = jsonObject.getString("birthday");
             String char_birthplace = jsonObject.getString("place_of_birth");
@@ -285,9 +282,10 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                 ch_place.setVisibility(View.GONE);
             else
                 ch_place.setText(char_birthplace);
-            if (char_birthplace.equals("null"))
+            if (char_desc.length() <= 0) {
+                headerContainer.setVisibility(View.GONE);
                 ch_desc.setVisibility(View.GONE);
-            else {
+            } else {
                 if (Build.VERSION.SDK_INT >= 24) {
                     ch_desc.setText(Html.fromHtml(char_desc, Html.FROM_HTML_MODE_LEGACY));
                 } else {
@@ -341,9 +339,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
                 //reverse transition
                 supportFinishAfterTransition();
-            }
-
-            else
+            } else
                 finish();
 
         }
@@ -362,7 +358,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
             super.onBackPressed();
         }
     }
-
 
 
     @Override

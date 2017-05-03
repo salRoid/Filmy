@@ -2,7 +2,6 @@ package tech.salroid.filmy.activities;
 
 import android.content.Context;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -42,7 +41,7 @@ public class Rating {
 
         String BASE_RATING_URL = "http://www.omdbapi.com/?i=" + movie_id_final + "&tomatoes=true&r=json";
 
-        JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(Request.Method.GET, BASE_RATING_URL, null,
+        JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(BASE_RATING_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

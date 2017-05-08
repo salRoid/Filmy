@@ -27,7 +27,7 @@ android {
         versionCode 13
         versionName "2.1.1"
         multiDexEnabled true
-        resConfigs "en"
+        resConfigs "en" , "de" , "es-rES" , "hi-rIN" , "nl-rNL"
 
     }
     buildTypes {

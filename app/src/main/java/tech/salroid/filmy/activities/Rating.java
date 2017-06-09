@@ -29,7 +29,7 @@ import tech.salroid.filmy.network_stuff.VolleySingleton;
  * limitations under the License.
  */
 
-public class Rating {
+/*public class Rating {
 
     public static String imdb_rating = "0",tomatometer_rating="0",audience_rating="0",metascore_rating="0",image=null;
 
@@ -84,4 +84,4 @@ public class Rating {
 
     }
 
-}
+}*/

@@ -375,7 +375,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             if (similarFragment != null)
                 similarFragment.getSimilarFromNetwork(movie_id_final);
 
-            Rating.getRating(context, movie_imdb_id);
+           // Rating.getRating(context, movie_imdb_id);
 
             //poster and banner
             get_poster_path_from_json = jsonObject.getString("poster_path");
@@ -498,6 +498,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         det_released.setText(released);
         det_certification.setText(certification);
         det_language.setText(language);
+
+
 
         try {
             Glide.with(context)
@@ -657,6 +659,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             movie_desc = overview;
             show_centre_img_url = banner_url;
+
 
             try {
 
@@ -1041,11 +1044,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         }
 
-        if (movie_rating_tmdb.equals("0"))
-            layout_tmdb.setVisibility(View.GONE);
-
-        else
-            det_rating.setText(movie_rating_tmdb);
 
 
     }

@@ -22,21 +22,23 @@ android {
 
     defaultConfig {
         applicationId "tech.salroid.filmy"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 25
         versionCode 13
         versionName "2.1.1"
         multiDexEnabled true
+        resConfigs "en" , "de" , "es-rES" , "hi-rIN" , "nl-rNL"
 
     }
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "API_KEY", "\"" + getApiKey() + "\"")
         }
         debug{
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "API_KEY", "\"" + getApiKey() +"\"")
             minifyEnabled true
         }

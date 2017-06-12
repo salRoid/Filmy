@@ -102,7 +102,8 @@ public class FullReadFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        getFragmentManager().popBackStack();
+
     }
 
 }

@@ -9,7 +9,6 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'android-apt'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -18,7 +17,7 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "tech.salroid.filmy"
@@ -69,9 +68,9 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.google.firebase:firebase-appindexing:10.0.0'
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile 'com.google.firebase:firebase-appindexing:11.0.1'
     compile files('libs/YouTubeAndroidPlayerApi.jar')
     debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
 }

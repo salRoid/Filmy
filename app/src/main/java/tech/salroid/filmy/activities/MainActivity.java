@@ -63,8 +63,8 @@ import tr.xip.errorview.ErrorView;
 
 public class MainActivity extends AppCompatActivity {
 
-
     public boolean fetchingFromNetwork;
+
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -91,17 +91,12 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             // Extract data included in the Intent
             int statusCode = intent.getIntExtra("message", 0);
-
-
             CustomToast.show(context, "Failed to get latest movies.", true);
-
             cantProceed(statusCode);
-
         }
     };
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -112,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
             setTheme(R.style.AppTheme_Base);
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -140,17 +134,11 @@ public class MainActivity extends AppCompatActivity {
         mErrorView.setOnRetryListener(new ErrorView.RetryListener() {
             @Override
             public void onRetry() {
-
                 if (Network.isNetworkConnected(MainActivity.this)) {
-
                     fetchingFromNetwork = true;
-
                     setScheduler();
-
                 }
-
                 canProceed();
-
             }
         });
 
@@ -226,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     private void allThemeLogic() {
 
         tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"));
@@ -264,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setScheduler() {
-
 
         FirstFetch firstFetch = new FirstFetch(this);
         firstFetch.start();

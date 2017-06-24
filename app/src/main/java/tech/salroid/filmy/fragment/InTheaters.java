@@ -156,7 +156,6 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
         int id_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
         int title_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
 
-
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra("title", cursor.getString(title_index));
         intent.putExtra("activity", true);

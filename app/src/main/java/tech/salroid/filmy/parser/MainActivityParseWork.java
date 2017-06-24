@@ -47,7 +47,6 @@ public class MainActivityParseWork {
         //final List<MovieData> movieDataArrayList = new ArrayList<MovieData>();
         //MovieData movieData = null;
 
-
         try {
 
             JSONObject jsonObject = new JSONObject(result);

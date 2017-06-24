@@ -15,6 +15,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
+
 /*
  * Filmy Application for Android
  * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).

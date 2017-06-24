@@ -65,7 +65,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     BreathingProgress breathingProgress;
     @BindView(R.id.fragment_rl)
     RelativeLayout fragmentRelativeLayout;
-    private String api_key = BuildConfig.API_KEY;
+    private String api_key = BuildConfig.TMDB_API_KEY;
 
     @Nullable
     @Override

@@ -40,7 +40,7 @@ import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
  */
 public class UnMarkingFavorite {
 
-    private String api_key = BuildConfig.API_KEY;
+    private String api_key = BuildConfig.TMDB_API_KEY;
     private String SESSION_PREF = "SESSION_PREFERENCE";
     private TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     private RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();

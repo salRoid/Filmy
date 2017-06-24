@@ -63,7 +63,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
     RelativeLayout relativeLayout;
     private String similar_json;
     private String movieId, movieTitle;
-    private String api_key = BuildConfig.API_KEY;
+    private String api_key = BuildConfig.TMDB_API_KEY;
 
     public static SimilarFragment newInstance(String movie_Id, String movie_Title) {
         SimilarFragment fragment = new SimilarFragment();

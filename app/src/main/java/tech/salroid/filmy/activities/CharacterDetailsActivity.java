@@ -195,7 +195,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         TmdbVolleySingleton volleySingleton = TmdbVolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        String api_key = BuildConfig.API_KEY;
+        String api_key = BuildConfig.TMDB_API_KEY;
 
         final String BASE_URL_PERSON_DETAIL = "https://api.themoviedb.org/3/person/" + character_id + "?api_key=" + api_key;
 

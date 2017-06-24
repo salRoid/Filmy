@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void logInBackground() {
 
-        String api_key = BuildConfig.API_KEY;
+        String api_key = BuildConfig.TMDB_API_KEY;
         final String BASE_URL = "https://api.themoviedb.org/3/authentication/token/new?api_key="+api_key;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(BASE_URL, null,
@@ -193,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (tokenization && requestToken!=null){
 
-            String api_key = BuildConfig.API_KEY;
+            String api_key = BuildConfig.TMDB_API_KEY;
             final String SESSION_QUERY = "https://api.themoviedb.org/3/authentication/session/new?api_key="+api_key+"&request_token=" + requestToken;
             querySession(SESSION_QUERY);
         }

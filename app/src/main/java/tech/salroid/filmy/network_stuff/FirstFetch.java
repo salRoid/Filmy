@@ -59,7 +59,7 @@ public class FirstFetch {
     private void syncNowInTheaters() {
 
 
-        String api_key = BuildConfig.API_KEY;
+        String api_key = BuildConfig.TMDB_API_KEY;
 
         final String Intheatres_Base_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key="+api_key;
 
@@ -88,7 +88,7 @@ public class FirstFetch {
     private void syncNowUpComing() {
 
 
-        String api_key = BuildConfig.API_KEY;
+        String api_key = BuildConfig.TMDB_API_KEY;
         final String Upcoming_Base_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key="+api_key;
 
         JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Upcoming_Base_URL, null,
@@ -114,7 +114,7 @@ public class FirstFetch {
 
     private void syncNowTrending() {
 
-        String api_key = BuildConfig.API_KEY;
+        String api_key = BuildConfig.TMDB_API_KEY;
         final String BASE_URL = "https://api.themoviedb.org/3/movie/popular?api_key="+api_key;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(BASE_URL, null,

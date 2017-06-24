@@ -17,6 +17,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.utility.FontUtility;
 
 /*
  * Filmy Application for Android
@@ -85,23 +86,16 @@ public class License extends AppCompatActivity {
             getSupportActionBar().setTitle("");
         }
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
         logo.setTypeface(typeface);
-
-
 
         if (nightMode)
             allThemeLogic();
 
-
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24)
           v24Setup();
-        } else {
+        else
             normalSetup();
-        }
-
-
-
     }
 
     private void normalSetup() {
@@ -137,13 +131,11 @@ public class License extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home)
             finish();
-        }
 
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onResume() {

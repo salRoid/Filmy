@@ -493,7 +493,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         det_tagline.setText(tagline);
         det_title.setText(title);
         det_overview.setText(overview);
-        det_rating.setText(rating);
+        //det_rating.setText(rating);
         det_runtime.setText(runtime);
         det_released.setText(released);
         det_certification.setText(certification);
@@ -651,7 +651,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             det_tagline.setText(tagline);
             det_title.setText(title);
             det_overview.setText(overview);
-            det_rating.setText(rating);
+            //det_rating.setText(rating);
             det_runtime.setText(runtime);
             det_released.setText(released);
             det_certification.setText(certification);
@@ -884,6 +884,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             super.onBackPressed();
         } else {
             getFragmentManager().popBackStack();
+
         }
 
     }
@@ -1040,6 +1041,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             meta_rating.setText(movie_rating_metascore);
             metascore_setter.setText(movie_rating_metascore);
         }
+
+        if (movie_rating_tmdb.equals("0"))
+            layout_tmdb.setVisibility(View.GONE);
+
+        else
+            det_rating.setText(movie_rating_tmdb);
     }
 
     public void setRatingGone() {

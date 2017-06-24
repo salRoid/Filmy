@@ -30,6 +30,7 @@ import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
+import tech.salroid.filmy.utility.FontUtility;
 
 /*
  * Filmy Application for Android
@@ -84,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
         logo.setTypeface(typeface);
 
 

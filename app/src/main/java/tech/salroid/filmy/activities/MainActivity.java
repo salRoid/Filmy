@@ -41,6 +41,7 @@ import tech.salroid.filmy.fragment.SearchFragment;
 import tech.salroid.filmy.fragment.Trending;
 import tech.salroid.filmy.fragment.UpComing;
 import tech.salroid.filmy.network_stuff.FirstFetch;
+import tech.salroid.filmy.utility.FontUtility;
 import tech.salroid.filmy.utility.Network;
 import tr.xip.errorview.ErrorView;
 
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
         introLogic();
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
         logo.setTypeface(typeface);
 
         if (nightMode)

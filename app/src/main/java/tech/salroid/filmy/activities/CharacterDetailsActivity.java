@@ -41,6 +41,7 @@ import tech.salroid.filmy.data_classes.CharacterDetailsData;
 import tech.salroid.filmy.fragment.FullReadFragment;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
+import tech.salroid.filmy.utility.FontUtility;
 
 /*
  * Filmy Application for Android
@@ -115,7 +116,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         getSupportActionBar().setTitle("");
 
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
         logo.setTypeface(typeface);
 
 

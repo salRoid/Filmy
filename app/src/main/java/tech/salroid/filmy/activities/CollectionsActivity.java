@@ -27,6 +27,7 @@ import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
 import tech.salroid.filmy.fragment.Favorite;
 import tech.salroid.filmy.fragment.SavedMovies;
 import tech.salroid.filmy.fragment.WatchList;
+import tech.salroid.filmy.utility.FontUtility;
 
 /*
  * Filmy Application for Android
@@ -92,7 +93,7 @@ public class CollectionsActivity extends AppCompatActivity {
             allThemeLogic();
 
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
         logo.setTypeface(typeface);
 
         setupViewPager(viewPager);

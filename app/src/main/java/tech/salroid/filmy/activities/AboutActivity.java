@@ -19,6 +19,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
+import tech.salroid.filmy.utility.FontUtility;
 /*
  * Filmy Application for Android
  * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
@@ -70,7 +71,7 @@ public class AboutActivity extends AppCompatActivity {
         }
 
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/canaro_extra_bold.otf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
         logo.setTypeface(typeface);
 
 

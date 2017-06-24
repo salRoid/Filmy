@@ -41,8 +41,10 @@ public class FilmProvider extends ContentProvider {
     static final int CAST = 300;
     static final int SAVE = 200;
     static final int SAVE_DETAILS_WITH_MOVIE_ID = 201;
+
     // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+
     private static final String sTrendingMovieIdSelection =
             FilmContract.MoviesEntry.TABLE_NAME +
                     "." + FilmContract.MoviesEntry.MOVIE_ID + " = ? ";

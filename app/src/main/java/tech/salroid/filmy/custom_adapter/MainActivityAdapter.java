@@ -54,7 +54,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     @Override
     public Vh onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.custom_row, parent, false);
-
         return new Vh(view);
     }
 
@@ -73,7 +72,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         int title_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
         int poster_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_POSTER_LINK);
         int year_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_YEAR);
-
 
         movie_title = dataCursor.getString(title_index);
         movie_poster = dataCursor.getString(poster_index);

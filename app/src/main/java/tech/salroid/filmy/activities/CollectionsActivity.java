@@ -76,6 +76,7 @@ public class CollectionsActivity extends AppCompatActivity {
             setTheme(R.style.AppTheme_Base_Dark);
         else
             setTheme(R.style.AppTheme_Base);
+
         setContentView(R.layout.activity_collections);
         ButterKnife.bind(this);
 

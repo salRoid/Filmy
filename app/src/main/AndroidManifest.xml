@@ -74,10 +74,6 @@
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".fragment.SavedMovies"
-            android:label="@string/title_activity_saved_movies"
-            android:theme="@style/AppTheme.Base" />
 
         <service
             android:name=".services.FilmyJobService"
@@ -103,8 +99,6 @@
 
         <activity android:name=".activities.CollectionsActivity" />
         <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".fragment.Favorite" />
-        <activity android:name=".fragment.WatchList" />
 
         <meta-data
             android:name="com.google.android.gms.version"

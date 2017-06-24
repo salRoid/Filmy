@@ -65,6 +65,7 @@ public class CollectionsActivity extends AppCompatActivity {
     @BindView(R.id.watchlistContainer)
     FrameLayout watchlist_layout;
     private GoogleApiClient client;
+    private Boolean throughShortcut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,6 @@ public class CollectionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_collections);
         ButterKnife.bind(this);
 
-
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
@@ -92,6 +92,7 @@ public class CollectionsActivity extends AppCompatActivity {
         if (nightMode)
             allThemeLogic();
 
+        throughShortcut = getIntent().getBooleanExtra("throughShortcut",false);
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
         logo.setTypeface(typeface);
@@ -121,10 +122,13 @@ public class CollectionsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-
-        if (item.getItemId() == android.R.id.home)
-            finish();
-
+        if (item.getItemId() == android.R.id.home){
+            if (throughShortcut){
+                finish();
+                startActivity(new Intent(this,MainActivity.class));
+            }else
+                finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -180,6 +184,14 @@ public class CollectionsActivity extends AppCompatActivity {
 
     private void allThemeLogic() {
         logo.setTextColor(Color.parseColor("#bdbdbd"));
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (throughShortcut){
+            finish();
+            startActivity(new Intent(this,MainActivity.class));
+        }else
+            super.onBackPressed();
     }
 }

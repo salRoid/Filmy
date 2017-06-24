@@ -70,7 +70,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     private String cast_json;
     private String movieId, movieTitle;
     private GotCrewListener gotCrewListener;
-    private String api_key = BuildConfig.API_KEY;
+    private String api_key = BuildConfig.TMDB_API_KEY;
 
 
     public static CastFragment newInstance(String movie_Id, String movie_Title) {

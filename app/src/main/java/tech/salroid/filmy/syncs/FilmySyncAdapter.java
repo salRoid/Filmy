@@ -62,7 +62,7 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
 
-    private String api_key = BuildConfig.API_KEY;
+    private String api_key = BuildConfig.TMDB_API_KEY;
 
     public FilmySyncAdapter(Context context, boolean autoInitialize) {
 

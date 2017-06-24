@@ -44,7 +44,7 @@ public class FilmyJobService extends JobService {
     private JobParameters jobParameters;
 
     private int taskFinished;
-    private String api_key = BuildConfig.API_KEY;
+    private String api_key = BuildConfig.TMDB_API_KEY;
 
 
     @Override

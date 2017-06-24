@@ -1,6 +1,8 @@
 package tech.salroid.filmy.activities;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -10,6 +12,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.network_stuff.VolleySingleton;
 
 /*
@@ -29,9 +32,10 @@ import tech.salroid.filmy.network_stuff.VolleySingleton;
  * limitations under the License.
  */
 
-/*public class Rating {
+public class Rating {
 
-    public static String imdb_rating = "0",tomatometer_rating="0",audience_rating="0",metascore_rating="0",image=null;
+    public static String imdb_rating = "0", tomatometer_rating = "0", audience_rating = "0", metascore_rating = "0", image = null;
+    private static String OMDB_API_KEY = BuildConfig.OMDB_API_KEY;
 
     public static void getRating(final Context context, String movie_id_final) {
 
@@ -39,25 +43,32 @@ import tech.salroid.filmy.network_stuff.VolleySingleton;
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
 
-        String BASE_RATING_URL = "http://www.omdbapi.com/?i=" + movie_id_final + "&tomatoes=true&r=json";
+        String BASE_RATING_URL = "http://www.omdbapi.com/?i=" + movie_id_final + "&apikey=" + OMDB_API_KEY + "&tomatoes=true&r=json";
 
         JsonObjectRequest jsonObjectRequestForMovieDetails = new JsonObjectRequest(BASE_RATING_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            imdb_rating = response.getString("imdbRating");
-                            tomatometer_rating=response.getString("tomatoRating");
-                            audience_rating=response.getString("tomatoUserRating");
-                            metascore_rating=response.getString("Metascore");
-                            image=response.getString("tomatoImage");
 
-                            setRatingCallback(context,imdb_rating,tomatometer_rating,audience_rating,metascore_rating,image);
+                        try {
+
+                            Boolean responseBool = response.getBoolean("Response");
+
+                            if (responseBool){
+
+                                imdb_rating = response.getString("imdbRating");
+                                tomatometer_rating = response.getString("tomatoRating");
+                                audience_rating = response.getString("tomatoUserRating");
+                                metascore_rating = response.getString("Metascore");
+                                image = response.getString("tomatoImage");
+                                setRatingCallback(context, imdb_rating, tomatometer_rating, audience_rating, metascore_rating, image);
+
+                            }else
+                                setRatingFailCallback(context);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            setRatingCallback(context,imdb_rating,tomatometer_rating,audience_rating,metascore_rating,image);
-
+                            setRatingFailCallback(context);
                         }
 
                     }
@@ -68,7 +79,7 @@ import tech.salroid.filmy.network_stuff.VolleySingleton;
             public void onErrorResponse(VolleyError error) {
 
                 // Log.e("webi", "Volley Error: " + error.getCause());
-
+                setRatingFailCallback(context);
             }
         }
         );
@@ -77,11 +88,13 @@ import tech.salroid.filmy.network_stuff.VolleySingleton;
 
     }
 
-
-    private static void setRatingCallback(Context context,String imdb_rating,String tomatometer_rating,String audience_rating,String metascore_rating,String image) {
-
-        ((MovieDetailsActivity)context).setRating(imdb_rating,tomatometer_rating,audience_rating,metascore_rating,image);
-
+    private static void setRatingFailCallback(Context context) {
+        ((MovieDetailsActivity) context).setRatingGone();
     }
 
-}*/
+
+    private static void setRatingCallback(Context context, String imdb_rating, String tomatometer_rating, String audience_rating, String metascore_rating, String image) {
+        ((MovieDetailsActivity) context).setRating(imdb_rating, tomatometer_rating, audience_rating, metascore_rating, image);
+    }
+
+}

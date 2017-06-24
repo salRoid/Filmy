@@ -375,7 +375,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             if (similarFragment != null)
                 similarFragment.getSimilarFromNetwork(movie_id_final);
 
-           // Rating.getRating(context, movie_imdb_id);
+            Rating.getRating(context, movie_imdb_id);
 
             //poster and banner
             get_poster_path_from_json = jsonObject.getString("poster_path");
@@ -493,7 +493,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         det_tagline.setText(tagline);
         det_title.setText(title);
         det_overview.setText(overview);
-        // det_rating.setText(rating);
+        det_rating.setText(rating);
         det_runtime.setText(runtime);
         det_released.setText(released);
         det_certification.setText(certification);
@@ -651,7 +651,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             det_tagline.setText(tagline);
             det_title.setText(title);
             det_overview.setText(overview);
-            // det_rating.setText(rating);
+            det_rating.setText(rating);
             det_runtime.setText(runtime);
             det_released.setText(released);
             det_certification.setText(certification);
@@ -1030,7 +1030,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         else {
 
             int metasco_rating = Integer.valueOf(metascore_rating);
-
             if (metasco_rating > 60)
                 metaRating_background.setBackgroundColor(Color.parseColor("#66cc33"));
             else if (metasco_rating > 40 && metasco_rating < 61)
@@ -1038,14 +1037,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             else
                 metaRating_background.setBackgroundColor(Color.parseColor("#ff0000"));
 
-
             meta_rating.setText(movie_rating_metascore);
             metascore_setter.setText(movie_rating_metascore);
-
         }
-
-
-
     }
 
+    public void setRatingGone() {
+        ratingBar.setVisibility(View.GONE);
+    }
 }

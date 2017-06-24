@@ -31,7 +31,7 @@ public class MyHurlStack extends HurlStack {
     @Override
     protected HttpURLConnection createConnection(URL url) throws IOException {
 
-        String api_key = BuildConfig.API_KEY;
+        String api_key = BuildConfig.TMDB_API_KEY;
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("trakt-api-version", "2");

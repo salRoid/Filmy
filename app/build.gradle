@@ -34,20 +34,28 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "API_KEY", "\"" + getApiKey() + "\"")
+            buildConfigField("String", "TMDB_API_KEY", "\"" + getTMDBApiKey() + "\"")
+            buildConfigField("String", "OMDB_API_KEY", "\"" + getOMDBApiKey() + "\"")
         }
         debug{
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "API_KEY", "\"" + getApiKey() +"\"")
+            buildConfigField("String", "TMDB_API_KEY", "\"" + getTMDBApiKey() +"\"")
+            buildConfigField("String", "OMDB_API_KEY", "\"" + getOMDBApiKey() +"\"")
             minifyEnabled true
         }
     }
 }
 
-def getApiKey(){
+def getTMDBApiKey(){
     def Properties props = new Properties()
     props.load(new FileInputStream(new File('secrets.properties')))
     return props['TMDB_API_KEY']
+}
+
+def getOMDBApiKey(){
+    def Properties props = new Properties()
+    props.load(new FileInputStream(new File('secrets.properties')))
+    return props['OMDB_API_KEY']
 }
 
 dependencies {

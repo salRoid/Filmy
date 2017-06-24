@@ -143,9 +143,7 @@
 
                 </LinearLayout>
 
-                <include layout="@layout/ratings"
-                    android:visibility="gone"/>
-
+                <include layout="@layout/ratings"/>
                 <include layout="@layout/extra_info_movie_detail" />
 
                 <View

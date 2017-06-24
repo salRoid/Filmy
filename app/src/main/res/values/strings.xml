@@ -15,6 +15,9 @@
     <string name="poster_prefix_add_quality" translatable="false">http://image.tmdb.org/t/p/</string>
     <string name="trailer_link_prefix" translatable="false">https://www.youtube.com/watch?v=</string>
 
+    <string name="collection_short_label" translatable="false">Collections</string>
+    <string name="collection_long_label" translatable="false">Open your collection.</string>
+
 
     <!-- SyncAdapter related -->
     <string name="sync_account_type" translatable="false">filmy.salroid.com</string>

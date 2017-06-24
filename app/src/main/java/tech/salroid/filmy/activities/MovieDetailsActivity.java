@@ -493,7 +493,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         det_tagline.setText(tagline);
         det_title.setText(title);
         det_overview.setText(overview);
-        // det_rating.setText(rating);
+        det_rating.setText(rating);
         det_runtime.setText(runtime);
         det_released.setText(released);
         det_certification.setText(certification);
@@ -651,7 +651,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             det_tagline.setText(tagline);
             det_title.setText(title);
             det_overview.setText(overview);
-            // det_rating.setText(rating);
+            det_rating.setText(rating);
             det_runtime.setText(runtime);
             det_released.setText(released);
             det_certification.setText(certification);

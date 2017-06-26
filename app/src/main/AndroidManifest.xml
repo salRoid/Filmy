@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="tech.salroid.filmy">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,7 +16,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Base">
+        android:theme="@style/AppTheme.Base"
+        android:resizeableActivity="true"
+        tools:targetApi="n">
+
         <activity
             android:name=".FilmyIntro"
             android:label=" "

@@ -69,16 +69,23 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
 
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        StaggeredGridLayoutManager gridLayoutManager;
 
-        if (tabletSize) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && getActivity().isInMultiWindowMode()){
+
+            gridLayoutManager = new StaggeredGridLayoutManager(3,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+
+        }else if (tabletSize) {
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(6,
+                gridLayoutManager = new StaggeredGridLayoutManager(6,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
             } else {
-                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(8,
+                gridLayoutManager = new StaggeredGridLayoutManager(8,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
             }
@@ -87,11 +94,11 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3,
+                gridLayoutManager = new StaggeredGridLayoutManager(3,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
             } else {
-                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(5,
+                gridLayoutManager = new StaggeredGridLayoutManager(5,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
             }

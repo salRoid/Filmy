@@ -72,12 +72,18 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
         ButterKnife.bind(this, view);
-
-
+        
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         StaggeredGridLayoutManager gridLayoutManager;
 
-        if (tabletSize) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && getActivity().isInMultiWindowMode()){
+
+                gridLayoutManager = new StaggeredGridLayoutManager(3,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+
+
+        }else if (tabletSize) {
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
@@ -92,12 +98,13 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
 
         } else {
-
+            
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
                 gridLayoutManager = new StaggeredGridLayoutManager(3,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
+
             } else {
                 gridLayoutManager = new StaggeredGridLayoutManager(5,
                         StaggeredGridLayoutManager.VERTICAL);
@@ -188,19 +195,12 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
     }
 
-
     public void retryLoading() {
         getActivity().getSupportLoaderManager().restartLoader(MovieProjection.TRENDING_MOVIE_LOADER, null, this);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Log.d("webi", "onPause: "+getActivity().isInMultiWindowMode());
-        }
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
     }
-
-
 }

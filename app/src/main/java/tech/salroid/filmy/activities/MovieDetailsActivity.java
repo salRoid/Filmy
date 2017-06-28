@@ -1044,7 +1044,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         if (movie_rating_tmdb.equals("0"))
             layout_tmdb.setVisibility(View.GONE);
-
         else
             det_rating.setText(movie_rating_tmdb);
     }

@@ -13,9 +13,11 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +27,7 @@ import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.customs.CustomToast;
+import tech.salroid.filmy.customs.RecyclerviewEndlessScrollListener;
 import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.database.MovieProjection;
 
@@ -51,6 +54,8 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
     BreathingProgress breathingProgress;
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.moreProgress)
+    ProgressBar moreProgress;
 
     private MainActivityAdapter mainActivityAdapter;
     public boolean isShowingFromDatabase;
@@ -67,33 +72,41 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
         ButterKnife.bind(this, view);
-
-
+        
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+        StaggeredGridLayoutManager gridLayoutManager;
 
-        if (tabletSize) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && getActivity().isInMultiWindowMode()){
+
+                gridLayoutManager = new StaggeredGridLayoutManager(3,
+                        StaggeredGridLayoutManager.VERTICAL);
+                recycler.setLayoutManager(gridLayoutManager);
+
+
+        }else if (tabletSize) {
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(6,
+                gridLayoutManager = new StaggeredGridLayoutManager(6,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
             } else {
-                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(8,
+                gridLayoutManager = new StaggeredGridLayoutManager(8,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
             }
 
 
         } else {
-
+            
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3,
+                gridLayoutManager = new StaggeredGridLayoutManager(3,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
+
             } else {
-                StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(5,
+                gridLayoutManager = new StaggeredGridLayoutManager(5,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
             }
@@ -103,6 +116,13 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         mainActivityAdapter = new MainActivityAdapter(getActivity(), null);
         recycler.setAdapter(mainActivityAdapter);
         mainActivityAdapter.setClickListener(this);
+
+        recycler.addOnScrollListener(new RecyclerviewEndlessScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                moreProgress.setVisibility(View.VISIBLE);
+            }
+        });
 
         return view;
     }
@@ -175,10 +195,12 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
     }
 
-
     public void retryLoading() {
         getActivity().getSupportLoaderManager().restartLoader(MovieProjection.TRENDING_MOVIE_LOADER, null, this);
     }
 
-
+    @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
+    }
 }

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -78,9 +79,6 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         StaggeredGridLayoutManager gridLayoutManager;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && savedInstanceState != null)
-            multiWindowMode = savedInstanceState.getBoolean("split_mode");
-
         if (tabletSize) {
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -99,13 +97,12 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
             
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-                Log.d("webi", "onCreateView: portrait");
+
+                Log.d("webi", "onCreateView: portrait "+multiWindowMode);
 
                 gridLayoutManager = new StaggeredGridLayoutManager(3,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
-
-                multiWindowMode = false;
 
             } else {
 
@@ -229,14 +226,14 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             multiWindowMode = getActivity().isInMultiWindowMode();
+
+        if (multiWindowMode){
+            StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3
+                    , StaggeredGridLayoutManager.VERTICAL);
+            recycler.setLayoutManager(gridLayoutManager);
+        }
+
+        Log.d("webi", "onConfigurationChanged: "+multiWindowMode);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            outState.putBoolean("split_mode",multiWindowMode);
-
-        super.onSaveInstanceState(outState);
-    }
 }

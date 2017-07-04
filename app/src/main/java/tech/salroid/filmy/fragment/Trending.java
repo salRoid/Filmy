@@ -59,6 +59,8 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
     private MainActivityAdapter mainActivityAdapter;
     public boolean isShowingFromDatabase;
+    private boolean multiWindowMode;
+
 
 
     public Trending() {
@@ -76,14 +78,10 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         StaggeredGridLayoutManager gridLayoutManager;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && getActivity().isInMultiWindowMode()){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && savedInstanceState != null)
+            multiWindowMode = savedInstanceState.getBoolean("split_mode");
 
-                gridLayoutManager = new StaggeredGridLayoutManager(3,
-                        StaggeredGridLayoutManager.VERTICAL);
-                recycler.setLayoutManager(gridLayoutManager);
-
-
-        }else if (tabletSize) {
+        if (tabletSize) {
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
@@ -101,14 +99,39 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
             
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
+                Log.d("webi", "onCreateView: portrait");
+
                 gridLayoutManager = new StaggeredGridLayoutManager(3,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
 
+                multiWindowMode = false;
+
             } else {
-                gridLayoutManager = new StaggeredGridLayoutManager(5,
-                        StaggeredGridLayoutManager.VERTICAL);
-                recycler.setLayoutManager(gridLayoutManager);
+
+                if (multiWindowMode){
+
+                    Log.d("webi", "onCreateView: landscape "+multiWindowMode);
+
+                    gridLayoutManager = new StaggeredGridLayoutManager(3,
+                            StaggeredGridLayoutManager.VERTICAL);
+                    recycler.setLayoutManager(gridLayoutManager);
+
+
+                }else{
+
+                    Log.d("webi", "onCreateView: landscape "+multiWindowMode);
+
+                    gridLayoutManager = new StaggeredGridLayoutManager(5,
+                            StaggeredGridLayoutManager.VERTICAL);
+                    recycler.setLayoutManager(gridLayoutManager);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        multiWindowMode = getActivity().isInMultiWindowMode();
+                    }
+
+                }
+
             }
 
         }
@@ -199,8 +222,21 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         getActivity().getSupportLoaderManager().restartLoader(MovieProjection.TRENDING_MOVIE_LOADER, null, this);
     }
 
+
     @Override
-    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
-        super.onMultiWindowModeChanged(isInMultiWindowMode);
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            multiWindowMode = getActivity().isInMultiWindowMode();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            outState.putBoolean("split_mode",multiWindowMode);
+
+        super.onSaveInstanceState(outState);
     }
 }

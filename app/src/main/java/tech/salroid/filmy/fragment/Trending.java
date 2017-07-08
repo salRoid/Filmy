@@ -61,7 +61,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
     private MainActivityAdapter mainActivityAdapter;
     public boolean isShowingFromDatabase;
     private boolean multiWindowMode;
-
+    private boolean multiWindowModeLast;
 
 
     public Trending() {
@@ -75,9 +75,15 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
         View view = inflater.inflate(R.layout.fragment_trending, container, false);
         ButterKnife.bind(this, view);
-        
+
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         StaggeredGridLayoutManager gridLayoutManager;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            multiWindowMode = getActivity().isInMultiWindowMode();
+
+        if (savedInstanceState != null)
+            multiWindowModeLast = savedInstanceState.getBoolean("last_multi_value");
 
         if (tabletSize) {
 
@@ -92,13 +98,12 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
                 recycler.setLayoutManager(gridLayoutManager);
             }
 
-
         } else {
-            
+
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
 
-                Log.d("webi", "onCreateView: portrait "+multiWindowMode);
+                Log.d("webi", "onCreateView: portrait " + multiWindowMode);
 
                 gridLayoutManager = new StaggeredGridLayoutManager(3,
                         StaggeredGridLayoutManager.VERTICAL);
@@ -106,26 +111,30 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
             } else {
 
-                if (multiWindowMode){
+                if (multiWindowMode && !multiWindowModeLast) {
 
-                    Log.d("webi", "onCreateView: landscape "+multiWindowMode);
+                    Log.d("webi", "onCreateView: landscape " + multiWindowMode + " last " + multiWindowModeLast);
 
                     gridLayoutManager = new StaggeredGridLayoutManager(3,
                             StaggeredGridLayoutManager.VERTICAL);
                     recycler.setLayoutManager(gridLayoutManager);
 
+                } else if (multiWindowMode && multiWindowModeLast) {
 
-                }else{
-
-                    Log.d("webi", "onCreateView: landscape "+multiWindowMode);
+                    Log.d("webi", "onCreateView: landscape " + multiWindowMode+" last "+ multiWindowModeLast);
 
                     gridLayoutManager = new StaggeredGridLayoutManager(5,
                             StaggeredGridLayoutManager.VERTICAL);
                     recycler.setLayoutManager(gridLayoutManager);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        multiWindowMode = getActivity().isInMultiWindowMode();
-                    }
+
+                } else {
+
+                    Log.d("webi", "onCreateView: landscape " + multiWindowMode);
+
+                    gridLayoutManager = new StaggeredGridLayoutManager(5,
+                            StaggeredGridLayoutManager.VERTICAL);
+                    recycler.setLayoutManager(gridLayoutManager);
 
                 }
 
@@ -211,29 +220,24 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         startActivity(intent);
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
-           getActivity().overridePendingTransition(0,0);
-
+            getActivity().overridePendingTransition(0, 0);
     }
 
     public void retryLoading() {
         getActivity().getSupportLoaderManager().restartLoader(MovieProjection.TRENDING_MOVIE_LOADER, null, this);
     }
 
+    @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
+
+        Log.d("webi", "onMultiWindowModeChanged: ");
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            multiWindowMode = getActivity().isInMultiWindowMode();
-
-        if (multiWindowMode){
-            StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(3
-                    , StaggeredGridLayoutManager.VERTICAL);
-            recycler.setLayoutManager(gridLayoutManager);
-        }
-
-        Log.d("webi", "onConfigurationChanged: "+multiWindowMode);
+        Log.d("webi", "onConfigurationChanged: ");
     }
 
 }

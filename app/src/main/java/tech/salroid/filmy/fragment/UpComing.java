@@ -55,6 +55,10 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
     RecyclerView recycler;
 
     public boolean isShowingFromDatabase;
+
+    private StaggeredGridLayoutManager gridLayoutManager;
+    private boolean isInMultiWindowMode;
+
     public UpComing() {
         // Required empty public constructor
     }
@@ -68,41 +72,59 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
 
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
-        StaggeredGridLayoutManager gridLayoutManager;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && getActivity().isInMultiWindowMode()){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            isInMultiWindowMode = getActivity().isInMultiWindowMode();
+        }
 
-            gridLayoutManager = new StaggeredGridLayoutManager(3,
-                        StaggeredGridLayoutManager.VERTICAL);
-                recycler.setLayoutManager(gridLayoutManager);
-
-        }else if (tabletSize) {
+        if (tabletSize) {
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
                 gridLayoutManager = new StaggeredGridLayoutManager(6,
                         StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
+
             } else {
-                gridLayoutManager = new StaggeredGridLayoutManager(8,
-                        StaggeredGridLayoutManager.VERTICAL);
-                recycler.setLayoutManager(gridLayoutManager);
+
+                if (isInMultiWindowMode) {
+
+                    gridLayoutManager = new StaggeredGridLayoutManager(6,
+                            StaggeredGridLayoutManager.VERTICAL);
+                    recycler.setLayoutManager(gridLayoutManager);
+
+                } else {
+
+                    gridLayoutManager = new StaggeredGridLayoutManager(8,
+                            StaggeredGridLayoutManager.VERTICAL);
+                    recycler.setLayoutManager(gridLayoutManager);
+
+                }
             }
 
         } else {
 
             if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-                gridLayoutManager = new StaggeredGridLayoutManager(3,
-                        StaggeredGridLayoutManager.VERTICAL);
+                gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
                 recycler.setLayoutManager(gridLayoutManager);
-            } else {
-                gridLayoutManager = new StaggeredGridLayoutManager(5,
-                        StaggeredGridLayoutManager.VERTICAL);
-                recycler.setLayoutManager(gridLayoutManager);
-            }
 
+            } else {
+
+                if (isInMultiWindowMode) {
+
+                    gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+                    recycler.setLayoutManager(gridLayoutManager);
+
+                } else {
+
+                    gridLayoutManager = new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL);
+                    recycler.setLayoutManager(gridLayoutManager);
+
+                }
+            }
         }
+
         mainActivityAdapter = new MainActivityAdapter(getActivity(), null);
         recycler.setAdapter(mainActivityAdapter);
         mainActivityAdapter.setClickListener(this);
@@ -174,6 +196,23 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
     public void onLoaderReset(Loader<Cursor> loader) {
         if (mainActivityAdapter != null)
             mainActivityAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
+
+        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+            if (isInMultiWindowMode)
+                gridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+            else
+                gridLayoutManager = new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL);
+
+            recycler.setLayoutManager(gridLayoutManager);
+            recycler.setAdapter(mainActivityAdapter);
+        }
+
     }
 
 

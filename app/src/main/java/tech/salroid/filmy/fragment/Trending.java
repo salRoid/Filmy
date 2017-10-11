@@ -143,6 +143,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 moreProgress.setVisibility(View.VISIBLE);
+                Log.d("webi","Load more called.");
             }
         });
 

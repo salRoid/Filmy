@@ -88,6 +88,7 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
     public void itemClicked(CharacterDetailsData setterGetterChar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("id", setterGetterChar.getChar_id());
+        intent.putExtra("title",setterGetterChar.getChar_movie());
         intent.putExtra("network_applicable", true);
         intent.putExtra("activity", false);
         startActivity(intent);

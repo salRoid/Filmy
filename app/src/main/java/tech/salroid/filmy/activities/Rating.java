@@ -8,7 +8,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,6 +63,16 @@ public class Rating {
                                 audience_rating = response.getString("tomatoUserRating");
                                 metascore_rating = response.getString("Metascore");
                                 image = response.getString("tomatoImage");
+                                JSONArray jsonArray = response.getJSONArray("Ratings");
+
+                                //Above tomatometer does not work this does
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    if (jsonArray.getJSONObject(i).getString("Source").equals("Rotten Tomatoes")) {
+                                        tomatometer_rating = jsonArray.getJSONObject(i).getString("Value");
+                                    }
+                                }
+
+
                                 setRatingCallback(context, imdb_rating, tomatometer_rating, audience_rating, metascore_rating, image);
 
                             }else

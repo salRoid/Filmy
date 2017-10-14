@@ -158,7 +158,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                     fullReadFragment.setArguments(args);
 
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main, fullReadFragment, "DESC").commit();
+                            .replace(R.id.main, fullReadFragment).addToBackStack("DESC").commit();
                 }
 
             }

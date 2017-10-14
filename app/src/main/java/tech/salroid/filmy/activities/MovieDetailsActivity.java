@@ -1001,12 +1001,25 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         if (movie_rating_tomatometer.equals("N/A"))
             layout_tomato.setVisibility(View.GONE);
         else {
-            if (image.equals("certified"))
+           /* if (image.equals("certified"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
             else if (image.equals("fresh"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.fresh));
             else if (image.equals("rotten"))
+                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));*/
+
+           // Image Logic Changed According to %age due to OMDB API limitations
+
+            int tomatometer_score = Integer.parseInt(movie_rating_tomatometer.substring(0, movie_rating_tomatometer.length() - 1));
+            if (tomatometer_score > 74 )
+                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
+            else if (tomatometer_score > 59)
+                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.fresh));
+            else if (tomatometer_score < 60)
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));
+
+
+
             tomato_rating.setText(movie_rating_tomatometer);
         }
 

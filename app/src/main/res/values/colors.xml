@@ -15,5 +15,9 @@
     <color name="dividerColorDarkTheme">#4b4b4b</color>
     <color name="colorAccent2">#FFAB00</color>
     <color name="colorAccent3">#691A99</color>
+    <color name="imdbYellow">#f3ce13</color>
+    <color name="tomatoRed">#F44336</color>
+    <color name="metaBlack">#212121</color>
+    <color name="tmdbGreen">#4CAF50</color>
 
 </resources>

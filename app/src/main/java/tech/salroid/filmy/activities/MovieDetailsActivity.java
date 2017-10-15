@@ -7,9 +7,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -195,6 +198,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     private SimilarFragment similarFragment;
     private String movie_rating_audience;
     private String movie_rating_metascore;
+    private String movie_title_hyphen;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -363,7 +368,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             movie_id_final = jsonObject.getString("id");
             movie_imdb_id = jsonObject.getString("imdb_id");
-
+            movie_title_hyphen = movie_title.replace(' ', '-');
             movie_rating_tmdb = jsonObject.getString("vote_average");
 
             if (!(tagline.equals("")))
@@ -498,7 +503,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         det_released.setText(released);
         det_certification.setText(certification);
         det_language.setText(language);
-
 
 
         try {
@@ -940,6 +944,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                             .replace(R.id.all_details_container, allTrailerFragment).addToBackStack("TRAILER").commit();
                 }
                 break;
+
         }
 
     }
@@ -987,20 +992,30 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
     public void setRating(String movie_rating_imdb, String movie_rating_tomatometer,
-                          String audience_rating, String metascore_rating, String image) {
+                          String audience_rating, String metascore_rating, final String rottenTomatoPage) {
 
         movie_rating_audience = audience_rating;
         movie_rating_metascore = metascore_rating;
 
         if (movie_rating_imdb.equals("N/A"))
             layout_imdb.setVisibility(View.GONE);
-        else
+        else {
             rating_of_imdb.setText(movie_rating_imdb);
-
+            layout_imdb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    builder.setToolbarColor(ContextCompat.getColor(MovieDetailsActivity.this, R.color.imdbYellow));
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(MovieDetailsActivity.this, Uri.parse(getResources().getString(R.string.imdb_link_prefix) + movie_imdb_id));
+                }
+            });
+        }
 
         if (movie_rating_tomatometer.equals("N/A"))
             layout_tomato.setVisibility(View.GONE);
         else {
+
            /* if (image.equals("certified"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
             else if (image.equals("fresh"))
@@ -1008,19 +1023,26 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             else if (image.equals("rotten"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));*/
 
-           // Image Logic Changed According to %age due to OMDB API limitations
+            // Image Logic Changed According to %age due to OMDB API limitations
 
             int tomatometer_score = Integer.parseInt(movie_rating_tomatometer.substring(0, movie_rating_tomatometer.length() - 1));
-            if (tomatometer_score > 74 )
+            if (tomatometer_score > 74)
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
             else if (tomatometer_score > 59)
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.fresh));
             else if (tomatometer_score < 60)
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));
 
-
-
             tomato_rating.setText(movie_rating_tomatometer);
+            layout_tomato.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    builder.setToolbarColor(ContextCompat.getColor(MovieDetailsActivity.this, R.color.tomatoRed));
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(MovieDetailsActivity.this, Uri.parse(rottenTomatoPage));
+                }
+            });
         }
 
         if (movie_rating_audience.equals("N/A"))
@@ -1042,23 +1064,47 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             layout_meta.setVisibility(View.GONE);
 
         else {
-
+            String smallTitle = movie_title_hyphen.toLowerCase();
+            smallTitle =  smallTitle.replaceAll("[^0-9-a-z]","");
+            final String url = "http://www.metacritic.com/movie/"+smallTitle;
             int metasco_rating = Integer.valueOf(metascore_rating);
             if (metasco_rating > 60)
                 metaRating_background.setBackgroundColor(Color.parseColor("#66cc33"));
+
             else if (metasco_rating > 40 && metasco_rating < 61)
                 metaRating_background.setBackgroundColor(Color.parseColor("#ffcc33"));
+
             else
                 metaRating_background.setBackgroundColor(Color.parseColor("#ff0000"));
 
+
             meta_rating.setText(movie_rating_metascore);
             metascore_setter.setText(movie_rating_metascore);
+            layout_meta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    builder.setToolbarColor(ContextCompat.getColor(MovieDetailsActivity.this, R.color.metaBlack));
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(MovieDetailsActivity.this, Uri.parse(url));
+                }
+            });
         }
 
         if (movie_rating_tmdb.equals("0"))
             layout_tmdb.setVisibility(View.GONE);
-        else
+        else {
             det_rating.setText(movie_rating_tmdb);
+            layout_tmdb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    builder.setToolbarColor(ContextCompat.getColor(MovieDetailsActivity.this, R.color.tmdbGreen));
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(MovieDetailsActivity.this, Uri.parse("https://www.themoviedb.org/movie/" + movie_id + "-" + movie_title_hyphen));
+                }
+            });
+        }
     }
 
     public void setRatingGone() {

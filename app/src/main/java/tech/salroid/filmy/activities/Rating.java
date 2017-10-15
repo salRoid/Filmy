@@ -36,7 +36,7 @@ import tech.salroid.filmy.network_stuff.VolleySingleton;
 
 public class Rating {
 
-    public static String imdb_rating = "0", tomatometer_rating = "0", audience_rating = "0", metascore_rating = "0", image = null;
+    public static String imdb_rating = "0", tomatometer_rating = "0", audience_rating = "0", metascore_rating = "0", image = null, rottenTomatoPage = null;
     private static String OMDB_API_KEY = BuildConfig.OMDB_API_KEY;
 
     public static void getRating(final Context context, String movie_id_final) {
@@ -63,17 +63,18 @@ public class Rating {
                                 audience_rating = response.getString("tomatoUserRating");
                                 metascore_rating = response.getString("Metascore");
                                 image = response.getString("tomatoImage");
-                                JSONArray jsonArray = response.getJSONArray("Ratings");
+                                rottenTomatoPage = response.getString("tomatoURL");
+
 
                                 //Above tomatometer does not work this does
+                                JSONArray jsonArray = response.getJSONArray("Ratings");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     if (jsonArray.getJSONObject(i).getString("Source").equals("Rotten Tomatoes")) {
                                         tomatometer_rating = jsonArray.getJSONObject(i).getString("Value");
                                     }
                                 }
 
-
-                                setRatingCallback(context, imdb_rating, tomatometer_rating, audience_rating, metascore_rating, image);
+                                setRatingCallback(context, imdb_rating, tomatometer_rating, audience_rating, metascore_rating, rottenTomatoPage);
 
                             }else
                                 setRatingFailCallback(context);
@@ -105,8 +106,8 @@ public class Rating {
     }
 
 
-    private static void setRatingCallback(Context context, String imdb_rating, String tomatometer_rating, String audience_rating, String metascore_rating, String image) {
-        ((MovieDetailsActivity) context).setRating(imdb_rating, tomatometer_rating, audience_rating, metascore_rating, image);
+    private static void setRatingCallback(Context context, String imdb_rating, String tomatometer_rating, String audience_rating, String metascore_rating, String rottenTomatoPage) {
+        ((MovieDetailsActivity) context).setRating(imdb_rating, tomatometer_rating, audience_rating, metascore_rating, rottenTomatoPage );
     }
 
 }

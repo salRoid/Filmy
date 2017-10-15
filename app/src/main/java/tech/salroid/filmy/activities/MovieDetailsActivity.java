@@ -1065,6 +1065,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         else {
             String smallTitle = movie_title_hyphen.toLowerCase();
+            smallTitle =  smallTitle.replaceAll("[^0-9-a-z]","");
             final String url = "http://www.metacritic.com/movie/"+smallTitle;
             int metasco_rating = Integer.valueOf(metascore_rating);
             if (metasco_rating > 60)

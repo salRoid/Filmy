@@ -63,15 +63,15 @@ public class Rating {
                                 audience_rating = response.getString("tomatoUserRating");
                                 metascore_rating = response.getString("Metascore");
                                 image = response.getString("tomatoImage");
-                                JSONArray jsonArray = response.getJSONArray("Ratings");
+
 
                                 //Above tomatometer does not work this does
+                                JSONArray jsonArray = response.getJSONArray("Ratings");
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     if (jsonArray.getJSONObject(i).getString("Source").equals("Rotten Tomatoes")) {
                                         tomatometer_rating = jsonArray.getJSONObject(i).getString("Value");
                                     }
                                 }
-
 
                                 setRatingCallback(context, imdb_rating, tomatometer_rating, audience_rating, metascore_rating, image);
 

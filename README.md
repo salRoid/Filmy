@@ -1,9 +1,7 @@
 ![Image](/img/banner_github.png)
 
-<img src="https://img.shields.io/badge/Android%20Arsenal-Filmy-blue.svg?style=flat">
-
-[![License](https://img.shields.io/badge/License-Apache--2.0-brightgreen.svg)]
-(https://github.com/salroid/filmy/blob/master/LICENCE)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Filmy-blue.svg?style=flat)](https://android-arsenal.com/details/1/4110)
+[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://github.com/salRoid/Filmy/blob/master/LICENCE)
 
 Open sourced awesome material designed movie app.
 

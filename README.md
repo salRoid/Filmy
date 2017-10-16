@@ -2,6 +2,9 @@
 
 <img src="https://img.shields.io/badge/Android%20Arsenal-Filmy-blue.svg?style=flat">
 
+[![License](https://img.shields.io/badge/License-Apache--2.0-brightgreen.svg)]
+(https://github.com/salroid/filmy/blob/master/LICENCE)
+
 Open sourced awesome material designed movie app.
 
 <img src="http://www.webianks.com/filmy/launcher.png" height="128" width="128" >

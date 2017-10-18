@@ -7,14 +7,16 @@
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="dark"
-        android:title="@string/dark" />
+        android:title="@string/dark"
+        android:icon="@drawable/ic_night_mode"/>
 
     <SwitchPreference
         android:defaultValue="true"
         android:key="imagequality"
         android:summaryOff="@string/low"
         android:summaryOn="@string/high"
-        android:title="@string/image" />
+        android:title="@string/image"
+        android:icon="@drawable/ic_image"/>
 
 
     <Preference
@@ -22,20 +24,23 @@
         android:key="license"
         android:selectable="true"
         android:summary=""
-        android:title="@string/license" />
+        android:title="@string/license"
+        android:icon="@drawable/ic_license"/>
 
     <Preference
         android:enabled="true"
         android:key="Version"
         android:selectable="true"
         android:summary="2.1.0"
-        android:title="@string/version" />
+        android:title="@string/version"
+        android:icon="@drawable/ic_info"/>
 
     <Preference
         android:enabled="true"
         android:key="Share"
         android:selectable="true"
-        android:title="@string/shareappdetails" />
+        android:title="@string/shareappdetails"
+        android:icon="@drawable/ic_share"/>
 
 
 
@@ -43,7 +48,8 @@
         android:enabled="true"
         android:key="About"
         android:selectable="true"
-        android:title="@string/about" />
+        android:title="@string/about"
+        android:icon="@drawable/ic_person"/>
 
 
 </PreferenceScreen>

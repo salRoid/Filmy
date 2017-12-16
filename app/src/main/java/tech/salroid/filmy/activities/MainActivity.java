@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         introLogic();
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
-        logo.setTypeface(typeface);
+       logo.setTypeface(typeface);
 
         if (nightMode)
             allThemeLogic();

@@ -24,8 +24,8 @@ android {
         applicationId "tech.salroid.filmy"
         minSdkVersion 18
         targetSdkVersion 25
-        versionCode 14
-        versionName "2.1.1"
+        versionCode 16
+        versionName "2.1.2"
         multiDexEnabled true
         resConfigs "en" , "de" , "es-rES" , "hi-rIN" , "nl-rNL"
 
@@ -77,8 +77,8 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
-    compile 'com.jakewharton:butterknife:8.6.0'
-    compile 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.google.firebase:firebase-appindexing:11.4.2'
     compile files('libs/YouTubeAndroidPlayerApi.jar')
     debugCompile 'com.amitshekhar.android:debug-db:1.0.0'

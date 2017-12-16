@@ -139,13 +139,13 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         recycler.setAdapter(mainActivityAdapter);
         mainActivityAdapter.setClickListener(this);
 
-        recycler.addOnScrollListener(new RecyclerviewEndlessScrollListener(gridLayoutManager) {
+        /*recycler.addOnScrollListener(new RecyclerviewEndlessScrollListener(gridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 moreProgress.setVisibility(View.VISIBLE);
                 Log.d("webi","Load more called.");
             }
-        });
+        });*/
 
         return view;
     }

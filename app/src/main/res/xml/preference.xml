@@ -31,7 +31,7 @@
         android:enabled="true"
         android:key="Version"
         android:selectable="true"
-        android:summary="2.1.0"
+        android:summary="2.1.2"
         android:title="@string/version"
         android:icon="@drawable/ic_info"/>
 

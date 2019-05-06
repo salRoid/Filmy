@@ -926,9 +926,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 break;
 
             case R.id.trailorView:
+                final int timeMiliSeconds = 0;
+                final boolean autoPlay = true;
+                final boolean lightBoxMode = false;
                 if ((trailer_boolean))
                     startActivity(YouTubeStandalonePlayer.createVideoIntent(MovieDetailsActivity.this,
-                            getString(R.string.Youtube_Api_Key), trailor));
+                            getString(R.string.Youtube_Api_Key), trailor,timeMiliSeconds,autoPlay,lightBoxMode));
 
                 break;
             case R.id.youtube_icon:

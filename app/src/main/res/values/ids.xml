@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="breather" type="id">breather</item>
+    <item name="breather" type="id"/>
 </resources>

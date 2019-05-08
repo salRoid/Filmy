@@ -18,7 +18,6 @@
         android:title="@string/image"
         android:icon="@drawable/ic_image"/>
 
-
     <Preference
         android:enabled="true"
         android:key="license"

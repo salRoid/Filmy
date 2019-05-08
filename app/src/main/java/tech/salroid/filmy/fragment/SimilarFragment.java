@@ -113,7 +113,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
 
     public void getSimilarFromNetwork(String movieId) {
 
-        final String BASE_MOVIE_CAST_DETAILS = new String(" https://api.themoviedb.org/3/movie/" + movieId + "/similar?api_key="+api_key);
+        final String BASE_MOVIE_CAST_DETAILS = new String(" https://api.themoviedb.org/3/movie/" + movieId + "/recommendations?api_key="+api_key);
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override

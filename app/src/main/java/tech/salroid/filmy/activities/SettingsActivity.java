@@ -120,7 +120,7 @@ public class SettingsActivity extends AppCompatActivity {
                     SwitchPreference switchPreference = (SwitchPreference) preference;
 
                     if (!switchPreference.isChecked()) {
-                        quality = "w1000";
+                        quality = "original";
                     } else {
                         quality = "w780";
                     }

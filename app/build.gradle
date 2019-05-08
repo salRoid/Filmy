@@ -18,12 +18,12 @@ repositories {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "tech.salroid.filmy"
         minSdkVersion 18
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 16
         versionName "2.1.2"
         multiDexEnabled true
@@ -81,5 +81,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.google.firebase:firebase-appindexing:11.4.2'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
-    debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
 }

@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -36,15 +35,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
-
-import java.util.Arrays;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.TrailerAdapter;
 
 public class AllTrailerFragment extends Fragment implements View.OnClickListener, TrailerAdapter.OnItemClickListener {
@@ -70,7 +64,6 @@ public class AllTrailerFragment extends Fragment implements View.OnClickListener
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         nightMode = sp.getBoolean("dark", false);
-
 
         View view = inflater.inflate(R.layout.all_trailer_layout, container, false);
         ButterKnife.bind(this, view);
@@ -163,8 +156,11 @@ public class AllTrailerFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void itemClicked(String trailerId) {
-        startActivity(YouTubeStandalonePlayer.createVideoIntent(getActivity(),
-                getString(R.string.Youtube_Api_Key), trailerId));
+    public void itemClicked(final String trailerId) {
+        final int timeMiliSeconds = 0;
+        final boolean autoPlay = true;
+        final boolean lightBoxMode = false;
+       startActivity(YouTubeStandalonePlayer.createVideoIntent(getActivity(),getString(R.string.Youtube_Api_Key),
+               trailerId, timeMiliSeconds, autoPlay,lightBoxMode));
     }
 }

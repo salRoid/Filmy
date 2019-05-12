@@ -1,11 +1,10 @@
 package tech.salroid.filmy.services;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
-import android.util.Log;
 
-import me.tatarka.support.job.JobInfo;
-import me.tatarka.support.job.JobScheduler;
 
 /*
  * Filmy Application for Android
@@ -39,13 +38,10 @@ public class FilmyJobScheduler {
 
 
         this.context = context;
-        jobScheduler = JobScheduler.getInstance(context);
-
+        jobScheduler = (JobScheduler) context.getApplicationContext().getSystemService(Context.JOB_SCHEDULER_SERVICE);
     }
 
     public void createJob() {
-
-
 
         JobInfo.Builder jobBuilder = new JobInfo.Builder(JOB_ID, new ComponentName(context, FilmyJobService.class));
 

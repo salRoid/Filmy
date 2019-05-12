@@ -6,17 +6,10 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.AppWidgetTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
 
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
@@ -88,15 +81,13 @@ public class FilmyWidgetProvider extends AppWidgetProvider {
             final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.filmy_appwidget);
             remoteViews.setTextViewText(R.id.widget_movie_name,movie_title);
 
-            appWidgetTarget = new AppWidgetTarget( context, remoteViews, R.id.widget_movie_image, appWidgetIds );
+            appWidgetTarget = new AppWidgetTarget( context, R.id.widget_movie_image, remoteViews, appWidgetIds );
 
-
-            Glide.with(context)
+          /*  Glide.with(context)
                     .load(movie_poster)
-                    .asBitmap()
                     .into(appWidgetTarget);
 
-
+*/
             Intent intent = new Intent(context,MovieDetailsActivity.class);
             intent.putExtra("title", movie_title);
             intent.putExtra("activity", true);

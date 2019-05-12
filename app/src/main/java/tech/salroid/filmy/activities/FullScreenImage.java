@@ -3,14 +3,16 @@ package tech.salroid.filmy.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,15 +63,17 @@ public class FullScreenImage extends AppCompatActivity {
         try{
 
         Glide.with(this)
-                .load(image_url)
                 .asBitmap()
+                .load(image_url)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(new SimpleTarget<Bitmap>() {
+
                     @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         centreimg.setImageBitmap(resource);
                         breathingProgress.setVisibility(View.INVISIBLE);
                     }
+
                 });
     } catch (Exception e) {
         //Log.d(LOG_TAG, e.getMessage());

@@ -1,5 +1,7 @@
 package tech.salroid.filmy.services;
 
+import android.app.job.JobParameters;
+import android.app.job.JobService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -12,8 +14,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
-import me.tatarka.support.job.JobParameters;
-import me.tatarka.support.job.JobService;
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.MainActivityParseWork;

@@ -20,6 +20,8 @@
         android:resizeableActivity="true"
         tools:targetApi="n">
 
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
         <activity
             android:name=".FilmyIntro"
             android:label=" "

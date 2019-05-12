@@ -10,6 +10,8 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
@@ -18,7 +20,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,15 +31,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -507,13 +507,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         try {
             Glide.with(context)
-                    .load(banner_profile)
                     .asBitmap()
+                    .load(banner_profile)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(new SimpleTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                             banner.setImageBitmap(resource);
                             Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                                 public void onGenerated(Palette p) {
@@ -534,6 +534,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                 }
                             });
                         }
+
                     });
 
         } catch (Exception e) {
@@ -542,15 +543,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         try {
 
             Glide.with(context)
-                    .load(img_url).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .asBitmap()
+                    .load(img_url)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(new SimpleTarget<Bitmap>() {
+
                         @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                             youtube_link.setImageBitmap(resource);
                             if (trailer_boolean)
                                 youtube_play_button.setVisibility(View.VISIBLE);
                         }
-
                     });
         } catch (Exception e) {
             //Log.d(LOG_TAG, e.getMessage());
@@ -668,13 +671,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             try {
 
                 Glide.with(context)
-                        .load(banner_url)
                         .asBitmap()
+                        .load(banner_url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(new SimpleTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
 
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                 banner.setImageBitmap(resource);
                                 Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
                                     public void onGenerated(Palette p) {
@@ -694,8 +697,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                         }
                                     }
                                 });
-
                             }
+
                         });
             } catch (Exception e) {
                 //Log.d(LOG_TAG, e.getMessage());
@@ -713,12 +716,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             try {
 
                 Glide.with(context)
-                        .load(thumbNail)
                         .asBitmap()
+                        .load(thumbNail)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                 youtube_link.setImageBitmap(resource);
                                 if (trailer_boolean)
                                     youtube_play_button.setVisibility(View.VISIBLE);
@@ -781,12 +784,13 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
             try {
                 Glide.with(context)
-                        .load(banner_url)
                         .asBitmap()
+                        .load(banner_url)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(new SimpleTarget<Bitmap>() {
+
                             @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
 
                                 banner.setImageBitmap(resource);
 
@@ -808,8 +812,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                                         }
                                     }
                                 });
-
                             }
+
                         });
             } catch (Exception e) {
                 //Log.d(LOG_TAG, e.getMessage());
@@ -818,17 +822,17 @@ public class MovieDetailsActivity extends AppCompatActivity implements
             try {
 
                 Glide.with(context)
-                        .load(trailer)
                         .asBitmap()
+                        .load(trailer)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(new SimpleTarget<Bitmap>() {
+
                             @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                 youtube_link.setImageBitmap(resource);
                                 if (trailer_boolean)
                                     youtube_play_button.setVisibility(View.VISIBLE);
                             }
-
                         });
             } catch (Exception e) {
                 //Log.d(LOG_TAG, e.getMessage());

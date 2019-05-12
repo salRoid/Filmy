@@ -364,6 +364,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     @Override
     protected void onStop() {
         super.onStop();
-        Glide.clear(character_small);
+        Glide.with(this).clear(character_small);
     }
 }

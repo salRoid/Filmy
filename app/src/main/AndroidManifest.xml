@@ -17,6 +17,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base"
+        android:usesCleartextTraffic="true"
         android:resizeableActivity="true"
         tools:targetApi="n">
 

@@ -203,6 +203,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         int id_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
         int title_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
 
+        Log.d("TEST", cursor.getString(id_index));
 
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra("title", cursor.getString(title_index));

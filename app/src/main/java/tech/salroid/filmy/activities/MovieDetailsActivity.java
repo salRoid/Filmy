@@ -59,6 +59,7 @@ import tech.salroid.filmy.fragment.SimilarFragment;
 import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
 import tech.salroid.filmy.utility.Confirmation;
 import tech.salroid.filmy.utility.Constants;
+import tech.salroid.filmy.utility.FilmyUtility;
 import tech.salroid.filmy.utility.NullChecker;
 
 /*
@@ -228,6 +229,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        int statusBarHeight = FilmyUtility.getStatusBarHeight(this);
+        FrameLayout.LayoutParams toolbarParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
+        toolbarParams.setMargins(0,statusBarHeight,0,0);
 
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);

@@ -83,7 +83,10 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         //holder.year.setText(String.valueOf(movie_year));
 
         try {
-            Glide.with(context).load(movie_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.poster);
+            Glide.with(context)
+                    .load(movie_poster)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(holder.poster);
         } catch (Exception e) {
             //Log.d(LOG_TAG, e.getMessage());
         }

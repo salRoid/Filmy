@@ -1,7 +1,6 @@
 package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -28,7 +26,6 @@ import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.MainActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.customs.CustomToast;
-import tech.salroid.filmy.customs.RecyclerviewEndlessScrollListener;
 import tech.salroid.filmy.database.FilmContract;
 import tech.salroid.filmy.database.MovieProjection;
 
@@ -49,7 +46,8 @@ import tech.salroid.filmy.database.MovieProjection;
  * limitations under the License.
  */
 
-public class Trending extends Fragment implements MainActivityAdapter.ClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class Trending extends Fragment implements MainActivityAdapter.ClickListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;

@@ -1,7 +1,6 @@
 package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +8,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.data_classes.FavouriteData;
 import tech.salroid.filmy.data_classes.WatchlistData;
 
 /*
@@ -41,7 +41,7 @@ import tech.salroid.filmy.data_classes.WatchlistData;
 public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Dh> {
 
     private final LayoutInflater inflater;
-    private List<WatchlistData> data = new ArrayList<>();
+    private List<WatchlistData> data;
     private Context fro;
     private ClickListener clickListener;
     private String fav_title, fav_id, fav_poster;
@@ -54,13 +54,13 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.Dh> 
     }
 
     @Override
-    public Dh onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Dh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.custom_row, parent, false);
         return new Dh(view);
     }
 
     @Override
-    public void onBindViewHolder(WatchlistAdapter.Dh holder, int position) {
+    public void onBindViewHolder(@NonNull WatchlistAdapter.Dh holder, int position) {
 
         fav_title = data.get(position).getFav_title();
         fav_id = data.get(position).getFav_id();

@@ -2,7 +2,9 @@ package tech.salroid.filmy.utility;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+
+import androidx.appcompat.app.AlertDialog;
+
 import java.util.HashMap;
 
 import tech.salroid.filmy.database.OfflineMovies;
@@ -15,7 +17,6 @@ public class Confirmation {
 
     public static void confirmFav(final Context context, final HashMap<String, String> movieMap,
                                   final String movie_id, final String movie_id_final, final int flagFavorite) {
-
         new AlertDialog.Builder(context)
                 .setTitle("Favorite")
                 .setMessage("Are you sure you want to add this to favorite section?")

@@ -1,7 +1,6 @@
 package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +8,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,10 +41,9 @@ import tech.salroid.filmy.data_classes.SearchData;
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.Dh> {
 
     private final LayoutInflater inflater;
-    private List<SearchData> data = new ArrayList<>();
+    private List<SearchData> data;
     private Context fro;
     private ClickListener clickListener;
-    private String query_name, query_type, query_poster, query_id, query_date, query_extra;
 
 
     public SearchResultAdapter(Context context, List<SearchData> data) {
@@ -53,20 +53,20 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     }
 
     @Override
-    public Dh onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Dh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.custom_row_search, parent, false);
         return new Dh(view);
     }
 
     @Override
-    public void onBindViewHolder(Dh holder, int position) {
+    public void onBindViewHolder(@NonNull Dh holder, int position) {
 
-        query_name = data.get(position).getMovie();
-        query_id = data.get(position).getId();
-        query_poster = data.get(position).getPoster();
-        query_type = data.get(position).getType();
-        query_date = data.get(position).getDate();
-        query_extra = data.get(position).getExtra();
+        String query_name = data.get(position).getMovie();
+        String query_id = data.get(position).getId();
+        String query_poster = data.get(position).getPoster();
+        String query_type = data.get(position).getType();
+        String query_date = data.get(position).getDate();
+        String query_extra = data.get(position).getExtra();
 
         holder.movie_name.setText(query_name);
 
@@ -76,16 +76,15 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             holder.date.setVisibility(View.INVISIBLE);
         }
 
-try{
-        Glide.with(fro).load(query_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.movie_poster);
-    } catch (Exception e) {
-        //Log.d(LOG_TAG, e.getMessage());
-    }
+        try {
+            Glide.with(fro).load(query_poster).diskCacheStrategy(DiskCacheStrategy.NONE).into(holder.movie_poster);
+        } catch (Exception e) {
+            //Log.d(LOG_TAG, e.getMessage());
+        }
     }
 
     @Override
     public int getItemCount() {
-
         return data.size();
     }
 
@@ -94,9 +93,7 @@ try{
     }
 
     public interface ClickListener {
-
         void itemClicked(SearchData searchData, int position);
-
     }
 
     class Dh extends RecyclerView.ViewHolder {
@@ -113,16 +110,12 @@ try{
         Dh(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-
             main.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     if (clickListener != null) {
                         clickListener.itemClicked(data.get(getPosition()), getPosition());
                     }
-
                 }
             });
         }

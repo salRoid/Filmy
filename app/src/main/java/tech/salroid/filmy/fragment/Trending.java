@@ -6,17 +6,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -157,21 +159,18 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-
         Uri moviesForTheUri = FilmContract.MoviesEntry.CONTENT_URI;
-
         return new CursorLoader(getActivity(),
                 moviesForTheUri,
                 MovieProjection.MOVIE_COLUMNS,
                 null,
                 null,
                 null);
-
     }
 
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
 
         if (cursor != null && cursor.getCount() > 0) {
 
@@ -183,14 +182,12 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
 
             CustomToast.show(getActivity(), "Failed to get latest movies.", true);
             ((MainActivity) getActivity()).cantProceed(-1);
-
         }
 
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         mainActivityAdapter.swapCursor(null);
     }
 

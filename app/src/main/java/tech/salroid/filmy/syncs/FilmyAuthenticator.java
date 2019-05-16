@@ -36,7 +36,7 @@ import android.os.Bundle;
  */
 public class FilmyAuthenticator extends AbstractAccountAuthenticator {
 
-    public FilmyAuthenticator(Context context) {
+    FilmyAuthenticator(Context context) {
         super(context);
     }
 
@@ -89,7 +89,7 @@ public class FilmyAuthenticator extends AbstractAccountAuthenticator {
     public Bundle updateCredentials(
             AccountAuthenticatorResponse r,
             Account account,
-            String s, Bundle bundle) throws NetworkErrorException {
+            String s, Bundle bundle) {
         throw new UnsupportedOperationException();
     }
 
@@ -97,7 +97,7 @@ public class FilmyAuthenticator extends AbstractAccountAuthenticator {
     @Override
     public Bundle hasFeatures(
             AccountAuthenticatorResponse r,
-            Account account, String[] strings) throws NetworkErrorException {
+            Account account, String[] strings) {
         throw new UnsupportedOperationException();
     }
 }

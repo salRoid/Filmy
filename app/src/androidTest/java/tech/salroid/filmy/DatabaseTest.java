@@ -3,7 +3,6 @@ package tech.salroid.filmy;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.test.AndroidTestCase;
 
 import java.util.HashSet;
 

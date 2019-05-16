@@ -1,16 +1,20 @@
 package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import java.util.ArrayList;
+
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
@@ -36,7 +40,7 @@ import tech.salroid.filmy.data_classes.CrewDetailsData;
 public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
 
     private final Boolean ret_size;
-    private List<CrewDetailsData> crew = new ArrayList<>();
+    private List<CrewDetailsData> crew;
     private Context context;
     private ClickListener clickListener;
 
@@ -49,7 +53,7 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
     }
 
     @Override
-    public Ho onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Ho onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.crew_custom_row, parent, false);
@@ -57,7 +61,7 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
     }
 
     @Override
-    public void onBindViewHolder(Ho holder, int position) {
+    public void onBindViewHolder(@NonNull Ho holder, int position) {
 
         String ct_name = crew.get(position).getCrew_name();
         String ct_desc = crew.get(position).getCrew_job();

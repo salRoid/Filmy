@@ -10,16 +10,6 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +18,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.palette.graphics.Palette;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -200,7 +201,6 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     private String movie_rating_audience;
     private String movie_rating_metascore;
     private String movie_title_hyphen;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -611,7 +611,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
 
         int id = loader.getId();
 
@@ -966,10 +966,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         switch (code) {
 
             case GetDataFromNetwork.MOVIE_DETAILS_CODE:
-
-
                 parseMovieDetails(response);
-                // showCastFragment();%
+                // showCastFragment();
                 break;
 
             case GetDataFromNetwork.CAST_CODE:

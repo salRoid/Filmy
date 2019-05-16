@@ -1,52 +1,32 @@
 package tech.salroid.filmy.fragment;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.activities.MovieDetailsActivity;
-import tech.salroid.filmy.custom_adapter.FavouriteAdapter;
 import tech.salroid.filmy.custom_adapter.SavedMoviesAdapter;
-import tech.salroid.filmy.customs.BreathingProgress;
-import tech.salroid.filmy.data_classes.FavouriteData;
 import tech.salroid.filmy.database.FilmContract;
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
-import tech.salroid.filmy.parser.FavouriteMovieParseWork;
-import tech.salroid.filmy.tmdb_account.UnMarkingFavorite;
 import tech.salroid.filmy.utility.Constants;
 
 /*

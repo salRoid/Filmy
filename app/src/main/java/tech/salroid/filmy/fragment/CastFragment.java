@@ -3,18 +3,20 @@ package tech.salroid.filmy.fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -70,7 +72,6 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     private String cast_json;
     private String movieId, movieTitle;
     private GotCrewListener gotCrewListener;
-    private String api_key = BuildConfig.TMDB_API_KEY;
 
 
     public static CastFragment newInstance(String movie_Id, String movie_Title) {
@@ -84,16 +85,14 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.cast_fragment, container, false);
         ButterKnife.bind(this, view);
 
         cast_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         cast_recycler.setNestedScrollingEnabled(false);
-
         cast_recycler.setVisibility(View.INVISIBLE);
-
         more.setOnClickListener(this);
 
 
@@ -131,7 +130,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     public void getCastFromNetwork(String movieId) {
 
 
-        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key="+api_key);
+        String api_key = BuildConfig.TMDB_API_KEY;
+        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key="+ api_key);
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override

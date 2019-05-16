@@ -3,18 +3,20 @@ package tech.salroid.filmy.fragment;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -47,7 +49,6 @@ import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
 public class CrewFragment extends Fragment implements View.OnClickListener, CrewAdapter.ClickListener {
 
-
     @BindView(R.id.crew_more)
     TextView more;
     @BindView(R.id.crew_recycler)
@@ -73,18 +74,15 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.crew_fragment, container, false);
         ButterKnife.bind(this, view);
 
         crew_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         crew_recycler.setNestedScrollingEnabled(false);
-
         crew_recycler.setVisibility(View.INVISIBLE);
-
         more.setOnClickListener(this);
-
 
         return view;
     }
@@ -104,7 +102,6 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
         }
 
     }
-
 
 
     public void crew_parseOutput(String crew_result) {
@@ -138,19 +135,14 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
     public void onClick(View view) {
 
         if (view.getId() == R.id.crew_more) {
-
-            Log.d("webi",""+movieTitle);
-
+            Log.d("webi", "" + movieTitle);
             if (crew_json != null && movieTitle != null) {
-
                 Intent intent = new Intent(getActivity(), FullCrewActivity.class);
                 intent.putExtra("crew_json", crew_json);
                 intent.putExtra("toolbar_title", movieTitle);
                 startActivity(intent);
-
             }
         }
-
 
     }
 
@@ -162,14 +154,11 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
         intent.putExtra("id", setterGetter.getCrew_id());
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-
             Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
             Pair<View, String> p2 = Pair.create(view.findViewById(R.id.crew_name), "name");
-
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(getActivity(), p1, p2);
             startActivity(intent, options.toBundle());
-
         } else {
             startActivity(intent);
         }

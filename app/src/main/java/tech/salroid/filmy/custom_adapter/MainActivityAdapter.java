@@ -2,13 +2,15 @@ package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -43,30 +45,26 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     private Cursor dataCursor;
 
     public MainActivityAdapter(Context context, Cursor cursor) {
-
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.dataCursor = cursor;
-
     }
 
 
     @Override
-    public Vh onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Vh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.custom_row, parent, false);
         return new Vh(view);
     }
 
     @Override
-    public void onBindViewHolder(Vh holder, int position) {
+    public void onBindViewHolder(@NonNull Vh holder, int position) {
 
         String movie_title, movie_poster;
         String imdb_id;
         int movie_year;
 
-
         dataCursor.moveToPosition(position);
-
 
         int id_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
         int title_index = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
@@ -134,13 +132,9 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         // TextView year;
 
         Vh(View itemView) {
-
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-
             //year = (TextView) itemView.findViewById(R.id.movie_year);
-
 
             main.setOnClickListener(new View.OnClickListener() {
                 @Override

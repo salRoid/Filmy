@@ -27,7 +27,7 @@ import android.content.Context;
 public class FilmyJobScheduler {
 
 
-    public static final long SYNC_INTERVAL = 21600000;
+    private static final long SYNC_INTERVAL = 21600000;
     private JobScheduler jobScheduler;
     private int JOB_ID = 456;
     private Context context;

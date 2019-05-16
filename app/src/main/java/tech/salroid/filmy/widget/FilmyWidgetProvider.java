@@ -35,10 +35,7 @@ import tech.salroid.filmy.database.MovieProjection;
 
 public class FilmyWidgetProvider extends AppWidgetProvider {
 
-    private AppWidgetTarget appWidgetTarget;
-
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-
 
         final int N = appWidgetIds.length;
 
@@ -81,7 +78,7 @@ public class FilmyWidgetProvider extends AppWidgetProvider {
             final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.filmy_appwidget);
             remoteViews.setTextViewText(R.id.widget_movie_name,movie_title);
 
-            appWidgetTarget = new AppWidgetTarget( context, R.id.widget_movie_image, remoteViews, appWidgetIds );
+            AppWidgetTarget appWidgetTarget = new AppWidgetTarget(context, R.id.widget_movie_image, remoteViews, appWidgetIds);
 
           /*  Glide.with(context)
                     .load(movie_poster)

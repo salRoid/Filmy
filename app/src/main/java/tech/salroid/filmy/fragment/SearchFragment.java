@@ -5,15 +5,17 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -57,19 +59,16 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 public class SearchFragment extends Fragment implements SearchResultAdapter.ClickListener {
 
 
-    SearchResultAdapter sadapter;
-
     @BindView((R.id.search_results_recycler))
     RecyclerView recycler;
     @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;
     @BindView(R.id.fragment_rl)
     RelativeLayout fragmentRelativeLayout;
-    private String api_key = BuildConfig.TMDB_API_KEY;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
         View view = inflater.inflate(R.layout.fragment_search, container, false);
@@ -118,9 +117,6 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
     }
 
 
-
-
-
     @Override
     public void itemClicked(SearchData setterGetter, int position) {
 
@@ -132,7 +128,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
             intent.putExtra("network_applicable", true);
 
         }
-        intent.putExtra("title",setterGetter.getMovie());
+        intent.putExtra("title", setterGetter.getMovie());
         intent.putExtra("id", setterGetter.getId());
         intent.putExtra("activity", false);
 
@@ -150,14 +146,14 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         final RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
-        final String BASE_URL = "https://api.themoviedb.org/3/search/movie?api_key="+api_key+"&query="+finalQuery;
+        String api_key = BuildConfig.TMDB_API_KEY;
+        final String BASE_URL = "https://api.themoviedb.org/3/search/movie?api_key=" + api_key + "&query=" + finalQuery;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(BASE_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
-                      //  Log.d("webi", response.toString());
+                        //  Log.d("webi", response.toString());
                         parseSearchedOutput(response.toString());
                     }
                 }, new Response.ErrorListener() {
@@ -165,7 +161,6 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
             public void onErrorResponse(VolleyError error) {
 
                 //Log.e("webi", "Volley Error: " + error.getCause());
-
             }
         }
         );
@@ -179,7 +174,7 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
         SearchResultParseWork park = new SearchResultParseWork(getActivity(), s);
         List<SearchData> list = park.parsesearchdata();
-        sadapter = new SearchResultAdapter(getActivity(), list);
+        SearchResultAdapter sadapter = new SearchResultAdapter(getActivity(), list);
         recycler.setAdapter(sadapter);
         sadapter.setClickListener(this);
 
@@ -190,29 +185,22 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Clic
 
 
     public void showProgress() {
-
-
         if (breathingProgress != null && recycler != null) {
-
             breathingProgress.setVisibility(View.VISIBLE);
             recycler.setVisibility(View.INVISIBLE);
-
         }
     }
 
 
-    public void hideProgress() {
-
+    private void hideProgress() {
         if (breathingProgress != null && recycler != null) {
-
             breathingProgress.setVisibility(View.INVISIBLE);
             recycler.setVisibility(View.VISIBLE);
-
         }
     }
 
-    public void hideSoftKeyboard() {
-        if(getActivity().getCurrentFocus()!=null) {
+    private void hideSoftKeyboard() {
+        if (getActivity() != null && getActivity().getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }

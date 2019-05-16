@@ -11,13 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +18,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.tabs.TabLayout;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ import tech.salroid.filmy.R;
 import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
 import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.fragment.InTheaters;
-import tech.salroid.filmy.fragment.SavedMovies;
 import tech.salroid.filmy.fragment.SearchFragment;
 import tech.salroid.filmy.fragment.Trending;
 import tech.salroid.filmy.fragment.UpComing;

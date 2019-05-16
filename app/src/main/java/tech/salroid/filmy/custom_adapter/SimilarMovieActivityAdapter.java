@@ -1,26 +1,24 @@
 package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.data_classes.CastDetailsData;
 import tech.salroid.filmy.data_classes.SimilarMoviesData;
-import tech.salroid.filmy.fragment.SimilarFragment;
 
 /*
  * Filmy Application for Android
@@ -41,23 +39,19 @@ import tech.salroid.filmy.fragment.SimilarFragment;
 
 public class SimilarMovieActivityAdapter extends RecyclerView.Adapter<SimilarMovieActivityAdapter.Ho> {
 
-    private final Boolean ret_size;
-    private List<SimilarMoviesData> similar = new ArrayList<>();
+    private List<SimilarMoviesData> similar;
     private Context context;
     private SimilarMovieActivityAdapter.ClickListener clickListener;
 
 
     public SimilarMovieActivityAdapter(Context context, List<SimilarMoviesData> similar, Boolean size) {
-
         this.context = context;
         this.similar = similar;
-        this.ret_size = size;
-
     }
 
 
     @Override
-    public Ho onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Ho onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.similar_custom_row, parent, false);
@@ -65,15 +59,13 @@ public class SimilarMovieActivityAdapter extends RecyclerView.Adapter<SimilarMov
     }
 
     @Override
-    public void onBindViewHolder(Ho holder, int position) {
+    public void onBindViewHolder(@NonNull Ho holder, int position) {
 
         String similar_title = similar.get(position).getMovie_title();
         String similar_banner = similar.get(position).getMovie_banner();
         String similar_id = similar.get(position).getMovie_id();
 
-
         holder.title.setText(similar_title);
-
         try {
             Glide.with(context)
                     .load(similar_banner)

@@ -1,21 +1,22 @@
 package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +55,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
-    public boolean isShowingFromDatabase;
+    private boolean isShowingFromDatabase;
 
     private StaggeredGridLayoutManager gridLayoutManager;
     private boolean isInMultiWindowMode;
@@ -64,7 +65,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_up_coming, container, false);
@@ -161,11 +162,11 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
 
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         Uri moviesForTheUri = FilmContract.UpComingMoviesEntry.CONTENT_URI;
-
 
         return new CursorLoader(getActivity(),
                 moviesForTheUri,
@@ -177,7 +178,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         if (cursor != null && cursor.getCount() > 0) {
 
             isShowingFromDatabase = true;
@@ -193,7 +194,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         if (mainActivityAdapter != null)
             mainActivityAdapter.swapCursor(null);
     }

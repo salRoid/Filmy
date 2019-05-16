@@ -29,12 +29,12 @@ import tech.salroid.filmy.network_stuff.VolleySingleton;
  * limitations under the License.
  */
 
-public class Rating {
+class Rating {
 
-    public static String imdb_rating = "0", tomatometer_rating = "0", audience_rating = "0", metascore_rating = "0", image = null, rottenTomatoPage = null;
+    private static String imdb_rating = "0", tomatometer_rating = "0", audience_rating = "0", metascore_rating = "0", image = null, rottenTomatoPage = null;
     private static String OMDB_API_KEY = BuildConfig.OMDB_API_KEY;
 
-    public static void getRating(final Context context, String movie_id_final) {
+    static void getRating(final Context context, String movie_id_final) {
 
         VolleySingleton volleySingleton = VolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();

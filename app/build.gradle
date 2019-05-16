@@ -16,7 +16,7 @@ android {
         versionCode 16
         versionName "2.1.2"
         multiDexEnabled true
-        resConfigs "en" , "de" , "es-rES" , "hi-rIN" , "nl-rNL"
+        resConfigs "en", "de", "es-rES", "hi-rIN", "nl-rNL"
 
     }
     buildTypes {
@@ -27,45 +27,50 @@ android {
             buildConfigField("String", "TMDB_API_KEY", "\"" + getTMDBApiKey() + "\"")
             buildConfigField("String", "OMDB_API_KEY", "\"" + getOMDBApiKey() + "\"")
         }
-        debug{
+        debug {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "TMDB_API_KEY", "\"" + getTMDBApiKey() +"\"")
-            buildConfigField("String", "OMDB_API_KEY", "\"" + getOMDBApiKey() +"\"")
+            buildConfigField("String", "TMDB_API_KEY", "\"" + getTMDBApiKey() + "\"")
+            buildConfigField("String", "OMDB_API_KEY", "\"" + getOMDBApiKey() + "\"")
             minifyEnabled true
         }
     }
 }
 
-static def getTMDBApiKey(){
-    def Properties props = new Properties()
+static def getTMDBApiKey() {
+    Properties props = new Properties()
     props.load(new FileInputStream(new File('secrets.properties')))
     return props['TMDB_API_KEY']
 }
 
-static def getOMDBApiKey(){
-    def Properties props = new Properties()
+static def getOMDBApiKey() {
+    Properties props = new Properties()
     props.load(new FileInputStream(new File('secrets.properties')))
     return props['OMDB_API_KEY']
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support:customtabs:28.0.0'
+
+    implementation 'com.google.android.material:material:1.1.0-alpha06'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.browser:browser:1.0.0'
+
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
-    implementation 'com.android.support:palette-v7:28.0.0'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    testImplementation 'junit:junit:4.12'
+
     implementation 'com.github.xiprox.errorview:library:2.+'
     implementation 'com.github.paolorotolo:appintro:4.0.0'
 
     implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.google.firebase:firebase-appindexing:18.0.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+
 }

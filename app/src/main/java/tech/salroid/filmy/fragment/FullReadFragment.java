@@ -2,8 +2,6 @@ package tech.salroid.filmy.fragment;
 
 import android.animation.Animator;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -11,6 +9,10 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +38,7 @@ import tech.salroid.filmy.R;
 
 public class FullReadFragment extends Fragment implements View.OnClickListener {
 
-    String titleValue, descValue;
+    private String titleValue, descValue;
 
     @BindView(R.id.textViewTitle) TextView title;
     @BindView(R.id.textViewDesc) TextView desc ;
@@ -45,7 +47,7 @@ public class FullReadFragment extends Fragment implements View.OnClickListener {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.read_full_layout, container, false);
         ButterKnife.bind(this,view);
 
@@ -88,13 +90,15 @@ public class FullReadFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        titleValue = getArguments().getString("title", " ");
-        descValue = getArguments().getString("desc", " ");
+        if (getArguments() != null) {
+            titleValue = getArguments().getString("title", " ");
+            descValue = getArguments().getString("desc", " ");
+        }
 
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         title.setText(titleValue);
@@ -103,7 +107,9 @@ public class FullReadFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        getFragmentManager().popBackStack();
+        if (getFragmentManager() != null) {
+            getFragmentManager().popBackStack();
+        }
 
     }
 

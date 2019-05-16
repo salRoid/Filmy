@@ -1,7 +1,6 @@
 package tech.salroid.filmy.custom_adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +8,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,7 +41,7 @@ import tech.salroid.filmy.data_classes.FavouriteData;
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Dh> {
 
     private final LayoutInflater inflater;
-    private List<FavouriteData> data = new ArrayList<>();
+    private List<FavouriteData> data;
     private Context fro;
     private FavouriteAdapter.ClickListener clickListener;
     private String fav_title, fav_id, fav_poster;
@@ -115,15 +115,12 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Dh> 
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-
             main.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     if (clickListener != null) {
                         clickListener.itemClicked(data.get(getPosition()), getPosition());
                     }
-
                 }
             });
 

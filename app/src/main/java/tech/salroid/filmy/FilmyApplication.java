@@ -2,10 +2,6 @@ package tech.salroid.filmy;
 
 import android.app.Application;
 import android.content.Context;
-
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
 /*
  * Filmy Application for Android
  * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
@@ -36,11 +32,7 @@ public class FilmyApplication extends Application {
 
     @Override
     public void onCreate() {
-
         super.onCreate();
-
-        Fabric.with(this, new Crashlytics());
-
         instance = this;
     }
 }

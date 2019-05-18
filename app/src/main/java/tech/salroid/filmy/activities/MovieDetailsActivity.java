@@ -998,7 +998,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     public void gotCrew(String crewData) {
 
         if (crewFragment != null)
-            crewFragment.crew_parseOutput(crewData);
+            crewFragment.parseCrewOutput(crewData);
     }
 
     public void setRating(String movie_rating_imdb, String movie_rating_tomatometer,

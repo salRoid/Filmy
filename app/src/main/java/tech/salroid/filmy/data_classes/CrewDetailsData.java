@@ -19,37 +19,35 @@ package tech.salroid.filmy.data_classes;
 
 public class CrewDetailsData {
 
-    String crew_name, crew_job, crew_profile, crew_id;
+    private String crewName, crewJobDescr, crewDisplayProfile, crewId;
 
-    public void setCrew_id(String crew_id) {
-        this.crew_id = crew_id;
+    public void setCrewId(String crewId) { this.crewId = crewId; }
+
+    public String getCrewId() {
+        return crewId;
     }
 
-    public void setCrew_job(String crew_job) {
-        this.crew_job = crew_job;
+    public void setCrewJobDescr(String crewJobDescr) {
+        this.crewJobDescr = crewJobDescr;
     }
 
-    public void setCrew_name(String crew_name) {
-        this.crew_name = crew_name;
+    public String getCrewJobDescr() {
+        return crewJobDescr;
     }
 
-    public void setCrew_profile(String crew_profile) {
-        this.crew_profile = crew_profile;
+    public void setCrewName(String crewName) {
+        this.crewName = crewName;
     }
 
-    public String getCrew_id() {
-        return crew_id;
+    public String getCrewName() {
+        return crewName;
     }
 
-    public String getCrew_job() {
-        return crew_job;
+    public void setCrewDisplayProfile(String crewDisplayProfile) {
+        this.crewDisplayProfile = crewDisplayProfile;
     }
 
-    public String getCrew_profile() {
-        return crew_profile;
-    }
-
-    public String getCrew_name() {
-        return crew_name;
+    public String getCrewDisplayProfile() {
+        return crewDisplayProfile;
     }
 }

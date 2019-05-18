@@ -69,16 +69,15 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     BreathingProgress breathingProgress;
     @BindView(R.id.detail_fragment_views_layout)
     RelativeLayout relativeLayout;
-    private String cast_json;
+    private String jsonCast;
     private String movieId, movieTitle;
     private GotCrewListener gotCrewListener;
 
-
-    public static CastFragment newInstance(String movie_Id, String movie_Title) {
+    public static CastFragment newInstance(String movieId, String movieTitle) {
         CastFragment fragment = new CastFragment();
         Bundle args = new Bundle();
-        args.putString("movie_id", movie_Id);
-        args.putString("movie_title", movie_Title);
+        args.putString("movie_id", movieId);
+        args.putString("movie_title", movieTitle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,17 +94,12 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
         cast_recycler.setVisibility(View.INVISIBLE);
         more.setOnClickListener(this);
 
-
         return view;
     }
 
-
-    public void setGotCrewListener(GotCrewListener gotCrewListener){
-
+    public void setGotCrewListener(GotCrewListener gotCrewListener) {
         this.gotCrewListener = gotCrewListener;
-
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,35 +108,25 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
         Bundle savedBundle = getArguments();
 
         if (savedBundle != null) {
-
             movieId = savedBundle.getString("movie_id");
             movieTitle = savedBundle.getString("movie_title");
-
         }
 
-
-        if (movieId != null)
-            getCastFromNetwork(movieId);
-
+        if (movieId != null) getCastFromNetwork(movieId);
     }
-
 
     public void getCastFromNetwork(String movieId) {
 
-
-        String api_key = BuildConfig.TMDB_API_KEY;
-        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key="+ api_key);
+        String TMBD_API_KEY = BuildConfig.TMDB_API_KEY;
+        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=" + TMBD_API_KEY);
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(BASE_MOVIE_CAST_DETAILS, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        jsonCast = response.toString();
+                        parseCastOutput(response.toString());
 
-                        cast_json = response.toString();
-
-                        cast_parseOutput(response.toString());
-
-                        if (gotCrewListener!=null)
-                          gotCrewListener.gotCrew(response.toString());
+                        if (gotCrewListener != null) gotCrewListener.gotCrew(response.toString());
 
                     }
                 }, new Response.ErrorListener() {
@@ -150,39 +134,35 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
             public void onErrorResponse(VolleyError error) {
 
                 Log.e("webi", "Volley Error: " + error.getCause());
-
                 breathingProgress.setVisibility(View.GONE);
-
             }
         }
         );
-
 
         TmdbVolleySingleton volleySingleton = TmdbVolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
         requestQueue.add(jsonObjectRequestForMovieCastDetails);
     }
 
+    private void parseCastOutput(String castResult) {
 
-
-    private void cast_parseOutput(String cast_result) {
-
-        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), cast_result);
-        List<CastDetailsData> cast_list = par.parse_cast();
-        CastAdapter cast_adapter = new CastAdapter(getActivity(), cast_list, true);
+        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), castResult);
+        List<CastDetailsData> castList = par.parse_cast();
+        CastAdapter cast_adapter = new CastAdapter(getActivity(), castList, true);
         cast_adapter.setClickListener(this);
         cast_recycler.setAdapter(cast_adapter);
-        if (cast_list.size() > 4)
+
+        if (castList.size() > 4) {
             more.setVisibility(View.VISIBLE);
-        else if (cast_list.size() == 0) {
+        } else if (castList.size() == 0) {
             more.setVisibility(View.INVISIBLE);
             card_holder.setVisibility(View.INVISIBLE);
-        } else
+        } else {
             more.setVisibility(View.INVISIBLE);
+        }
 
         breathingProgress.setVisibility(View.GONE);
         cast_recycler.setVisibility(View.VISIBLE);
-
         relativeLayout.setMinimumHeight(0);
     }
 
@@ -190,47 +170,34 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     public void onClick(View view) {
 
         if (view.getId() == R.id.more) {
-
             Log.d("webi", "" + movieTitle);
-
-            if (cast_json != null && movieTitle != null) {
-
-
+            if (jsonCast != null && movieTitle != null) {
                 Intent intent = new Intent(getActivity(), FullCastActivity.class);
-                intent.putExtra("cast_json", cast_json);
+                intent.putExtra("cast_json", jsonCast);
                 intent.putExtra("toolbar_title", movieTitle);
                 startActivity(intent);
-
             }
         }
-
-
     }
 
     @Override
     public void itemClicked(CastDetailsData setterGetter, int position, View view) {
         Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
-        intent.putExtra("id", setterGetter.getCast_id());
+        intent.putExtra("id", setterGetter.getCastId());
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-
             Pair<View, String> p1 = Pair.create(view.findViewById(R.id.cast_poster), "profile");
             Pair<View, String> p2 = Pair.create(view.findViewById(R.id.cast_name), "name");
 
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(getActivity(), p1, p2);
             startActivity(intent, options.toBundle());
-
         } else {
             startActivity(intent);
         }
-
     }
 
-
-
-    public interface GotCrewListener{
+    public interface GotCrewListener {
         void gotCrew(String crewData);
     }
-
 }

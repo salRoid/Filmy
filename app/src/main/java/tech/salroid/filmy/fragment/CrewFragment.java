@@ -59,15 +59,15 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
     BreathingProgress breathingProgress;
     @BindView(R.id.detail_fragment_views_layout)
     RelativeLayout relativeLayout;
-    private String crew_json;
+    private String jsonCrew;
     private String movieId, movieTitle;
 
-    public static CrewFragment newInstance(String movie_Id, String movie_Title) {
+    public static CrewFragment newInstance(String movieId, String movieTitle) {
 
         CrewFragment fragment = new CrewFragment();
         Bundle args = new Bundle();
-        args.putString("movie_id", movie_Id);
-        args.putString("movie_title", movie_Title);
+        args.putString("movie_id", movieId);
+        args.putString("movie_title", movieTitle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -103,26 +103,25 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
 
     }
 
+    public void parseCrewOutput(String crewResult) {
 
-    public void crew_parseOutput(String crew_result) {
+        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), crewResult);
+        List<CrewDetailsData> crewList = par.parse_crew();
 
-        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), crew_result);
-        List<CrewDetailsData> crew_list = par.parse_crew();
+        jsonCrew = crewResult;
 
-        crew_json = crew_result;
+        CrewAdapter crewAdapter = new CrewAdapter(getActivity(), crewList, true);
+        crewAdapter.setClickListener(this);
+        crew_recycler.setAdapter(crewAdapter);
 
-        CrewAdapter crew_adapter = new CrewAdapter(getActivity(), crew_list, true);
-        crew_adapter.setClickListener(this);
-        crew_recycler.setAdapter(crew_adapter);
-
-
-        if (crew_list.size() > 4)
+        if (crewList.size() > 4) {
             more.setVisibility(View.VISIBLE);
-        else if (crew_list.size() == 0) {
+        } else if (crewList.size() == 0) {
             more.setVisibility(View.INVISIBLE);
             card_holder.setVisibility(View.INVISIBLE);
-        } else
+        } else {
             more.setVisibility(View.INVISIBLE);
+        }
 
         breathingProgress.setVisibility(View.GONE);
         crew_recycler.setVisibility(View.VISIBLE);
@@ -133,25 +132,22 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
 
     @Override
     public void onClick(View view) {
-
         if (view.getId() == R.id.crew_more) {
             Log.d("webi", "" + movieTitle);
-            if (crew_json != null && movieTitle != null) {
+            if (jsonCrew != null && movieTitle != null) {
                 Intent intent = new Intent(getActivity(), FullCrewActivity.class);
-                intent.putExtra("crew_json", crew_json);
+                intent.putExtra("crew_json", jsonCrew);
                 intent.putExtra("toolbar_title", movieTitle);
                 startActivity(intent);
             }
         }
-
     }
-
 
     @Override
     public void itemClicked(CrewDetailsData setterGetter, int position, View view) {
 
         Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
-        intent.putExtra("id", setterGetter.getCrew_id());
+        intent.putExtra("id", setterGetter.getCrewId());
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
@@ -162,6 +158,5 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
         } else {
             startActivity(intent);
         }
-
     }
 }

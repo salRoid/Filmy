@@ -40,14 +40,14 @@ import tech.salroid.filmy.data_classes.CastDetailsData;
 public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
 
     private final Boolean ret_size;
-    private List<CastDetailsData> cast = new ArrayList<>();
+    private List<CastDetailsData> castList = new ArrayList<>();
     private Context context;
     private ClickListener clickListener;
 
-    public CastAdapter(Context context, List<CastDetailsData> cast, Boolean size) {
+    public CastAdapter(Context context, List<CastDetailsData> castList, Boolean size) {
 
         this.context = context;
-        this.cast = cast;
+        this.castList = castList;
         this.ret_size = size;
 
     }
@@ -63,35 +63,33 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
     @Override
     public void onBindViewHolder(Ho holder, int position) {
 
-        String ct_name = cast.get(position).getCast_name();
-        String ct_desc = cast.get(position).getCast_character();
-        String ct_profile = cast.get(position).getCast_profile();
-        String ct_id = cast.get(position).getCast_id();
+        String castName = castList.get(position).getCastName();
+        String castDescription = castList.get(position).getCastDescription();
+        String castDisplayProfile = castList.get(position).getCastDescription();
+        String castId = castList.get(position).getCastId();
 
-        holder.cast_name.setText(ct_name);
-        holder.cast_description.setText(ct_desc);
+        holder.cast_name.setText(castName);
+        holder.cast_description.setText(castDescription);
 
         try {
             Glide.with(context)
-                    .load(ct_profile)
+                    .load(castDisplayProfile)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
                     .into(holder.cast_poster);
-        } catch (Exception e){
+        } catch (Exception e) {
         }
 
     }
 
-
     @Override
     public int getItemCount() {
 
-        if (ret_size)
-            return (cast.size() >= 5) ? 5 : cast.size();
-
-        else
-            return cast.size();
-
+        if (ret_size) {
+            return (castList.size() >= 5) ? 5 : castList.size();
+        } else {
+            return castList.size();
+        }
     }
 
     public void setClickListener(ClickListener clickListener) {
@@ -122,12 +120,10 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null) {
-                        clickListener.itemClicked(cast.get(getPosition()), getPosition(),view);
+                        clickListener.itemClicked(castList.get(getPosition()), getPosition(), view);
                     }
                 }
             });
         }
     }
-
-
 }

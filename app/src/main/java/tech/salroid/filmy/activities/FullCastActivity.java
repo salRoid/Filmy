@@ -93,7 +93,7 @@ public class FullCastActivity extends AppCompatActivity implements CastAdapter.C
     @Override
     public void itemClicked(CastDetailsData setterGetter, int position, View view) {
         Intent intent = new Intent(this, CharacterDetailsActivity.class);
-        intent.putExtra("id", setterGetter.getCast_id());
+        intent.putExtra("id", setterGetter.getCastId());
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
 

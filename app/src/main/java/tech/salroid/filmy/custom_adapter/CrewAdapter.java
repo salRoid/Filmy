@@ -40,16 +40,15 @@ import tech.salroid.filmy.data_classes.CrewDetailsData;
 public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
 
     private final Boolean ret_size;
-    private List<CrewDetailsData> crew;
+    private List<CrewDetailsData> crewList;
     private Context context;
     private ClickListener clickListener;
 
-    public CrewAdapter(Context context, List<CrewDetailsData> crew, Boolean size) {
+    public CrewAdapter(Context context, List<CrewDetailsData> crewList, Boolean size) {
 
         this.context = context;
-        this.crew = crew;
+        this.crewList = crewList;
         this.ret_size = size;
-
     }
 
     @Override
@@ -63,35 +62,31 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
     @Override
     public void onBindViewHolder(@NonNull Ho holder, int position) {
 
-        String ct_name = crew.get(position).getCrew_name();
-        String ct_desc = crew.get(position).getCrew_job();
-        String ct_profile = crew.get(position).getCrew_profile();
-        String ct_id = crew.get(position).getCrew_id();
+        String crewName = crewList.get(position).getCrewName();
+        String crewJobDescr = crewList.get(position).getCrewJobDescr();
+        String crewDisplayProfile = crewList.get(position).getCrewDisplayProfile();
+        String crewId = crewList.get(position).getCrewId();
 
-        holder.crew_name.setText(ct_name);
-        holder.crew_description.setText(ct_desc);
+        holder.crew_name.setText(crewName);
+        holder.crew_description.setText(crewJobDescr);
 
         try {
             Glide.with(context)
-                    .load(ct_profile)
+                    .load(crewDisplayProfile)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
                     .into(holder.crew_poster);
         } catch (Exception e){
         }
-
     }
-
 
     @Override
     public int getItemCount() {
-
-        if (ret_size)
-            return (crew.size() >= 5) ? 5 : crew.size();
-
-        else
-            return crew.size();
-
+        if (ret_size) {
+            return (crewList.size() >= 5) ? 5 : crewList.size();
+        } else {
+            return crewList.size();
+        }
     }
 
     public void setClickListener(ClickListener clickListener) {
@@ -122,12 +117,10 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null) {
-                        clickListener.itemClicked(crew.get(getPosition()), getPosition(),view);
+                        clickListener.itemClicked(crewList.get(getPosition()), getPosition(),view);
                     }
                 }
             });
         }
     }
-
-
 }

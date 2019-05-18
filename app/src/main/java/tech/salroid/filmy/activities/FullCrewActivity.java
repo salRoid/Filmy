@@ -94,7 +94,7 @@ public class FullCrewActivity extends AppCompatActivity implements CrewAdapter.C
     public void itemClicked(CrewDetailsData setterGetter, int position, View view) {
 
         Intent intent = new Intent(this, CharacterDetailsActivity.class);
-        intent.putExtra("id", setterGetter.getCrew_id());
+        intent.putExtra("id", setterGetter.getCrewId());
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
 

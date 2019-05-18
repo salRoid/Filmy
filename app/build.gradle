@@ -54,21 +54,17 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha06'
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
-
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
-
     implementation 'com.github.xiprox.errorview:library:2.+'
     implementation 'com.github.paolorotolo:appintro:4.0.0'
-
     implementation 'com.jakewharton:butterknife:8.8.1'
     //annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.google.firebase:firebase-appindexing:18.0.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 

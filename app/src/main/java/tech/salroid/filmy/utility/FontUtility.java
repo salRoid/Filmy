@@ -6,7 +6,7 @@ package tech.salroid.filmy.utility;
 
 public class FontUtility {
 
-    private static final String FONT_NAME = "DaysOne-Regular.ttf";
+    private static final String FONT_NAME = "days_one_regular.ttf";
 
     public static String getFontName(){
         return "fonts/"+FONT_NAME;

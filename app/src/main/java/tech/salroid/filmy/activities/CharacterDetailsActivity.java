@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +43,6 @@ import tech.salroid.filmy.data_classes.CharacterDetailsData;
 import tech.salroid.filmy.fragment.FullReadFragment;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
-import tech.salroid.filmy.utility.FontUtility;
 
 /*
  * Filmy Application for Android
@@ -117,7 +117,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         getSupportActionBar().setTitle("");
 
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
+        Typeface typeface =  ResourcesCompat.getFont(this,R.font.days_one_regular);
+
         logo.setTypeface(typeface);
 
 

@@ -6,7 +6,7 @@
     android:id="@+id/similar_main"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="0dp">
@@ -27,7 +27,7 @@
         android:textAppearance="?android:textAppearanceMedium"
         android:textStyle="bold" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@id/card_holder"
         android:id="@+id/similar_recycler"
         android:layout_width="match_parent"
@@ -43,6 +43,6 @@
         />
 
     </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>

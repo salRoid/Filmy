@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -31,7 +32,6 @@ import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.customs.CustomToast;
 import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
-import tech.salroid.filmy.utility.FontUtility;
 
 /*
  * Filmy Application for Android
@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
+        Typeface typeface =  ResourcesCompat.getFont(this,R.font.days_one_regular);
         logo.setTypeface(typeface);
 
 

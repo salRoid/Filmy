@@ -1,8 +1,6 @@
 package tech.salroid.filmy.fragment;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -14,12 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,9 +80,8 @@ public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbac
     private SavedMoviesAdapter mainActivityAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         View view = inflater.inflate(R.layout.fragment_saved_movies, container, false);
         ButterKnife.bind(this, view);
@@ -173,36 +173,30 @@ public class SavedMovies extends Fragment implements LoaderManager.LoaderCallbac
     public void itemLongClicked(final Cursor mycursor, final int position) {
 
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+       MaterialAlertDialogBuilder adb = new MaterialAlertDialogBuilder(getActivity());
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
-
         arrayAdapter.add("Remove");
-
-
         final Context context = getActivity();
 
-        adb.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+        adb.setAdapter(arrayAdapter, (dialogInterface, i) -> {
 
-                final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_ID + " = ? AND "+
-                FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_FLAG + " = ? ";
+            final String deleteSelection = FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_ID + " = ? AND "+
+            FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_FLAG + " = ? ";
 
-                int flag_index = mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_FLAG);
-                int flag = mycursor.getInt(flag_index);
+            int flag_index = mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_FLAG);
+            int flag = mycursor.getInt(flag_index);
 
-                final String[] deletionArgs = {mycursor.getString(mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID)), String.valueOf(flag)};
+            final String[] deletionArgs = {mycursor.getString(mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID)), String.valueOf(flag)};
 
-                long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
+            long deletion_id = context.getContentResolver().delete(FilmContract.SaveEntry.CONTENT_URI, deleteSelection, deletionArgs);
 
-                if (deletion_id != -1) {
+            if (deletion_id != -1) {
 
-                    mainActivityAdapter.notifyItemRemoved(position);
+                mainActivityAdapter.notifyItemRemoved(position);
 
-                    if (mainActivityAdapter.getItemCount() == 1)
-                        my_saved_movies_recycler.setVisibility(View.GONE);
+                if (mainActivityAdapter.getItemCount() == 1)
+                    my_saved_movies_recycler.setVisibility(View.GONE);
 
-                }
             }
         });
 

@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.utility.FontUtility;
 
 /*
  * Filmy Application for Android
@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
+        Typeface typeface =  ResourcesCompat.getFont(this,R.font.days_one_regular);
         logo.setTypeface(typeface);
 
 

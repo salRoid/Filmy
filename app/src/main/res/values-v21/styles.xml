@@ -12,7 +12,7 @@
 
 
 
-    <style name="MyToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="MyToolbarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="android:textColorPrimary">#FFFFFF</item>
     </style>
 

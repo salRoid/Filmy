@@ -1,10 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base"></style>
+    <style name="AppTheme" parent="AppTheme.Base" />
     <!-- Customize your theme here. -->
 
-    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
 
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
@@ -15,7 +15,7 @@
 
 
 
-    <style name="AppTheme.Base.Dark" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Base.Dark" parent="Theme.MaterialComponents.NoActionBar">
 
         <item name="colorPrimary">@color/colorDarkThemePrimary</item>
         <item name="colorPrimaryDark">@color/colorDarkThemePrimaryDark</item>

@@ -8,13 +8,13 @@
     android:focusable="true"
     android:foreground="@drawable/main_background">
 
-    <android.support.v7.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         app:cardPreventCornerOverlap="false">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -49,5 +49,5 @@
         </RelativeLayout>
 
 
-    </android.support.v7.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </FrameLayout>

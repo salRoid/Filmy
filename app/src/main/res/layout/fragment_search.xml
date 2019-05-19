@@ -7,12 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_results_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp" />
-
 
     <tech.salroid.filmy.customs.BreathingProgress
         android:id="@+id/breathingProgress"

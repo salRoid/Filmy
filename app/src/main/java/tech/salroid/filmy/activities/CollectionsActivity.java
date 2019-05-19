@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.appindexing.Action;
@@ -29,7 +30,6 @@ import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
 import tech.salroid.filmy.fragment.Favorite;
 import tech.salroid.filmy.fragment.SavedMovies;
 import tech.salroid.filmy.fragment.WatchList;
-import tech.salroid.filmy.utility.FontUtility;
 
 /*
  * Filmy Application for Android
@@ -73,7 +73,6 @@ public class CollectionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         SharedPreferences spref = PreferenceManager.getDefaultSharedPreferences(this);
         boolean nightMode = spref.getBoolean("dark", false);
         if (nightMode)
@@ -96,7 +95,7 @@ public class CollectionsActivity extends AppCompatActivity {
 
         throughShortcut = getIntent().getBooleanExtra("throughShortcut",false);
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
+        Typeface typeface =  ResourcesCompat.getFont(this,R.font.days_one_regular);
         logo.setTypeface(typeface);
 
         setupViewPager(viewPager);

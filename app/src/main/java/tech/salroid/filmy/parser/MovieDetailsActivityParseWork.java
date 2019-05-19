@@ -1,7 +1,6 @@
 package tech.salroid.filmy.parser;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,16 +58,15 @@ public class MovieDetailsActivityParseWork {
                 String name = (jsonArray.getJSONObject(i)).getString("name");
                 String cast_poster = (jsonArray.getJSONObject(i)).getString("profile_path");
 
-                cast_poster="http://image.tmdb.org/t/p/w185"+cast_poster;
+                cast_poster = "http://image.tmdb.org/t/p/w185" + cast_poster;
 
 
-                setterGettercast.setCast_character(character);
-                setterGettercast.setCast_name(name);
-                setterGettercast.setCast_profile(cast_poster);
-                setterGettercast.setCast_id(id);
+                setterGettercast.setCastCharacter(character);
+                setterGettercast.setCastName(name);
+                setterGettercast.setCastDisplayProfile(cast_poster);
+                setterGettercast.setCastId(id);
 
                 setterGettercastArray.add(setterGettercast);
-
 
             }
 
@@ -83,33 +81,32 @@ public class MovieDetailsActivityParseWork {
     public List<CrewDetailsData> parse_crew() {
 
         final List<CrewDetailsData> setterGettercrewArray = new ArrayList<CrewDetailsData>();
-        CrewDetailsData setterGetterCrew = null;
+        CrewDetailsData setterGetterCrew;
 
         try {
             JSONObject jsonObject = new JSONObject(result);
 
             JSONArray crewArray = jsonObject.getJSONArray("crew");
 
-            for (int i=0;i<crewArray.length();i++){
+            for (int i = 0; i < crewArray.length(); i++) {
 
                 setterGetterCrew = new CrewDetailsData();
 
                 String crew_id = (crewArray.getJSONObject(i)).getString("id");
                 String crew_job = (crewArray.getJSONObject(i)).getString("job");
                 String crew_name = (crewArray.getJSONObject(i)).getString("name");
-                String crew_poster = "http://image.tmdb.org/t/p/w185"+(crewArray.getJSONObject(i))
+                String crew_poster = "http://image.tmdb.org/t/p/w185" + (crewArray.getJSONObject(i))
                         .getString("profile_path");
 
 
-
-                if (!crew_poster.contains("null")){
+                if (!crew_poster.contains("null")) {
 
                     //Toast.makeText(context,crew_job,Toast.LENGTH_SHORT).show();
 
-                    setterGetterCrew.setCrew_id(crew_id);
-                    setterGetterCrew.setCrew_job(crew_job);
-                    setterGetterCrew.setCrew_name(crew_name);
-                    setterGetterCrew.setCrew_profile(crew_poster);
+                    setterGetterCrew.setCrewId(crew_id);
+                    setterGetterCrew.setCrewJobDescr(crew_job);
+                    setterGetterCrew.setCrewName(crew_name);
+                    setterGetterCrew.setCrewDisplayProfile(crew_poster);
                     setterGettercrewArray.add(setterGetterCrew);
 
                 }
@@ -131,21 +128,20 @@ public class MovieDetailsActivityParseWork {
         try {
             JSONObject jsonObject = new JSONObject(result);
 
-            JSONArray jsonArray = jsonObject.getJSONArray("results");;
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
+            ;
 
             for (int i = 0; i < jsonArray.length(); i++) {
 
                 setterGettersimilar = new SimilarMoviesData();
 
-                String id= (jsonArray.getJSONObject(i)).getString("id");
+                String id = (jsonArray.getJSONObject(i)).getString("id");
                 String title = (jsonArray.getJSONObject(i)).getString("original_title");
-                String movie_poster = "http://image.tmdb.org/t/p/w185"+(jsonArray.getJSONObject(i)).getString("poster_path");
+                String movie_poster = "http://image.tmdb.org/t/p/w185" + (jsonArray.getJSONObject(i)).getString("poster_path");
 
-                if(movie_poster.contains("null")){
+                if (movie_poster.contains("null")) {
 
-                }
-
-                else {
+                } else {
                     setterGettersimilar.setMovie_id(id);
                     setterGettersimilar.setMovie_banner(movie_poster);
                     setterGettersimilar.setMovie_title(title);
@@ -159,8 +155,6 @@ public class MovieDetailsActivityParseWork {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
 
 
         return setterGettersimilarArray;

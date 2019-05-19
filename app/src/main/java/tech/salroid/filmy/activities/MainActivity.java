@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -41,7 +40,6 @@ import tech.salroid.filmy.fragment.SearchFragment;
 import tech.salroid.filmy.fragment.Trending;
 import tech.salroid.filmy.fragment.UpComing;
 import tech.salroid.filmy.network_stuff.FirstFetch;
-import tech.salroid.filmy.utility.FontUtility;
 import tech.salroid.filmy.utility.Network;
 import tr.xip.errorview.ErrorView;
 
@@ -79,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
-    @BindView(R.id.error_view)
+    @BindView(R.id.main_error_view)
     ErrorView mErrorView;
 
     private Trending trendingFragment;
@@ -118,29 +116,22 @@ public class MainActivity extends AppCompatActivity {
 
         introLogic();
 
-        Typeface typeface = Typeface.createFromAsset(getAssets(), FontUtility.getFontName());
-       logo.setTypeface(typeface);
-
         if (nightMode)
             allThemeLogic();
 
-        mErrorView.setConfig(ErrorView.Config.create()
-                .title(getString(R.string.error_title_damn))
-                .titleColor(ContextCompat.getColor(this, R.color.dark))
-                .subtitle(getString(R.string.error_details))
-                .retryText(getString(R.string.error_retry))
-                .build());
+        mErrorView
+                .setTitle(getString(R.string.error_title_damn))
+                .setTitleColor(ContextCompat.getColor(this, R.color.dark))
+                .setSubtitle(getString(R.string.error_details))
+                .setRetryText(getString(R.string.error_retry));
 
 
-        mErrorView.setOnRetryListener(new ErrorView.RetryListener() {
-            @Override
-            public void onRetry() {
-                if (Network.isNetworkConnected(MainActivity.this)) {
-                    fetchingFromNetwork = true;
-                    setScheduler();
-                }
-                canProceed();
+        mErrorView.setRetryListener(() -> {
+            if (Network.isNetworkConnected(MainActivity.this)) {
+                fetchingFromNetwork = true;
+                setScheduler();
             }
+            canProceed();
         });
 
 
@@ -272,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
 
                     tabLayout.setVisibility(View.GONE);
                     viewPager.setVisibility(View.GONE);
-                    mErrorView.setError(status);
+                    //mErrorView.setError(status);
                     mErrorView.setVisibility(View.VISIBLE);
 
                     //disable toolbar scrolling

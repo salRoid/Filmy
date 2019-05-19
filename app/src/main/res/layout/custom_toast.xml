@@ -1,4 +1,5 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toast_layout_root"
     android:layout_width="fill_parent"
@@ -39,4 +40,4 @@
             android:textColor="@color/dark" />
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

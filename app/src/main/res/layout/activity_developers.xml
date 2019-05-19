@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +22,7 @@
             android:textColor="#757575"
             android:textSize="20sp" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,14 +31,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/sajal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardPreventCornerOverlap="false"
-        card_view:cardCornerRadius="0dp">
+        app:cardPreventCornerOverlap="false"
+        app:cardCornerRadius="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -98,11 +97,13 @@
                 >
 
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:layout_weight="1"
                     android:layout_width="0dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_height="wrap_content"
                     android:text="@string/email"
+                    app:strokeWidth="0dp"
                     android:background="#00ffffff"
                     android:textColor="@color/colorAccent"
                     android:fontFamily="sans-serif-condensed"
@@ -110,25 +111,29 @@
                     android:onClick="sendEmail"
                     />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/github"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_width="0dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:text="@string/github"
+                    app:strokeWidth="0dp"
                     android:background="#00ffffff"
                     android:textColor="@color/colorAccent"
                     android:fontFamily="sans-serif-condensed"
                     android:onClick="openGithub"
                     />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/gplus"
                     android:onClick="openGplus"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/gplus"
+                    app:strokeWidth="0dp"
                     android:background="#00ffffff"
                     android:textColor="@color/colorAccent"
                     android:fontFamily="sans-serif-condensed"
@@ -140,15 +145,15 @@
         </RelativeLayout>
 
 
-    </android.support.v7.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
-    <android.support.v7.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/ramankit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/sajal"
         android:layout_marginTop="8dp"
-        card_view:cardCornerRadius="0dp">
+        app:cardCornerRadius="0dp">
 
 
         <RelativeLayout
@@ -206,37 +211,43 @@
             >
 
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/email2"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:onClick="sendEmail"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/email"
+                app:strokeWidth="0dp"
                 android:background="#00ffffff"
                 android:textColor="@color/colorAccent"
                 android:fontFamily="sans-serif-condensed"
                 />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/github2"
                 android:onClick="openGithub"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:text="@string/github"
+                app:strokeWidth="0dp"
                 android:background="#00ffffff"
                 android:textColor="@color/colorAccent"
                 android:fontFamily="sans-serif-condensed"
                 />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/gplus2"
                 android:onClick="openGplus"
                 android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/gplus"
+                app:strokeWidth="0dp"
                 android:background="#00ffffff"
                 android:textColor="@color/colorAccent"
                 android:fontFamily="sans-serif-condensed"
@@ -246,7 +257,7 @@
         </LinearLayout>
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     </RelativeLayout>
     </ScrollView>

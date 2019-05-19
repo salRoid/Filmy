@@ -19,11 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -118,25 +114,19 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     public void getCastFromNetwork(String movieId) {
 
         String TMBD_API_KEY = BuildConfig.TMDB_API_KEY;
-        final String BASE_MOVIE_CAST_DETAILS = new String("http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=" + TMBD_API_KEY);
+        final String BASE_MOVIE_CAST_DETAILS = "http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=" + TMBD_API_KEY;
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(BASE_MOVIE_CAST_DETAILS, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        jsonCast = response.toString();
-                        parseCastOutput(response.toString());
+                response -> {
+                    jsonCast = response.toString();
+                    parseCastOutput(response.toString());
 
-                        if (gotCrewListener != null) gotCrewListener.gotCrew(response.toString());
+                    if (gotCrewListener != null) gotCrewListener.gotCrew(response.toString());
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                }, error -> {
 
-                Log.e("webi", "Volley Error: " + error.getCause());
-                breathingProgress.setVisibility(View.GONE);
-            }
-        }
+                    Log.e("webi", "Volley Error: " + error.getCause());
+                    breathingProgress.setVisibility(View.GONE);
+                }
         );
 
         TmdbVolleySingleton volleySingleton = TmdbVolleySingleton.getInstance();

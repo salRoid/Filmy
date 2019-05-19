@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context="tech.salroid.filmy.activities.FullCastActivity">
 
-
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -15,7 +14,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:theme="@style/ThemeOverlay.AppCompat" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@id/toolbar"
         android:id="@+id/full_movie_recycler"
         android:layout_width="match_parent"

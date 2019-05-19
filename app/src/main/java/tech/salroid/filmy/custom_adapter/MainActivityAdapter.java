@@ -51,6 +51,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     }
 
 
+    @NonNull
     @Override
     public Vh onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.custom_row, parent, false);
@@ -136,17 +137,12 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             ButterKnife.bind(this, itemView);
             //year = (TextView) itemView.findViewById(R.id.movie_year);
 
-            main.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    dataCursor.moveToPosition(getPosition());
-
-                    if (clickListener != null) {
-                        clickListener.itemClicked(dataCursor);
-                    }
-
+            main.setOnClickListener(view -> {
+                dataCursor.moveToPosition(getPosition());
+                if (clickListener != null) {
+                    clickListener.itemClicked(dataCursor);
                 }
+
             });
         }
     }

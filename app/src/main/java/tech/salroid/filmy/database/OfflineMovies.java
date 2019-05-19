@@ -1,6 +1,5 @@
 package tech.salroid.filmy.database;
 
-import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.HashMap;
 
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.customs.CustomToast;
-import tech.salroid.filmy.utility.Constants;
 
 /*
  * Filmy Application for Android
@@ -99,7 +99,7 @@ public class OfflineMovies {
         if (returnedCursor.moveToFirst() && returnedCursor.getCount() == 30) {
             //No space to fill more. Have to delete oldest entry to save this Agree?
 
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
             alertDialog.setTitle("Remove");
             alertDialog.setIcon(R.drawable.ic_delete_sweep_black_24dp);
 

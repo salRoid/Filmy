@@ -45,10 +45,11 @@
     <View
         android:id="@+id/cast_divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_below="@id/cast_poster"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="58dp"
         android:background="?attr/divider"
 
         />

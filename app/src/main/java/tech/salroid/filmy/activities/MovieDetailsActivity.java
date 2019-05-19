@@ -133,6 +133,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements
     @BindView(R.id.youtube_icon)
     ImageView youtubeIcon;
 
+    @BindView(R.id.youtube_icon_container)
+    FrameLayout youtubeIconContainer;
+
     @BindView(R.id.trailorView)
     FrameLayout trailorView;
     @BindView(R.id.new_main)
@@ -241,7 +244,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
         headerContainer.setOnClickListener(this);
         newMain.setOnClickListener(this);
         trailorView.setOnClickListener(this);
-        youtubeIcon.setOnClickListener(this);
+        youtubeIconContainer.setOnClickListener(this);
 
 
         Intent intent = getIntent();
@@ -943,7 +946,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                             getString(R.string.Youtube_Api_Key), trailor,timeMiliSeconds,autoPlay,lightBoxMode));
 
                 break;
-            case R.id.youtube_icon:
+            case R.id.youtube_icon_container:
                 if (trailer_boolean) {
                     allTrailerFragment = new AllTrailerFragment();
                     // Log.d(TAG, "onClick: "+ Arrays.toString(trailer_array));

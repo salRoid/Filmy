@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ratingBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="32dp"
-    android:paddingRight="32dp"
     android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    >
+    android:paddingRight="32dp"
+    android:paddingBottom="16dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -16,124 +16,183 @@
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/layout_imdb"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
+            android:layout_marginStart="@dimen/widget_margin_half"
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:layout_marginBottom="@dimen/widget_margin_half"
+            app:strokeWidth="0dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/grey2"
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:src="@drawable/imdb" />
-
-            <TextView
-                android:id="@+id/imdbRating"
+            <LinearLayout
+                android:id="@+id/layout_imdb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:orientation="vertical">
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_tomato"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/tomatoRating_image"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:src="@drawable/certified" />
-
-            <TextView
-                android:id="@+id/tomatoRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_flixi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/flixterRating_image"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:src="@drawable/popcorn" />
-
-            <TextView
-                android:id="@+id/flixterRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/layout_meta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/metaRating_background"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="#66cc33">
+                <ImageView
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/imdb" />
 
                 <TextView
-                    android:id="@+id/metaRatingView"
+                    android:id="@+id/imdbRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/metaRating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp" />
+        </com.google.android.material.card.MaterialCardView>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_tmdb"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:layout_marginBottom="@dimen/widget_margin_half"
+            app:strokeWidth="0dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/grey2"
+            android:layout_marginStart="@dimen/widget_margin_half"
+            android:layout_marginEnd="@dimen/widget_margin_half">
 
-            <ImageView
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:src="@drawable/tmdb_rating" />
-
-            <TextView
-                android:id="@+id/tmdbRating"
+            <LinearLayout
+                android:id="@+id/layout_tomato"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/tomatoRating_image"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/certified" />
+
+                <TextView
+                    android:id="@+id/tomatoRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:layout_marginBottom="@dimen/widget_margin_half"
+            app:strokeWidth="0dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/grey2"
+            android:layout_marginStart="@dimen/widget_margin_half"
+            android:layout_marginEnd="@dimen/widget_margin_half">
+
+            <LinearLayout
+                android:id="@+id/layout_flixi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/flixterRating_image"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/popcorn" />
+
+                <TextView
+                    android:id="@+id/flixterRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:layout_marginBottom="@dimen/widget_margin_half"
+            app:strokeWidth="0dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/grey2"
+            android:layout_marginStart="@dimen/widget_margin_half"
+            android:layout_marginEnd="@dimen/widget_margin_half">
+
+            <LinearLayout
+                android:id="@+id/layout_meta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/metaRating_background"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="#66cc33">
+
+                    <TextView
+                        android:id="@+id/metaRatingView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/metaRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:layout_marginBottom="@dimen/widget_margin_half"
+            app:strokeWidth="0dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/grey2"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/layout_tmdb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/tmdb_rating" />
+
+                <TextView
+                    android:id="@+id/tmdbRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
 
     </LinearLayout>

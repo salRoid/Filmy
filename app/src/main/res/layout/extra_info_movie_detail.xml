@@ -20,6 +20,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/circularstd_book"
             android:text="@string/runtime"
+            android:drawableStart="@drawable/twotone_access_time_24"
+            android:drawablePadding="@dimen/widget_margin"
             android:textSize="16sp" />
 
         <TextView
@@ -41,6 +43,9 @@
             android:layout_below="@id/runtime_holder"
             android:fontFamily="@font/circularstd_book"
             android:text="@string/genre"
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:drawablePadding="@dimen/widget_margin"
+            android:drawableStart="@drawable/twotone_movie_24"
             android:textSize="16sp" />
 
         <TextView
@@ -66,6 +71,9 @@
             android:layout_below="@id/detail_certification"
             android:fontFamily="@font/circularstd_book"
             android:text="@string/language"
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:drawableStart="@drawable/twotone_language_24"
+            android:drawablePadding="@dimen/widget_margin"
             android:textSize="16sp" />
 
         <TextView
@@ -89,6 +97,9 @@
             android:layout_below="@id/language_holder"
             android:fontFamily="@font/circularstd_book"
             android:text="@string/release_date"
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:drawablePadding="@dimen/widget_margin"
+            android:drawableStart="@drawable/twotone_calendar_today_24"
             android:textSize="16sp" />
 
 

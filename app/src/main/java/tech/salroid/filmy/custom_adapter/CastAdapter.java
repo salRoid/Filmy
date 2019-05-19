@@ -64,19 +64,19 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
     public void onBindViewHolder(Ho holder, int position) {
 
         String castName = castList.get(position).getCastName();
-        String castDescription = castList.get(position).getCastDescription();
-        String castDisplayProfile = castList.get(position).getCastDescription();
+        String castCharacter = castList.get(position).getCastCharacter();
+        String castDisplayProfile = castList.get(position).getCastDisplayProfile();
         String castId = castList.get(position).getCastId();
 
-        holder.cast_name.setText(castName);
-        holder.cast_description.setText(castDescription);
+        holder.castName.setText(castName);
+        holder.castCharacter.setText(castCharacter);
 
         try {
             Glide.with(context)
                     .load(castDisplayProfile)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
-                    .into(holder.cast_poster);
+                    .into(holder.castDisplayProfile);
         } catch (Exception e) {
         }
 
@@ -84,7 +84,6 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
 
     @Override
     public int getItemCount() {
-
         if (ret_size) {
             return (castList.size() >= 5) ? 5 : castList.size();
         } else {
@@ -105,11 +104,11 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
     class Ho extends RecyclerView.ViewHolder {
 
         @BindView(R.id.cast_name)
-        TextView cast_name;
+        TextView castName;
         @BindView(R.id.cast_description)
-        TextView cast_description;
+        TextView castCharacter;
         @BindView(R.id.cast_poster)
-        CircularImageView cast_poster;
+        CircularImageView castDisplayProfile;
 
         Ho(View itemView) {
 

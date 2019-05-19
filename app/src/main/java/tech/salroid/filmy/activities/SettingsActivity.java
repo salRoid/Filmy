@@ -123,7 +123,7 @@ public class SettingsActivity extends AppCompatActivity {
                     if (!switchPreference.isChecked()) {
                         quality = "original";
                     } else {
-                        quality = "w780";
+                        quality = "w1280";
                     }
 
 

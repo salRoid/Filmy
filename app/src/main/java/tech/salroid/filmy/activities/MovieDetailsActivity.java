@@ -236,7 +236,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements
 
 
         SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
-        quality = prefrence.getString("image_quality", "w1000");
+        quality = prefrence.getString("image_quality", "original");
 
         headerContainer.setOnClickListener(this);
         newMain.setOnClickListener(this);

@@ -10,7 +10,7 @@
     <string name="imdb_link_prefix" translatable="false">http://www.imdb.com/title/</string>
     <string name="trailer_img_prefix" translatable="false">http://img.youtube.com/vi/</string>
     <string name="trailer_img_suffix" translatable="false">/0.jpg</string>
-    <string name="poster_prefix_185" translatable="false">http://image.tmdb.org/t/p/w185</string>
+    <string name="poster_prefix_185" translatable="false">http://image.tmdb.org/t/p/w342</string>
     <string name="poster_prefix_500" translatable="false">http://image.tmdb.org/t/p/w780</string>
     <string name="poster_prefix_add_quality" translatable="false">http://image.tmdb.org/t/p/</string>
     <string name="trailer_link_prefix" translatable="false">https://www.youtube.com/watch?v=</string>

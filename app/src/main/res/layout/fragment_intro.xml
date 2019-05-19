@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:text="@string/welcome_to_filmy"
         android:textColor="#ffffff"
         android:textSize="24sp"
@@ -25,7 +25,7 @@
         android:layout_below="@id/intro_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:text="@string/filmy_is_your_new_movie_app"
         android:textColor="#ffffff"
         android:textSize="18sp" />

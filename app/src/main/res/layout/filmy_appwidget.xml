@@ -41,7 +41,7 @@
                     android:text="TRENDING"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:fontFamily="sans-serif-condensed"
+                    android:fontFamily="@font/circularstd_book"
                     />
 
 
@@ -59,7 +59,7 @@
                         android:textStyle="bold"
                         android:textColor="@color/white"
                         android:text=" "
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
 
                         />
 

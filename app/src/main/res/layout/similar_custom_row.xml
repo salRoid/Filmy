@@ -38,7 +38,7 @@
                     android:layout_gravity="center"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:fontFamily="sans-serif-condensed"
+                    android:fontFamily="@font/circularstd_book"
                     android:padding="8dp"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textStyle="bold" />

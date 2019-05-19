@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:text="@string/exploration"
         android:textColor="#ffffff"
         android:textSize="24sp"
@@ -25,7 +25,7 @@
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:text="@string/search_through_the_large_sea_of_movies_and_know_about_different_casts"
         android:textColor="#ffffff"
         android:textSize="18sp" />

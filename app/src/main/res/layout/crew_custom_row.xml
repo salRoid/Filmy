@@ -26,7 +26,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_toRightOf="@id/crew_poster"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:textAppearance="?android:textAppearanceMedium"
         android:transitionName="name" />
 
@@ -37,7 +37,7 @@
         android:layout_below="@+id/crew_name"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/crew_poster"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:textAppearance="?android:textAppearanceSmall" />
 
     <View

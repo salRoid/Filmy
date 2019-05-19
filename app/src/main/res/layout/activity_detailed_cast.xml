@@ -63,7 +63,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginTop="16dp"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
                         android:textAppearance="?android:textAppearanceLarge" />
 
                     <TextView
@@ -72,7 +72,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
                         android:textAppearance="?android:textAppearanceMedium" />
 
                     <TextView
@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
                         android:textAppearance="?android:textAppearanceMedium" />
                 </LinearLayout>
 
@@ -100,7 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
                         android:maxLines="6"
                         android:textAppearance="?android:textAppearanceSmall" />
                 </FrameLayout>
@@ -124,7 +124,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
                         android:padding="16dp"
                         android:text="@string/movies"
                         android:textAppearance="?android:textAppearanceMedium"
@@ -137,7 +137,7 @@
                         android:layout_alignParentRight="true"
                         android:background="?android:selectableItemBackground"
                         android:clickable="true"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
                         android:padding="16dp"
                         android:text="@string/more"
                         android:textAppearance="?android:textAppearanceMedium"

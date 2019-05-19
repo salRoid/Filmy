@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:text="@string/offline_movies"
         android:textColor="#ffffff"
         android:textSize="24sp"
@@ -26,7 +26,7 @@
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:text="@string/save_movies_locally_to_see_various_details_even_if_you_don_t_have_internet"
         android:textColor="#ffffff"
         android:textSize="18sp" />

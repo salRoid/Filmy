@@ -52,14 +52,14 @@
                         android:id="@+id/detail_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
                         android:textAppearance="?android:textAppearanceLarge" />
 
                     <TextView
                         android:id="@+id/detail_tagline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:visibility="gone" />
 
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:ellipsize="end"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="@font/circularstd_book"
                         android:maxLines="4"
                         android:textAppearance="?android:textAppearanceSmall" />
 

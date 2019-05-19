@@ -25,7 +25,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/movie_poster"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:textAppearance="?android:textAppearanceMedium" />
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_below="@+id/movie_name"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/movie_poster"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:textAppearance="?android:textAppearanceSmall" />
 
 

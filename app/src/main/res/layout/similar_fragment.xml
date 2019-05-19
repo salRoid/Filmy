@@ -21,7 +21,7 @@
                 android:id="@+id/card_holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
+                android:fontFamily="@font/circularstd_book"
                 android:padding="16dp"
                 android:text="@string/similar"
                 android:textAppearance="?android:textAppearanceMedium"

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:text="@string/categorized"
         android:textColor="#ffffff"
         android:textSize="24sp"
@@ -26,7 +26,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="@font/circularstd_book"
         android:text="@string/get_different_movies_in_different_categories_at_one_place"
         android:textColor="#ffffff"
         android:textSize="18sp" />

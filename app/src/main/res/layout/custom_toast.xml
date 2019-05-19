@@ -35,7 +35,7 @@
             android:padding="16dp"
             android:layout_marginRight="32dp"
             android:layout_toRightOf="@id/image"
-            android:fontFamily="sans-serif-condensed"
+            android:fontFamily="@font/circularstd_book"
             android:text="Failed once again."
             android:textColor="@color/dark" />
     </RelativeLayout>

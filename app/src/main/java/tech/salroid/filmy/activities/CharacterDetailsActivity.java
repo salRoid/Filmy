@@ -117,7 +117,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         getSupportActionBar().setTitle("");
 
 
-        Typeface typeface =  ResourcesCompat.getFont(this,R.font.days_one_regular);
+        Typeface typeface =  ResourcesCompat.getFont(this,R.font.rubik);
 
         logo.setTypeface(typeface);
 

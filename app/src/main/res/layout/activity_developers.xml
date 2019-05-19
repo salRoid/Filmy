@@ -38,6 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardPreventCornerOverlap="false"
+        app:strokeWidth="0.5dp"
+        app:strokeColor="@color/grey"
         app:cardCornerRadius="0dp">
 
         <RelativeLayout
@@ -153,6 +155,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sajal"
         android:layout_marginTop="8dp"
+        app:strokeWidth="0.5dp"
+        app:strokeColor="@color/grey"
         app:cardCornerRadius="0dp">
 
 

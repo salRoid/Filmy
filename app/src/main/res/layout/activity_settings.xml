@@ -37,6 +37,8 @@
                 android:id="@+id/preferencesContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:strokeWidth="0.5dp"
+                app:strokeColor="@color/grey"
                 card_view:cardCornerRadius="0dp">
 
                 <FrameLayout

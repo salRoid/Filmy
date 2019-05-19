@@ -71,7 +71,7 @@ public class AboutActivity extends AppCompatActivity {
         }
 
 
-        Typeface typeface = ResourcesCompat.getFont(this,R.font.days_one_regular);
+        Typeface typeface = ResourcesCompat.getFont(this,R.font.rubik);
         logo.setTypeface(typeface);
 
 

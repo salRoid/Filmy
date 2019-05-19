@@ -7,7 +7,7 @@
     android:layout_marginBottom="32dp"
     android:padding="10dp"
     card_view:cardBackgroundColor="@color/grey"
-    card_view:cardElevation="5dp"
+    card_view:cardElevation="2dp"
     card_view:cardCornerRadius="20dp"
     card_view:cardPreventCornerOverlap="false"
     >

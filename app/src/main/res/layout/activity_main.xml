@@ -32,8 +32,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/days_one_regular"
+                    android:fontFamily="@font/rubik"
                     android:text="@string/app_name"
+                    android:textStyle="bold"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 

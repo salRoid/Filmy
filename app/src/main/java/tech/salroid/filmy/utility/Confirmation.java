@@ -6,6 +6,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.HashMap;
 
+import tech.salroid.filmy.R;
 import tech.salroid.filmy.database.OfflineMovies;
 
 /**
@@ -16,7 +17,7 @@ public class Confirmation {
 
     public static void confirmFav(final Context context, final HashMap<String, String> movieMap,
                                   final String movie_id, final String movie_id_final, final int flagFavorite) {
-        new MaterialAlertDialogBuilder(context)
+        new MaterialAlertDialogBuilder(context, R.style.AppTheme_Base_Dialog)
                 .setTitle("Favorite")
                 .setMessage("Are you sure you want to add this to favorite section?")
                 .setPositiveButton(android.R.string.yes, (dialog, which) -> {
@@ -32,7 +33,7 @@ public class Confirmation {
                                         final String movie_id, final String movie_id_final,
                                         final int flagWatchlist) {
 
-        new MaterialAlertDialogBuilder(context)
+        new MaterialAlertDialogBuilder(context, R.style.AppTheme_Base_Dialog)
                 .setTitle("WatchList")
                 .setIcon(null)
                 .setMessage("Are you sure you want to add this to watchlist section?")

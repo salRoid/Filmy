@@ -99,7 +99,7 @@ public class OfflineMovies {
         if (returnedCursor.moveToFirst() && returnedCursor.getCount() == 30) {
             //No space to fill more. Have to delete oldest entry to save this Agree?
 
-            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context);
+            MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context, R.style.AppTheme_Base_Dialog);
             alertDialog.setTitle("Remove");
             alertDialog.setIcon(R.drawable.ic_delete_sweep_black_24dp);
 

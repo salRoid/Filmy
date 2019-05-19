@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
@@ -31,11 +30,11 @@
                     android:id="@+id/logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:fontFamily="@font/days_one_regular"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:textColor="#757575"
+                    android:layout_marginLeft="16dp"
+                    android:fontFamily="@font/days_one_regular"
+                    android:text="@string/app_name"
+                    android:textColor="@color/black"
                     android:textSize="20sp" />
 
             </androidx.appcompat.widget.Toolbar>
@@ -52,11 +51,30 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabGravity="fill"
-            app:tabSelectedTextColor="@color/black"
+            app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorColor="@color/dark"
-            app:tabIndicatorHeight="3dp"
-            app:tabMode="fixed" />
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="4dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/black"
+            app:tabUnboundedRipple="true">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trending" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/theatres" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/upcoming" />
+
+        </com.google.android.material.tabs.TabLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -65,10 +83,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
         android:layout_marginTop="0dp"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        />
+        android:layout_marginRight="4dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     <tr.xip.errorview.ErrorView
         android:id="@+id/main_error_view"
@@ -77,8 +94,8 @@
         android:layout_gravity="center"
         android:layout_margin="16dp"
         android:visibility="gone"
-        app:ev_retryText="TRY AGAIN"
         app:ev_retryColor="@color/colorAccent"
+        app:ev_retryText="TRY AGAIN"
         app:ev_subtitle="Something went wrong!" />
 
     <FrameLayout

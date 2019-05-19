@@ -34,10 +34,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabGravity="fill"
-            app:tabSelectedTextColor="@color/black"
+            app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorColor="@color/dark"
-            app:tabIndicatorHeight="3dp"
-            app:tabMode="fixed" />
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="4dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/black"
+            app:tabUnboundedRipple="true"
+            />
 
     </com.google.android.material.appbar.AppBarLayout>
 

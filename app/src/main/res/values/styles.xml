@@ -14,6 +14,12 @@
     </style>
 
 
+    <style name="AppTheme.Base.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+
+        <item name="colorPrimary">@color/colorAccent</item>
+
+    </style>
+
 
     <style name="AppTheme.Base.Dark" parent="Theme.MaterialComponents.NoActionBar">
 

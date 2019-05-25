@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.AppWidgetTarget;
 
 import tech.salroid.filmy.R;
@@ -80,11 +81,12 @@ public class FilmyWidgetProvider extends AppWidgetProvider {
 
             AppWidgetTarget appWidgetTarget = new AppWidgetTarget(context, R.id.widget_movie_image, remoteViews, appWidgetIds);
 
-          /*  Glide.with(context)
+            Glide.with(context)
+                    .asBitmap()
                     .load(movie_poster)
                     .into(appWidgetTarget);
 
-*/
+
             Intent intent = new Intent(context,MovieDetailsActivity.class);
             intent.putExtra("title", movie_title);
             intent.putExtra("activity", true);

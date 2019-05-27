@@ -1,18 +1,26 @@
-package tech.salroid.filmy.network_stuff;
+package tech.salroid.filmy.services;
 
+import android.app.job.JobParameters;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONObject;
+
 import tech.salroid.filmy.BuildConfig;
+import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.MainActivityParseWork;
-import tech.salroid.filmy.services.FilmyWorkManager;
 
 /*
  * Filmy Application for Android
@@ -31,47 +39,69 @@ import tech.salroid.filmy.services.FilmyWorkManager;
  * limitations under the License.
  */
 
-public class FirstFetch {
 
+public class FilmyWorker extends Worker {
 
-    private Context context;
     TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
     RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
 
-    public FirstFetch(Context context){
+
+    private WorkerParameters workParameters;
+
+    private int taskFinished;
+    private String api_key = BuildConfig.TMDB_API_KEY;
+    private Context context;
+
+
+    public FilmyWorker(
+            @NonNull Context context,
+            @NonNull WorkerParameters params) {
+        super(context, params);
         this.context = context;
-    }
-
-    public void start(){
-
-        syncNowTrending();
-        syncNowInTheaters();
-        syncNowUpComing();
-
-        FilmyWorkManager workManager = new FilmyWorkManager(context);
-        workManager.createWork();
+        workParameters = params;
     }
 
 
     private void syncNowInTheaters() {
 
-        String api_key = BuildConfig.TMDB_API_KEY;
-        final String inTheatresBaseUrl = "https://api.themoviedb.org/3/movie/now_playing?api_key="+api_key;
-        JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(inTheatresBaseUrl, null,
-                response -> intheatresparseOutput(response.toString(), 2), error -> Log.e("webi", "Volley Error: " + error.getCause()));
 
-        tmdbrequestQueue.add(IntheatresJsonObjectRequest);
+        final String inTheatersBaseUrl = "https://api.themoviedb.org/3/movie/now_playing?api_key="+api_key;
+
+        JsonObjectRequest intheatresJsonObjectRequest = new JsonObjectRequest(inTheatersBaseUrl, null,
+                response -> {
+
+                    intheatresparseOutput(response.toString(), 2);
+
+                    taskFinished++;
+
+                    if (taskFinished==3){
+
+                        jobFinished(jobParameters,false);
+                        taskFinished = 0;
+                    }
+
+                }, error -> Log.e("webi", "Volley Error: " + error.getCause()));
+
+
+        tmdbrequestQueue.add(intheatresJsonObjectRequest);
 
     }
 
     private void syncNowUpComing() {
 
 
-        String api_key = BuildConfig.TMDB_API_KEY;
         final String Upcoming_Base_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key="+api_key;
 
         JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Upcoming_Base_URL, null,
-                response -> upcomingparseOutput(response.toString()), error -> Log.e("webi", "Volley Error: " + error.getCause()));
+                response -> {
+
+                    upcomingparseOutput(response.toString());
+                    taskFinished++;
+                    if (taskFinished==3){
+                        jobFinished(workParameters,false);
+                        taskFinished = 0;
+                    }
+                }, error -> Log.e("webi", "Volley Error: " + error.getCause()));
 
         tmdbrequestQueue.add(UpcomingJsonObjectRequest);
 
@@ -79,11 +109,20 @@ public class FirstFetch {
 
     private void syncNowTrending() {
 
-        String api_key = BuildConfig.TMDB_API_KEY;
+
         final String BASE_URL = "https://api.themoviedb.org/3/movie/popular?api_key="+api_key;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(BASE_URL, null,
-                response -> parseOutput(response.toString()), error -> {
+                response -> {
+
+                    parseOutput(response.toString());
+                    taskFinished++;
+                    if (taskFinished==3){
+                        jobFinished(workParameters,false);
+                        taskFinished = 0;
+                    }
+
+                }, error -> {
 
                     NetworkResponse networkResponse = error.networkResponse;
                     if (networkResponse != null) {
@@ -97,6 +136,7 @@ public class FirstFetch {
         tmdbrequestQueue.add(jsonObjectRequest);
 
     }
+
 
     private void intheatresparseOutput(String s, int type) {
 
@@ -112,18 +152,25 @@ public class FirstFetch {
 
 
     private void parseOutput(String result) {
-
         MainActivityParseWork pa = new MainActivityParseWork(context, result);
         pa.parse();
     }
 
     private void sendFetchFailedMessage(int message) {
-
         Intent intent = new Intent("fetch-failed");
         intent.putExtra("message", message);
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-
     }
 
 
+    @NonNull
+    @Override
+    public Result doWork() {
+
+        syncNowTrending();
+        syncNowInTheaters();
+        syncNowUpComing();
+
+        return Result.success();
+    }
 }

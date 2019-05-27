@@ -1,9 +1,11 @@
 package tech.salroid.filmy.services;
 
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
+
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
+import java.util.concurrent.TimeUnit;
 
 
 /*
@@ -24,36 +26,27 @@ import android.content.Context;
  */
 
 
-public class FilmyJobScheduler {
-
+public class FilmyWorkManager {
 
     private static final long SYNC_INTERVAL = 21600000;
-    private JobScheduler jobScheduler;
-    private int JOB_ID = 456;
     private Context context;
 
-    public static final long time = System.currentTimeMillis();
-
-    public FilmyJobScheduler(Context context) {
-
-
+    public FilmyWorkManager(Context context) {
         this.context = context;
-        jobScheduler = (JobScheduler) context.getApplicationContext().getSystemService(Context.JOB_SCHEDULER_SERVICE);
     }
 
-    public void createJob() {
+    public void createWork() {
 
-        JobInfo.Builder jobBuilder = new JobInfo.Builder(JOB_ID, new ComponentName(context, FilmyJobService.class));
-
+        /*JobInfo.Builder jobBuilder = new JobInfo.Builder(JOB_ID, new ComponentName(context, FilmyWorker.class));
         //PersistableBundle persistableBundle = new PersistableBundle();
-
         jobBuilder.setPeriodic(SYNC_INTERVAL)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
                 .setPersisted(true);
+        jobScheduler.schedule(jobBuilder.build());*/
 
-        jobScheduler.schedule(jobBuilder.build());
-
-
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(FilmyWorker.class,SYNC_INTERVAL, TimeUnit.MILLISECONDS)
+                .build();
+        WorkManager.getInstance().enqueue(workRequest);
     }
 
 

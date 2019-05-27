@@ -59,6 +59,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha05'
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
+    implementation "androidx.work:work-runtime:2.0.1"
+
+
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.mikhaellopez:circularimageview:3.0.2'

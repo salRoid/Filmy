@@ -84,7 +84,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".services.FilmyJobService"
+            android:name=".services.FilmyWorker"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 

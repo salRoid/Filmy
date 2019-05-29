@@ -198,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (Network.isNetworkConnected(this)) {
-
             fetchingFromNetwork = true;
             setScheduler();
         }
@@ -253,22 +252,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void cantProceed(final int status) {
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        new Handler().postDelayed(() -> {
 
-                if (trendingFragment != null && !trendingFragment.isShowingFromDatabase) {
-
-                    cantProceed = true;
-
-                    tabLayout.setVisibility(View.GONE);
-                    viewPager.setVisibility(View.GONE);
-                    //mErrorView.setError(status);
-                    mErrorView.setVisibility(View.VISIBLE);
-
-                    //disable toolbar scrolling
-                    disableToolbarScrolling();
-                }
+            if (trendingFragment != null && !trendingFragment.isShowingFromDatabase) {
+                cantProceed = true;
+                tabLayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                //mErrorView.setError(status);
+                mErrorView.setVisibility(View.VISIBLE);
+                //disable toolbar scrolling
+                disableToolbarScrolling();
             }
         }, 1000);
 

@@ -12,7 +12,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.parser.MainActivityParseWork;
-import tech.salroid.filmy.services.FilmyWorkManager;
+import tech.salroid.filmy.work_manager.FilmyWorkManager;
 
 /*
  * Filmy Application for Android
@@ -35,8 +35,8 @@ public class FirstFetch {
 
 
     private Context context;
-    TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
-    RequestQueue tmdbrequestQueue = tmdbVolleySingleton.getRequestQueue();
+    private TmdbVolleySingleton tmdbVolleySingleton = TmdbVolleySingleton.getInstance();
+    private RequestQueue tmdbRequestQueue = tmdbVolleySingleton.getRequestQueue();
 
     public FirstFetch(Context context){
         this.context = context;
@@ -57,10 +57,10 @@ public class FirstFetch {
 
         String api_key = BuildConfig.TMDB_API_KEY;
         final String inTheatresBaseUrl = "https://api.themoviedb.org/3/movie/now_playing?api_key="+api_key;
-        JsonObjectRequest IntheatresJsonObjectRequest = new JsonObjectRequest(inTheatresBaseUrl, null,
-                response -> intheatresparseOutput(response.toString(), 2), error -> Log.e("webi", "Volley Error: " + error.getCause()));
+        JsonObjectRequest inTheatresJsonObjectRequest = new JsonObjectRequest(inTheatresBaseUrl, null,
+                response -> inTheatresParseOutput(response.toString(), 2), error -> Log.e("webi", "Volley Error: " + error.getCause()));
 
-        tmdbrequestQueue.add(IntheatresJsonObjectRequest);
+        tmdbRequestQueue.add(inTheatresJsonObjectRequest);
 
     }
 
@@ -71,9 +71,9 @@ public class FirstFetch {
         final String Upcoming_Base_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key="+api_key;
 
         JsonObjectRequest UpcomingJsonObjectRequest = new JsonObjectRequest(Upcoming_Base_URL, null,
-                response -> upcomingparseOutput(response.toString()), error -> Log.e("webi", "Volley Error: " + error.getCause()));
+                response -> upcomingParseOutput(response.toString()), error -> Log.e("webi", "Volley Error: " + error.getCause()));
 
-        tmdbrequestQueue.add(UpcomingJsonObjectRequest);
+        tmdbRequestQueue.add(UpcomingJsonObjectRequest);
 
     }
 
@@ -94,20 +94,20 @@ public class FirstFetch {
                 }
         );
 
-        tmdbrequestQueue.add(jsonObjectRequest);
+        tmdbRequestQueue.add(jsonObjectRequest);
 
     }
 
-    private void intheatresparseOutput(String s, int type) {
+    private void inTheatresParseOutput(String s, int type) {
 
         MainActivityParseWork pa = new MainActivityParseWork(context, s);
-        pa.intheatres();
+        pa.inTheatres();
 
     }
 
-    private void upcomingparseOutput(String result_upcoming) {
+    private void upcomingParseOutput(String result_upcoming) {
         MainActivityParseWork pa = new MainActivityParseWork(context, result_upcoming);
-        pa.parseupcoming();
+        pa.parseUpcoming();
     }
 
 

@@ -16,7 +16,9 @@ Open sourced awesome material designed movie app.
 <img src="/img/screenshot6.png" vspace="5" height="500" width="275" >
 
 # APIs
-Filmy is powered by the tmdb.
+Filmy is powered by the imdb.
+fully official 
+daily movie and web series
 
 # Implementations
 Contains various advanced api implementations that make it high quality app.

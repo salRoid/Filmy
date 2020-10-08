@@ -74,7 +74,7 @@ public class TrendingWorker extends ListenableWorker {
                     parseOutput(response.toString());
                     taskFinished++;
                     if (taskFinished == 3) {
-                        jobFinished(workParameters, false);
+                        //jobFinished(workParameters, false);
                         taskFinished = 0;
                     }
                 }, error -> {

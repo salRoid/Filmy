@@ -76,7 +76,7 @@ public class UpcomingWorker extends ListenableWorker {
                     upComingParseOutput(response.toString());
                     taskFinished++;
                     if (taskFinished == 3) {
-                        jobFinished(workParameters, false);
+                        //jobFinished(workParameters, false);
                         taskFinished = 0;
                     }
                 }, error -> Log.e("webi", "Volley Error: " + error.getCause()));

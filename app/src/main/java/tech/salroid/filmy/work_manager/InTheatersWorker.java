@@ -74,7 +74,7 @@ public class InTheatersWorker extends ListenableWorker {
                     inTheatresParseOutput(response.toString(), 2);
                     taskFinished++;
                     if (taskFinished == 3) {
-                        jobFinished(jobParameters, false);
+                        //jobFinished(jobParameters, false);
                         taskFinished = 0;
                     }
                 }, error -> Log.e("webi", "Volley Error: " + error.getCause()));

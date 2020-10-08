@@ -263,12 +263,12 @@ public class FilmySyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void intheatresparseOutput(String s, int type) {
         MainActivityParseWork pa = new MainActivityParseWork(getContext(), s);
-        pa.intheatres();
+        pa.inTheatres();
     }
 
     private void upcomingparseOutput(String result_upcoming) {
         MainActivityParseWork pa = new MainActivityParseWork(getContext(), result_upcoming);
-        pa.parseupcoming();
+        pa.parseUpcoming();
     }
 
     private void parseOutput(String result) {

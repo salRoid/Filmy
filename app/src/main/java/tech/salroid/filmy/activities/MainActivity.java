@@ -209,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"));
         tabLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorDarkThemePrimary));
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#bdbdbd"));
         logo.setTextColor(Color.parseColor("#E0E0E0"));
         materialSearchView.setBackgroundColor(getResources().getColor(R.color.colorDarkThemePrimary));
         materialSearchView.setBackIcon(ContextCompat.getDrawable(this,R.drawable.ic_action_navigation_arrow_back_inverted));

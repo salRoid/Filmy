@@ -8,7 +8,7 @@
         android:defaultValue="false"
         android:key="dark"
         android:title="@string/dark"
-        android:icon="@drawable/ic_night_mode"/>
+        android:icon="@drawable/twotone_nights_stay_24"/>
 
     <SwitchPreference
         android:defaultValue="true"
@@ -16,7 +16,7 @@
         android:summaryOff="@string/low"
         android:summaryOn="@string/high"
         android:title="@string/image"
-        android:icon="@drawable/ic_image"/>
+        android:icon="@drawable/twotone_insert_photo_24"/>
 
     <Preference
         android:enabled="true"
@@ -24,7 +24,7 @@
         android:selectable="true"
         android:summary=""
         android:title="@string/license"
-        android:icon="@drawable/ic_license"/>
+        android:icon="@drawable/twotone_description_24"/>
 
     <Preference
         android:enabled="true"
@@ -32,14 +32,14 @@
         android:selectable="true"
         android:summary="2.1.2"
         android:title="@string/version"
-        android:icon="@drawable/ic_info"/>
+        android:icon="@drawable/twotone_info_24"/>
 
     <Preference
         android:enabled="true"
         android:key="Share"
         android:selectable="true"
         android:title="@string/shareappdetails"
-        android:icon="@drawable/ic_share"/>
+        android:icon="@drawable/twotone_share_24"/>
 
 
 
@@ -48,7 +48,7 @@
         android:key="About"
         android:selectable="true"
         android:title="@string/about"
-        android:icon="@drawable/ic_person"/>
+        android:icon="@drawable/twotone_insert_emoticon_24"/>
 
 
 </PreferenceScreen>

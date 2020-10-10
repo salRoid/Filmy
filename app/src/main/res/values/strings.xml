@@ -25,7 +25,7 @@
 
     <string name="ramankit">Ramankit Singh</string>
     <string name="sajal">Sajal Gupta</string>
-    <string name="email">Send Email</string>
+    <string name="email">Email</string>
     <string name="gplus">Website</string>
     <string name="github">GitHub</string>
 
@@ -370,7 +370,10 @@ limitations under the License.
     <string name="Youtube_Api_Key" translatable="false">AIzaSyBtyakzoKg3sueLC1mfKSZqSYs7sUIqVG4</string>
     <string name="collections" translatable="false">Collections</string>
     <string name="offline" translatable="false">Offline</string>
-
+    <string name="dp" translatable="false">http://webianks.com/assets/img/avatar.jpg</string>
+    <string name="banner" translatable="false">http://webianks.com/assets/img/avatar.jpg</string>
+    <string name="dp2" translatable="false">http://salroid.me/android/salroid.png</string>
+    <string name="banner2" translatable="false">http://salroid.me/android/header.png</string>
 
 
 </resources>

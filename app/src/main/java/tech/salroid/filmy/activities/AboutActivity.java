@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+
+import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +48,6 @@ public class AboutActivity extends AppCompatActivity {
     TextView logo;
     private boolean nightMode;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,25 +61,23 @@ public class AboutActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_developers);
 
-
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null){
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("");
         }
 
-
         Typeface typeface = ResourcesCompat.getFont(this,R.font.rubik);
         logo.setTypeface(typeface);
 
-
-
         if (nightMode)
             allThemeLogic();
+
+        Glide.with(this).load(getString(R.string.dp)).into((ImageView) findViewById(R.id.dp));
+        Glide.with(this).load(getString(R.string.dp2)).into((ImageView) findViewById(R.id.dp2));
+        Glide.with(this).load(getString(R.string.banner2)).into((ImageView) findViewById(R.id.banner2));
 
     }
 
@@ -92,7 +92,6 @@ public class AboutActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -29,241 +29,225 @@
         android:layout_height="match_parent">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/sajal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardPreventCornerOverlap="false"
-        app:strokeWidth="0dp"
-        app:strokeColor="@color/grey"
-        app:cardCornerRadius="0dp">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/banner"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="#dddddd"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ramankit_banner_min"
-                />
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/dp"
-                android:layout_marginTop="55dp"
-                android:layout_width="100dp"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/ramankit"
-                android:layout_alignParentLeft="true"
-                android:layout_height="100dp" />
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_toRightOf="@id/dp"
-                android:layout_marginTop="95dp"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ramankit"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:fontFamily="@font/circularstd_book"
-                android:padding="16dp"
-                />
-
-
-
-            <TextView
-                android:id="@+id/bio"
-                android:layout_below="@id/dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ramankit_bio"
-                />
-
-
-            <LinearLayout
-                android:layout_below="@id/bio"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/sajal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="3"
-                android:layout_margin="16dp"
-                >
+                app:cardCornerRadius="0dp"
+                app:cardPreventCornerOverlap="false"
+                app:strokeColor="@color/grey"
+                app:strokeWidth="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="#dddddd"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ramankit_banner_min" />
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="55dp" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="95dp"
+                        android:layout_toRightOf="@id/dp"
+                        android:fontFamily="@font/circularstd_book"
+                        android:padding="16dp"
+                        android:text="@string/ramankit"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
 
-                <com.google.android.material.button.MaterialButton
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_height="wrap_content"
-                    android:text="@string/email"
-                    app:strokeWidth="0dp"
-                    android:background="#00ffffff"
-                    android:textColor="@color/colorAccent"
-                    android:fontFamily="@font/circularstd_book"
-                    android:id="@+id/email"
-                    android:onClick="sendEmail"
-                    />
+                    <TextView
+                        android:id="@+id/bio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/ramankit_bio" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/github"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:text="@string/github"
-                    app:strokeWidth="0dp"
-                    android:background="#00ffffff"
-                    android:textColor="@color/colorAccent"
-                    android:fontFamily="@font/circularstd_book"
-                    android:onClick="openGithub"
-                    />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/gplus"
-                    android:onClick="openGplus"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/gplus"
-                    app:strokeWidth="0dp"
-                    android:background="#00ffffff"
-                    android:textColor="@color/colorAccent"
-                    android:fontFamily="@font/circularstd_book"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bio"
+                        android:layout_margin="16dp"
+                        android:weightSum="3">
 
-                    />
 
-            </LinearLayout>
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/email"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#00ffffff"
+                            android:fontFamily="@font/circularstd_book"
+                            android:onClick="sendEmail"
+                            android:text="@string/email"
+                            android:textColor="@color/colorAccent"
+                            app:strokeWidth="0dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/github"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#00ffffff"
+                            android:fontFamily="@font/circularstd_book"
+                            android:onClick="openGithub"
+                            android:text="@string/github"
+                            android:textColor="@color/colorAccent"
+                            app:strokeWidth="0dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/gplus"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#00ffffff"
+                            android:fontFamily="@font/circularstd_book"
+                            android:onClick="openGplus"
+                            android:text="@string/gplus"
+                            android:textColor="@color/colorAccent"
+                            app:strokeWidth="0dp"
+
+                            />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ramankit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sajal"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="0dp"
+                app:cardPreventCornerOverlap="false"
+                app:strokeColor="@color/grey"
+                app:strokeWidth="0dp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/banner2"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:background="#dddddd"
+                        android:scaleType="centerCrop" />
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/dp2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="55dp" />
+
+                    <TextView
+                        android:id="@+id/name2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="95dp"
+                        android:layout_toRightOf="@id/dp2"
+                        android:fontFamily="@font/circularstd_book"
+                        android:padding="16dp"
+                        android:text="@string/sajal"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/bio2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/dp2"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/sajal_bio" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bio2"
+                        android:layout_margin="16dp"
+                        android:weightSum="3">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/email2"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#00ffffff"
+                            android:fontFamily="@font/circularstd_book"
+                            android:onClick="sendEmail"
+                            android:text="@string/email"
+                            android:textColor="@color/colorAccent"
+                            app:strokeWidth="0dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/github2"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#00ffffff"
+                            android:fontFamily="@font/circularstd_book"
+                            android:onClick="openGithub"
+                            android:text="@string/github"
+                            android:textColor="@color/colorAccent"
+                            app:strokeWidth="0dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/gplus2"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#00ffffff"
+                            android:fontFamily="@font/circularstd_book"
+                            android:onClick="openGplus"
+                            android:text="@string/gplus"
+                            android:textColor="@color/colorAccent"
+                            app:strokeWidth="0dp" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </RelativeLayout>
-
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/ramankit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/sajal"
-        android:layout_marginTop="8dp"
-        app:strokeWidth="0dp"
-        app:cardPreventCornerOverlap="false"
-        app:strokeColor="@color/grey"
-        app:cardCornerRadius="0dp">
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/banner2"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#dddddd"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sajal_banner"
-            />
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/dp2"
-            android:layout_marginTop="55dp"
-            android:layout_width="100dp"
-            android:layout_marginLeft="16dp"
-            android:src="@drawable/sajal"
-            android:layout_alignParentLeft="true"
-            android:layout_height="100dp" />
-
-        <TextView
-            android:id="@+id/name2"
-            android:layout_toRightOf="@id/dp2"
-            android:layout_marginTop="95dp"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sajal"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:fontFamily="@font/circularstd_book"
-            android:padding="16dp"
-            />
-
-
-            <TextView
-                android:id="@+id/bio2"
-                android:layout_below="@id/dp2"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sajal_bio"
-                />
-
-        <LinearLayout
-            android:layout_below="@id/bio2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="3"
-            android:layout_margin="16dp"
-            >
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/email2"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:onClick="sendEmail"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/email"
-                app:strokeWidth="0dp"
-                android:background="#00ffffff"
-                android:textColor="@color/colorAccent"
-                android:fontFamily="@font/circularstd_book"
-                />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/github2"
-                android:onClick="openGithub"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:text="@string/github"
-                app:strokeWidth="0dp"
-                android:background="#00ffffff"
-                android:textColor="@color/colorAccent"
-                android:fontFamily="@font/circularstd_book"
-                />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/gplus2"
-                android:onClick="openGplus"
-                android:layout_weight="1"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/gplus"
-                app:strokeWidth="0dp"
-                android:background="#00ffffff"
-                android:textColor="@color/colorAccent"
-                android:fontFamily="@font/circularstd_book"
-
-                />
-
-        </LinearLayout>
-        </RelativeLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    </RelativeLayout>
     </ScrollView>
 </LinearLayout>

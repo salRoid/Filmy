@@ -2,7 +2,7 @@
 <resources>
 
     <declare-styleable name="BreathingProgress">
-        <attr name="backgroundColor" format="string" />
+        <attr name="bpb_backgroundColor" format="string" />
     </declare-styleable>
 
 </resources>

@@ -112,7 +112,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:strokeWidth="0.5dp"
+                app:strokeWidth="0dp"
                 app:strokeColor="@color/grey"
                 android:layout_below="@+id/cast_detail_description"
                 app:cardCornerRadius="0dp">

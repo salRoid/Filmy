@@ -59,8 +59,6 @@ public class BreathingProgress extends FrameLayout {
 
         //nowShowBreathingAnimation
         breathingAnimation();
-
-
     }
 
     private void breathingAnimation() {
@@ -80,8 +78,8 @@ public class BreathingProgress extends FrameLayout {
         int heightPxForFixedRing = getPx(50);
 
         FrameLayout fixedRingLayout = new FrameLayout(context);
-        FrameLayout.LayoutParams layoutparams = new FrameLayout.LayoutParams(widthPxForFixedRing, heightPxForFixedRing, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-        fixedRingLayout.setLayoutParams(layoutparams);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(widthPxForFixedRing, heightPxForFixedRing, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        fixedRingLayout.setLayoutParams(layoutParams);
         fixedRingLayout.setBackgroundResource(R.drawable.awesome_filmy_progress);
 
 
@@ -90,8 +88,8 @@ public class BreathingProgress extends FrameLayout {
 
 
         FrameLayout breathingCircleLayout = new FrameLayout(context);
-        FrameLayout.LayoutParams layoutparamsBreathing = new FrameLayout.LayoutParams(widthPxForBreathingCircle, heightPxForBreathingCircle, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-        breathingCircleLayout.setLayoutParams(layoutparamsBreathing);
+        FrameLayout.LayoutParams layoutParamsBreathing = new FrameLayout.LayoutParams(widthPxForBreathingCircle, heightPxForBreathingCircle, Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        breathingCircleLayout.setLayoutParams(layoutParamsBreathing);
         breathingCircleLayout.setBackgroundResource(R.drawable.filmy_circle);
         breathingCircleLayout.setId(R.id.breather);
 

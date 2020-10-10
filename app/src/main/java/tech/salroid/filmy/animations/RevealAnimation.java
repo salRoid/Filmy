@@ -1,7 +1,6 @@
 package tech.salroid.filmy.animations;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.view.View;
@@ -30,24 +29,17 @@ public class RevealAnimation {
 
     public static void performReveal(final FrameLayout allDetails) {
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            if (allDetails != null) {
+        if (allDetails != null) {
 
-                ViewTreeObserver viewTreeObserver = allDetails.getViewTreeObserver();
-                if (viewTreeObserver.isAlive()) {
-                    viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            circularRevealActivity(allDetails);
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-                                allDetails.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                            } else {
-                                allDetails.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            }
-                        }
-                    });
-                }
-
+            ViewTreeObserver viewTreeObserver = allDetails.getViewTreeObserver();
+            if (viewTreeObserver.isAlive()) {
+                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        circularRevealActivity(allDetails);
+                        allDetails.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
             }
         }
 

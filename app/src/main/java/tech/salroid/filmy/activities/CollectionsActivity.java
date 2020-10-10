@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -185,6 +186,8 @@ public class CollectionsActivity extends AppCompatActivity {
 
     private void allThemeLogic() {
         logo.setTextColor(Color.parseColor("#bdbdbd"));
+        tabLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorDarkThemePrimary));
+        tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"));
     }
 
     @Override

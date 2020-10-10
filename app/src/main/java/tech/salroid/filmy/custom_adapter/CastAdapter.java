@@ -85,7 +85,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
     @Override
     public int getItemCount() {
         if (ret_size) {
-            return (castList.size() >= 5) ? 5 : castList.size();
+            return Math.min(castList.size(), 5);
         } else {
             return castList.size();
         }
@@ -115,12 +115,9 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (clickListener != null) {
-                        clickListener.itemClicked(castList.get(getPosition()), getPosition(), view);
-                    }
+            itemView.setOnClickListener(view -> {
+                if (clickListener != null) {
+                    clickListener.itemClicked(castList.get(getPosition()), getPosition(), view);
                 }
             });
         }

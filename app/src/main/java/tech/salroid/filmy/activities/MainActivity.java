@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean fetchingFromNetwork;
 
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.search_view)
@@ -209,10 +208,11 @@ public class MainActivity extends AppCompatActivity {
     private void allThemeLogic() {
 
         tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"));
+        tabLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorDarkThemePrimary));
         logo.setTextColor(Color.parseColor("#E0E0E0"));
         materialSearchView.setBackgroundColor(getResources().getColor(R.color.colorDarkThemePrimary));
-        materialSearchView.setBackIcon(getResources().getDrawable(R.drawable.ic_action_navigation_arrow_back_inverted));
-        materialSearchView.setCloseIcon(getResources().getDrawable(R.drawable.ic_action_navigation_close_inverted));
+        materialSearchView.setBackIcon(ContextCompat.getDrawable(this,R.drawable.ic_action_navigation_arrow_back_inverted));
+        materialSearchView.setCloseIcon(ContextCompat.getDrawable(this,R.drawable.ic_action_navigation_close_inverted));
         materialSearchView.setTextColor(Color.parseColor("#ffffff"));
 
     }

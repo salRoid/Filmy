@@ -9,9 +9,9 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:strokeWidth="0.5dp"
+        app:cardCornerRadius="0dp"
         app:strokeColor="@color/grey"
-        app:cardCornerRadius="0dp">
+        app:strokeWidth="0dp">
 
         <RelativeLayout
             android:id="@+id/detail_fragment_views_layout"
@@ -33,10 +33,10 @@
                 android:id="@+id/similar_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@id/card_holder"
                 android:layout_marginStart="@dimen/widget_margin_half"
                 android:layout_marginEnd="@dimen/widget_margin_half"
-                android:layout_marginBottom="@dimen/widget_margin_half"
-                android:layout_below="@id/card_holder" />
+                android:layout_marginBottom="@dimen/widget_margin_half" />
 
             <tech.salroid.filmy.customs.BreathingProgress
                 android:id="@+id/breathingProgressFragment"

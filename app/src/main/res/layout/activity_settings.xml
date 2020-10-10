@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -10,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:padding="0dp"
         android:elevation="2dp"
+        android:padding="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:theme="@style/ThemeOverlay.AppCompat">
 
@@ -26,28 +25,15 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-        <RelativeLayout
-            android:layout_below="@id/toolbar"
-            android:paddingTop="2dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <FrameLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/preferencesContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:strokeWidth="0.5dp"
-                app:strokeColor="@color/grey"
-                card_view:cardCornerRadius="0dp">
-
-                <FrameLayout
-                    android:id="@+id/container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-            </com.google.android.material.card.MaterialCardView>
-
-
-        </RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>

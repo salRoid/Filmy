@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        app:strokeWidth="0.5dp"
+        app:strokeWidth="0dp"
         app:strokeColor="@color/grey"
         app:cardPreventCornerOverlap="false">
 

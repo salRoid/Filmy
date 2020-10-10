@@ -93,8 +93,8 @@
     </style>
 
     <color name="white">#ffffff</color>
-    <color name="colorDarkThemePrimary">#042233</color>
-    <color name="colorDarkThemePrimaryDark">#031621</color>
+    <color name="colorDarkThemePrimary">#1D1D1D</color>
+    <color name="colorDarkThemePrimaryDark">#121212</color>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

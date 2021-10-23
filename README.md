@@ -5,7 +5,7 @@
 
 Open sourced awesome material designed movie app.
 
-<img src="http://www.webianks.com/filmy/launcher.png" height="128" width="128" >
+<img src="http://www.salroid.me/android/filmy_launcher.png" height="128" width="128" >
 
 # Screens
 <img src="/img/screenshot1.png" vspace="5" align= "left" height="500" width="260">

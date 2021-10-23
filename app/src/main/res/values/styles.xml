@@ -20,7 +20,6 @@
 
     </style>
 
-
     <style name="AppTheme.Base.Dark" parent="Theme.MaterialComponents.NoActionBar">
 
         <item name="colorPrimary">@color/colorDarkThemePrimary</item>
@@ -29,8 +28,6 @@
         <item name="divider">@color/dividerColorDarkTheme</item>
 
     </style>
-
-
 
 
     <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">

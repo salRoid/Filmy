@@ -75,9 +75,10 @@ public class AboutActivity extends AppCompatActivity {
         if (nightMode)
             allThemeLogic();
 
-        Glide.with(this).load(getString(R.string.dp)).into((ImageView) findViewById(R.id.dp));
-        Glide.with(this).load(getString(R.string.dp2)).into((ImageView) findViewById(R.id.dp2));
-        Glide.with(this).load(getString(R.string.banner2)).into((ImageView) findViewById(R.id.banner2));
+        Glide.with(this).load(getString(R.string.profile_webianks)).into((ImageView) findViewById(R.id.profile_webianks));
+        Glide.with(this).load(getString(R.string.profile_salroid)).into((ImageView) findViewById(R.id.profile_salroid));
+        Glide.with(this).load(getString(R.string.banner_webianks)).into((ImageView) findViewById(R.id.banner_webianks));
+        Glide.with(this).load(getString(R.string.banner_salroid)).into((ImageView) findViewById(R.id.banner_salroid));
 
     }
 
@@ -95,48 +96,36 @@ public class AboutActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     public void sendEmail(View view) {
-
       switch (view.getId()){
-
-
-          case R.id.email:
-
+          case R.id.email_webianks:
               Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
               emailIntent.setData(Uri.parse("mailto: webianksc@gmailcom"));
               startActivity(Intent.createChooser(emailIntent, "Send feedback"));
+          break;
 
-              break;
-
-          case R.id.email2:
-
+          case R.id.email_salroid:
               Intent emailIntent2 = new Intent(Intent.ACTION_SENDTO);
               emailIntent2.setData(Uri.parse("mailto: gupta.sajal631@gmail.com"));
               startActivity(Intent.createChooser(emailIntent2, "Send feedback"));
-
-              break;
-
+          break;
       }
-
-
     }
 
 
-    public void openGithub(View view) {
+    public void redirectGithub(View view) {
         String url = getString(R.string.webianksgit);
         String url2 = getString(R.string.salroidgit);
 
         switch (view.getId()){
 
-            case R.id.github:
+            case R.id.github_webianks:
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(this, R.color.black));
                 CustomTabsIntent customTabsIntent = builder.build();
                 customTabsIntent.launchUrl(this, Uri.parse(url));
                 break;
-            case R.id.github2:
+            case R.id.github_salroid:
                 CustomTabsIntent.Builder builder1 = new CustomTabsIntent.Builder();
                 builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black));
                 CustomTabsIntent customTabsIntent1 = builder1.build();
@@ -153,20 +142,20 @@ public class AboutActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void openGplus(View view) {
+    public void redirectWebsite(View view) {
 
         String url = getString(R.string.ramzplus);
         String url2 = getString(R.string.sajjuplus);
 
         switch (view.getId()){
 
-            case R.id.gplus:
+            case R.id.website_webianks:
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent));
                 CustomTabsIntent customTabsIntent = builder.build();
                 customTabsIntent.launchUrl(this, Uri.parse(url));
                 break;
-            case R.id.gplus2:
+            case R.id.website_salroid:
                 CustomTabsIntent.Builder builder1 = new CustomTabsIntent.Builder();
                 builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black));
                 CustomTabsIntent customTabsIntent1 = builder1.build();

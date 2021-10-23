@@ -23,16 +23,6 @@
     <string name="sync_account_type" translatable="false">filmy.salroid.com</string>
 
 
-    <string name="ramankit">Ramankit Singh</string>
-    <string name="sajal">Sajal Gupta</string>
-    <string name="email">Email</string>
-    <string name="gplus">Website</string>
-    <string name="github">GitHub</string>
-
-    <string name="ramankit_bio">I love Android, designing and music.</string>
-    <string name="sajal_bio">The one with devil on the other side of mirror.</string>
-
-
     <string name="app_name">Filmy</string>
     <string name="title_activity_detailed">DetailedActivity</string>
     <string name="title_activity_detailed__cast">Detailed_Cast</string>
@@ -370,10 +360,20 @@ limitations under the License.
     <string name="Youtube_Api_Key" translatable="false">AIzaSyBtyakzoKg3sueLC1mfKSZqSYs7sUIqVG4</string>
     <string name="collections" translatable="false">Collections</string>
     <string name="offline" translatable="false">Offline</string>
-    <string name="dp" translatable="false">http://webianks.com/assets/img/avatar.jpg</string>
-    <string name="banner" translatable="false">http://webianks.com/assets/img/avatar.jpg</string>
-    <string name="dp2" translatable="false">http://salroid.me/android/salroid.png</string>
-    <string name="banner2" translatable="false">http://salroid.me/android/header.png</string>
 
+    <!-- About activity -->
+    <string name="name_webianks">Ramankit Singh</string>
+    <string name="profile_webianks" translatable="false">http://salroid.me/android/profile_webianks.jpeg</string>
+    <string name="banner_webianks" translatable="false">http://salroid.me/android/banner_webianks.jpg</string>
+    <string name="bio_webianks">I love Android, designing and music.</string>
+
+    <string name="name_salroid">Sajal Gupta</string>
+    <string name="profile_salroid" translatable="false">http://salroid.me/android/profile_salroid.jpeg</string>
+    <string name="banner_salroid" translatable="false">http://salroid.me/android/banner_salroid.jpg</string>
+    <string name="bio_salroid">The one with devil on the other side of mirror.</string>
+
+    <string name="email">Email</string>
+    <string name="website">Website</string>
+    <string name="github">GitHub</string>
 
 </resources>

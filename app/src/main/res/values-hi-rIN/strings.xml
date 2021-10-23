@@ -53,14 +53,14 @@
     <string name="error_retry">पुनः प्रयास करें।</string>
 
 
-    <string name="ramankit">रामांकित सिंह</string>
-    <string name="sajal">सजल गुप्ता</string>
+    <string name="name_webianks">रामांकित सिंह</string>
+    <string name="name_salroid">सजल गुप्ता</string>
     <string name="email">ईमेल भेजें</string>
-    <string name="gplus">वेबसाइट</string>
+    <string name="website">वेबसाइट</string>
     <string name="github">गिटहब</string>
 
-    <string name="ramankit_bio">मुझे एंड्रॉयड,डिजाइन और संगीत से प्यार है।</string>
-    <string name="sajal_bio">दर्पण के दूसरी तरफ शैतान के साथ।</string>
+    <string name="bio_webianks">मुझे एंड्रॉयड,डिजाइन और संगीत से प्यार है।</string>
+    <string name="bio_salroid">दर्पण के दूसरी तरफ शैतान के साथ।</string>
 
     <string name="shareappdetails">इस एप को शेयर करें।</string>
     <string name="dark">रात्री स्वरुप</string>

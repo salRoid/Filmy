@@ -28,16 +28,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/sajal"
+                android:id="@+id/card_webianks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="0dp"
+                app:cardCornerRadius="8dp"
                 app:cardPreventCornerOverlap="false"
                 app:strokeColor="@color/grey"
                 app:strokeWidth="0dp">
@@ -47,55 +47,60 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/banner"
+                        android:id="@+id/banner_webianks"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:background="#dddddd"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ramankit_banner_min" />
+                        android:src="@drawable/default_banner_min" />
 
                     <com.mikhaellopez.circularimageview.CircularImageView
-                        android:id="@+id/dp"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:id="@+id/profile_webianks"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
                         android:layout_alignParentLeft="true"
                         android:layout_marginLeft="16dp"
+                        android:layout_marginBottom="16dp"
                         android:layout_marginTop="55dp" />
 
                     <TextView
-                        android:id="@+id/name"
+                        android:id="@+id/name_webianks"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="95dp"
-                        android:layout_toRightOf="@id/dp"
+                        android:layout_toRightOf="@id/profile_webianks"
                         android:fontFamily="@font/circularstd_book"
-                        android:padding="16dp"
-                        android:text="@string/ramankit"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="4dp"
+                        android:paddingRight="16dp"
+                        android:paddingLeft="16dp"
+                        android:text="@string/name_webianks"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
 
                     <TextView
-                        android:id="@+id/bio"
+                        android:id="@+id/bio_webianks"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/dp"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/ramankit_bio" />
+                        android:layout_below="@id/name_webianks"
+                        android:layout_toRightOf="@id/profile_webianks"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="@string/bio_webianks" />
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/bio"
+                        android:layout_below="@id/bio_webianks"
                         android:layout_margin="16dp"
                         android:weightSum="3">
 
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/email"
+                            android:id="@+id/email_webianks"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -108,28 +113,28 @@
                             app:strokeWidth="0dp" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/github"
+                            android:id="@+id/github_webianks"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="#00ffffff"
                             android:fontFamily="@font/circularstd_book"
-                            android:onClick="openGithub"
+                            android:onClick="redirectGithub"
                             android:text="@string/github"
                             android:textColor="@color/colorAccent"
                             app:strokeWidth="0dp" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/gplus"
+                            android:id="@+id/website_webianks"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="#00ffffff"
                             android:fontFamily="@font/circularstd_book"
-                            android:onClick="openGplus"
-                            android:text="@string/gplus"
+                            android:onClick="redirectWebsite"
+                            android:text="@string/website"
                             android:textColor="@color/colorAccent"
                             app:strokeWidth="0dp"
 
@@ -143,12 +148,13 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/ramankit"
+                android:id="@+id/card_salroid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sajal"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="0dp"
+                android:layout_below="@id/card_webianks"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="2dp"
+                app:cardCornerRadius="8dp"
                 app:cardPreventCornerOverlap="false"
                 app:strokeColor="@color/grey"
                 app:strokeWidth="0dp">
@@ -159,53 +165,58 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/banner2"
+                        android:id="@+id/banner_salroid"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:background="#dddddd"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/default_banner_min" />
 
                     <com.mikhaellopez.circularimageview.CircularImageView
-                        android:id="@+id/dp2"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:id="@+id/profile_salroid"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
                         android:layout_alignParentLeft="true"
                         android:layout_marginLeft="16dp"
+                        android:layout_marginBottom="16dp"
                         android:layout_marginTop="55dp" />
 
                     <TextView
-                        android:id="@+id/name2"
+                        android:id="@+id/name_salroid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="95dp"
-                        android:layout_toRightOf="@id/dp2"
+                        android:layout_toRightOf="@id/profile_salroid"
                         android:fontFamily="@font/circularstd_book"
-                        android:padding="16dp"
-                        android:text="@string/sajal"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="4dp"
+                        android:paddingRight="16dp"
+                        android:paddingLeft="16dp"
+                        android:text="@string/name_salroid"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-
                     <TextView
-                        android:id="@+id/bio2"
+                        android:id="@+id/bio_salroid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/dp2"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/sajal_bio" />
+                        android:layout_below="@id/name_salroid"
+                        android:layout_toRightOf="@id/profile_salroid"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:text="@string/bio_salroid" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/bio2"
+                        android:layout_below="@id/bio_salroid"
                         android:layout_margin="16dp"
                         android:weightSum="3">
 
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/email2"
+                            android:id="@+id/email_salroid"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -218,28 +229,28 @@
                             app:strokeWidth="0dp" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/github2"
+                            android:id="@+id/github_salroid"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="#00ffffff"
                             android:fontFamily="@font/circularstd_book"
-                            android:onClick="openGithub"
+                            android:onClick="redirectGithub"
                             android:text="@string/github"
                             android:textColor="@color/colorAccent"
                             app:strokeWidth="0dp" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/gplus2"
+                            android:id="@+id/website_salroid"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:background="#00ffffff"
                             android:fontFamily="@font/circularstd_book"
-                            android:onClick="openGplus"
-                            android:text="@string/gplus"
+                            android:onClick="redirectWebsite"
+                            android:text="@string/website"
                             android:textColor="@color/colorAccent"
                             app:strokeWidth="0dp" />
 

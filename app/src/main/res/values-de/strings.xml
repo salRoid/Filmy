@@ -53,14 +53,14 @@
     <string name="error_retry">WIEDERHOLEN</string>
 
 
-    <string name="ramankit">Ramankit Singh</string>
-    <string name="sajal">Sajal Gupta</string>
+    <string name="name_webianks">Ramankit Singh</string>
+    <string name="name_salroid">Sajal Gupta</string>
     <string name="email">Sende eine Email</string>
-    <string name="gplus">Webseite</string>
+    <string name="website">Webseite</string>
     <string name="github">Github</string>
 
-    <string name="ramankit_bio">Ich mag Android, Design und Musik.</string>
-    <string name="sajal_bio">Der mit Teufel auf der anderen Seite des Spiegels.</string>
+    <string name="bio_webianks">Ich mag Android, Design und Musik.</string>
+    <string name="bio_salroid">Der mit Teufel auf der anderen Seite des Spiegels.</string>
 
     <string name="shareappdetails">Teile diese App</string>
     <string name="dark">Nacht Modus</string>

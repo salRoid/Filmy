@@ -8,12 +8,12 @@ Open sourced awesome material designed movie app.
 <img src="http://www.webianks.com/filmy/launcher.png" height="128" width="128" >
 
 # Screens
-<img src="/img/screenshot1.png" vspace="5" align= "left" height="500" width="275">
-<img src="/img/screenshot2.png" vspace="5" align= "left"  height="500" width="275" >
-<img src="/img/screenshot3.png" vspace="5" height="500" width="275" >
-<img src="/img/screenshot4.png" vspace="5" align= "left" height="500" width="275" >
-<img src="/img/screenshot5.png" align= "left" vspace="5" height="500" width="275" >
-<img src="/img/screenshot6.png" vspace="5" height="500" width="275" >
+<img src="/img/screenshot1.png" vspace="5" align= "left" height="500" width="260">
+<img src="/img/screenshot2.png" vspace="5" align= "left"  height="500" width="260" >
+<img src="/img/screenshot3.png" vspace="5" height="500" width="260" >
+<img src="/img/screenshot4.png" vspace="5" align= "left" height="500" width="260" >
+<img src="/img/screenshot5.png" align= "left" vspace="5" height="500" width="260" >
+<img src="/img/screenshot6.png" vspace="5" height="500" width="260" >
 
 # APIs
 Filmy is powered by the tmdb.

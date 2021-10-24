@@ -100,7 +100,7 @@ public class AboutActivity extends AppCompatActivity {
       switch (view.getId()){
           case R.id.email_webianks:
               Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-              emailIntent.setData(Uri.parse("mailto: webianksc@gmailcom"));
+              emailIntent.setData(Uri.parse("mailto: webianks@gmail.com"));
               startActivity(Intent.createChooser(emailIntent, "Send feedback"));
           break;
 

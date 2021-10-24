@@ -153,8 +153,8 @@
                 <View
                     android:id="@+id/cast_divider"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?attr/divider"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
                     />
 
             </LinearLayout>
@@ -166,12 +166,14 @@
                 android:layout_below="@id/movie_description" />
 
             <FrameLayout
+                android:layout_marginTop="16dp"
                 android:id="@+id/crew_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cast_container" />
 
             <FrameLayout
+                android:layout_marginTop="16dp"
                 android:id="@+id/similar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

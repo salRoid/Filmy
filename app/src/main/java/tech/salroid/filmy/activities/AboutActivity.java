@@ -112,60 +112,45 @@ public class AboutActivity extends AppCompatActivity {
       }
     }
 
-
     public void redirectGithub(View view) {
-        String url = getString(R.string.webianksgit);
-        String url2 = getString(R.string.salroidgit);
-
         switch (view.getId()){
-
             case R.id.github_webianks:
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(this, R.color.black));
                 CustomTabsIntent customTabsIntent = builder.build();
-                customTabsIntent.launchUrl(this, Uri.parse(url));
-                break;
+                customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.git_webianks)));
+            break;
             case R.id.github_salroid:
                 CustomTabsIntent.Builder builder1 = new CustomTabsIntent.Builder();
                 builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black));
                 CustomTabsIntent customTabsIntent1 = builder1.build();
-                customTabsIntent1.launchUrl(this, Uri.parse(url2));
-                break;
+                customTabsIntent1.launchUrl(this, Uri.parse(getString(R.string.git_salroid)));
+            break;
         }
-
     }
 
     private void viewIntent(String url) {
-
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
     }
 
     public void redirectWebsite(View view) {
-
-        String url = getString(R.string.ramzplus);
-        String url2 = getString(R.string.sajjuplus);
-
         switch (view.getId()){
-
             case R.id.website_webianks:
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent));
                 CustomTabsIntent customTabsIntent = builder.build();
-                customTabsIntent.launchUrl(this, Uri.parse(url));
-                break;
+                customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.website_webianks)));
+            break;
             case R.id.website_salroid:
                 CustomTabsIntent.Builder builder1 = new CustomTabsIntent.Builder();
                 builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black));
                 CustomTabsIntent customTabsIntent1 = builder1.build();
-                customTabsIntent1.launchUrl(this, Uri.parse(url2));
-                break;
+                customTabsIntent1.launchUrl(this, Uri.parse(getString(R.string.website_salroid)));
+            break;
         }
-
-
     }
-
 
     @Override
     protected void onResume() {

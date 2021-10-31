@@ -63,7 +63,6 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
         setSupportActionBar(toolbar);
 
 
-
         full_movie_recycler.setLayoutManager(new LinearLayoutManager(FullMovieActivity.this));
 
 
@@ -74,8 +73,7 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
             }
-            }
-
+        }
 
         CharacterDetailActivityParseWork par = new CharacterDetailActivityParseWork(this, movie_result);
         List<CharacterDetailsData> char_list = par.char_parse_cast();
@@ -90,7 +88,7 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
     public void itemClicked(CharacterDetailsData setterGetterChar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
         intent.putExtra("id", setterGetterChar.getChar_id());
-        intent.putExtra("title",setterGetterChar.getChar_movie());
+        intent.putExtra("title", setterGetterChar.getChar_movie());
         intent.putExtra("network_applicable", true);
         intent.putExtra("activity", false);
         startActivity(intent);
@@ -101,20 +99,17 @@ public class FullMovieActivity extends AppCompatActivity implements CharacterDet
     protected void onResume() {
         super.onResume();
 
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean nightModeNew = sp.getBoolean("dark", false);
-        if (nightMode!=nightModeNew)
+        if (nightMode != nightModeNew)
             recreate();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-
-        if (item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home) {
             finish();
-
+        }
         return super.onOptionsItemSelected(item);
     }
 }

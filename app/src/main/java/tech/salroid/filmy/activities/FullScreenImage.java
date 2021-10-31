@@ -41,12 +41,11 @@ import tech.salroid.filmy.customs.BreathingProgress;
 public class FullScreenImage extends AppCompatActivity {
 
     @BindView(R.id.cen_img)
-    ImageView centreimg;
+    ImageView displayBanner;
     @BindView(R.id.breathingProgress)
     BreathingProgress breathingProgress;
 
-    private String image_url;
-
+    private String BANNER_IMAGE_URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,29 +55,27 @@ public class FullScreenImage extends AppCompatActivity {
 
         breathingProgress.setVisibility(View.VISIBLE);
 
-
         Intent intent = getIntent();
         if (intent != null) {
-            image_url = intent.getStringExtra("img_url");
+            BANNER_IMAGE_URL = intent.getStringExtra("img_url");
         }
-        try{
+        try {
+            Glide.with(this)
+                    .asBitmap()
+                    .load(BANNER_IMAGE_URL)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(new SimpleTarget<Bitmap>() {
 
-        Glide.with(this)
-                .asBitmap()
-                .load(image_url)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            displayBanner.setImageBitmap(resource);
+                            breathingProgress.setVisibility(View.INVISIBLE);
+                        }
 
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        centreimg.setImageBitmap(resource);
-                        breathingProgress.setVisibility(View.INVISIBLE);
-                    }
-
-                });
-    } catch (Exception e) {
-        //Log.d(LOG_TAG, e.getMessage());
-    }
+                    });
+        } catch (Exception e) {
+            //Log.d(LOG_TAG, e.getMessage());
+        }
 
     }
 

@@ -32,18 +32,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-
             <RelativeLayout
-                android:id="@+id/cast_detail_description"
+                android:id="@+id/cast_about"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:orientation="vertical">
 
                 <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/cast_poster"
+                    android:id="@+id/display_profile"
                     android:layout_width="100dp"
                     android:layout_margin="16dp"
                     android:transitionName="profile"
@@ -52,11 +49,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/cast_poster"
+                    android:layout_toRightOf="@+id/display_profile"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/cast_name"
+                        android:id="@+id/name"
                         android:transitionName="name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -67,7 +64,7 @@
                         android:textAppearance="?android:textAppearanceLarge" />
 
                     <TextView
-                        android:id="@+id/birth"
+                        android:id="@+id/dob"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -86,17 +83,16 @@
                 </LinearLayout>
 
                 <FrameLayout
-                    android:id="@+id/header_container"
+                    android:id="@+id/overview_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/cast_poster"
-                    android:layout_marginTop="8dp"
+                    android:layout_below="@id/display_profile"
                     android:clickable="true"
                     android:foreground="?android:selectableItemBackground"
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/desc"
+                        android:id="@+id/overview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -104,7 +100,6 @@
                         android:maxLines="6"
                         android:textAppearance="?android:textAppearanceSmall" />
                 </FrameLayout>
-
 
             </RelativeLayout>
 
@@ -114,7 +109,7 @@
                 android:layout_height="match_parent"
                 app:strokeWidth="0dp"
                 app:strokeColor="@color/grey"
-                android:layout_below="@+id/cast_detail_description"
+                android:layout_below="@+id/cast_about"
                 app:cardCornerRadius="0dp">
 
                 <RelativeLayout
@@ -125,7 +120,7 @@
                         android:id="@+id/card_holder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:fontFamily="@font/circularstd_book"
                         android:padding="16dp"
                         android:text="@string/movies"
@@ -136,7 +131,7 @@
                         android:id="@+id/more"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:background="?android:selectableItemBackground"
                         android:clickable="true"
                         android:fontFamily="@font/circularstd_book"
@@ -152,7 +147,6 @@
                         android:id="@+id/character_movies"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_marginBottom="16dp"
                         android:layout_below="@+id/card_holder" />

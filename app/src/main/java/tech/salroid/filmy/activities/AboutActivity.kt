@@ -86,14 +86,14 @@ class AboutActivity : AppCompatActivity() {
     fun sendEmail(view: View) {
         when (view.id) {
             R.id.email_webianks -> {
-                val emailIntent = Intent(Intent.ACTION_SENDTO)
-                emailIntent.data = Uri.parse("mailto: webianks@gmail.com")
-                startActivity(Intent.createChooser(emailIntent, "Send feedback"))
+                val webianksEmailIntent = Intent(Intent.ACTION_SENDTO)
+                webianksEmailIntent.data = Uri.parse("mailto: webianks@gmail.com")
+                startActivity(Intent.createChooser(webianksEmailIntent, "Send feedback"))
             }
             R.id.email_salroid -> {
-                val emailIntent2 = Intent(Intent.ACTION_SENDTO)
-                emailIntent2.data = Uri.parse("mailto: gupta.sajal631@gmail.com")
-                startActivity(Intent.createChooser(emailIntent2, "Send feedback"))
+                val salroidEmailIntent = Intent(Intent.ACTION_SENDTO)
+                salroidEmailIntent.data = Uri.parse("mailto: gupta.sajal631@gmail.com")
+                startActivity(Intent.createChooser(salroidEmailIntent, "Send feedback"))
             }
         }
     }

@@ -69,20 +69,20 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     Toolbar toolbar;
     @BindView(R.id.more)
     TextView more;
-    @BindView(R.id.cast_name)
+    @BindView(R.id.name)
     TextView ch_name;
-    @BindView(R.id.desc)
+    @BindView(R.id.overview)
     TextView ch_desc;
-    @BindView(R.id.birth)
-    TextView ch_birth;
+    @BindView(R.id.dob)
+    TextView dateOfBirth;
     @BindView(R.id.birth_place)
-    TextView ch_place;
+    TextView birthPlace;
+    @BindView(R.id.display_profile)
+    CircularImageView profileHolder;
     @BindView(R.id.character_movies)
     RecyclerView char_recycler;
-    @BindView(R.id.header_container)
-    FrameLayout headerContainer;
-    @BindView(R.id.cast_poster)
-    CircularImageView character_small;
+    @BindView(R.id.overview_container)
+    FrameLayout overViewContainer;
     @BindView(R.id.logo)
     TextView logo;
 
@@ -145,7 +145,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         char_recycler.setLayoutManager(new LinearLayoutManager(CharacterDetailsActivity.this));
         char_recycler.setNestedScrollingEnabled(false);
 
-        headerContainer.setOnClickListener(new View.OnClickListener() {
+        overViewContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -235,18 +235,13 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 Log.e("webi", "Volley Error: " + error.getCause());
-
             }
         }
         );
 
-
         requestQueue.add(personDetailRequest);
         requestQueue.add(personMovieDetailRequest);
-
-
     }
 
 
@@ -262,57 +257,49 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
 
     void personDetailsParsing(String detailsResult) {
-
-
         try {
             JSONObject jsonObject = new JSONObject(detailsResult);
-
-            String char_name = jsonObject.getString("name");
-            String char_face = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path");
-            String char_desc = jsonObject.getString("biography");
+            String dataName = jsonObject.getString("name");
+            String dataProfile = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path");
+            String dataOverview = jsonObject.getString("biography");
             String char_birthday = jsonObject.getString("birthday");
             String char_birthplace = jsonObject.getString("place_of_birth");
 
-            character_title = char_name;
-            character_bio = char_desc;
+            character_title = dataName;
+            character_bio = dataOverview;
 
-            ch_name.setText(char_name);
+            ch_name.setText(dataName);
             if (char_birthday.equals("null"))
-                ch_birth.setVisibility(View.GONE);
+                dateOfBirth.setVisibility(View.GONE);
             else
-                ch_birth.setText(char_birthday);
+                dateOfBirth.setText(char_birthday);
+
             if (char_birthplace.equals("null"))
-                ch_place.setVisibility(View.GONE);
+                birthPlace.setVisibility(View.GONE);
             else
-                ch_place.setText(char_birthplace);
-            if (char_desc.length() <= 0) {
-                headerContainer.setVisibility(View.GONE);
+                birthPlace.setText(char_birthplace);
+
+            if (dataOverview.length() <= 0) {
+                overViewContainer.setVisibility(View.GONE);
                 ch_desc.setVisibility(View.GONE);
             } else {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    ch_desc.setText(Html.fromHtml(char_desc, Html.FROM_HTML_MODE_LEGACY));
+                    ch_desc.setText(Html.fromHtml(dataOverview, Html.FROM_HTML_MODE_LEGACY));
                 } else {
-                    ch_desc.setText(Html.fromHtml(char_desc));
+                    ch_desc.setText(Html.fromHtml(dataOverview));
                 }
             }
-
-          /*Glide.with(co)
-                  .load(char_banner)
-                    .fitCenter()
-                  .into(character_banner);*/
-
 
             try {
 
                 Glide.with(co)
-                        .load(char_face)
+                        .load(dataProfile)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .fitCenter().into(character_small);
+                        .fitCenter().into(profileHolder);
 
             } catch (Exception e) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
-
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -321,7 +308,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
 
     private void cast_parseOutput(String cast_result) {
-
         CharacterDetailActivityParseWork par = new CharacterDetailActivityParseWork(this, cast_result);
         List<CharacterDetailsData> char_list = par.char_parse_cast();
         CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, true);
@@ -338,13 +324,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                //reverse transition
                 supportFinishAfterTransition();
-            } else
-                finish();
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -362,10 +342,9 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         }
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
-        Glide.with(this).clear(character_small);
+        Glide.with(this).clear(profileHolder);
     }
 }

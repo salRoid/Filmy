@@ -1,319 +1,233 @@
-package tech.salroid.filmy.activities;
+package tech.salroid.filmy.activities
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Build;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.Html;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Build
+import android.os.Bundle
+import android.preference.PreferenceManager
+import android.text.Html
+import android.util.Log
+import android.view.MenuItem
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import butterknife.BindView
+import butterknife.ButterKnife
+import com.android.volley.toolbox.JsonObjectRequest
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.mikhaellopez.circularimageview.CircularImageView
+import org.json.JSONException
+import org.json.JSONObject
+import tech.salroid.filmy.BuildConfig
+import tech.salroid.filmy.R
+import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter
+import tech.salroid.filmy.data_classes.CharacterDetailsData
+import tech.salroid.filmy.fragment.FullReadFragment
+import tech.salroid.filmy.network_stuff.TmdbVolleySingleton
+import tech.salroid.filmy.parser.CharacterDetailActivityParseWork
+import java.lang.Exception
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.mikhaellopez.circularimageview.CircularImageView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import tech.salroid.filmy.BuildConfig;
-import tech.salroid.filmy.R;
-import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter;
-import tech.salroid.filmy.data_classes.CharacterDetailsData;
-import tech.salroid.filmy.fragment.FullReadFragment;
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
-import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
-
-/*
- * Filmy Application for Android
- * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
-public class CharacterDetailsActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
+class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAdapter.ClickListener {
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    var toolbar: Toolbar? = null
+
     @BindView(R.id.more)
-    TextView more;
+    var more: TextView? = null
+
     @BindView(R.id.name)
-    TextView name;
+    var name: TextView? = null
+
     @BindView(R.id.overview)
-    TextView overview;
+    var overview: TextView? = null
+
     @BindView(R.id.dob)
-    TextView dateOfBirth;
+    var dateOfBirth: TextView? = null
+
     @BindView(R.id.birth_place)
-    TextView birthPlace;
+    var birthPlace: TextView? = null
+
     @BindView(R.id.display_profile)
-    CircularImageView profileHolder;
+    var profileHolder: CircularImageView? = null
+
     @BindView(R.id.character_movies)
-    RecyclerView movies;
+    var movies: RecyclerView? = null
+
     @BindView(R.id.overview_container)
-    FrameLayout overViewContainer;
+    var overViewContainer: FrameLayout? = null
+
     @BindView(R.id.logo)
-    TextView logo;
-
-    Context co = this;
-    private String character_id;
-    private String character_title = null, movie_json = null;
-    private String character_bio;
-    private FullReadFragment fullReadFragment;
-
-    private boolean nightMode;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        nightMode = sp.getBoolean("dark", false);
-        if (nightMode)
-            setTheme(R.style.AppTheme_Base_Dark);
-        else
-            setTheme(R.style.AppTheme_Base);
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailed_cast);
-        ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    var logo: TextView? = null
+    var co: Context = this
+    private var character_id: String? = null
+    private var character_title: String? = null
+    private var movie_json: String? = null
+    private var character_bio: String? = null
+    private var fullReadFragment: FullReadFragment? = null
+    private var nightMode = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        nightMode = sp.getBoolean("dark", false)
+        if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_detailed_cast)
+        ButterKnife.bind(this)
+        setSupportActionBar(toolbar)
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         }
-        getSupportActionBar().setTitle("");
-
-        Typeface typeface =  ResourcesCompat.getFont(this,R.font.rubik);
-        logo.setTypeface(typeface);
-
-        if (nightMode) { allThemeLogic(); }
-
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!(movie_json == null && character_title == null)) {
-                    Intent intent = new Intent(CharacterDetailsActivity.this, FullMovieActivity.class);
-                    intent.putExtra("cast_json", movie_json);
-                    intent.putExtra("toolbar_title", character_title);
-                    startActivity(intent);
-                }
+        supportActionBar!!.setTitle("")
+        val typeface = ResourcesCompat.getFont(this, R.font.rubik)
+        logo!!.setTypeface(typeface)
+        if (nightMode) {
+            allThemeLogic()
+        }
+        more!!.setOnClickListener {
+            if (!(movie_json == null && character_title == null)) {
+                val intent = Intent(this@CharacterDetailsActivity, FullMovieActivity::class.java)
+                intent.putExtra("cast_json", movie_json)
+                intent.putExtra("toolbar_title", character_title)
+                startActivity(intent)
             }
-        });
-
-        movies.setLayoutManager(new LinearLayoutManager(CharacterDetailsActivity.this));
-        movies.setNestedScrollingEnabled(false);
-
-        overViewContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (character_title != null && character_bio != null) {
-                    fullReadFragment = new FullReadFragment();
-                    Bundle args = new Bundle();
-                    args.putString("title", character_title);
-                    args.putString("desc", character_bio);
-                    fullReadFragment.setArguments(args);
-
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main, fullReadFragment).addToBackStack("DESC").commit();
-                }
+        }
+        movies!!.layoutManager = LinearLayoutManager(this@CharacterDetailsActivity)
+        movies!!.isNestedScrollingEnabled = false
+        overViewContainer!!.setOnClickListener {
+            if (character_title != null && character_bio != null) {
+                fullReadFragment = FullReadFragment()
+                val args = Bundle()
+                args.putString("title", character_title)
+                args.putString("desc", character_bio)
+                fullReadFragment!!.arguments = args
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
             }
-        });
-
-        Intent intent = getIntent();
+        }
+        val intent = intent
         if (intent != null) {
-            character_id = intent.getStringExtra("id");
+            character_id = intent.getStringExtra("id")
         }
-        getDetailedMovieAndCast();
+        detailedMovieAndCast
     }
 
-    private void allThemeLogic() {
-        logo.setTextColor(Color.parseColor("#bdbdbd"));
+    private fun allThemeLogic() {
+        logo!!.setTextColor(Color.parseColor("#bdbdbd"))
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean nightModeNew = sp.getBoolean("dark", false);
-        if (nightMode != nightModeNew)
-            recreate();
+    override fun onResume() {
+        super.onResume()
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightModeNew = sp.getBoolean("dark", false)
+        if (nightMode != nightModeNew) recreate()
     }
 
-    private void getDetailedMovieAndCast() {
-        TmdbVolleySingleton volleySingleton = TmdbVolleySingleton.getInstance();
-        RequestQueue requestQueue = volleySingleton.getRequestQueue();
-
-        String api_key = BuildConfig.TMDB_API_KEY;
-
-        final String BASE_URL_PERSON_DETAIL = "https://api.themoviedb.org/3/person/" + character_id + "?api_key=" + api_key;
-
-        final String BASE_URL_PEOPLE_MOVIES = "https://api.themoviedb.org/3/person/" + character_id + "/movie_credits?api_key=" + api_key;
-
-        JsonObjectRequest personDetailRequest = new JsonObjectRequest(BASE_URL_PERSON_DETAIL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        personDetailsParsing(response.toString());
+    private val detailedMovieAndCast: Unit
+        private get() {
+            val volleySingleton = TmdbVolleySingleton.getInstance()
+            val requestQueue = volleySingleton.requestQueue
+            val api_key = BuildConfig.TMDB_API_KEY
+            val BASE_URL_PERSON_DETAIL = "https://api.themoviedb.org/3/person/$character_id?api_key=$api_key"
+            val BASE_URL_PEOPLE_MOVIES = "https://api.themoviedb.org/3/person/$character_id/movie_credits?api_key=$api_key"
+            val personDetailRequest = JsonObjectRequest(BASE_URL_PERSON_DETAIL, null,
+                    { response -> personDetailsParsing(response.toString()) }
+            ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
+            val personMovieDetailRequest = JsonObjectRequest(BASE_URL_PEOPLE_MOVIES, null,
+                    { response ->
+                        movie_json = response.toString()
+                        cast_parseOutput(response.toString())
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("webi", "Volley Error: " + error.getCause());
-            }
+            ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
+            requestQueue.add(personDetailRequest)
+            requestQueue.add(personMovieDetailRequest)
         }
-        );
 
-        JsonObjectRequest personMovieDetailRequest = new JsonObjectRequest(BASE_URL_PEOPLE_MOVIES, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        movie_json = response.toString();
-                        cast_parseOutput(response.toString());
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("webi", "Volley Error: " + error.getCause());
-            }
-        }
-        );
-
-        requestQueue.add(personDetailRequest);
-        requestQueue.add(personMovieDetailRequest);
+    override fun itemClicked(setterGetterchar: CharacterDetailsData, position: Int) {
+        val intent = Intent(this, MovieDetailsActivity::class.java)
+        intent.putExtra("id", setterGetterchar.char_id)
+        intent.putExtra("title", setterGetterchar.char_movie)
+        intent.putExtra("network_applicable", true)
+        intent.putExtra("activity", false)
+        startActivity(intent)
     }
 
-    @Override
-    public void itemClicked(CharacterDetailsData setterGetterchar, int position) {
-        Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("id", setterGetterchar.getChar_id());
-        intent.putExtra("title", setterGetterchar.getChar_movie());
-        intent.putExtra("network_applicable", true);
-        intent.putExtra("activity", false);
-        startActivity(intent);
-    }
-
-    void personDetailsParsing(String detailsResult) {
+    fun personDetailsParsing(detailsResult: String?) {
         try {
-            JSONObject jsonObject = new JSONObject(detailsResult);
-            String dataName = jsonObject.getString("name");
-            String dataProfile = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path");
-            String dataOverview = jsonObject.getString("biography");
-            String dataBirthday = jsonObject.getString("birthday");
-            String dataBirthPlace = jsonObject.getString("place_of_birth");
-
-            character_title = dataName;
-            character_bio = dataOverview;
-
-            name.setText(dataName);
-            if (dataBirthday.equals("null")) {
-                dateOfBirth.setVisibility(View.GONE);
+            val jsonObject = JSONObject(detailsResult)
+            val dataName = jsonObject.getString("name")
+            val dataProfile = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
+            val dataOverview = jsonObject.getString("biography")
+            val dataBirthday = jsonObject.getString("birthday")
+            val dataBirthPlace = jsonObject.getString("place_of_birth")
+            character_title = dataName
+            character_bio = dataOverview
+            name!!.text = dataName
+            if (dataBirthday == "null") {
+                dateOfBirth!!.visibility = View.GONE
             } else {
-                dateOfBirth.setText(dataBirthday);
+                dateOfBirth!!.text = dataBirthday
             }
-
-            if (dataBirthPlace.equals("null")) {
-                birthPlace.setVisibility(View.GONE);
+            if (dataBirthPlace == "null") {
+                birthPlace!!.visibility = View.GONE
             } else {
-                birthPlace.setText(dataBirthPlace);
+                birthPlace!!.text = dataBirthPlace
             }
-
-            if (dataOverview.length() <= 0) {
-                overViewContainer.setVisibility(View.GONE);
-                overview.setVisibility(View.GONE);
+            if (dataOverview.length <= 0) {
+                overViewContainer!!.visibility = View.GONE
+                overview!!.visibility = View.GONE
             } else {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    overview.setText(Html.fromHtml(dataOverview, Html.FROM_HTML_MODE_LEGACY));
+                    overview!!.text = Html.fromHtml(dataOverview, Html.FROM_HTML_MODE_LEGACY)
                 } else {
-                    overview.setText(Html.fromHtml(dataOverview));
+                    overview!!.text = Html.fromHtml(dataOverview)
                 }
             }
-
             try {
                 Glide.with(co)
                         .load(dataProfile)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .fitCenter().into(profileHolder);
-
-            } catch (Exception e) {
+                        .fitCenter().into(profileHolder!!)
+            } catch (e: Exception) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (e: JSONException) {
+            e.printStackTrace()
         }
     }
 
-
-    private void cast_parseOutput(String cast_result) {
-        CharacterDetailActivityParseWork par = new CharacterDetailActivityParseWork(this, cast_result);
-        List<CharacterDetailsData> char_list = par.char_parse_cast();
-        CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, true);
-        char_adapter.setClickListener(this);
-        movies.setAdapter(char_adapter);
-        if (char_list.size() > 4)
-            more.setVisibility(View.VISIBLE);
-        else
-            more.setVisibility(View.INVISIBLE);
-
+    private fun cast_parseOutput(cast_result: String) {
+        val par = CharacterDetailActivityParseWork(this, cast_result)
+        val char_list = par.char_parse_cast()
+        val char_adapter = CharacterDetailsActivityAdapter(this, char_list, true)
+        char_adapter.setClickListener(this)
+        movies!!.adapter = char_adapter
+        if (char_list.size > 4) more!!.visibility = View.VISIBLE else more!!.visibility = View.INVISIBLE
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-                supportFinishAfterTransition();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            supportFinishAfterTransition()
         }
-
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 
-
-    @Override
-    public void onBackPressed() {
-
-        FullReadFragment fragment = (FullReadFragment) getSupportFragmentManager().findFragmentByTag("DESC");
-        if (fragment != null && fragment.isVisible()) {
-            getSupportFragmentManager().beginTransaction().remove(fullReadFragment).commit();
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag("DESC") as FullReadFragment?
+        if (fragment != null && fragment.isVisible) {
+            supportFragmentManager.beginTransaction().remove(fullReadFragment!!).commit()
         } else {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Glide.with(this).clear(profileHolder);
+    override fun onStop() {
+        super.onStop()
+        Glide.with(this).clear(profileHolder!!)
     }
 }

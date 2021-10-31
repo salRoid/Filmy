@@ -1,28 +1,26 @@
-package tech.salroid.filmy.activities;
+package tech.salroid.filmy.activities
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity
+import butterknife.BindView
+import tech.salroid.filmy.R
+import android.widget.TextView
+import android.os.Bundle
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
+import butterknife.ButterKnife
+import android.graphics.Typeface
+import androidx.core.content.res.ResourcesCompat
+import com.bumptech.glide.Glide
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
+import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-
-import com.bumptech.glide.Glide;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import tech.salroid.filmy.R;
 /*
  * Filmy Application for Android
  * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
@@ -39,127 +37,111 @@ import tech.salroid.filmy.R;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-public class AboutActivity extends AppCompatActivity {
-
+class AboutActivity : AppCompatActivity() {
+    @JvmField
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    var toolbar: Toolbar? = null
+
+    @JvmField
     @BindView(R.id.logo)
-    TextView logo;
-    private boolean nightMode;
+    var logo: TextView? = null
+    private var nightMode = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        nightMode = sp.getBoolean("dark", false)
+        if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
+        setContentView(R.layout.activity_developers)
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        nightMode = sp.getBoolean("dark", false);
-        if (nightMode)
-            setTheme(R.style.AppTheme_Base_Dark);
-        else
-            setTheme(R.style.AppTheme_Base);
+        ButterKnife.bind(this)
+        setSupportActionBar(toolbar)
 
-        setContentView(R.layout.activity_developers);
-
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("");
+        if (supportActionBar != null) {
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.title = ""
         }
+        val typeface = ResourcesCompat.getFont(this, R.font.rubik)
+        logo!!.typeface = typeface
 
-        Typeface typeface = ResourcesCompat.getFont(this,R.font.rubik);
-        logo.setTypeface(typeface);
+        if (nightMode) allThemeLogic()
 
-        if (nightMode)
-            allThemeLogic();
-
-        Glide.with(this).load(getString(R.string.profile_webianks)).into((ImageView) findViewById(R.id.profile_webianks));
-        Glide.with(this).load(getString(R.string.profile_salroid)).into((ImageView) findViewById(R.id.profile_salroid));
-        Glide.with(this).load(getString(R.string.banner_webianks)).into((ImageView) findViewById(R.id.banner_webianks));
-        Glide.with(this).load(getString(R.string.banner_salroid)).into((ImageView) findViewById(R.id.banner_salroid));
-
+        Glide.with(this).load(getString(R.string.profile_webianks)).into((findViewById<View>(R.id.profile_webianks) as ImageView))
+        Glide.with(this).load(getString(R.string.profile_salroid)).into((findViewById<View>(R.id.profile_salroid) as ImageView))
+        Glide.with(this).load(getString(R.string.banner_webianks)).into((findViewById<View>(R.id.banner_webianks) as ImageView))
+        Glide.with(this).load(getString(R.string.banner_salroid)).into((findViewById<View>(R.id.banner_salroid) as ImageView))
     }
 
-    private void allThemeLogic() {
-        logo.setTextColor(Color.parseColor("#bdbdbd"));
+    private fun allThemeLogic() {
+        logo!!.setTextColor(Color.parseColor("#bdbdbd"))
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            finish();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 
-    public void sendEmail(View view) {
-      switch (view.getId()){
-          case R.id.email_webianks:
-              Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-              emailIntent.setData(Uri.parse("mailto: webianks@gmail.com"));
-              startActivity(Intent.createChooser(emailIntent, "Send feedback"));
-          break;
-
-          case R.id.email_salroid:
-              Intent emailIntent2 = new Intent(Intent.ACTION_SENDTO);
-              emailIntent2.setData(Uri.parse("mailto: gupta.sajal631@gmail.com"));
-              startActivity(Intent.createChooser(emailIntent2, "Send feedback"));
-          break;
-      }
-    }
-
-    public void redirectGithub(View view) {
-        switch (view.getId()){
-            case R.id.github_webianks:
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setToolbarColor(ContextCompat.getColor(this, R.color.black));
-                CustomTabsIntent customTabsIntent = builder.build();
-                customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.git_webianks)));
-            break;
-            case R.id.github_salroid:
-                CustomTabsIntent.Builder builder1 = new CustomTabsIntent.Builder();
-                builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black));
-                CustomTabsIntent customTabsIntent1 = builder1.build();
-                customTabsIntent1.launchUrl(this, Uri.parse(getString(R.string.git_salroid)));
-            break;
+    fun sendEmail(view: View) {
+        when (view.id) {
+            R.id.email_webianks -> {
+                val emailIntent = Intent(Intent.ACTION_SENDTO)
+                emailIntent.data = Uri.parse("mailto: webianks@gmail.com")
+                startActivity(Intent.createChooser(emailIntent, "Send feedback"))
+            }
+            R.id.email_salroid -> {
+                val emailIntent2 = Intent(Intent.ACTION_SENDTO)
+                emailIntent2.data = Uri.parse("mailto: gupta.sajal631@gmail.com")
+                startActivity(Intent.createChooser(emailIntent2, "Send feedback"))
+            }
         }
     }
 
-    private void viewIntent(String url) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
-    }
-
-    public void redirectWebsite(View view) {
-        switch (view.getId()){
-            case R.id.website_webianks:
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent));
-                CustomTabsIntent customTabsIntent = builder.build();
-                customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.website_webianks)));
-            break;
-            case R.id.website_salroid:
-                CustomTabsIntent.Builder builder1 = new CustomTabsIntent.Builder();
-                builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black));
-                CustomTabsIntent customTabsIntent1 = builder1.build();
-                customTabsIntent1.launchUrl(this, Uri.parse(getString(R.string.website_salroid)));
-            break;
+    fun redirectGithub(view: View) {
+        when (view.id) {
+            R.id.github_webianks -> {
+                val builder = CustomTabsIntent.Builder()
+                builder.setToolbarColor(ContextCompat.getColor(this, R.color.black))
+                val customTabsIntent = builder.build()
+                customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.git_webianks)))
+            }
+            R.id.github_salroid -> {
+                val builder1 = CustomTabsIntent.Builder()
+                builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black))
+                val customTabsIntent1 = builder1.build()
+                customTabsIntent1.launchUrl(this, Uri.parse(getString(R.string.git_salroid)))
+            }
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private fun viewIntent(url: String) {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        startActivity(i)
+    }
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean nightModeNew = sp.getBoolean("dark", false);
+    fun redirectWebsite(view: View) {
+        when (view.id) {
+            R.id.website_webianks -> {
+                val builder = CustomTabsIntent.Builder()
+                builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent))
+                val customTabsIntent = builder.build()
+                customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.website_webianks)))
+            }
+            R.id.website_salroid -> {
+                val builder1 = CustomTabsIntent.Builder()
+                builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black))
+                val customTabsIntent1 = builder1.build()
+                customTabsIntent1.launchUrl(this, Uri.parse(getString(R.string.website_salroid)))
+            }
+        }
+    }
 
-        if (nightMode!=nightModeNew)
-            recreate();
+    override fun onResume() {
+        super.onResume()
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightModeNew = sp.getBoolean("dark", false)
+        if (nightMode != nightModeNew) recreate()
     }
 }

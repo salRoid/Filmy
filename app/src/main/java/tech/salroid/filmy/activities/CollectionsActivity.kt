@@ -1,201 +1,121 @@
-package tech.salroid.filmy.activities;
+package tech.salroid.filmy.activities
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity
+import tech.salroid.filmy.R
+import androidx.viewpager.widget.ViewPager
+import com.google.android.gms.common.api.GoogleApiClient
+import android.os.Bundle
+import android.preference.PreferenceManager
+import butterknife.ButterKnife
+import androidx.core.content.res.ResourcesCompat
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
+import android.view.MenuItem
+import tech.salroid.filmy.fragment.Favorite
+import tech.salroid.filmy.fragment.WatchList
+import com.google.android.gms.appindexing.AppIndex
+import tech.salroid.filmy.custom_adapter.MyPagerAdapter
+import tech.salroid.filmy.fragment.SavedMovies
+import androidx.core.content.ContextCompat
+import com.google.android.gms.appindexing.Action
+import com.google.android.gms.appindexing.Thing
+import tech.salroid.filmy.databinding.ActivityCollectionsBinding
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.viewpager.widget.ViewPager;
+class CollectionsActivity : AppCompatActivity() {
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.material.tabs.TabLayout;
+    private var client: GoogleApiClient? = null
+    private var throughShortcut: Boolean? = null
+    private lateinit var binding: ActivityCollectionsBinding
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import tech.salroid.filmy.R;
-import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
-import tech.salroid.filmy.fragment.Favorite;
-import tech.salroid.filmy.fragment.SavedMovies;
-import tech.salroid.filmy.fragment.WatchList;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityCollectionsBinding.inflate(layoutInflater)
 
-/*
- * Filmy Application for Android
- * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightMode = pref.getBoolean("dark", false)
+        if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
 
-public class CollectionsActivity extends AppCompatActivity {
+        setContentView(binding.root)
+        ButterKnife.bind(this)
+        setSupportActionBar(binding.toolbar)
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.logo)
-    TextView logo;
-    @BindView(R.id.viewpager)
-    ViewPager viewPager;
-    @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
-    @BindView(R.id.header)
-    FrameLayout loginHeader;
-    @BindView(R.id.username)
-    TextView tvUserName;
-    @BindView(R.id.favContainer)
-    FrameLayout favourite_layout;
-    @BindView(R.id.watchlistContainer)
-    FrameLayout watchlist_layout;
-    private GoogleApiClient client;
-    private Boolean throughShortcut;
+        supportActionBar?.title = " "
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        if (nightMode) allThemeLogic()
 
-        SharedPreferences spref = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean nightMode = spref.getBoolean("dark", false);
-        if (nightMode)
-            setTheme(R.style.AppTheme_Base_Dark);
-        else
-            setTheme(R.style.AppTheme_Base);
+        throughShortcut = intent.getBooleanExtra("throughShortcut", false)
 
-        setContentView(R.layout.activity_collections);
-        ButterKnife.bind(this);
+        val typeface = ResourcesCompat.getFont(this, R.font.rubik)
+        binding.logo.typeface = typeface
 
-        setSupportActionBar(toolbar);
+        setupViewPager(binding.viewpager)
+        binding.tabLayout.setupWithViewPager(binding.viewpager)
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(" ");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding.favContainer.setOnClickListener {
+            startActivity(Intent(this@CollectionsActivity, Favorite::class.java))
         }
 
-        if (nightMode)
-            allThemeLogic();
-
-        throughShortcut = getIntent().getBooleanExtra("throughShortcut",false);
-
-        Typeface typeface =  ResourcesCompat.getFont(this,R.font.rubik);
-        logo.setTypeface(typeface);
-
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
-
-        favourite_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(CollectionsActivity.this, Favorite.class));
-            }
-        });
-
-        watchlist_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(CollectionsActivity.this, WatchList.class));
-            }
-        });
-
-
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home){
-            if (throughShortcut){
-                finish();
-                startActivity(new Intent(this,MainActivity.class));
-            }else
-                finish();
+        binding.watchlistContainer.setOnClickListener {
+            startActivity(Intent(this@CollectionsActivity, WatchList::class.java))
         }
-        return super.onOptionsItemSelected(item);
+
+        client = GoogleApiClient.Builder(this).addApi(AppIndex.API).build()
     }
 
-
-
-    private void setupViewPager(ViewPager viewPager) {
-
-
-        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new SavedMovies(), getString(R.string.offline));
-        adapter.addFragment(new Favorite(), getString(R.string.favorite));
-        adapter.addFragment(new WatchList(), getString(R.string.watchlist));
-        viewPager.setAdapter(adapter);
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            if (throughShortcut!!) {
+                finish()
+                startActivity(Intent(this, MainActivity::class.java))
+            } else finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Account Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
+    private fun setupViewPager(viewPager: ViewPager?) {
+        val adapter = MyPagerAdapter(supportFragmentManager)
+        adapter.addFragment(SavedMovies(), getString(R.string.offline))
+        adapter.addFragment(Favorite(), getString(R.string.favorite))
+        adapter.addFragment(WatchList(), getString(R.string.watchlist))
+        viewPager!!.adapter = adapter
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    private val indexApiAction: Action
+        get() {
+            val `object` = Thing.Builder()
+                    .setName("Account Page")
+                    .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                    .build()
+            return Action.Builder(Action.TYPE_VIEW)
+                    .setObject(`object`)
+                    .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                    .build()
+        }
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    public override fun onStart() {
+        super.onStart()
+        client?.connect()
+        client?.let { AppIndex.AppIndexApi.start(it, indexApiAction) }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
+    public override fun onStop() {
+        super.onStop()
+        client?.let { AppIndex.AppIndexApi.end(it, indexApiAction) }
+        client?.disconnect()
     }
 
-    private void allThemeLogic() {
-        logo.setTextColor(Color.parseColor("#bdbdbd"));
-        tabLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorDarkThemePrimary));
-        tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"));
+    private fun allThemeLogic() {
+        binding.logo.setTextColor(Color.parseColor("#bdbdbd"))
+        binding.tabLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDarkThemePrimary))
+        binding.tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"))
     }
 
-    @Override
-    public void onBackPressed() {
-        if (throughShortcut){
-            finish();
-            startActivity(new Intent(this,MainActivity.class));
-        }else
-            super.onBackPressed();
+    override fun onBackPressed() {
+        if (throughShortcut!!) {
+            finish()
+            startActivity(Intent(this, MainActivity::class.java))
+        } else super.onBackPressed()
     }
 }

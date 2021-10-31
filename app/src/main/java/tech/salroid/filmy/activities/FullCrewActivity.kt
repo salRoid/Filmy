@@ -1,119 +1,70 @@
-package tech.salroid.filmy.activities;
+package tech.salroid.filmy.activities
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import androidx.core.util.Pair;
-import android.view.MenuItem;
-import android.view.View;
+import androidx.appcompat.app.AppCompatActivity
+import tech.salroid.filmy.custom_adapter.CrewAdapter
+import android.os.Bundle
+import android.preference.PreferenceManager
+import tech.salroid.filmy.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import android.content.Intent
+import android.view.MenuItem
+import android.view.View
+import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
+import tech.salroid.filmy.data_classes.CrewDetailsData
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
+import tech.salroid.filmy.databinding.ActivityFullCastBinding
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+class FullCrewActivity : AppCompatActivity(), CrewAdapter.ClickListener {
 
-import java.util.List;
+    private var crewResult: String? = null
+    private var nightMode = false
+    private lateinit var binding: ActivityFullCastBinding
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import tech.salroid.filmy.R;
-import tech.salroid.filmy.custom_adapter.CrewAdapter;
-import tech.salroid.filmy.data_classes.CrewDetailsData;
-import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityFullCastBinding.inflate(layoutInflater)
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
 
-/*
- * Filmy Application for Android
- * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+        nightMode = sp.getBoolean("dark", false)
+        if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
 
-public class FullCrewActivity extends AppCompatActivity implements CrewAdapter.ClickListener {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.full_cast_recycler)
-    RecyclerView full_crew_recycler;
+        setSupportActionBar(binding.toolbar)
+        binding.fullCastRecycler.layoutManager = LinearLayoutManager(this@FullCrewActivity)
+        crewResult = intent?.getStringExtra("crew_json")
 
-    private String crew_result;
-    private boolean nightMode;
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = intent.getStringExtra("toolbar_title")
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+        val par = MovieDetailsActivityParseWork(this, crewResult)
+        val crewList = par.parse_crew()
+        val fullCrewAdapter = CrewAdapter(this, crewList, false)
+        fullCrewAdapter.setClickListener(this)
+        binding.fullCastRecycler.adapter = fullCrewAdapter
+    }
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        nightMode = sp.getBoolean("dark", false);
-        if (nightMode)
-            setTheme(R.style.AppTheme_Base_Dark);
-        else
-            setTheme(R.style.AppTheme_Base);
-        
-        super.onCreate(savedInstanceState);
-        
-        setContentView(R.layout.activity_full_cast);
-        ButterKnife.bind(this);
+    override fun itemClicked(setterGetter: CrewDetailsData, position: Int, view: View) {
+        val intent = Intent(this, CharacterDetailsActivity::class.java)
+        intent.putExtra("id", setterGetter.crewId)
+        val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
+        val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)
+        startActivity(intent, options.toBundle())
+    }
 
-        setSupportActionBar(toolbar);
+    override fun onResume() {
+        super.onResume()
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightModeNew = sp.getBoolean("dark", false)
+        if (nightMode != nightModeNew) recreate()
+    }
 
-        full_crew_recycler.setLayoutManager(new LinearLayoutManager(FullCrewActivity.this));
-
-
-        Intent intent = getIntent();
-        if (intent != null) {
-            crew_result = intent.getStringExtra("crew_json");
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setTitle(intent.getStringExtra("toolbar_title"));
-            }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
         }
-
-
-        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(this, crew_result);
-        List<CrewDetailsData> crew_list = par.parse_crew();
-        CrewAdapter full_crew_adapter = new CrewAdapter(this, crew_list, false);
-        full_crew_adapter.setClickListener(this);
-        full_crew_recycler.setAdapter(full_crew_adapter);
-
-    }
-
-    @Override
-    public void itemClicked(CrewDetailsData setterGetter, int position, View view) {
-        Intent intent = new Intent(this, CharacterDetailsActivity.class);
-        intent.putExtra("id", setterGetter.getCrewId());
-
-        Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
-        Pair<View, String> p2 = Pair.create(view.findViewById(R.id.crew_name), "name");
-
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2);
-        startActivity(intent, options.toBundle());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean nightModeNew = sp.getBoolean("dark", false);
-        if (nightMode!=nightModeNew)
-            recreate();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 }

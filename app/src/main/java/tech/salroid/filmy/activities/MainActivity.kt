@@ -1,47 +1,42 @@
-package tech.salroid.filmy.activities;
+package tech.salroid.filmy.activities
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.speech.RecognizerIntent;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.tabs.TabLayout;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import tech.salroid.filmy.FilmyIntro;
-import tech.salroid.filmy.R;
-import tech.salroid.filmy.custom_adapter.MyPagerAdapter;
-import tech.salroid.filmy.customs.CustomToast;
-import tech.salroid.filmy.fragment.InTheaters;
-import tech.salroid.filmy.fragment.SearchFragment;
-import tech.salroid.filmy.fragment.Trending;
-import tech.salroid.filmy.fragment.UpComing;
-import tech.salroid.filmy.network_stuff.FirstFetch;
-import tech.salroid.filmy.utility.Network;
-import tr.xip.errorview.ErrorView;
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import androidx.appcompat.app.AppCompatActivity
+import butterknife.BindView
+import tech.salroid.filmy.R
+import com.miguelcatalan.materialsearchview.MaterialSearchView
+import android.widget.TextView
+import android.widget.FrameLayout
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
+import tr.xip.errorview.ErrorView
+import tech.salroid.filmy.fragment.Trending
+import tech.salroid.filmy.fragment.SearchFragment
+import tech.salroid.filmy.customs.CustomToast
+import android.os.Bundle
+import android.preference.PreferenceManager
+import butterknife.ButterKnife
+import androidx.core.content.ContextCompat
+import com.miguelcatalan.materialsearchview.MaterialSearchView.SearchViewListener
+import tech.salroid.filmy.FilmyIntro
+import tech.salroid.filmy.network_stuff.FirstFetch
+import com.google.android.material.appbar.AppBarLayout
+import tech.salroid.filmy.fragment.InTheaters
+import tech.salroid.filmy.fragment.UpComing
+import tech.salroid.filmy.custom_adapter.MyPagerAdapter
+import android.graphics.Color
+import android.os.Handler
+import android.speech.RecognizerIntent
+import android.text.TextUtils
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.appcompat.widget.Toolbar
+import tech.salroid.filmy.utility.Network
 
 /*
  * Filmy Application for Android
@@ -59,357 +54,261 @@ import tr.xip.errorview.ErrorView;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+class MainActivity : AppCompatActivity() {
+    @JvmField
+    var fetchingFromNetwork = false
 
-public class MainActivity extends AppCompatActivity {
-
-    public boolean fetchingFromNetwork;
-
+    @JvmField
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    var toolbar: Toolbar? = null
+
+    @JvmField
     @BindView(R.id.search_view)
-    MaterialSearchView materialSearchView;
+    var materialSearchView: MaterialSearchView? = null
+
+    @JvmField
     @BindView(R.id.logo)
-    TextView logo;
+    var logo: TextView? = null
+
+    @JvmField
     @BindView(R.id.toolbarScroller)
-    FrameLayout toolbarScroller;
+    var toolbarScroller: FrameLayout? = null
+
+    @JvmField
     @BindView(R.id.viewpager)
-    ViewPager viewPager;
+    var viewPager: ViewPager? = null
+
+    @JvmField
     @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
+    var tabLayout: TabLayout? = null
+
+    @JvmField
     @BindView(R.id.main_error_view)
-    ErrorView mErrorView;
-
-    private Trending trendingFragment;
-    private SearchFragment searchFragment;
-    private boolean cantProceed;
-    private boolean nightMode;
-
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
+    var mErrorView: ErrorView? = null
+    private var trendingFragment: Trending? = null
+    private var searchFragment: SearchFragment? = null
+    private var cantProceed = false
+    private var nightMode = false
+    private val mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
             // Extract data included in the Intent
-            int statusCode = intent.getIntExtra("message", 0);
-            CustomToast.show(context, "Failed to get latest movies.", true);
-            cantProceed(statusCode);
+            val statusCode = intent.getIntExtra("message", 0)
+            CustomToast.show(context, "Failed to get latest movies.", true)
+            cantProceed(statusCode)
         }
-    };
+    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        nightMode = sp.getBoolean("dark", false)
+        if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        ButterKnife.bind(this)
+        setSupportActionBar(toolbar)
+        if (supportActionBar != null) supportActionBar!!.setTitle(" ")
+        introLogic()
+        if (nightMode) allThemeLogic()
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        nightMode = sp.getBoolean("dark", false);
-        if (nightMode)
-            setTheme(R.style.AppTheme_Base_Dark);
-        else
-            setTheme(R.style.AppTheme_Base);
+        mErrorView?.apply {
+            title = getString(R.string.error_title_damn)
+            titleColor = ContextCompat.getColor(context, R.color.dark)
+            setSubtitle(getString(R.string.error_details))
+            setRetryText(getString(R.string.error_retry))
+        }
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(" ");
-
-        introLogic();
-
-        if (nightMode)
-            allThemeLogic();
-
-        mErrorView
-                .setTitle(getString(R.string.error_title_damn))
-                .setTitleColor(ContextCompat.getColor(this, R.color.dark))
-                .setSubtitle(getString(R.string.error_details))
-                .setRetryText(getString(R.string.error_retry));
-
-
-        mErrorView.setRetryListener(() -> {
-            if (Network.isNetworkConnected(MainActivity.this)) {
-                fetchingFromNetwork = true;
-                setScheduler();
+        mErrorView!!.setRetryListener {
+            if (Network.isNetworkConnected(this@MainActivity)) {
+                fetchingFromNetwork = true
+                setScheduler()
             }
-            canProceed();
-        });
-
-
-        mErrorView.setVisibility(View.GONE);
-
-        setupViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
-
-        materialSearchView.setVoiceSearch(true);
-        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
+            canProceed()
+        }
+        mErrorView!!.visibility = View.GONE
+        setupViewPager(viewPager)
+        tabLayout!!.setupWithViewPager(viewPager)
+        materialSearchView!!.setVoiceSearch(true)
+        materialSearchView!!.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
                 //Do some magic
-
-                getSearchedResult(query);
-                searchFragment.showProgress();
-
-                return true;
+                getSearchedResult(query)
+                searchFragment!!.showProgress()
+                return true
             }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
+            override fun onQueryTextChange(newText: String): Boolean {
 
                 //getSearchedResult(newText);
-                return true;
-
+                return true
             }
-        });
-
-        materialSearchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
+        })
+        materialSearchView!!.setOnSearchViewListener(object : SearchViewListener {
+            override fun onSearchViewShown() {
                 //Do some magic
-
-                tabLayout.setVisibility(View.GONE);
-
-                disableToolbarScrolling();
-
-                searchFragment = new SearchFragment();
-                getSupportFragmentManager().
-                        beginTransaction().
-                        replace(R.id.search_container, searchFragment)
-                        .commit();
-
+                tabLayout!!.visibility = View.GONE
+                disableToolbarScrolling()
+                searchFragment = SearchFragment()
+                supportFragmentManager.beginTransaction().replace(R.id.search_container, searchFragment!!)
+                        .commit()
             }
 
-            @Override
-            public void onSearchViewClosed() {
+            override fun onSearchViewClosed() {
                 //Do some magic
-
-
-                getSupportFragmentManager()
+                supportFragmentManager
                         .beginTransaction()
-                        .remove(searchFragment)
-                        .commit();
-
-                if (!cantProceed)
-                    tabLayout.setVisibility(View.VISIBLE);
-
-                enableToolbarScrolling();
-
+                        .remove(searchFragment!!)
+                        .commit()
+                if (!cantProceed) tabLayout!!.visibility = View.VISIBLE
+                enableToolbarScrolling()
             }
-        });
-
-
+        })
         if (Network.isNetworkConnected(this)) {
-            fetchingFromNetwork = true;
-            setScheduler();
+            fetchingFromNetwork = true
+            setScheduler()
         }
-
-
     }
 
-
-    private void allThemeLogic() {
-
-        tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"));
-        tabLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.colorDarkThemePrimary));
-        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#bdbdbd"));
-        logo.setTextColor(Color.parseColor("#E0E0E0"));
-        materialSearchView.setBackgroundColor(getResources().getColor(R.color.colorDarkThemePrimary));
-        materialSearchView.setBackIcon(ContextCompat.getDrawable(this,R.drawable.ic_action_navigation_arrow_back_inverted));
-        materialSearchView.setCloseIcon(ContextCompat.getDrawable(this,R.drawable.ic_action_navigation_close_inverted));
-        materialSearchView.setTextColor(Color.parseColor("#ffffff"));
-
+    private fun allThemeLogic() {
+        tabLayout!!.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"))
+        tabLayout!!.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDarkThemePrimary))
+        tabLayout!!.setSelectedTabIndicatorColor(Color.parseColor("#bdbdbd"))
+        logo!!.setTextColor(Color.parseColor("#E0E0E0"))
+        materialSearchView!!.setBackgroundColor(resources.getColor(R.color.colorDarkThemePrimary))
+        materialSearchView!!.setBackIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_navigation_arrow_back_inverted))
+        materialSearchView!!.setCloseIcon(ContextCompat.getDrawable(this, R.drawable.ic_action_navigation_close_inverted))
+        materialSearchView!!.setTextColor(Color.parseColor("#ffffff"))
     }
 
-
-    private void introLogic() {
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                SharedPreferences getPrefs = PreferenceManager
-                        .getDefaultSharedPreferences(getBaseContext());
-
-                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
-
-                if (isFirstStart) {
-
-                    Intent i = new Intent(MainActivity.this, FilmyIntro.class);
-                    startActivity(i);
-                    SharedPreferences.Editor e = getPrefs.edit();
-                    e.putBoolean("firstStart", false);
-                    e.apply();
-                }
+    private fun introLogic() {
+        val t = Thread {
+            val getPrefs = PreferenceManager
+                    .getDefaultSharedPreferences(baseContext)
+            val isFirstStart = getPrefs.getBoolean("firstStart", true)
+            if (isFirstStart) {
+                val i = Intent(this@MainActivity, FilmyIntro::class.java)
+                startActivity(i)
+                val e = getPrefs.edit()
+                e.putBoolean("firstStart", false)
+                e.apply()
             }
-        });
-        t.start();
-
+        }
+        t.start()
     }
 
-    private void setScheduler() {
-
-        FirstFetch firstFetch = new FirstFetch(this);
-        firstFetch.start();
-
+    private fun setScheduler() {
+        val firstFetch = FirstFetch(this)
+        firstFetch.start()
     }
 
-    public void cantProceed(final int status) {
-
-        new Handler().postDelayed(() -> {
-
-            if (trendingFragment != null && !trendingFragment.isShowingFromDatabase) {
-                cantProceed = true;
-                tabLayout.setVisibility(View.GONE);
-                viewPager.setVisibility(View.GONE);
+    fun cantProceed(status: Int) {
+        Handler().postDelayed({
+            if (trendingFragment != null && !trendingFragment!!.isShowingFromDatabase) {
+                cantProceed = true
+                tabLayout!!.visibility = View.GONE
+                viewPager!!.visibility = View.GONE
                 //mErrorView.setError(status);
-                mErrorView.setVisibility(View.VISIBLE);
+                mErrorView!!.visibility = View.VISIBLE
                 //disable toolbar scrolling
-                disableToolbarScrolling();
+                disableToolbarScrolling()
             }
-        }, 1000);
-
+        }, 1000)
     }
 
-    public void canProceed() {
-
-        cantProceed = false;
-
-        tabLayout.setVisibility(View.VISIBLE);
-        viewPager.setVisibility(View.VISIBLE);
-        mErrorView.setVisibility(View.GONE);
-
+    fun canProceed() {
+        cantProceed = false
+        tabLayout!!.visibility = View.VISIBLE
+        viewPager!!.visibility = View.VISIBLE
+        mErrorView!!.visibility = View.GONE
         if (trendingFragment != null) {
-
-            trendingFragment.retryLoading();
-
+            trendingFragment!!.retryLoading()
         }
-
-        enableToolbarScrolling();
-
+        enableToolbarScrolling()
     }
 
-    private void disableToolbarScrolling() {
-        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbarScroller.getLayoutParams();
-        params.setScrollFlags(0);
+    private fun disableToolbarScrolling() {
+        val params = toolbarScroller!!.layoutParams as AppBarLayout.LayoutParams
+        params.scrollFlags = 0
     }
 
-    private void enableToolbarScrolling() {
-
-        AppBarLayout.LayoutParams params =
-                (AppBarLayout.LayoutParams) toolbarScroller.getLayoutParams();
-        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
-                | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
-
+    private fun enableToolbarScrolling() {
+        val params = toolbarScroller!!.layoutParams as AppBarLayout.LayoutParams
+        params.scrollFlags = (AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-
-
-        trendingFragment = new Trending();
-        InTheaters inTheatersFragment = new InTheaters();
-        UpComing upComingFragment = new UpComing();
-
-        MyPagerAdapter adapter = new MyPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(trendingFragment, getString(R.string.trending));
-        adapter.addFragment(inTheatersFragment, getString(R.string.theatres));
-        adapter.addFragment(upComingFragment, getString(R.string.upcoming));
-        viewPager.setAdapter(adapter);
-
+    private fun setupViewPager(viewPager: ViewPager?) {
+        trendingFragment = Trending()
+        val inTheatersFragment = InTheaters()
+        val upComingFragment = UpComing()
+        val adapter = MyPagerAdapter(supportFragmentManager)
+        adapter.addFragment(trendingFragment, getString(R.string.trending))
+        adapter.addFragment(inTheatersFragment, getString(R.string.theatres))
+        adapter.addFragment(upComingFragment, getString(R.string.upcoming))
+        viewPager!!.adapter = adapter
     }
 
-    private void getSearchedResult(String query) {
-
+    private fun getSearchedResult(query: String) {
         if (searchFragment != null) {
-            searchFragment.getSearchedResult(query);
+            searchFragment!!.getSearchedResult(query)
         }
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        MenuItem itemSearch = menu.findItem(R.id.action_search);
-        MenuItem itemAccount = menu.findItem(R.id.ic_collections);
-
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        val itemSearch = menu.findItem(R.id.action_search)
+        val itemAccount = menu.findItem(R.id.ic_collections)
         if (nightMode) {
-            itemSearch.setIcon(R.drawable.ic_action_action_search);
-            itemAccount.setIcon(R.drawable.ic_action_collections_bookmark2);
+            itemSearch.setIcon(R.drawable.ic_action_action_search)
+            itemAccount.setIcon(R.drawable.ic_action_collections_bookmark2)
         }
-
-        materialSearchView.setMenuItem(itemSearch);
-        return true;
-
-
+        materialSearchView!!.setMenuItem(itemSearch)
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-
-            case R.id.action_search:
-                startActivity(new Intent(this, SearchFragment.class));
-                break;
-            case R.id.ic_setting:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case R.id.ic_collections:
-                startActivity(new Intent(this, CollectionsActivity.class));
-                break;
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        when (id) {
+            R.id.action_search -> startActivity(Intent(this, SearchFragment::class.java))
+            R.id.ic_setting -> startActivity(Intent(this, SettingsActivity::class.java))
+            R.id.ic_collections -> startActivity(Intent(this, CollectionsActivity::class.java))
         }
-
-
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
-            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            if (matches != null && matches.size() > 0) {
-                String searchWrd = matches.get(0);
+            val matches = data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            if (matches != null && matches.size > 0) {
+                val searchWrd = matches[0]
                 if (!TextUtils.isEmpty(searchWrd)) {
-                    materialSearchView.setQuery(searchWrd, false);
+                    materialSearchView!!.setQuery(searchWrd, false)
                 }
             }
-
-            return;
+            return
         }
-        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
-    @Override
-    public void onBackPressed() {
-        if (materialSearchView.isSearchOpen()) {
-            materialSearchView.closeSearch();
+    override fun onBackPressed() {
+        if (materialSearchView!!.isSearchOpen) {
+            materialSearchView!!.closeSearch()
         } else {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean nightModeNew = sp.getBoolean("dark", false);
-
-        if (nightMode != nightModeNew)
-            recreate();
-
+    override fun onResume() {
+        super.onResume()
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightModeNew = sp.getBoolean("dark", false)
+        if (nightMode != nightModeNew) recreate()
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-                new IntentFilter("fetch-failed"));
-
+                IntentFilter("fetch-failed"))
     }
 
-    @Override
-    protected void onPause() {
+    override fun onPause() {
         // Unregister since the activity is not visible
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver)
+        super.onPause()
     }
-
-
 }

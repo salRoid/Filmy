@@ -5,10 +5,8 @@ import butterknife.BindView
 import tech.salroid.filmy.R
 import android.widget.TextView
 import android.os.Bundle
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import butterknife.ButterKnife
-import android.graphics.Typeface
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import android.content.Intent

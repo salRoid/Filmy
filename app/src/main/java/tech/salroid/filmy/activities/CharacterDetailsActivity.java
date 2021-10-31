@@ -64,15 +64,14 @@ import tech.salroid.filmy.parser.CharacterDetailActivityParseWork;
 
 public class CharacterDetailsActivity extends AppCompatActivity implements CharacterDetailsActivityAdapter.ClickListener {
 
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.more)
     TextView more;
     @BindView(R.id.name)
-    TextView ch_name;
+    TextView name;
     @BindView(R.id.overview)
-    TextView ch_desc;
+    TextView overview;
     @BindView(R.id.dob)
     TextView dateOfBirth;
     @BindView(R.id.birth_place)
@@ -80,12 +79,11 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     @BindView(R.id.display_profile)
     CircularImageView profileHolder;
     @BindView(R.id.character_movies)
-    RecyclerView char_recycler;
+    RecyclerView movies;
     @BindView(R.id.overview_container)
     FrameLayout overViewContainer;
     @BindView(R.id.logo)
     TextView logo;
-
 
     Context co = this;
     private String character_id;
@@ -111,70 +109,52 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
 
         setSupportActionBar(toolbar);
 
-
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         getSupportActionBar().setTitle("");
 
-
         Typeface typeface =  ResourcesCompat.getFont(this,R.font.rubik);
-
         logo.setTypeface(typeface);
 
-
-        if (nightMode)
-            allThemeLogic();
+        if (nightMode) { allThemeLogic(); }
 
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (!(movie_json == null && character_title == null)) {
                     Intent intent = new Intent(CharacterDetailsActivity.this, FullMovieActivity.class);
                     intent.putExtra("cast_json", movie_json);
                     intent.putExtra("toolbar_title", character_title);
                     startActivity(intent);
-
                 }
-
-
             }
         });
 
-
-        char_recycler.setLayoutManager(new LinearLayoutManager(CharacterDetailsActivity.this));
-        char_recycler.setNestedScrollingEnabled(false);
+        movies.setLayoutManager(new LinearLayoutManager(CharacterDetailsActivity.this));
+        movies.setNestedScrollingEnabled(false);
 
         overViewContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 if (character_title != null && character_bio != null) {
-
                     fullReadFragment = new FullReadFragment();
                     Bundle args = new Bundle();
                     args.putString("title", character_title);
                     args.putString("desc", character_bio);
-
                     fullReadFragment.setArguments(args);
 
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.main, fullReadFragment).addToBackStack("DESC").commit();
                 }
-
             }
         });
-
 
         Intent intent = getIntent();
         if (intent != null) {
             character_id = intent.getStringExtra("id");
         }
-
-
         getDetailedMovieAndCast();
-
     }
 
     private void allThemeLogic() {
@@ -192,8 +172,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
     }
 
     private void getDetailedMovieAndCast() {
-
-
         TmdbVolleySingleton volleySingleton = TmdbVolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
 
@@ -207,17 +185,12 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         personDetailsParsing(response.toString());
-
-
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
                 Log.e("webi", "Volley Error: " + error.getCause());
-
             }
         }
         );
@@ -226,11 +199,8 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         movie_json = response.toString();
-
                         cast_parseOutput(response.toString());
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -244,7 +214,6 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         requestQueue.add(personMovieDetailRequest);
     }
 
-
     @Override
     public void itemClicked(CharacterDetailsData setterGetterchar, int position) {
         Intent intent = new Intent(this, MovieDetailsActivity.class);
@@ -255,43 +224,43 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         startActivity(intent);
     }
 
-
     void personDetailsParsing(String detailsResult) {
         try {
             JSONObject jsonObject = new JSONObject(detailsResult);
             String dataName = jsonObject.getString("name");
             String dataProfile = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path");
             String dataOverview = jsonObject.getString("biography");
-            String char_birthday = jsonObject.getString("birthday");
-            String char_birthplace = jsonObject.getString("place_of_birth");
+            String dataBirthday = jsonObject.getString("birthday");
+            String dataBirthPlace = jsonObject.getString("place_of_birth");
 
             character_title = dataName;
             character_bio = dataOverview;
 
-            ch_name.setText(dataName);
-            if (char_birthday.equals("null"))
+            name.setText(dataName);
+            if (dataBirthday.equals("null")) {
                 dateOfBirth.setVisibility(View.GONE);
-            else
-                dateOfBirth.setText(char_birthday);
+            } else {
+                dateOfBirth.setText(dataBirthday);
+            }
 
-            if (char_birthplace.equals("null"))
+            if (dataBirthPlace.equals("null")) {
                 birthPlace.setVisibility(View.GONE);
-            else
-                birthPlace.setText(char_birthplace);
+            } else {
+                birthPlace.setText(dataBirthPlace);
+            }
 
             if (dataOverview.length() <= 0) {
                 overViewContainer.setVisibility(View.GONE);
-                ch_desc.setVisibility(View.GONE);
+                overview.setVisibility(View.GONE);
             } else {
                 if (Build.VERSION.SDK_INT >= 24) {
-                    ch_desc.setText(Html.fromHtml(dataOverview, Html.FROM_HTML_MODE_LEGACY));
+                    overview.setText(Html.fromHtml(dataOverview, Html.FROM_HTML_MODE_LEGACY));
                 } else {
-                    ch_desc.setText(Html.fromHtml(dataOverview));
+                    overview.setText(Html.fromHtml(dataOverview));
                 }
             }
 
             try {
-
                 Glide.with(co)
                         .load(dataProfile)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -312,7 +281,7 @@ public class CharacterDetailsActivity extends AppCompatActivity implements Chara
         List<CharacterDetailsData> char_list = par.char_parse_cast();
         CharacterDetailsActivityAdapter char_adapter = new CharacterDetailsActivityAdapter(this, char_list, true);
         char_adapter.setClickListener(this);
-        char_recycler.setAdapter(char_adapter);
+        movies.setAdapter(char_adapter);
         if (char_list.size() > 4)
             more.setVisibility(View.VISIBLE);
         else

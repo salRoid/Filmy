@@ -78,9 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
             allThemeLogic();
 
         getFragmentManager().beginTransaction().
-                replace(R.id.container,
-                        new MyPreferenceFragment()).commit();
-
+                replace(R.id.container, new MyPreferenceFragment()).commit();
 
     }
 

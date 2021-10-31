@@ -94,7 +94,11 @@ public class FullCastActivity extends AppCompatActivity implements CastAdapter.C
     public void itemClicked(CastDetailsData setterGetter, int position, View view) {
         Intent intent = new Intent(this, CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCastId());
-        startActivity(intent);
+        Pair<View, String> p1 = Pair.create(view.findViewById(R.id.cast_poster), "profile");
+        Pair<View, String> p2 = Pair.create(view.findViewById(R.id.cast_name), "name");
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2);
+        startActivity(intent, options.toBundle());
     }
 
     @Override

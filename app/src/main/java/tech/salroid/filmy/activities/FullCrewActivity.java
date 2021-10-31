@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import androidx.core.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,7 +92,12 @@ public class FullCrewActivity extends AppCompatActivity implements CrewAdapter.C
     public void itemClicked(CrewDetailsData setterGetter, int position, View view) {
         Intent intent = new Intent(this, CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCrewId());
-        startActivity(intent);
+
+        Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
+        Pair<View, String> p2 = Pair.create(view.findViewById(R.id.crew_name), "name");
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2);
+        startActivity(intent, options.toBundle());
     }
 
     @Override

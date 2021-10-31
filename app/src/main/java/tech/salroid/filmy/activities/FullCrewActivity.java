@@ -2,16 +2,15 @@ package tech.salroid.filmy.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import androidx.core.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +46,6 @@ public class FullCrewActivity extends AppCompatActivity implements CrewAdapter.C
     Toolbar toolbar;
     @BindView(R.id.full_cast_recycler)
     RecyclerView full_crew_recycler;
-
 
     private String crew_result;
     private boolean nightMode;
@@ -92,28 +90,19 @@ public class FullCrewActivity extends AppCompatActivity implements CrewAdapter.C
 
     @Override
     public void itemClicked(CrewDetailsData setterGetter, int position, View view) {
-
         Intent intent = new Intent(this, CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCrewId());
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+        Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
+        Pair<View, String> p2 = Pair.create(view.findViewById(R.id.crew_name), "name");
 
-            Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
-            Pair<View, String> p2 = Pair.create(view.findViewById(R.id.crew_name), "name");
-
-            ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation(this, p1, p2);
-            startActivity(intent, options.toBundle());
-
-        } else {
-            startActivity(intent);
-        }
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2);
+        startActivity(intent, options.toBundle());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean nightModeNew = sp.getBoolean("dark", false);
         if (nightMode!=nightModeNew)
@@ -122,11 +111,9 @@ public class FullCrewActivity extends AppCompatActivity implements CrewAdapter.C
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-
-        if (item.getItemId() == android.R.id.home)
+        if (item.getItemId() == android.R.id.home) {
             finish();
-
+        }
         return super.onOptionsItemSelected(item);
     }
 }

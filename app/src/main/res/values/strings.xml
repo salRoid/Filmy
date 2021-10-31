@@ -328,7 +328,7 @@ limitations under the License.
 
 
     <string name="app_share_link" translatable="false">https://play.google.com/store/apps/details?id=tech.salroid.filmy</string>
-    <string name="website_webianks" translatable="false">http://www.webianks.com</string>
+    <string name="website_webianks" translatable="false">http://www.webianks.me</string>
     <string name="website_salroid" translatable="false">http://www.salroid.me</string>
     <string name="git_webianks" translatable="false">https://github.com/webianks</string>
     <string name="git_salroid" translatable="false">https://github.com/salroid</string>

@@ -7,7 +7,7 @@
     tools:context=".activities.MainActivity">
 
     <ImageView
-        android:id="@+id/cen_img"
+        android:id="@+id/ivCentered"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
@@ -18,6 +18,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="invisible" />
-
 
 </RelativeLayout>

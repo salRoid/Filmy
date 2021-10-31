@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="tech.salroid.filmy.activities.LoginActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:textColor="#757575"
             android:textSize="20sp" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
 
    <!-- <ImageView

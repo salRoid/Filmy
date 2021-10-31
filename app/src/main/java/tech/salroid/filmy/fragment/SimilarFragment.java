@@ -33,7 +33,7 @@ import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.SimilarMovieActivityAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.SimilarMoviesData;
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
+import tech.salroid.filmy.networking.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
 /*

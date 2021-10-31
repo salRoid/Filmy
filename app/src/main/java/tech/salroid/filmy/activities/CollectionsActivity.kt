@@ -85,13 +85,13 @@ class CollectionsActivity : AppCompatActivity() {
     private val indexApiAction: Action
         get() {
             val `object` = Thing.Builder()
-                    .setName("Account Page")
-                    .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                    .build()
+                .setName("Account Page")
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build()
             return Action.Builder(Action.TYPE_VIEW)
-                    .setObject(`object`)
-                    .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                    .build()
+                .setObject(`object`)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build()
         }
 
     public override fun onStart() {
@@ -108,7 +108,12 @@ class CollectionsActivity : AppCompatActivity() {
 
     private fun allThemeLogic() {
         binding.logo.setTextColor(Color.parseColor("#bdbdbd"))
-        binding.tabLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDarkThemePrimary))
+        binding.tabLayout.setBackgroundColor(
+            ContextCompat.getColor(
+                this,
+                R.color.colorDarkThemePrimary
+            )
+        )
         binding.tabLayout.setTabTextColors(Color.parseColor("#bdbdbd"), Color.parseColor("#e0e0e0"))
     }
 

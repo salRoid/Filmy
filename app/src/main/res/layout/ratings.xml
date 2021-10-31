@@ -17,14 +17,14 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/widget_margin_half"
             android:layout_marginTop="@dimen/widget_margin_half"
             android:layout_marginBottom="@dimen/widget_margin_half"
-            app:strokeWidth="0dp"
-            app:cardElevation="0dp"
             app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp"
             app:strokeColor="@color/grey2"
-            android:layout_height="wrap_content">
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:id="@+id/layout_imdb"
@@ -52,14 +52,14 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/widget_margin_half"
-            android:layout_marginBottom="@dimen/widget_margin_half"
-            app:strokeWidth="0dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:strokeColor="@color/grey2"
             android:layout_marginStart="@dimen/widget_margin_half"
-            android:layout_marginEnd="@dimen/widget_margin_half">
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:layout_marginEnd="@dimen/widget_margin_half"
+            android:layout_marginBottom="@dimen/widget_margin_half"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/grey2"
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:id="@+id/layout_tomato"
@@ -87,14 +87,14 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/widget_margin_half"
-            android:layout_marginBottom="@dimen/widget_margin_half"
-            app:strokeWidth="0dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:strokeColor="@color/grey2"
             android:layout_marginStart="@dimen/widget_margin_half"
-            android:layout_marginEnd="@dimen/widget_margin_half">
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:layout_marginEnd="@dimen/widget_margin_half"
+            android:layout_marginBottom="@dimen/widget_margin_half"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/grey2"
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:id="@+id/layout_flixi"
@@ -123,14 +123,14 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/widget_margin_half"
-            android:layout_marginBottom="@dimen/widget_margin_half"
-            app:strokeWidth="0dp"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:strokeColor="@color/grey2"
             android:layout_marginStart="@dimen/widget_margin_half"
-            android:layout_marginEnd="@dimen/widget_margin_half">
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:layout_marginEnd="@dimen/widget_margin_half"
+            android:layout_marginBottom="@dimen/widget_margin_half"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/grey2"
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:id="@+id/layout_meta"
@@ -168,13 +168,13 @@
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/widget_margin_half"
             android:layout_marginBottom="@dimen/widget_margin_half"
-            app:strokeWidth="0dp"
             app:cardBackgroundColor="@android:color/transparent"
             app:cardElevation="0dp"
             app:strokeColor="@color/grey2"
-            android:layout_height="wrap_content">
+            app:strokeWidth="0dp">
 
             <LinearLayout
                 android:id="@+id/layout_tmdb"
@@ -196,10 +196,9 @@
                     android:layout_margin="8dp" />
 
             </LinearLayout>
+
         </com.google.android.material.card.MaterialCardView>
 
-
     </LinearLayout>
-
 
 </RelativeLayout>

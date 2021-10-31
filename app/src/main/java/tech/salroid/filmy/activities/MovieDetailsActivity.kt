@@ -1,1035 +1,839 @@
-package tech.salroid.filmy.activities;
+package tech.salroid.filmy.activities
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.net.Uri;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import tech.salroid.filmy.activities.Rating.getRating
+import androidx.appcompat.app.AppCompatActivity
+import tech.salroid.filmy.networking.GetDataFromNetwork.DataFetchedListener
+import tech.salroid.filmy.fragment.CastFragment.GotCrewListener
+import tech.salroid.filmy.R
+import tech.salroid.filmy.fragment.FullReadFragment
+import tech.salroid.filmy.fragment.AllTrailerFragment
+import tech.salroid.filmy.fragment.CastFragment
+import tech.salroid.filmy.fragment.CrewFragment
+import tech.salroid.filmy.fragment.SimilarFragment
+import android.os.Bundle
+import android.preference.PreferenceManager
+import butterknife.ButterKnife
+import tech.salroid.filmy.utility.FilmyUtility
+import android.content.Intent
+import android.database.Cursor
+import tech.salroid.filmy.animations.RevealAnimation
+import tech.salroid.filmy.networking.GetDataFromNetwork
+import tech.salroid.filmy.database.MovieLoaders
+import org.json.JSONObject
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.SimpleTarget
+import android.graphics.Bitmap
+import android.graphics.Color
+import androidx.palette.graphics.Palette
+import android.graphics.PorterDuff
+import android.net.Uri
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.FrameLayout
+import tech.salroid.filmy.database.FilmContract
+import tech.salroid.filmy.database.MovieProjection
+import tech.salroid.filmy.utility.NullChecker
+import tech.salroid.filmy.database.OfflineMovies
+import tech.salroid.filmy.utility.Confirmation
+import com.google.android.youtube.player.YouTubeStandalonePlayer
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.CursorLoader
+import androidx.loader.content.Loader
+import com.bumptech.glide.request.transition.Transition
+import org.json.JSONException
+import tech.salroid.filmy.database.MovieDetailsUpdate.performMovieDetailsUpdate
+import tech.salroid.filmy.databinding.ActivityDetailedBinding
+import tech.salroid.filmy.utility.Constants
+import java.lang.Exception
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-import androidx.palette.graphics.Palette;
+class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
+    LoaderManager.LoaderCallbacks<Cursor>, DataFetchedListener, GotCrewListener {
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.google.android.youtube.player.YouTubeStandalonePlayer;
+    private lateinit var trailerArray: Array<String?>
+    private lateinit var trailerArrayName: Array<String?>
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+    private lateinit var movieMap: MutableMap<String, String?>
+    private var networkApplicable = false
+    private var databaseApplicable = false
+    private var savedDatabaseApplicable = false
+    private var trailerBoolean = false
+    private var type = 0
 
-import java.util.HashMap;
+    private var movieId: String? = null
+    private var trailor: String? = null
+    private var trailer: String? = null
+    private var movieDesc: String? = null
+    private var quality: String? = null
+    private var movieTagline: String? = null
+    private val movieRating: String? = null
+    private var movieRatingTmdb: String? = null
+    private var showCentreImgUrl: String? = null
+    private var movieTitle: String? = null
+    private var movieIdFinal: String? = null
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import tech.salroid.filmy.R;
-import tech.salroid.filmy.animations.RevealAnimation;
-import tech.salroid.filmy.customs.BreathingProgress;
-import tech.salroid.filmy.database.FilmContract;
-import tech.salroid.filmy.database.MovieDetailsUpdation;
-import tech.salroid.filmy.database.MovieLoaders;
-import tech.salroid.filmy.database.MovieProjection;
-import tech.salroid.filmy.database.OfflineMovies;
-import tech.salroid.filmy.fragment.AllTrailerFragment;
-import tech.salroid.filmy.fragment.CastFragment;
-import tech.salroid.filmy.fragment.CrewFragment;
-import tech.salroid.filmy.fragment.FullReadFragment;
-import tech.salroid.filmy.fragment.SimilarFragment;
-import tech.salroid.filmy.network_stuff.GetDataFromNetwork;
-import tech.salroid.filmy.utility.Confirmation;
-import tech.salroid.filmy.utility.Constants;
-import tech.salroid.filmy.utility.FilmyUtility;
-import tech.salroid.filmy.utility.NullChecker;
+    private lateinit var castFragment: CastFragment
+    private lateinit var crewFragment: CrewFragment
+    private lateinit var similarFragment: SimilarFragment
+    private lateinit var allTrailerFragment: AllTrailerFragment
+    private lateinit var fullReadFragment: FullReadFragment
 
-/*
- * Filmy Application for Android
- * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+    private var nightMode = false
+    private lateinit var movieImdbId: String
+    private var movieRatingAudience: String? = null
+    private var movieRatingMetaScore: String? = null
+    private var movieTitleHyphen: String? = null
+    private lateinit var binding: ActivityDetailedBinding
 
-public class MovieDetailsActivity extends AppCompatActivity implements
-        View.OnClickListener,
-        LoaderManager.LoaderCallbacks<Cursor>,
-        GetDataFromNetwork.DataFetchedListener,
-        CastFragment.GotCrewListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityDetailedBinding.inflate(layoutInflater)
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        nightMode = sp.getBoolean("dark", false)
+        if (nightMode) setTheme(R.style.DetailsActivityThemeDark) else setTheme(R.style.DetailsActivityTheme)
 
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+        ButterKnife.bind(this)
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.detail_title)
-    TextView det_title;
-    @BindView(R.id.detail_tagline)
-    TextView det_tagline;
-    @BindView(R.id.detail_overview)
-    TextView det_overview;
-    @BindView(R.id.tmdbRating)
-    TextView det_rating;
-    @BindView(R.id.tomatoRating)
-    TextView tomato_rating;
-    @BindView(R.id.flixterRating)
-    TextView flixter_rating;
-    @BindView(R.id.metaRating)
-    TextView meta_rating;
-    @BindView(R.id.imdbRating)
-    TextView rating_of_imdb;
-    @BindView(R.id.metaRatingView)
-    TextView metascore_setter;
-    @BindView(R.id.detail_released)
-    TextView det_released;
-    @BindView(R.id.detail_certification)
-    TextView det_certification;
-    @BindView(R.id.detail_runtime)
-    TextView det_runtime;
-    @BindView(R.id.detail_language)
-    TextView det_language;
-    @BindView(R.id.detail_youtube)
-    ImageView youtube_link;
-    @BindView(R.id.backdrop)
-    ImageView banner;
-    @BindView(R.id.play_button)
-    ImageView youtube_play_button;
-    @BindView(R.id.tomatoRating_image)
-    ImageView tomatoRating_image;
-    @BindView(R.id.flixterRating_image)
-    ImageView flixterRating_image;
-    @BindView(R.id.breathingProgress)
-    BreathingProgress breathingProgress;
-    @BindView(R.id.trailorBackground)
-    LinearLayout trailorBackground;
-
-    @BindView(R.id.youtube_icon)
-    ImageView youtubeIcon;
-
-    @BindView(R.id.youtube_icon_container)
-    FrameLayout youtubeIconContainer;
-
-    @BindView(R.id.trailorView)
-    FrameLayout trailorView;
-    @BindView(R.id.new_main)
-    FrameLayout newMain;
-    @BindView(R.id.all_details_container)
-    FrameLayout main_content;
-    @BindView(R.id.header_container)
-    FrameLayout headerContainer;
-    @BindView(R.id.main)
-    RelativeLayout main;
-    @BindView(R.id.metaRating_background)
-    RelativeLayout metaRating_background;
-    @BindView(R.id.header)
-    LinearLayout header;
-
-    @BindView(R.id.extraDetails)
-    RelativeLayout extraDetails;
-
-    @BindView(R.id.ratingBar)
-    RelativeLayout ratingBar;
-
-    @BindView(R.id.cast_divider)
-    View castDivider;
-
-    @BindView(R.id.layout_imdb)
-    LinearLayout layout_imdb;
-
-    @BindView(R.id.layout_flixi)
-    LinearLayout layout_flixi;
-
-    @BindView(R.id.layout_meta)
-    LinearLayout layout_meta;
-
-    @BindView(R.id.layout_tmdb)
-    LinearLayout layout_tmdb;
-
-    @BindView(R.id.layout_tomato)
-    LinearLayout layout_tomato;
-
-
-    Context context = this;
-    String[] trailer_array;
-    String[] trailer_array_name;
-    FullReadFragment fullReadFragment;
-    AllTrailerFragment allTrailerFragment;
-    HashMap<String, String> movieMap;
-    boolean networkApplicable, databaseApplicable, savedDatabaseApplicable, trailer_boolean = false;
-    int type;
-    private String movie_id;
-    private String trailor = null;
-    private String trailer = null;
-    private String movie_desc;
-    private String quality;
-    private String movie_tagline;
-    private String movie_rating;
-    private String movie_rating_tmdb;
-    private String show_centre_img_url;
-    private String movie_title;
-    private String movie_id_final;
-
-    private CastFragment castFragment;
-    private boolean nightMode;
-    private String movie_imdb_id;
-    private CrewFragment crewFragment;
-    private SimilarFragment similarFragment;
-    private String movie_rating_audience;
-    private String movie_rating_metascore;
-    private String movie_title_hyphen;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        nightMode = sp.getBoolean("dark", false);
-        if (nightMode)
-            setTheme(R.style.DetailsActivityThemeDark);
-        else
-            setTheme(R.style.DetailsActivityTheme);
-
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detailed);
-        ButterKnife.bind(this);
-
-        if (!nightMode)
-            allThemeLogic();
-        else {
-            nightModeLogic();
-            castDivider.setVisibility(View.GONE);
+        if (!nightMode) allThemeLogic() else {
+            nightModeLogic()
+            binding.castDivider.visibility = View.GONE
         }
 
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val statusBarHeight = FilmyUtility.getStatusBarHeight(this)
+        val toolbarParams = binding.toolbar.layoutParams as FrameLayout.LayoutParams
+        toolbarParams.setMargins(0, statusBarHeight, 0, 0)
 
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        val pref = PreferenceManager.getDefaultSharedPreferences(this@MovieDetailsActivity)
+        quality = pref.getString("image_quality", "original")
 
-        int statusBarHeight = FilmyUtility.getStatusBarHeight(this);
-        FrameLayout.LayoutParams toolbarParams = (FrameLayout.LayoutParams) toolbar.getLayoutParams();
-        toolbarParams.setMargins(0,statusBarHeight,0,0);
+        binding.headerContainer.setOnClickListener(this)
+        binding.newMain.setOnClickListener(this)
+        binding.trailorView.setOnClickListener(this)
+        binding.youtubeIconContainer.setOnClickListener(this)
 
-
-        SharedPreferences prefrence = PreferenceManager.getDefaultSharedPreferences(MovieDetailsActivity.this);
-        quality = prefrence.getString("image_quality", "original");
-
-        headerContainer.setOnClickListener(this);
-        newMain.setOnClickListener(this);
-        trailorView.setOnClickListener(this);
-        youtubeIconContainer.setOnClickListener(this);
-
-
-        Intent intent = getIntent();
-        getDataFromIntent(intent);
+        getDataFromIntent(intent)
 
         if (savedInstanceState == null) {
-            RevealAnimation.performReveal(main_content);
-            performDataFetching();
+            RevealAnimation.performReveal(binding.allDetailsContainer)
+            performDataFetching()
         }
-        showCastFragment();
-        showCrewFragment();
-        showSimilarFragment();
 
+        showCastFragment()
+        showCrewFragment()
+        showSimilarFragment()
     }
 
-    private void nightModeLogic() {
-
-        main_content.setBackgroundColor(Color.parseColor("#212121"));
-        headerContainer.setBackgroundColor(Color.parseColor("#212121"));
-        extraDetails.setBackgroundColor(Color.parseColor("#212121"));
-        ratingBar.setBackgroundColor(Color.parseColor("#212121"));
-
+    private fun nightModeLogic() {
+        binding.allDetailsContainer.setBackgroundColor(Color.parseColor("#212121"))
+        binding.headerContainer.setBackgroundColor(Color.parseColor("#212121"))
+        binding.viewExtraInfo.extraDetails.setBackgroundColor(Color.parseColor("#212121"))
+        binding.viewRatings.ratingBar.setBackgroundColor(Color.parseColor("#212121"))
     }
 
-    private void allThemeLogic() {
-
-        main_content.setBackgroundColor(Color.parseColor("#f5f5f5"));
-        headerContainer.setBackgroundColor(getResources().getColor(R.color.primaryColor));
-        extraDetails.setBackgroundColor(getResources().getColor(R.color.primaryColor));
-        ratingBar.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+    private fun allThemeLogic() {
+        binding.allDetailsContainer.setBackgroundColor(Color.parseColor("#f5f5f5"))
+        binding.headerContainer.setBackgroundColor(resources.getColor(R.color.primaryColor))
+        binding.viewExtraInfo.extraDetails.setBackgroundColor(resources.getColor(R.color.primaryColor))
+        binding.viewRatings.ratingBar.setBackgroundColor(resources.getColor(R.color.primaryColor))
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean nightModeNew = sp.getBoolean("dark", false);
-        if (nightMode != nightModeNew)
-            recreate();
-
-        performDataFetching();
-
-        /* showCastFragment(); //TODO :: salroid finds it un-necessary
-        showCrewFragment();
-        showSimilarFragment();*/
+    override fun onResume() {
+        super.onResume()
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        val nightModeNew = sp.getBoolean("dark", false)
+        if (nightMode != nightModeNew) recreate()
+        performDataFetching()
     }
 
-    private void performDataFetching() {
+    private fun performDataFetching() {
+        val getStuffFromNetwork = GetDataFromNetwork()
+        getStuffFromNetwork.setDataFetchedListener(this)
 
-        GetDataFromNetwork getStuffFromNetwork = new GetDataFromNetwork();
-        getStuffFromNetwork.setDataFetchedListener(this);
-
-        if (networkApplicable)
-            getStuffFromNetwork.getMovieDetailsFromNetwork(movie_id);
-
-        if (databaseApplicable)
-            getSupportLoaderManager().initLoader(MovieLoaders.MOVIE_DETAILS_LOADER, null, this);
-
-        if (savedDatabaseApplicable)
-            getSupportLoaderManager().initLoader(MovieLoaders.SAVED_MOVIE_DETAILS_LOADER, null, this);
-
+        if (networkApplicable) getStuffFromNetwork.getMovieDetailsFromNetwork(movieId)
+        if (databaseApplicable) supportLoaderManager.initLoader(
+            MovieLoaders.MOVIE_DETAILS_LOADER,
+            null,
+            this
+        )
+        if (savedDatabaseApplicable) supportLoaderManager.initLoader(
+            MovieLoaders.SAVED_MOVIE_DETAILS_LOADER,
+            null,
+            this
+        )
         if (!databaseApplicable && !savedDatabaseApplicable) {
-
-            main.setVisibility(View.INVISIBLE);
-            breathingProgress.setVisibility(View.VISIBLE);
+            binding.main.visibility = View.INVISIBLE
+            binding.breathingProgress.visibility = View.VISIBLE
         }
     }
 
-
-    private void getDataFromIntent(Intent intent) {
-
-        if (intent != null) {
-
-            networkApplicable = intent.getBooleanExtra("network_applicable", false);
-            databaseApplicable = intent.getBooleanExtra("database_applicable", false);
-            savedDatabaseApplicable = intent.getBooleanExtra("saved_database_applicable", false);
-            type = intent.getIntExtra("type", 0);
-            movie_id = intent.getStringExtra("id");
-            movie_title = intent.getStringExtra("title");
+    private fun getDataFromIntent(intent: Intent?) {
+        intent?.let {
+            networkApplicable = it.getBooleanExtra("network_applicable", false)
+            databaseApplicable = it.getBooleanExtra("database_applicable", false)
+            savedDatabaseApplicable = it.getBooleanExtra("saved_database_applicable", false)
+            type = it.getIntExtra("type", 0)
+            movieId = it.getStringExtra("id")
+            movieTitle = it.getStringExtra("title")
         }
     }
 
-    private void showCastFragment() {
-
-        castFragment = CastFragment.newInstance(null, movie_title);
-
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.cast_container, castFragment)
-                .commit();
-
-        castFragment.setGotCrewListener(this);
+    private fun showCastFragment() {
+        castFragment = CastFragment.newInstance(null, movieTitle)
+        supportFragmentManager.beginTransaction().replace(R.id.cast_container, castFragment)
+            .commit()
+        castFragment.setGotCrewListener(this)
     }
 
-
-    private void showCrewFragment() {
-
-        crewFragment = CrewFragment.newInstance(null, movie_title);
-
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.crew_container, crewFragment)
-                .commit();
+    private fun showCrewFragment() {
+        crewFragment = CrewFragment.newInstance(null, movieTitle)
+        supportFragmentManager.beginTransaction().replace(R.id.crew_container, crewFragment)
+            .commit()
     }
 
-    private void showSimilarFragment() {
-        similarFragment = SimilarFragment.newInstance(null, movie_title);
-
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.similar_container, similarFragment)
-                .commit();
+    private fun showSimilarFragment() {
+        similarFragment = SimilarFragment.newInstance(null, movieTitle)
+        supportFragmentManager.beginTransaction().replace(R.id.similar_container, similarFragment)
+            .commit()
     }
 
-    void parseMovieDetails(String movieDetails) {
-
-        String title, tagline, overview, banner_profile, runtime, language, released,
-                poster, img_url = null, get_poster_path_from_json, get_banner_from_json;
+    private fun parseMovieDetails(movieDetails: String) {
+        val title: String
+        val tagline: String
+        val overview: String
+        val bannerProfile: String
+        val runtime: String
+        val language: String
+        val released: String
+        val poster: String
+        var imgUrl: String? = null
+        val getPosterPathFromJson: String
+        val getBannerFromJson: String
 
         try {
+            val jsonObject = JSONObject(movieDetails)
+            title = jsonObject.getString("title")
+            tagline = jsonObject.getString("tagline")
+            overview = jsonObject.getString("overview")
+            released = jsonObject.getString("release_date")
+            runtime = jsonObject.getString("runtime") + " mins"
+            language = jsonObject.getString("original_language")
+            movieIdFinal = jsonObject.getString("id")
+            movieImdbId = jsonObject.getString("imdb_id")
+            movieTitleHyphen = movieTitle?.replace(' ', '-')
+            movieRatingTmdb = jsonObject.getString("vote_average")
 
-            JSONObject jsonObject = new JSONObject(movieDetails);
-            title = jsonObject.getString("title");
-            tagline = jsonObject.getString("tagline");
-            overview = jsonObject.getString("overview");
-            released = jsonObject.getString("release_date");
-            runtime = jsonObject.getString("runtime") + " mins";
-            language = jsonObject.getString("original_language");
+            if (tagline != "") binding.detailTagline.visibility = View.VISIBLE
+            castFragment.getCastFromNetwork(movieIdFinal)
+            similarFragment.getSimilarFromNetwork(movieIdFinal)
 
-            movie_id_final = jsonObject.getString("id");
-            movie_imdb_id = jsonObject.getString("imdb_id");
-            movie_title_hyphen = movie_title.replace(' ', '-');
-            movie_rating_tmdb = jsonObject.getString("vote_average");
+            getRating(this, movieImdbId)
 
-            if (!(tagline.equals("")))
-                det_tagline.setVisibility(View.VISIBLE);
+            // Poster and Banner
+            getPosterPathFromJson = jsonObject.getString("poster_path")
+            getBannerFromJson = jsonObject.getString("backdrop_path")
+            poster = resources.getString(R.string.poster_prefix_185) + getPosterPathFromJson
 
-            if (castFragment != null)
-                castFragment.getCastFromNetwork(movie_id_final);
+            val bannerForFullActivity: String
+            val posterPrefix500 = resources.getString(R.string.poster_prefix_500)
+            val posterPrefixAddQuality = resources.getString(R.string.poster_prefix_add_quality)
 
-            if (similarFragment != null)
-                similarFragment.getSimilarFromNetwork(movie_id_final);
-
-            Rating.getRating(context, movie_imdb_id);
-
-            //poster and banner
-            get_poster_path_from_json = jsonObject.getString("poster_path");
-            get_banner_from_json = jsonObject.getString("backdrop_path");
-
-            poster = getResources().getString(R.string.poster_prefix_185) + get_poster_path_from_json;
-
-            String banner_for_full_activity;
-            String poster_prefix_500 = getResources().getString(R.string.poster_prefix_500);
-            String poster_prefix_add_quality = getResources().getString(R.string.poster_prefix_add_quality);
-
-            if (!get_banner_from_json.equals("null")) {
-                banner_profile = poster_prefix_500 + get_banner_from_json;
-                banner_for_full_activity = poster_prefix_add_quality + quality + get_banner_from_json;
-
+            if (getBannerFromJson != "null") {
+                bannerProfile = posterPrefix500 + getBannerFromJson
+                bannerForFullActivity = posterPrefixAddQuality + quality + getBannerFromJson
             } else {
-                banner_profile = poster_prefix_500 + get_poster_path_from_json;
-                banner_for_full_activity = poster_prefix_add_quality + quality + get_poster_path_from_json;
+                bannerProfile = posterPrefix500 + getPosterPathFromJson
+                bannerForFullActivity = posterPrefixAddQuality + quality + getPosterPathFromJson
             }
 
-            //trailer
-            JSONObject trailorsObject = jsonObject.getJSONObject("trailers");
-            JSONArray youTubeArray = trailorsObject.getJSONArray("youtube");
+            // Trailer
+            val trailersObject = jsonObject.getJSONObject("trailers")
+            val youTubeArray = trailersObject.getJSONArray("youtube")
 
-            trailer_array = new String[youTubeArray.length()];
-            trailer_array_name = new String[youTubeArray.length()];
+            trailerArray = arrayOfNulls(youTubeArray.length())
+            trailerArrayName = arrayOfNulls(youTubeArray.length())
 
             if (youTubeArray.length() != 0) {
-                Boolean main_trailer = true;
-                for (int i = 0; i < youTubeArray.length(); i++) {
+                var mainTrailer = true
 
-                    JSONObject singleTrailor = youTubeArray.getJSONObject(i);
-                    trailer_array[i] = singleTrailor.getString("source");
-                    trailer_array_name[i] = singleTrailor.getString("name");
-
-
-                    String type = singleTrailor.getString("type");
-                    if (main_trailer) {
-                        if (type.equals("Trailer")) {
-                            trailor = singleTrailor.getString("source");
-                            main_trailer = false;
-                        } else
-                            trailor = youTubeArray.getJSONObject(0).getString("source");
+                for (i in 0 until youTubeArray.length()) {
+                    val singleTrailer = youTubeArray.getJSONObject(i)
+                    trailerArray[i] = singleTrailer.getString("source")
+                    trailerArrayName[i] = singleTrailer.getString("name")
+                    val type = singleTrailer.getString("type")
+                    if (mainTrailer) {
+                        if (type == "Trailer") {
+                            trailor = singleTrailer.getString("source")
+                            mainTrailer = false
+                        } else trailor = youTubeArray.getJSONObject(0).getString("source")
                     }
                 }
-                trailer = getResources().getString(R.string.trailer_link_prefix) + trailor;
-            } else
-                trailer = null;
-            //genre
-            String genre = "";
-            JSONArray genreArray = jsonObject.getJSONArray("genres");
-            for (int i = 0; i < genreArray.length(); i++) {
-                if (i > 3)
-                    break;
-                String finalgenre = genreArray.getJSONObject(i).getString("name");
-                String punctuation = ", ";
-                if (i == genre.length())
-                    punctuation = "";
-                genre = genre + punctuation + finalgenre;
 
+                trailer = resources.getString(R.string.trailer_link_prefix) + trailor
+
+            } else trailer = null
+
+            //Genre
+            var genre = ""
+            val genreArray = jsonObject.getJSONArray("genres")
+            for (i in 0 until genreArray.length()) {
+                if (i > 3) break
+                val finalgenre = genreArray.getJSONObject(i).getString("name")
+                var punctuation = ", "
+                if (i == genre.length) punctuation = ""
+                genre = genre + punctuation + finalgenre
             }
+            movieDesc = overview
+            movieTitle = title
+            movieTagline = tagline
+            showCentreImgUrl = bannerForFullActivity
 
-            movie_desc = overview;
-            movie_title = title;
-            movie_tagline = tagline;
-            show_centre_img_url = banner_for_full_activity;
-
-            movieMap = new HashMap<>();
-            movieMap.put("imdb_id", movie_id_final);
-            movieMap.put("title", movie_title);
-            movieMap.put("tagline", tagline);
-            movieMap.put("overview", overview);
-            movieMap.put("rating", movie_rating);
-            movieMap.put("certification", genre);
-            movieMap.put("language", language);
-            movieMap.put("released", released);
-            movieMap.put("runtime", runtime);
-            movieMap.put("trailer", trailer);
-            movieMap.put("banner", banner_profile);
-            movieMap.put("poster", poster);
+            movieMap = mutableMapOf()
+            movieMap["imdb_id"] = movieIdFinal
+            movieMap["title"] = movieTitle
+            movieMap["tagline"] = tagline
+            movieMap["overview"] = overview
+            movieMap["rating"] = movieRating
+            movieMap["certification"] = genre
+            movieMap["language"] = language
+            movieMap["released"] = released
+            movieMap["runtime"] = runtime
+            movieMap["trailer"] = trailer
+            movieMap["banner"] = bannerProfile
+            movieMap["poster"] = poster
 
             try {
                 if (trailor != null) {
-                    trailer_boolean = true;
-                    //  String videoId = extractYoutubeId(trailer);
-                    img_url = getResources().getString(R.string.trailer_img_prefix) + trailor
-                            + getResources().getString(R.string.trailer_img_suffix);
-
+                    trailerBoolean = true
+                    //String videoId = extractYoutubeId(trailer);
+                    imgUrl = (resources.getString(R.string.trailer_img_prefix) + trailor
+                            + resources.getString(R.string.trailer_img_suffix))
                 } else {
-                    img_url = getResources().getString(R.string.poster_prefix_185) + jsonObject.getString("poster_path");
-
+                    imgUrl =
+                        resources.getString(R.string.poster_prefix_185) + jsonObject.getString("poster_path")
                 }
-                movieMap.put("trailer_img", img_url);
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                movieMap["trailer_img"] = imgUrl
+            } catch (e: Exception) {
+                e.printStackTrace()
             } finally {
 
-                if (databaseApplicable)
-                    MovieDetailsUpdation.performMovieDetailsUpdation(MovieDetailsActivity.this, type, movieMap, movie_id);
-                else
-                    showParsedContent(title, banner_profile, img_url, tagline, overview, movie_rating, runtime, released, genre, language);
+                if (databaseApplicable) performMovieDetailsUpdate(
+                    this@MovieDetailsActivity,
+                    type,
+                    movieMap,
+                    movieId
+                ) else showParsedContent(
+                    title,
+                    bannerProfile,
+                    imgUrl,
+                    tagline,
+                    overview,
+                    movieRating,
+                    runtime,
+                    released,
+                    genre,
+                    language
+                )
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (e: JSONException) {
+            e.printStackTrace()
         }
     }
 
+    private fun showParsedContent(
+        title: String, banner_profile: String, imgUrl: String?, tagline: String,
+        overview: String, rating: String?, runtime: String,
+        released: String, certification: String, language: String
+    ) {
+        binding.detailTagline.text = tagline
+        binding.detailTitle.text = title
+        binding.detailOverview.text = overview
 
-    private void showParsedContent(String title, String banner_profile, String img_url, String tagline,
-                                   String overview, String rating, String runtime,
-                                   String released, String certification, String language) {
-
-        det_tagline.setText(tagline);
-        det_title.setText(title);
-        det_overview.setText(overview);
         //det_rating.setText(rating);
-        det_runtime.setText(runtime);
-        det_released.setText(released);
-        det_certification.setText(certification);
-        det_language.setText(language);
-
+        binding.viewExtraInfo.detailRuntime.text = runtime
+        binding.viewExtraInfo.detailReleased.text = released
+        binding.viewExtraInfo.detailCertification.text = certification
+        binding.viewExtraInfo.detailLanguage.text = language
 
         try {
-            Glide.with(context)
-                    .asBitmap()
-                    .load(banner_profile)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(new SimpleTarget<Bitmap>() {
+            Glide.with(this)
+                .asBitmap()
+                .load(banner_profile)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(object : SimpleTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap?>?
+                    ) {
 
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                            banner.setImageBitmap(resource);
-                            Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                                public void onGenerated(Palette p) {
-                                    // Use generated instance
-                                    Palette.Swatch swatch = p.getVibrantSwatch();
-                                    Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
+                        binding.backdrop.setImageBitmap(resource)
 
-                                    if (swatch != null) {
-                                        header.setBackgroundColor(swatch.getRgb());
-                                        det_title.setTextColor(swatch.getTitleTextColor());
-                                        det_tagline.setTextColor(swatch.getBodyTextColor());
-                                        det_overview.setTextColor(swatch.getBodyTextColor());
-                                    }
-                                    if (trailorSwatch != null) {
-                                        trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
-                                        youtubeIcon.setColorFilter(trailorSwatch.getBodyTextColor(), PorterDuff.Mode.SRC_IN);
-                                    }
-                                }
-                            });
+                        Palette.from(resource).generate { pallete ->
+
+                            val swatch = pallete?.vibrantSwatch
+                            val trailerSwatch = pallete?.darkVibrantSwatch
+
+                            if (swatch != null) {
+                                binding.header.setBackgroundColor(swatch.rgb)
+                                binding.detailTitle.setTextColor(swatch.titleTextColor)
+                                binding.detailTagline.setTextColor(swatch.bodyTextColor)
+                                binding.detailOverview.setTextColor(swatch.bodyTextColor)
+                            }
+                            if (trailerSwatch != null) {
+                                binding.trailorBackground.setBackgroundColor(trailerSwatch.rgb)
+                                binding.youtubeIcon.setColorFilter(
+                                    trailerSwatch.bodyTextColor,
+                                    PorterDuff.Mode.SRC_IN
+                                )
+                            }
                         }
-
-                    });
-
-        } catch (Exception e) {
+                    }
+                })
+        } catch (e: Exception) {
             //Log.d(LOG_TAG, e.getMessage());
         }
+
         try {
-
-            Glide.with(context)
-                    .asBitmap()
-                    .load(img_url)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(new SimpleTarget<Bitmap>() {
-
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                            youtube_link.setImageBitmap(resource);
-                            if (trailer_boolean)
-                                youtube_play_button.setVisibility(View.VISIBLE);
-                        }
-                    });
-        } catch (Exception e) {
+            Glide.with(this)
+                .asBitmap()
+                .load(imgUrl)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(object : SimpleTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap?>?
+                    ) {
+                        binding.detailYoutube.setImageBitmap(resource)
+                        if (trailerBoolean) binding.playButton.visibility = View.VISIBLE
+                    }
+                })
+        } catch (e: Exception) {
             //Log.d(LOG_TAG, e.getMessage());
         }
-        main.setVisibility(View.VISIBLE);
-        breathingProgress.setVisibility(View.INVISIBLE);
 
+        binding.main.visibility = View.VISIBLE
+        binding.breathingProgress.visibility = View.INVISIBLE
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+        val cursorLoader: CursorLoader
 
-        CursorLoader cursorloader = null;
+        when (id) {
+            MovieLoaders.MOVIE_DETAILS_LOADER -> {
+                when (type) {
+                    0 -> cursorLoader = CursorLoader(
+                        this,
+                        FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
+                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                    )
 
-        if (id == MovieLoaders.MOVIE_DETAILS_LOADER) {
+                    1 -> cursorLoader = CursorLoader(
+                        this,
+                        FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movieId),
+                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                    )
 
-            switch (type) {
-
-                case 0:
-                    cursorloader = new CursorLoader(this,
-                            FilmContract.MoviesEntry.buildMovieWithMovieId(movie_id),
-                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null);
-                    break;
-
-                case 1:
-                    cursorloader = new CursorLoader(this,
-                            FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movie_id),
-                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null);
-                    break;
-
-                case 2:
-                    cursorloader = new CursorLoader(this,
-                            FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movie_id),
-                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null);
-                    break;
-
+                    2 -> cursorLoader = CursorLoader(
+                        this,
+                        FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movieId),
+                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                    )
+                    else -> {
+                        cursorLoader = CursorLoader(
+                            this,
+                            FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
+                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                        )
+                    }
+                }
             }
-
-        } else if (id == MovieLoaders.SAVED_MOVIE_DETAILS_LOADER) {
-
-            final String selection = FilmContract.SaveEntry.TABLE_NAME +
-                    "." + FilmContract.SaveEntry.SAVE_ID + " = ? ";
-            String[] selectionArgs = {movie_id};
-
-            cursorloader = new CursorLoader(this, FilmContract.SaveEntry.CONTENT_URI,
-                    MovieProjection.GET_SAVE_COLUMNS, selection, selectionArgs, null);
-
+            MovieLoaders.SAVED_MOVIE_DETAILS_LOADER -> {
+                val selection = FilmContract.SaveEntry.TABLE_NAME +
+                        "." + FilmContract.SaveEntry.SAVE_ID + " = ? "
+                val selectionArgs = arrayOf(movieId)
+                cursorLoader = CursorLoader(
+                    this, FilmContract.SaveEntry.CONTENT_URI,
+                    MovieProjection.GET_SAVE_COLUMNS, selection, selectionArgs, null
+                )
+            }
+            else -> {
+                cursorLoader = CursorLoader(
+                    this,
+                    FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
+                    MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                )
+            }
         }
-        return cursorloader;
+        return cursorLoader
     }
 
-    @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-
-        int id = loader.getId();
-
+    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
+        val id = loader.id
         if (id == MovieLoaders.MOVIE_DETAILS_LOADER) {
-
-            fetchMovieDetailsFromCursor(data);
-
+            fetchMovieDetailsFromCursor(data)
         } else if (id == MovieLoaders.SAVED_MOVIE_DETAILS_LOADER) {
-
-            fetchSavedMovieDetailsFromCursor(data);
+            fetchSavedMovieDetailsFromCursor(data)
         }
-
     }
 
-    private void fetchSavedMovieDetailsFromCursor(Cursor data) {
+    private fun fetchSavedMovieDetailsFromCursor(data: Cursor?) {
 
         if (data != null && data.moveToFirst()) {
+            val titleIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE)
+            val bannerIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_BANNER)
+            val taglineIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TAGLINE)
+            val descriptionIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_DESCRIPTION)
+            val trailerIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TRAILER)
+            val ratingIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING)
+            val releasedIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING)
+            val runtimeIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RUNTIME)
+            val languageIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_LANGUAGE)
+            val certificationIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_CERTIFICATION)
+            val idIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_ID)
+            val posterLinkIndex = data.getColumnIndex(FilmContract.SaveEntry.SAVE_POSTER_LINK)
+            val title = data.getString(titleIndex)
+            val bannerUrl = data.getString(bannerIndex)
+            val tagline = data.getString(taglineIndex)
+            val overview = data.getString(descriptionIndex)
 
-            int title_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE);
-            int banner_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_BANNER);
-            int tagline_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TAGLINE);
-            int description_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_DESCRIPTION);
-            int trailer_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_TRAILER);
-            int rating_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING);
-            int released_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RATING);
-            int runtime_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_RUNTIME);
-            int language_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_LANGUAGE);
-            int certification_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_CERTIFICATION);
-            int id_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_ID);
-            int poster_link_index = data.getColumnIndex(FilmContract.SaveEntry.SAVE_POSTER_LINK);
+            // As it will be used to show it on YouTube
+            trailer = data.getString(trailerIndex)
+            val posterLink = data.getString(posterLinkIndex)
+            val rating = data.getString(ratingIndex)
+            val runtime = data.getString(runtimeIndex)
+            val released = data.getString(releasedIndex)
+            val certification = data.getString(certificationIndex)
+            val language = data.getString(languageIndex)
 
-            String title = data.getString(title_index);
-            String banner_url = data.getString(banner_index);
-            String tagline = data.getString(tagline_index);
-            String overview = data.getString(description_index);
-
-            //as it will be used to show it on YouTube
-            trailer = data.getString(trailer_index);
-            String posterLink = data.getString(poster_link_index);
-
-            String rating = (data.getString(rating_index));
-            String runtime = data.getString(runtime_index);
-            String released = data.getString(released_index);
-            String certification = data.getString(certification_index);
-            String language = data.getString(language_index);
-
-            movie_id_final = data.getString(id_index);
-
-            det_tagline.setText(tagline);
-            det_title.setText(title);
-            det_overview.setText(overview);
+            movieIdFinal = data.getString(idIndex)
+            binding.detailTagline.text = tagline
+            binding.detailTitle.text = title
+            binding.detailOverview.text = overview
             //det_rating.setText(rating);
-            det_runtime.setText(runtime);
-            det_released.setText(released);
-            det_certification.setText(certification);
-            det_language.setText(language);
 
-            movie_desc = overview;
-            show_centre_img_url = banner_url;
-
+            binding.viewExtraInfo.detailRuntime.text = runtime
+            binding.viewExtraInfo.detailReleased.text = released
+            binding.viewExtraInfo.detailCertification.text = certification
+            binding.viewExtraInfo.detailLanguage.text = language
+            movieDesc = overview
+            showCentreImgUrl = bannerUrl
 
             try {
+                Glide.with(this)
+                    .asBitmap()
+                    .load(bannerUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(object : SimpleTarget<Bitmap?>() {
 
-                Glide.with(context)
-                        .asBitmap()
-                        .load(banner_url)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(new SimpleTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap?>?
+                        ) {
+                            binding.backdrop.setImageBitmap(resource)
+                            Palette.from(resource).generate { pallete -> // Use generated instance
 
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                banner.setImageBitmap(resource);
-                                Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                                    public void onGenerated(Palette p) {
-                                        // Use generated instance
-                                        Palette.Swatch swatch = p.getVibrantSwatch();
-                                        Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
+                                val swatch = pallete?.vibrantSwatch
+                                val trailerSwatch = pallete?.darkVibrantSwatch
 
-                                        if (swatch != null) {
-                                            header.setBackgroundColor(swatch.getRgb());
-                                            det_title.setTextColor(swatch.getTitleTextColor());
-                                            det_tagline.setTextColor(swatch.getBodyTextColor());
-                                            det_overview.setTextColor(swatch.getBodyTextColor());
-                                        }
-                                        if (trailorSwatch != null) {
-                                            trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
-                                            youtubeIcon.setColorFilter(trailorSwatch.getBodyTextColor(), PorterDuff.Mode.SRC_IN);
-                                        }
-                                    }
-                                });
+                                if (swatch != null) {
+                                    binding.header.setBackgroundColor(swatch.rgb)
+                                    binding.detailTitle.setTextColor(swatch.titleTextColor)
+                                    binding.detailTagline.setTextColor(swatch.bodyTextColor)
+                                    binding.detailOverview.setTextColor(swatch.bodyTextColor)
+                                }
+
+                                if (trailerSwatch != null) {
+                                    binding.trailorBackground.setBackgroundColor(trailerSwatch.rgb)
+                                    binding.youtubeIcon.setColorFilter(
+                                        trailerSwatch.bodyTextColor,
+                                        PorterDuff.Mode.SRC_IN
+                                    )
+                                }
                             }
-
-                        });
-            } catch (Exception e) {
+                        }
+                    })
+            } catch (e: Exception) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
 
-            String thumbNail = null;
-            if ((trailor != null)) {
-                trailer_boolean = true;
-                thumbNail = getResources().getString(R.string.trailer_img_prefix) + trailor
-                        + getResources().getString(R.string.trailer_img_prefix);
-            } else {
-                thumbNail = posterLink;
-            }
+            val thumbnail = if (trailor != null) {
+                trailerBoolean = true
+                (resources.getString(R.string.trailer_img_prefix) + trailor
+                        + resources.getString(R.string.trailer_img_prefix))
+            } else posterLink
 
             try {
-
-                Glide.with(context)
-                        .asBitmap()
-                        .load(thumbNail)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(new SimpleTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                youtube_link.setImageBitmap(resource);
-                                if (trailer_boolean)
-                                    youtube_play_button.setVisibility(View.VISIBLE);
-                            }
-                        });
-
-            } catch (Exception e) {
+                Glide.with(this)
+                    .asBitmap()
+                    .load(thumbnail)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(object : SimpleTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap?>?
+                        ) {
+                            binding.detailYoutube.setImageBitmap(resource)
+                            if (trailerBoolean) binding.playButton.visibility = View.VISIBLE
+                        }
+                    })
+            } catch (e: Exception) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
         }
     }
 
-    private void fetchMovieDetailsFromCursor(Cursor data) {
+    private fun fetchMovieDetailsFromCursor(data: Cursor?) {
 
         if (data != null && data.moveToFirst()) {
 
-            int title_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
-            int banner_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_BANNER);
-            int tagline_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TAGLINE);
-            int description_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_DESCRIPTION);
-            int trailer_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TRAILER);
-            int rating_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RATING);
-            int released_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RELEASED);
-            int runtime_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RUNTIME);
-            int language_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_LANGUAGE);
-            int certification_index = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_CERTIFICATION);
+            val titleIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE)
+            val bannerIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_BANNER)
+            val taglineIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TAGLINE)
+            val descriptionIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_DESCRIPTION)
+            val trailerIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TRAILER)
+            val ratingIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RATING)
+            val releasedIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RELEASED)
+            val runtimeIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RUNTIME)
+            val languageIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_LANGUAGE)
+            val certificationIndex =
+                data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_CERTIFICATION)
 
-            String title = data.getString(title_index);
-            String banner_url = data.getString(banner_index);
-            String tagline = data.getString(tagline_index);
-            String overview = data.getString(description_index);
-            String trailer = data.getString(trailer_index);
-            String rating = data.getString(rating_index);
-            String runtime = data.getString(runtime_index);
-            String released = data.getString(released_index);
-            String certification = data.getString(certification_index);
-            String language = data.getString(language_index);
+            val title = data.getString(titleIndex)
+            val bannerUrl = data.getString(bannerIndex)
+            val tagline = data.getString(taglineIndex)
+            val overview = data.getString(descriptionIndex)
+            val trailer = data.getString(trailerIndex)
+            val rating = data.getString(ratingIndex)
+            val runtime = data.getString(runtimeIndex)
+            val released = data.getString(releasedIndex)
+            val certification = data.getString(certificationIndex)
+            val language = data.getString(languageIndex)
 
-
-            if (NullChecker.isSettable(title))
-                det_title.setText(title);
-
-            if (NullChecker.isSettable(tagline))
-                det_tagline.setText(tagline);
-
-            if (NullChecker.isSettable(overview))
-                det_overview.setText(overview);
-
-            if (runtime != null && !runtime.equals("null mins"))
-                det_runtime.setText(runtime);
-
-            if (NullChecker.isSettable(released))
-                det_released.setText(released);
-
-            if (NullChecker.isSettable(certification))
-                det_certification.setText(certification);
-
-            if (NullChecker.isSettable(language))
-                det_language.setText(language);
+            if (NullChecker.isSettable(title)) binding.detailTitle.text = title
+            if (NullChecker.isSettable(tagline)) binding.detailTagline.text = tagline
+            if (NullChecker.isSettable(overview)) binding.detailOverview.text = overview
+            if (runtime != null && runtime != "null mins") binding.viewExtraInfo.detailRuntime.text =
+                runtime
+            if (NullChecker.isSettable(released)) binding.viewExtraInfo.detailReleased.text =
+                released
+            if (NullChecker.isSettable(certification)) binding.viewExtraInfo.detailCertification.text =
+                certification
+            if (NullChecker.isSettable(language)) binding.viewExtraInfo.detailLanguage.text =
+                language
 
             try {
-                Glide.with(context)
-                        .asBitmap()
-                        .load(banner_url)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(new SimpleTarget<Bitmap>() {
+                Glide.with(this)
+                    .asBitmap()
+                    .load(bannerUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(object : SimpleTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap?>?
+                        ) {
+                            binding.backdrop.setImageBitmap(resource)
+                            Palette.from(resource).generate { pallete ->
+                                val swatch = pallete?.vibrantSwatch
+                                val trailerSwatch = pallete?.darkVibrantSwatch
 
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                if (swatch != null) {
+                                    binding.header.setBackgroundColor(swatch.rgb)
+                                    binding.detailTitle.setTextColor(swatch.titleTextColor)
+                                    binding.detailTagline.setTextColor(swatch.bodyTextColor)
+                                    binding.detailOverview.setTextColor(swatch.bodyTextColor)
+                                }
 
-                                banner.setImageBitmap(resource);
-
-                                Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
-                                    public void onGenerated(Palette p) {
-                                        Palette.Swatch swatch = p.getVibrantSwatch();
-                                        Palette.Swatch trailorSwatch = p.getDarkVibrantSwatch();
-
-                                        if (swatch != null) {
-
-                                            header.setBackgroundColor(swatch.getRgb());
-                                            det_title.setTextColor(swatch.getTitleTextColor());
-                                            det_tagline.setTextColor(swatch.getBodyTextColor());
-                                            det_overview.setTextColor(swatch.getBodyTextColor());
-                                        }
-                                        if (trailorSwatch != null) {
-                                            trailorBackground.setBackgroundColor(trailorSwatch.getRgb());
-                                            youtubeIcon.setColorFilter(trailorSwatch.getBodyTextColor(), PorterDuff.Mode.SRC_IN);
-                                        }
-                                    }
-                                });
+                                if (trailerSwatch != null) {
+                                    binding.trailorBackground.setBackgroundColor(trailerSwatch.rgb)
+                                    binding.youtubeIcon.setColorFilter(
+                                        trailerSwatch.bodyTextColor,
+                                        PorterDuff.Mode.SRC_IN
+                                    )
+                                }
                             }
+                        }
+                    })
 
-                        });
-            } catch (Exception e) {
+            } catch (e: Exception) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
 
             try {
-
-                Glide.with(context)
-                        .asBitmap()
-                        .load(trailer)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(new SimpleTarget<Bitmap>() {
-
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                youtube_link.setImageBitmap(resource);
-                                if (trailer_boolean)
-                                    youtube_play_button.setVisibility(View.VISIBLE);
-                            }
-                        });
-            } catch (Exception e) {
+                Glide.with(this)
+                    .asBitmap()
+                    .load(trailer)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(object : SimpleTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap?>?
+                        ) {
+                            binding.detailYoutube.setImageBitmap(resource)
+                            if (trailerBoolean) binding.playButton.visibility = View.VISIBLE
+                        }
+                    })
+            } catch (e: Exception) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
         }
     }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-    }
+    override fun onLoaderReset(loader: Loader<Cursor>) {}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-
-            case android.R.id.home:
-                finish();
-
-                if (type == -1)
-                    startActivity(new Intent(this, MainActivity.class));
-                break;
-
-            case R.id.action_share:
-                shareMovie();
-                break;
-
-            case R.id.action_save:
-                OfflineMovies offlineMovies = new OfflineMovies(this);
-                offlineMovies.saveMovie(movieMap, movie_id, movie_id_final, Constants.FLAG_OFFLINE);
-                break;
-
-            case R.id.action_fav:
-
-                Confirmation.confirmFav(this, movieMap, movie_id, movie_id_final, Constants.FLAG_FAVORITE);
-
-                break;
-
-            case R.id.action_watch:
-
-                Confirmation.confirmWatchlist(this, movieMap, movie_id, movie_id_final, Constants.FLAG_WATCHLIST);
-
-                break;
-
-            default:
-                break;
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                if (type == -1) startActivity(Intent(this, MainActivity::class.java))
+            }
+            R.id.action_share -> shareMovie()
+            R.id.action_save -> {
+                val offlineMovies = OfflineMovies(this)
+                offlineMovies.saveMovie(movieMap, movieId, movieIdFinal, Constants.FLAG_OFFLINE)
+            }
+            R.id.action_fav -> Confirmation.confirmFav(
+                this,
+                movieMap,
+                movieId,
+                movieIdFinal,
+                Constants.FLAG_FAVORITE
+            )
+            R.id.action_watch -> Confirmation.confirmWatchlist(
+                this,
+                movieMap,
+                movieId,
+                movieIdFinal,
+                Constants.FLAG_WATCHLIST
+            )
+            else -> {
+            }
         }
-
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 
-    @Override
-    public void onBackPressed() {
-
-        if (getFragmentManager().getBackStackEntryCount() == 0) {
-            super.onBackPressed();
+    override fun onBackPressed() {
+        if (fragmentManager.backStackEntryCount == 0) {
+            super.onBackPressed()
         } else {
-            getFragmentManager().popBackStack();
-
-        }
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.movie_detail_menu, menu);
-        menu.findItem(R.id.action_save).setVisible(!savedDatabaseApplicable);
-        return true;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-            case R.id.header_container:
-                if (movie_title != null && movie_desc != null) {
-                    fullReadFragment = new FullReadFragment();
-                    Bundle args = new Bundle();
-                    args.putString("title", movie_title);
-                    args.putString("desc", movie_desc);
-                    fullReadFragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.all_details_container, fullReadFragment).addToBackStack("DESC").commit();
-                }
-                break;
-
-            case R.id.new_main:
-                if (!(show_centre_img_url == null)) {
-                    Intent intent = new Intent(MovieDetailsActivity.this, FullScreenImage.class);
-                    intent.putExtra("img_url", show_centre_img_url);
-                    startActivity(intent);
-                }
-                break;
-
-            case R.id.trailorView:
-                final int timeMiliSeconds = 0;
-                final boolean autoPlay = true;
-                final boolean lightBoxMode = false;
-                if ((trailer_boolean))
-                    startActivity(YouTubeStandalonePlayer.createVideoIntent(MovieDetailsActivity.this,
-                            getString(R.string.Youtube_Api_Key), trailor,timeMiliSeconds,autoPlay,lightBoxMode));
-
-                break;
-            case R.id.youtube_icon_container:
-                if (trailer_boolean) {
-                    allTrailerFragment = new AllTrailerFragment();
-                    // Log.d(TAG, "onClick: "+ Arrays.toString(trailer_array));
-                    Bundle args = new Bundle();
-                    args.putString("title", movie_title);
-                    args.putStringArray("trailers", trailer_array);
-                    args.putStringArray("trailers_name", trailer_array_name);
-                    allTrailerFragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.all_details_container, allTrailerFragment).addToBackStack("TRAILER").commit();
-                }
-                break;
-
-        }
-
-    }
-
-    @Override
-    public void dataFetched(String response, int code) {
-        switch (code) {
-
-            case GetDataFromNetwork.MOVIE_DETAILS_CODE:
-                parseMovieDetails(response);
-                // showCastFragment();
-                break;
-
-            case GetDataFromNetwork.CAST_CODE:
-
-                break;
+            fragmentManager.popBackStack()
         }
     }
 
-    private void shareMovie() {
-        String movie_imdb = getResources().getString(R.string.imdb_link_prefix) + movie_imdb_id;
-        if (!(movie_title == null && movie_rating.equals("null") && movie_imdb_id.equals("null"))) {
-            Intent myIntent = new Intent(Intent.ACTION_SEND);
-            myIntent.setType("text/plain");
-            myIntent.putExtra(Intent.EXTRA_TEXT, "*" + movie_title + "*\n" + movie_tagline + "\n" + movie_imdb + "\n");
-            startActivity(Intent.createChooser(myIntent, "Share with"));
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.movie_detail_menu, menu)
+        menu.findItem(R.id.action_save).isVisible = !savedDatabaseApplicable
+        return true
+    }
+
+    override fun onClick(view: View) {
+
+        when (view.id) {
+
+            R.id.header_container -> if (movieTitle != null && movieDesc != null) {
+                fullReadFragment = FullReadFragment()
+                val args = Bundle()
+                args.putString("title", movieTitle)
+                args.putString("desc", movieDesc)
+                fullReadFragment.arguments = args
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.all_details_container, fullReadFragment).addToBackStack("DESC")
+                    .commit()
+            }
+
+            R.id.new_main -> if (showCentreImgUrl != null) {
+                val intent = Intent(this@MovieDetailsActivity, FullScreenImage::class.java)
+                intent.putExtra("img_url", showCentreImgUrl)
+                startActivity(intent)
+            }
+
+            R.id.trailorView -> {
+                val timeMilliSeconds = 0
+                val autoPlay = true
+                val lightBoxMode = false
+                if (trailerBoolean) startActivity(
+                    YouTubeStandalonePlayer.createVideoIntent(
+                        this@MovieDetailsActivity,
+                        getString(R.string.Youtube_Api_Key),
+                        trailor,
+                        timeMilliSeconds,
+                        autoPlay,
+                        lightBoxMode
+                    )
+                )
+            }
+
+            R.id.youtube_icon_container -> if (trailerBoolean) {
+                allTrailerFragment = AllTrailerFragment()
+                // Log.d(TAG, "onClick: "+ Arrays.toString(trailer_array));
+                val args = Bundle()
+                args.putString("title", movieTitle)
+                args.putStringArray("trailers", trailerArray)
+                args.putStringArray("trailers_name", trailerArrayName)
+                allTrailerFragment.arguments = args
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.all_details_container, allTrailerFragment)
+                    .addToBackStack("TRAILER").commit()
+            }
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        castFragment = null;
-        similarFragment = null;
-
+    override fun dataFetched(response: String, code: Int) {
+        when (code) {
+            GetDataFromNetwork.MOVIE_DETAILS_CODE -> parseMovieDetails(response)
+            GetDataFromNetwork.CAST_CODE -> {
+            }
+        }
     }
 
-    @Override
-    public void gotCrew(String crewData) {
-
-        if (crewFragment != null)
-            crewFragment.parseCrewOutput(crewData);
+    private fun shareMovie() {
+        val movieImdb = resources.getString(R.string.imdb_link_prefix) + movieImdbId
+        if (!(movieTitle == null && movieRating == "null" && movieImdbId == "null")) {
+            val myIntent = Intent(Intent.ACTION_SEND)
+            myIntent.type = "text/plain"
+            myIntent.putExtra(Intent.EXTRA_TEXT, "*$movieTitle*\n$movieTagline\n$movieImdb\n")
+            startActivity(Intent.createChooser(myIntent, "Share with"))
+        }
     }
 
-    public void setRating(String movie_rating_imdb, String movie_rating_tomatometer,
-                          String audience_rating, String metascore_rating, final String rottenTomatoPage) {
+    override fun gotCrew(crewData: String) {
+        crewFragment.parseCrewOutput(crewData)
+    }
 
-        movie_rating_audience = audience_rating;
-        movie_rating_metascore = metascore_rating;
+    fun setRating(
+        movieRatingImdb: String, movieRatingTomatoMeter: String,
+        audienceRating: String?, metaScoreRating: String?, rottenTomatoPage: String?
+    ) {
 
-        if (movie_rating_imdb.equals("N/A"))
-            layout_imdb.setVisibility(View.GONE);
-        else {
-            rating_of_imdb.setText(movie_rating_imdb);
-            layout_imdb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                    builder.setToolbarColor(ContextCompat.getColor(MovieDetailsActivity.this, R.color.imdbYellow));
-                    CustomTabsIntent customTabsIntent = builder.build();
-                    customTabsIntent.launchUrl(MovieDetailsActivity.this, Uri.parse(getResources().getString(R.string.imdb_link_prefix) + movie_imdb_id));
-                }
-            });
+        movieRatingAudience = audienceRating
+        movieRatingMetaScore = metaScoreRating
+
+        if (movieRatingImdb == "N/A") binding.viewRatings.layoutImdb.visibility = View.GONE else {
+            binding.viewRatings.tmdbRating.text = movieRatingImdb
+            binding.viewRatings.layoutTmdb.setOnClickListener {
+                val builder = CustomTabsIntent.Builder()
+                builder.setToolbarColor(
+                    ContextCompat.getColor(
+                        this@MovieDetailsActivity,
+                        R.color.imdbYellow
+                    )
+                )
+                val customTabsIntent = builder.build()
+                customTabsIntent.launchUrl(
+                    this@MovieDetailsActivity,
+                    Uri.parse(resources.getString(R.string.imdb_link_prefix) + movieImdbId)
+                )
+            }
         }
 
-        if (movie_rating_tomatometer.equals("N/A"))
-            layout_tomato.setVisibility(View.GONE);
-        else {
+        if (movieRatingTomatoMeter == "N/A") binding.viewRatings.layoutTomato.visibility =
+            View.GONE else {
 
-           /* if (image.equals("certified"))
+            /* if (image.equals("certified"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
             else if (image.equals("fresh"))
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.fresh));
@@ -1037,90 +841,110 @@ public class MovieDetailsActivity extends AppCompatActivity implements
                 tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));*/
 
             // Image Logic Changed According to %age due to OMDB API limitations
+            val tomatoMeterScore =
+                movieRatingTomatoMeter.substring(0, movieRatingTomatoMeter.length - 1).toInt()
+            when {
+                tomatoMeterScore > 74 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.certified
+                    )
+                )
+                tomatoMeterScore > 59 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.fresh
+                    )
+                )
+                tomatoMeterScore < 60 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this, R.drawable.rotten
+                    )
+                )
+            }
 
-            int tomatometer_score = Integer.parseInt(movie_rating_tomatometer.substring(0, movie_rating_tomatometer.length() - 1));
-            if (tomatometer_score > 74)
-                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
-            else if (tomatometer_score > 59)
-                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.fresh));
-            else if (tomatometer_score < 60)
-                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));
-
-            tomato_rating.setText(movie_rating_tomatometer);
-            layout_tomato.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                    builder.setToolbarColor(ContextCompat.getColor(MovieDetailsActivity.this, R.color.tomatoRed));
-                    CustomTabsIntent customTabsIntent = builder.build();
-                    customTabsIntent.launchUrl(MovieDetailsActivity.this, Uri.parse(rottenTomatoPage));
-                }
-            });
+            binding.viewRatings.tomatoRating.text = movieRatingTomatoMeter
+            binding.viewRatings.layoutTomato.setOnClickListener {
+                val builder = CustomTabsIntent.Builder()
+                builder.setToolbarColor(
+                    ContextCompat.getColor(
+                        this@MovieDetailsActivity,
+                        R.color.tomatoRed
+                    )
+                )
+                val customTabsIntent = builder.build()
+                customTabsIntent.launchUrl(this@MovieDetailsActivity, Uri.parse(rottenTomatoPage))
+            }
         }
 
-        if (movie_rating_audience.equals("N/A"))
-            layout_flixi.setVisibility(View.GONE);
+        if (movieRatingAudience == "N/A") binding.viewRatings.layoutFlixi.visibility =
+            View.GONE else {
+            if (audienceRating?.toFloat()!! > 3.4) binding.viewRatings.flixterRatingImage.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.popcorn)
+            ) else binding.viewRatings.flixterRatingImage.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.spilt)
+            )
 
-        else {
-
-            float audi_rating = Float.valueOf(audience_rating);
-
-            if (audi_rating > 3.4)
-                flixterRating_image.setImageDrawable(getResources().getDrawable(R.drawable.popcorn));
-            else
-                flixterRating_image.setImageDrawable(getResources().getDrawable(R.drawable.spilt));
-
-            flixter_rating.setText(movie_rating_audience);
+            binding.viewRatings.flixterRating.text = movieRatingAudience
         }
 
-        if (movie_rating_metascore.equals("N/A"))
-            layout_meta.setVisibility(View.GONE);
-
+        if (movieRatingMetaScore == "N/A") binding.viewRatings.layoutMeta.visibility =
+            View.GONE
         else {
-            String smallTitle = movie_title_hyphen.toLowerCase();
-            smallTitle =  smallTitle.replaceAll("[^0-9-a-z]","");
-            final String url = "http://www.metacritic.com/movie/"+smallTitle;
-            int metasco_rating = Integer.valueOf(metascore_rating);
-            if (metasco_rating > 60)
-                metaRating_background.setBackgroundColor(Color.parseColor("#66cc33"));
+            var smallTitle = movieTitleHyphen?.toLowerCase()
+            smallTitle = smallTitle?.replace("[^0-9-a-z]".toRegex(), "")
+            val url = "http://www.metacritic.com/movie/$smallTitle"
 
-            else if (metasco_rating > 40 && metasco_rating < 61)
-                metaRating_background.setBackgroundColor(Color.parseColor("#ffcc33"));
+            when {
+                metaScoreRating?.toInt()!! > 60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
+                    Color.parseColor("#66cc33")
+                )
+                metaScoreRating.toInt() in 41..60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
+                    Color.parseColor("#ffcc33")
+                )
+                else -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
+                    Color.parseColor(
+                        "#ff0000"
+                    )
+                )
+            }
 
-            else
-                metaRating_background.setBackgroundColor(Color.parseColor("#ff0000"));
+            binding.viewRatings.metaRating.text = movieRatingMetaScore
+            binding.viewRatings.metaRatingView.text = movieRatingMetaScore
 
-
-            meta_rating.setText(movie_rating_metascore);
-            metascore_setter.setText(movie_rating_metascore);
-            layout_meta.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                    builder.setToolbarColor(ContextCompat.getColor(MovieDetailsActivity.this, R.color.metaBlack));
-                    CustomTabsIntent customTabsIntent = builder.build();
-                    customTabsIntent.launchUrl(MovieDetailsActivity.this, Uri.parse(url));
-                }
-            });
+            binding.viewRatings.layoutMeta.setOnClickListener {
+                val builder = CustomTabsIntent.Builder()
+                builder.setToolbarColor(
+                    ContextCompat.getColor(
+                        this@MovieDetailsActivity,
+                        R.color.metaBlack
+                    )
+                )
+                val customTabsIntent = builder.build()
+                customTabsIntent.launchUrl(this@MovieDetailsActivity, Uri.parse(url))
+            }
         }
 
-        if (movie_rating_tmdb.equals("0"))
-            layout_tmdb.setVisibility(View.GONE);
-        else {
-            det_rating.setText(movie_rating_tmdb);
-            layout_tmdb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                    builder.setToolbarColor(ContextCompat.getColor(MovieDetailsActivity.this, R.color.tmdbGreen));
-                    CustomTabsIntent customTabsIntent = builder.build();
-                    customTabsIntent.launchUrl(MovieDetailsActivity.this, Uri.parse("https://www.themoviedb.org/movie/" + movie_id + "-" + movie_title_hyphen));
-                }
-            });
+        if (movieRatingTmdb == "0") binding.viewRatings.layoutTmdb.visibility = View.GONE else {
+            binding.viewRatings.tmdbRating.text = movieRatingTmdb
+            binding.viewRatings.layoutTmdb.setOnClickListener {
+                val builder = CustomTabsIntent.Builder()
+                builder.setToolbarColor(
+                    ContextCompat.getColor(
+                        this@MovieDetailsActivity,
+                        R.color.tmdbGreen
+                    )
+                )
+                val customTabsIntent = builder.build()
+                customTabsIntent.launchUrl(
+                    this@MovieDetailsActivity,
+                    Uri.parse("https://www.themoviedb.org/movie/$movieId-$movieTitleHyphen")
+                )
+            }
         }
     }
 
-    public void setRatingGone() {
-        ratingBar.setVisibility(View.GONE);
+    fun setRatingGone() {
+        binding.viewRatings.ratingBar.visibility = View.GONE
     }
 }

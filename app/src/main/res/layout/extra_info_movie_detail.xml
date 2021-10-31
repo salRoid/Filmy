@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/extraDetails"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
     android:layout_marginTop="16dp"
-    >
+    android:padding="16dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        >
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:id="@+id/runtime_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/widget_margin"
             android:fontFamily="@font/circularstd_book"
             android:text="@string/runtime"
-            android:drawableStart="@drawable/twotone_access_time_24"
-            android:drawablePadding="@dimen/widget_margin"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/twotone_access_time_24" />
 
         <TextView
             android:id="@+id/detail_runtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/runtime_holder"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/runtime_holder"
-            android:layout_toRightOf="@id/runtime_holder"
             android:fontFamily="@font/circularstd_book"
             android:text=""
             android:textSize="14sp" />
@@ -42,51 +40,47 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/runtime_holder"
-            android:fontFamily="@font/circularstd_book"
-            android:text="@string/genre"
             android:layout_marginTop="@dimen/widget_margin_half"
             android:drawablePadding="@dimen/widget_margin"
-            android:drawableStart="@drawable/twotone_movie_24"
-            android:textSize="16sp" />
+            android:fontFamily="@font/circularstd_book"
+            android:text="@string/genre"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/twotone_movie_24" />
 
         <TextView
             android:id="@+id/detail_certification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/certification_holder"
             android:layout_below="@id/detail_runtime"
-            android:layout_marginLeft="8dp"
+            android:layout_alignBaseline="@id/certification_holder"
+            android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/certification_holder"
-            android:layout_toRightOf="@id/certification_holder"
-            android:fontFamily="@font/circularstd_book"
-            android:text=""
-            android:maxLines="1"
             android:ellipsize="end"
+            android:fontFamily="@font/circularstd_book"
+            android:maxLines="1"
+            android:text=""
             android:textSize="14sp" />
-
 
         <TextView
             android:id="@+id/language_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/detail_certification"
+            android:layout_marginTop="@dimen/widget_margin_half"
+            android:drawablePadding="@dimen/widget_margin"
             android:fontFamily="@font/circularstd_book"
             android:text="@string/language"
-            android:layout_marginTop="@dimen/widget_margin_half"
-            android:drawableStart="@drawable/twotone_language_24"
-            android:drawablePadding="@dimen/widget_margin"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/twotone_language_24" />
 
         <TextView
-
             android:id="@+id/detail_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/language_holder"
             android:layout_below="@id/detail_certification"
-            android:layout_marginLeft="8dp"
+            android:layout_alignBaseline="@id/language_holder"
+            android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/language_holder"
-            android:layout_toRightOf="@id/language_holder"
             android:fontFamily="@font/circularstd_book"
             android:text=""
             android:textSize="14sp" />
@@ -96,28 +90,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/language_holder"
-            android:fontFamily="@font/circularstd_book"
-            android:text="@string/release_date"
             android:layout_marginTop="@dimen/widget_margin_half"
             android:drawablePadding="@dimen/widget_margin"
-            android:drawableStart="@drawable/twotone_calendar_today_24"
-            android:textSize="16sp" />
-
+            android:fontFamily="@font/circularstd_book"
+            android:text="@string/release_date"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/twotone_calendar_today_24" />
 
         <TextView
             android:id="@+id/detail_released"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/release_holder"
             android:layout_below="@id/detail_language"
-            android:layout_marginLeft="8dp"
+            android:layout_alignBaseline="@id/release_holder"
+            android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/release_holder"
-            android:layout_toRightOf="@id/release_holder"
             android:fontFamily="@font/circularstd_book"
             android:text=""
             android:textSize="14sp" />
 
     </RelativeLayout>
-
 
 </RelativeLayout>

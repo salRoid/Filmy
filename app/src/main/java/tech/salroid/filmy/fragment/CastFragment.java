@@ -1,7 +1,6 @@
 package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,28 +31,10 @@ import tech.salroid.filmy.activities.FullCastActivity;
 import tech.salroid.filmy.custom_adapter.CastAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.CastDetailsData;
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
+import tech.salroid.filmy.networking.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
-/*
- * Filmy Application for Android
- * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 
 public class CastFragment extends Fragment implements View.OnClickListener, CastAdapter.ClickListener {
-
 
     @BindView(R.id.more)
     TextView more;
@@ -175,16 +156,11 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
         Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCastId());
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            Pair<View, String> p1 = Pair.create(view.findViewById(R.id.cast_poster), "profile");
-            Pair<View, String> p2 = Pair.create(view.findViewById(R.id.cast_name), "name");
+        Pair<View, String> p1 = Pair.create(view.findViewById(R.id.cast_poster), "profile");
+        Pair<View, String> p2 = Pair.create(view.findViewById(R.id.cast_name), "name");
 
-            ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation(getActivity(), p1, p2);
-            startActivity(intent, options.toBundle());
-        } else {
-            startActivity(intent);
-        }
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), p1, p2);
+        startActivity(intent, options.toBundle());
     }
 
     public interface GotCrewListener {

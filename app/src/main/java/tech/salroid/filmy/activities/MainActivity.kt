@@ -22,7 +22,7 @@ import butterknife.ButterKnife
 import androidx.core.content.ContextCompat
 import com.miguelcatalan.materialsearchview.MaterialSearchView.SearchViewListener
 import tech.salroid.filmy.FilmyIntro
-import tech.salroid.filmy.network_stuff.FirstFetch
+import tech.salroid.filmy.networking.FirstFetch
 import com.google.android.material.appbar.AppBarLayout
 import tech.salroid.filmy.fragment.InTheaters
 import tech.salroid.filmy.fragment.UpComing

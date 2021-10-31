@@ -23,11 +23,12 @@ import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter
 import tech.salroid.filmy.data_classes.CharacterDetailsData
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.fragment.FullReadFragment
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton
+import tech.salroid.filmy.networking.TmdbVolleySingleton
 import tech.salroid.filmy.parser.CharacterDetailActivityParseWork
 import java.lang.Exception
 
-class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAdapter.ClickListener {
+class CharacterDetailsActivity : AppCompatActivity(),
+    CharacterDetailsActivityAdapter.ClickListener {
 
     private var characterId: String? = null
     private var characterTitle: String? = null
@@ -74,7 +75,7 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
                 args.putString("desc", characterBio)
                 fullReadFragment!!.arguments = args
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
+                    .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
             }
         }
         val intent = intent
@@ -101,17 +102,24 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
             val requestQueue = volleySingleton.requestQueue
             val apiKey = BuildConfig.TMDB_API_KEY
 
-            val baseUrlPersonDetail = "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
-            val baseUrlPeopleMovies = "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
+            val baseUrlPersonDetail =
+                "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
+            val baseUrlPeopleMovies =
+                "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
 
-            val personDetailRequest = JsonObjectRequest(baseUrlPersonDetail, null,
-                    { response -> personDetailsParsing(response.toString()) })
-            { error -> Log.e("webi", "Volley Error: " + error.cause) }
+            val personDetailRequest = JsonObjectRequest(
+                baseUrlPersonDetail,
+                null, { response ->
+                    personDetailsParsing(response.toString())
+                }) { error ->
+                Log.e("webi", "Volley Error: " + error.cause)
+            }
+
             val personMovieDetailRequest = JsonObjectRequest(baseUrlPeopleMovies, null,
-                    { response ->
-                        movieJson = response.toString()
-                        castParseOutput(response.toString())
-                    }
+                { response ->
+                    movieJson = response.toString()
+                    castParseOutput(response.toString())
+                }
             ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
             requestQueue.add(personDetailRequest)
             requestQueue.add(personMovieDetailRequest)
@@ -130,7 +138,8 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
         try {
             val jsonObject = JSONObject(detailsResult)
             val dataName = jsonObject.getString("name")
-            val dataProfile = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
+            val dataProfile =
+                "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
             val dataOverview = jsonObject.getString("biography")
             val dataBirthday = jsonObject.getString("birthday")
             val dataBirthPlace = jsonObject.getString("place_of_birth")
@@ -164,10 +173,11 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
 
             try {
                 Glide.with(this)
-                        .load(dataProfile)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .fitCenter().into(binding.displayProfile)
-            } catch (e: Exception) { }
+                    .load(dataProfile)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter().into(binding.displayProfile)
+            } catch (e: Exception) {
+            }
 
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -180,7 +190,8 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
         val charAdapter = CharacterDetailsActivityAdapter(this, charList, true)
         charAdapter.setClickListener(this)
         binding.characterMovies.adapter = charAdapter
-        if (charList.size > 4) binding.more.visibility = View.VISIBLE else binding.more.visibility = View.INVISIBLE
+        if (charList.size > 4) binding.more.visibility = View.VISIBLE else binding.more.visibility =
+            View.INVISIBLE
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

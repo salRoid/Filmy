@@ -2,7 +2,6 @@ package tech.salroid.filmy.work_manager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -15,7 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import tech.salroid.filmy.BuildConfig;
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
+import tech.salroid.filmy.networking.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.MainActivityParseWork;
 
 /*

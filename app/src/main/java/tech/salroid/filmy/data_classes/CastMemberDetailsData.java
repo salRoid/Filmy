@@ -18,7 +18,7 @@ package tech.salroid.filmy.data_classes;
 
 public class CastMemberDetailsData {
 
-   private String castId, castName, castRolePlayed, castDisplayProfile;
+    private String castId, castName, castRolePlayed, castDisplayProfile;
 
     public void setCastId(String castId) {
         this.castId = castId;

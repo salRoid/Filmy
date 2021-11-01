@@ -28,7 +28,7 @@ import tech.salroid.filmy.parser.CharacterDetailsActivityParseWork
 import java.lang.Exception
 
 class CharacterDetailsActivity : AppCompatActivity(),
-    CharacterDetailsActivityAdapter.ClickListener {
+        CharacterDetailsActivityAdapter.ClickListener {
 
     private var characterId: String? = null
     private var characterTitle: String? = null
@@ -76,7 +76,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
                 args.putString("desc", characterBio)
                 fullReadFragment!!.arguments = args
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
+                        .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
             }
         }
         val intent = intent
@@ -104,9 +104,9 @@ class CharacterDetailsActivity : AppCompatActivity(),
             val apiKey = BuildConfig.TMDB_API_KEY
 
             val baseUrlPersonalDetails =
-                "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
+                    "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
             val baseUrlPersonMovies =
-                "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
+                    "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
 
             val personalDetailsRequest = JsonObjectRequest(baseUrlPersonalDetails, null,
                     { response ->
@@ -115,10 +115,10 @@ class CharacterDetailsActivity : AppCompatActivity(),
             ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
 
             val personMoviesDetailsRequest = JsonObjectRequest(baseUrlPersonMovies, null,
-                { response ->
-                    moviesJson = response.toString()
-                    parsePersonMovies(response.toString())
-                }
+                    { response ->
+                        moviesJson = response.toString()
+                        parsePersonMovies(response.toString())
+                    }
             ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
 
             requestQueue.add(personalDetailsRequest)
@@ -171,9 +171,9 @@ class CharacterDetailsActivity : AppCompatActivity(),
 
             try {
                 Glide.with(this)
-                    .load(dataProfile)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .fitCenter().into(binding.displayProfile)
+                        .load(dataProfile)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .fitCenter().into(binding.displayProfile)
             } catch (e: Exception) {
             }
 

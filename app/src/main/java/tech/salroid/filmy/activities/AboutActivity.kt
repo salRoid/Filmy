@@ -42,13 +42,13 @@ class AboutActivity : AppCompatActivity() {
 
     private fun setBannerAndProfile() {
         Glide.with(this).load(getString(R.string.profile_webianks))
-            .into((findViewById<View>(R.id.profile_webianks) as ImageView))
+                .into((findViewById<View>(R.id.profile_webianks) as ImageView))
         Glide.with(this).load(getString(R.string.profile_salroid))
-            .into((findViewById<View>(R.id.profile_salroid) as ImageView))
+                .into((findViewById<View>(R.id.profile_salroid) as ImageView))
         Glide.with(this).load(getString(R.string.banner_webianks))
-            .into((findViewById<View>(R.id.banner_webianks) as ImageView))
+                .into((findViewById<View>(R.id.banner_webianks) as ImageView))
         Glide.with(this).load(getString(R.string.banner_salroid))
-            .into((findViewById<View>(R.id.banner_salroid) as ImageView))
+                .into((findViewById<View>(R.id.banner_salroid) as ImageView))
     }
 
     private fun allThemeLogic() {
@@ -94,12 +94,12 @@ class AboutActivity : AppCompatActivity() {
                 openCustomTabIntent(getString(R.string.website_webianks), R.color.colorAccent)
             }
             R.id.website_salroid -> {
-                openCustomTabIntent(getString(R.string.website_salroid),R.color.colorAccent)
+                openCustomTabIntent(getString(R.string.website_salroid), R.color.colorAccent)
             }
         }
     }
 
-    private fun openCustomTabIntent(url : String, color: Int) {
+    private fun openCustomTabIntent(url: String, color: Int) {
         val builder = CustomTabsIntent.Builder()
         builder.setToolbarColor(ContextCompat.getColor(this@AboutActivity, color))
         val customTabsIntent = builder.build()

@@ -75,7 +75,7 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
                     .into(holder.crewMemberProfile);
-        } catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
@@ -114,7 +114,7 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null) {
-                        clickListener.itemClicked(crewList.get(getPosition()), getPosition(),view);
+                        clickListener.itemClicked(crewList.get(getPosition()), getPosition(), view);
                     }
                 }
             });

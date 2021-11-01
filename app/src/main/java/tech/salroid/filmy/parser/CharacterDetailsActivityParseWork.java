@@ -1,9 +1,11 @@
 package tech.salroid.filmy.parser;
 
 import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class CharacterDetailsActivityParseWork {
                 String movieTitle = jsonArray.getJSONObject(i).getString("original_title");
                 String movieId = jsonArray.getJSONObject(i).getString("id");
                 String moviePoster = "http://image.tmdb.org/t/p/w45"
-                        +jsonArray.getJSONObject(i).getString("poster_path");
+                        + jsonArray.getJSONObject(i).getString("poster_path");
 
                 movie = new PersonMovieDetailsData();
                 movie.setMovieTitle(movieTitle);

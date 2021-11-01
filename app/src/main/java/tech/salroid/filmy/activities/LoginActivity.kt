@@ -77,10 +77,10 @@ class LoginActivity : AppCompatActivity() {
         val apiKey = BuildConfig.TMDB_API_KEY
         val baseUrl = "https://api.themoviedb.org/3/authentication/token/new?api_key=$apiKey"
         val jsonObjectRequest = JsonObjectRequest(baseUrl, null,
-            { response -> parseOutput(response) }) { error ->
+                { response -> parseOutput(response) }) { error ->
             Log.e(
-                "webi",
-                "Volley Error: " + error.cause
+                    "webi",
+                    "Volley Error: " + error.cause
             )
         }
         tmdbrequestQueue.add(jsonObjectRequest)
@@ -115,18 +115,18 @@ class LoginActivity : AppCompatActivity() {
         if (tokenization && requestToken != null) {
             val apiKey = BuildConfig.TMDB_API_KEY
             val sessionQuery =
-                "https://api.themoviedb.org/3/authentication/session/new?api_key=$apiKey&request_token=$requestToken"
+                    "https://api.themoviedb.org/3/authentication/session/new?api_key=$apiKey&request_token=$requestToken"
             querySession(sessionQuery)
         }
     }
 
     private fun querySession(session_query: String) {
         val jsonObjectRequest = JsonObjectRequest(
-            session_query,
-            null, { response -> parseSession(response) }) { error ->
+                session_query,
+                null, { response -> parseSession(response) }) { error ->
             Log.e(
-                "webi",
-                "Volley Error: " + error.cause
+                    "webi",
+                    "Volley Error: " + error.cause
             )
         }
         tmdbrequestQueue.add(jsonObjectRequest)

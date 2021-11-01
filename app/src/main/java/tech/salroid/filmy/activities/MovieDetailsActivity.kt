@@ -50,7 +50,7 @@ import tech.salroid.filmy.utility.Constants
 import java.lang.Exception
 
 class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
-    LoaderManager.LoaderCallbacks<Cursor>, DataFetchedListener, GotCrewListener {
+        LoaderManager.LoaderCallbacks<Cursor>, DataFetchedListener, GotCrewListener {
 
     private lateinit var trailerArray: Array<String?>
     private lateinit var trailerArrayName: Array<String?>
@@ -152,15 +152,15 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         if (networkApplicable) getStuffFromNetwork.getMovieDetailsFromNetwork(movieId)
 
         if (databaseApplicable) supportLoaderManager.initLoader(
-            MovieLoaders.MOVIE_DETAILS_LOADER,
-            null,
-            this
+                MovieLoaders.MOVIE_DETAILS_LOADER,
+                null,
+                this
         )
 
         if (savedDatabaseApplicable) supportLoaderManager.initLoader(
-            MovieLoaders.SAVED_MOVIE_DETAILS_LOADER,
-            null,
-            this
+                MovieLoaders.SAVED_MOVIE_DETAILS_LOADER,
+                null,
+                this
         )
 
         if (!databaseApplicable && !savedDatabaseApplicable) {
@@ -183,20 +183,20 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
     private fun showCastFragment() {
         castFragment = CastFragment.newInstance(null, movieTitle)
         supportFragmentManager.beginTransaction().replace(R.id.cast_container, castFragment)
-            .commit()
+                .commit()
         castFragment.setGotCrewListener(this)
     }
 
     private fun showCrewFragment() {
         crewFragment = CrewFragment.newInstance(null, movieTitle)
         supportFragmentManager.beginTransaction().replace(R.id.crew_container, crewFragment)
-            .commit()
+                .commit()
     }
 
     private fun showSimilarFragment() {
         similarFragment = SimilarFragment.newInstance(null, movieTitle)
         supportFragmentManager.beginTransaction().replace(R.id.similar_container, similarFragment)
-            .commit()
+                .commit()
     }
 
     private fun parseMovieDetails(movieDetails: String) {
@@ -315,7 +315,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                             + resources.getString(R.string.trailer_img_suffix))
                 } else {
                     imgUrl =
-                        resources.getString(R.string.poster_prefix_185) + jsonObject.getString("poster_path")
+                            resources.getString(R.string.poster_prefix_185) + jsonObject.getString("poster_path")
                 }
                 movieMap["trailer_img"] = imgUrl
             } catch (e: Exception) {
@@ -323,21 +323,21 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             } finally {
 
                 if (databaseApplicable) performMovieDetailsUpdate(
-                    this@MovieDetailsActivity,
-                    type,
-                    movieMap,
-                    movieId
+                        this@MovieDetailsActivity,
+                        type,
+                        movieMap,
+                        movieId
                 ) else showParsedContent(
-                    title,
-                    bannerProfile,
-                    imgUrl,
-                    tagline,
-                    overview,
-                    movieRating,
-                    runtime,
-                    released,
-                    genre,
-                    language
+                        title,
+                        bannerProfile,
+                        imgUrl,
+                        tagline,
+                        overview,
+                        movieRating,
+                        runtime,
+                        released,
+                        genre,
+                        language
                 )
             }
         } catch (e: JSONException) {
@@ -346,9 +346,9 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun showParsedContent(
-        title: String, displayBanner: String, imgUrl: String?, tagline: String,
-        overview: String, rating: String?, runtime: String,
-        released: String, certification: String, language: String
+            title: String, displayBanner: String, imgUrl: String?, tagline: String,
+            overview: String, rating: String?, runtime: String,
+            released: String, certification: String, language: String
     ) {
 
         binding.detailTagline.text = tagline
@@ -363,55 +363,55 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
         try {
             Glide.with(this)
-                .asBitmap()
-                .load(displayBanner)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(object : SimpleTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                        resource: Bitmap,
-                        transition: Transition<in Bitmap?>?
-                    ) {
+                    .asBitmap()
+                    .load(displayBanner)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(object : SimpleTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: Transition<in Bitmap?>?
+                        ) {
 
-                        binding.backdrop.setImageBitmap(resource)
-                        Palette.from(resource).generate { palette ->
+                            binding.backdrop.setImageBitmap(resource)
+                            Palette.from(resource).generate { palette ->
 
-                            val swatch = palette?.vibrantSwatch
-                            val trailerSwatch = palette?.darkVibrantSwatch
+                                val swatch = palette?.vibrantSwatch
+                                val trailerSwatch = palette?.darkVibrantSwatch
 
-                            if (swatch != null) {
-                                binding.header.setBackgroundColor(swatch.rgb)
-                                binding.detailTitle.setTextColor(swatch.titleTextColor)
-                                binding.detailTagline.setTextColor(swatch.bodyTextColor)
-                                binding.detailOverview.setTextColor(swatch.bodyTextColor)
-                            }
-                            if (trailerSwatch != null) {
-                                binding.trailorBackground.setBackgroundColor(trailerSwatch.rgb)
-                                binding.youtubeIcon.setColorFilter(
-                                    trailerSwatch.bodyTextColor,
-                                    PorterDuff.Mode.SRC_IN
-                                )
+                                if (swatch != null) {
+                                    binding.header.setBackgroundColor(swatch.rgb)
+                                    binding.detailTitle.setTextColor(swatch.titleTextColor)
+                                    binding.detailTagline.setTextColor(swatch.bodyTextColor)
+                                    binding.detailOverview.setTextColor(swatch.bodyTextColor)
+                                }
+                                if (trailerSwatch != null) {
+                                    binding.trailorBackground.setBackgroundColor(trailerSwatch.rgb)
+                                    binding.youtubeIcon.setColorFilter(
+                                            trailerSwatch.bodyTextColor,
+                                            PorterDuff.Mode.SRC_IN
+                                    )
+                                }
                             }
                         }
-                    }
-                })
+                    })
         } catch (e: Exception) {
             //Log.d(LOG_TAG, e.getMessage());
         }
 
         try {
             Glide.with(this)
-                .asBitmap()
-                .load(imgUrl)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(object : SimpleTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                        resource: Bitmap,
-                        transition: Transition<in Bitmap?>?
-                    ) {
-                        binding.detailYoutube.setImageBitmap(resource)
-                        if (trailerBoolean) binding.playButton.visibility = View.VISIBLE
-                    }
-                })
+                    .asBitmap()
+                    .load(imgUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(object : SimpleTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                                resource: Bitmap,
+                                transition: Transition<in Bitmap?>?
+                        ) {
+                            binding.detailYoutube.setImageBitmap(resource)
+                            if (trailerBoolean) binding.playButton.visibility = View.VISIBLE
+                        }
+                    })
         } catch (e: Exception) {
             //Log.d(LOG_TAG, e.getMessage());
         }
@@ -427,25 +427,25 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             MovieLoaders.MOVIE_DETAILS_LOADER -> {
                 when (type) {
                     0 -> cursorLoader = CursorLoader(
-                        this,
-                        FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
-                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
-                    )
-                    1 -> cursorLoader = CursorLoader(
-                        this,
-                        FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movieId),
-                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
-                    )
-                    2 -> cursorLoader = CursorLoader(
-                        this,
-                        FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movieId),
-                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
-                    )
-                    else -> {
-                        cursorLoader = CursorLoader(
                             this,
                             FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
                             MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                    )
+                    1 -> cursorLoader = CursorLoader(
+                            this,
+                            FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movieId),
+                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                    )
+                    2 -> cursorLoader = CursorLoader(
+                            this,
+                            FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movieId),
+                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                    )
+                    else -> {
+                        cursorLoader = CursorLoader(
+                                this,
+                                FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
+                                MovieProjection.GET_MOVIE_COLUMNS, null, null, null
                         )
                     }
                 }
@@ -455,15 +455,15 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                         "." + FilmContract.SaveEntry.SAVE_ID + " = ? "
                 val selectionArgs = arrayOf(movieId)
                 cursorLoader = CursorLoader(
-                    this, FilmContract.SaveEntry.CONTENT_URI,
-                    MovieProjection.GET_SAVE_COLUMNS, selection, selectionArgs, null
+                        this, FilmContract.SaveEntry.CONTENT_URI,
+                        MovieProjection.GET_SAVE_COLUMNS, selection, selectionArgs, null
                 )
             }
             else -> {
                 cursorLoader = CursorLoader(
-                    this,
-                    FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
-                    MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                        this,
+                        FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
+                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
                 )
             }
         }
@@ -523,38 +523,38 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
             try {
                 Glide.with(this)
-                    .asBitmap()
-                    .load(bannerUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(object : SimpleTarget<Bitmap?>() {
+                        .asBitmap()
+                        .load(bannerUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(object : SimpleTarget<Bitmap?>() {
 
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap?>?
-                        ) {
-                            binding.backdrop.setImageBitmap(resource)
-                            Palette.from(resource).generate { palette -> // Use generated instance
+                            override fun onResourceReady(
+                                    resource: Bitmap,
+                                    transition: Transition<in Bitmap?>?
+                            ) {
+                                binding.backdrop.setImageBitmap(resource)
+                                Palette.from(resource).generate { palette -> // Use generated instance
 
-                                val swatch = palette?.vibrantSwatch
-                                val trailerSwatch = palette?.darkVibrantSwatch
+                                    val swatch = palette?.vibrantSwatch
+                                    val trailerSwatch = palette?.darkVibrantSwatch
 
-                                if (swatch != null) {
-                                    binding.header.setBackgroundColor(swatch.rgb)
-                                    binding.detailTitle.setTextColor(swatch.titleTextColor)
-                                    binding.detailTagline.setTextColor(swatch.bodyTextColor)
-                                    binding.detailOverview.setTextColor(swatch.bodyTextColor)
-                                }
+                                    if (swatch != null) {
+                                        binding.header.setBackgroundColor(swatch.rgb)
+                                        binding.detailTitle.setTextColor(swatch.titleTextColor)
+                                        binding.detailTagline.setTextColor(swatch.bodyTextColor)
+                                        binding.detailOverview.setTextColor(swatch.bodyTextColor)
+                                    }
 
-                                if (trailerSwatch != null) {
-                                    binding.trailorBackground.setBackgroundColor(trailerSwatch.rgb)
-                                    binding.youtubeIcon.setColorFilter(
-                                        trailerSwatch.bodyTextColor,
-                                        PorterDuff.Mode.SRC_IN
-                                    )
+                                    if (trailerSwatch != null) {
+                                        binding.trailorBackground.setBackgroundColor(trailerSwatch.rgb)
+                                        binding.youtubeIcon.setColorFilter(
+                                                trailerSwatch.bodyTextColor,
+                                                PorterDuff.Mode.SRC_IN
+                                        )
+                                    }
                                 }
                             }
-                        }
-                    })
+                        })
             } catch (e: Exception) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
@@ -567,18 +567,18 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
             try {
                 Glide.with(this)
-                    .asBitmap()
-                    .load(thumbnail)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(object : SimpleTarget<Bitmap?>() {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap?>?
-                        ) {
-                            binding.detailYoutube.setImageBitmap(resource)
-                            if (trailerBoolean) binding.playButton.visibility = View.VISIBLE
-                        }
-                    })
+                        .asBitmap()
+                        .load(thumbnail)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(object : SimpleTarget<Bitmap?>() {
+                            override fun onResourceReady(
+                                    resource: Bitmap,
+                                    transition: Transition<in Bitmap?>?
+                            ) {
+                                binding.detailYoutube.setImageBitmap(resource)
+                                if (trailerBoolean) binding.playButton.visibility = View.VISIBLE
+                            }
+                        })
             } catch (e: Exception) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
@@ -599,7 +599,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             val runtimeIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_RUNTIME)
             val languageIndex = data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_LANGUAGE)
             val certificationIndex =
-                data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_CERTIFICATION)
+                    data.getColumnIndex(FilmContract.MoviesEntry.MOVIE_CERTIFICATION)
 
             val title = data.getString(titleIndex)
             val bannerUrl = data.getString(bannerIndex)
@@ -616,46 +616,46 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             if (NullChecker.isSettable(tagline)) binding.detailTagline.text = tagline
             if (NullChecker.isSettable(overview)) binding.detailOverview.text = overview
             if (runtime != null && runtime != "null mins") binding.viewExtraInfo.detailRuntime.text =
-                runtime
+                    runtime
             if (NullChecker.isSettable(released)) binding.viewExtraInfo.detailReleased.text =
-                released
+                    released
             if (NullChecker.isSettable(certification)) binding.viewExtraInfo.detailCertification.text =
-                certification
+                    certification
             if (NullChecker.isSettable(language)) binding.viewExtraInfo.detailLanguage.text =
-                language
+                    language
 
             try {
                 Glide.with(this)
-                    .asBitmap()
-                    .load(bannerUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(object : SimpleTarget<Bitmap?>() {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap?>?
-                        ) {
-                            binding.backdrop.setImageBitmap(resource)
-                            Palette.from(resource).generate { pallete ->
-                                val swatch = pallete?.vibrantSwatch
-                                val trailerSwatch = pallete?.darkVibrantSwatch
+                        .asBitmap()
+                        .load(bannerUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(object : SimpleTarget<Bitmap?>() {
+                            override fun onResourceReady(
+                                    resource: Bitmap,
+                                    transition: Transition<in Bitmap?>?
+                            ) {
+                                binding.backdrop.setImageBitmap(resource)
+                                Palette.from(resource).generate { pallete ->
+                                    val swatch = pallete?.vibrantSwatch
+                                    val trailerSwatch = pallete?.darkVibrantSwatch
 
-                                if (swatch != null) {
-                                    binding.header.setBackgroundColor(swatch.rgb)
-                                    binding.detailTitle.setTextColor(swatch.titleTextColor)
-                                    binding.detailTagline.setTextColor(swatch.bodyTextColor)
-                                    binding.detailOverview.setTextColor(swatch.bodyTextColor)
-                                }
+                                    if (swatch != null) {
+                                        binding.header.setBackgroundColor(swatch.rgb)
+                                        binding.detailTitle.setTextColor(swatch.titleTextColor)
+                                        binding.detailTagline.setTextColor(swatch.bodyTextColor)
+                                        binding.detailOverview.setTextColor(swatch.bodyTextColor)
+                                    }
 
-                                if (trailerSwatch != null) {
-                                    binding.trailorBackground.setBackgroundColor(trailerSwatch.rgb)
-                                    binding.youtubeIcon.setColorFilter(
-                                        trailerSwatch.bodyTextColor,
-                                        PorterDuff.Mode.SRC_IN
-                                    )
+                                    if (trailerSwatch != null) {
+                                        binding.trailorBackground.setBackgroundColor(trailerSwatch.rgb)
+                                        binding.youtubeIcon.setColorFilter(
+                                                trailerSwatch.bodyTextColor,
+                                                PorterDuff.Mode.SRC_IN
+                                        )
+                                    }
                                 }
                             }
-                        }
-                    })
+                        })
 
             } catch (e: Exception) {
                 //Log.d(LOG_TAG, e.getMessage());
@@ -663,18 +663,18 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
             try {
                 Glide.with(this)
-                    .asBitmap()
-                    .load(trailer)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(object : SimpleTarget<Bitmap?>() {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap?>?
-                        ) {
-                            binding.detailYoutube.setImageBitmap(resource)
-                            if (trailerBoolean) binding.playButton.visibility = View.VISIBLE
-                        }
-                    })
+                        .asBitmap()
+                        .load(trailer)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(object : SimpleTarget<Bitmap?>() {
+                            override fun onResourceReady(
+                                    resource: Bitmap,
+                                    transition: Transition<in Bitmap?>?
+                            ) {
+                                binding.detailYoutube.setImageBitmap(resource)
+                                if (trailerBoolean) binding.playButton.visibility = View.VISIBLE
+                            }
+                        })
             } catch (e: Exception) {
                 //Log.d(LOG_TAG, e.getMessage());
             }
@@ -695,18 +695,18 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 offlineMovies.saveMovie(movieMap, movieId, movieIdFinal, Constants.FLAG_OFFLINE)
             }
             R.id.action_fav -> Confirmation.confirmFav(
-                this,
-                movieMap,
-                movieId,
-                movieIdFinal,
-                Constants.FLAG_FAVORITE
+                    this,
+                    movieMap,
+                    movieId,
+                    movieIdFinal,
+                    Constants.FLAG_FAVORITE
             )
             R.id.action_watch -> Confirmation.confirmWatchlist(
-                this,
-                movieMap,
-                movieId,
-                movieIdFinal,
-                Constants.FLAG_WATCHLIST
+                    this,
+                    movieMap,
+                    movieId,
+                    movieIdFinal,
+                    Constants.FLAG_WATCHLIST
             )
             else -> {
             }
@@ -739,8 +739,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 args.putString("desc", movieDesc)
                 fullReadFragment.arguments = args
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.all_details_container, fullReadFragment).addToBackStack("DESC")
-                    .commit()
+                        .replace(R.id.all_details_container, fullReadFragment).addToBackStack("DESC")
+                        .commit()
             }
 
             R.id.new_main -> if (showCentreImgUrl != null) {
@@ -754,14 +754,14 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 val autoPlay = true
                 val lightBoxMode = false
                 if (trailerBoolean) startActivity(
-                    YouTubeStandalonePlayer.createVideoIntent(
-                        this@MovieDetailsActivity,
-                        getString(R.string.Youtube_Api_Key),
-                        trailor,
-                        timeMilliSeconds,
-                        autoPlay,
-                        lightBoxMode
-                    )
+                        YouTubeStandalonePlayer.createVideoIntent(
+                                this@MovieDetailsActivity,
+                                getString(R.string.Youtube_Api_Key),
+                                trailor,
+                                timeMilliSeconds,
+                                autoPlay,
+                                lightBoxMode
+                        )
                 )
             }
 
@@ -774,8 +774,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 args.putStringArray("trailers_name", trailerArrayName)
                 allTrailerFragment.arguments = args
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.all_details_container, allTrailerFragment)
-                    .addToBackStack("TRAILER").commit()
+                        .replace(R.id.all_details_container, allTrailerFragment)
+                        .addToBackStack("TRAILER").commit()
             }
         }
     }
@@ -803,8 +803,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     fun setRating(
-        movieRatingImdb: String, movieRatingTomatoMeter: String,
-        audienceRating: String?, metaScoreRating: String?, rottenTomatoPage: String?
+            movieRatingImdb: String, movieRatingTomatoMeter: String,
+            audienceRating: String?, metaScoreRating: String?, rottenTomatoPage: String?
     ) {
 
         movieRatingAudience = audienceRating
@@ -816,7 +816,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             binding.viewRatings.imdbRating.text = movieRatingImdb
             binding.viewRatings.layoutImdb.setOnClickListener {
                 openCustomTabIntent(resources.getString(R.string.imdb_link_prefix) + movieImdbId,
-                R.color.imdbYellow)
+                        R.color.imdbYellow)
             }
         }
 
@@ -824,24 +824,24 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             binding.viewRatings.layoutTomato.visibility = View.GONE
         } else {
             val tomatoMeterScore =
-                movieRatingTomatoMeter.substring(0, movieRatingTomatoMeter.length - 1).toInt()
+                    movieRatingTomatoMeter.substring(0, movieRatingTomatoMeter.length - 1).toInt()
             when {
                 tomatoMeterScore > 74 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.certified
-                    )
+                        ContextCompat.getDrawable(
+                                this,
+                                R.drawable.certified
+                        )
                 )
                 tomatoMeterScore > 59 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.fresh
-                    )
+                        ContextCompat.getDrawable(
+                                this,
+                                R.drawable.fresh
+                        )
                 )
                 tomatoMeterScore < 60 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this, R.drawable.rotten
-                    )
+                        ContextCompat.getDrawable(
+                                this, R.drawable.rotten
+                        )
                 )
             }
 
@@ -852,17 +852,17 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         }
 
         if (movieRatingAudience == "N/A") binding.viewRatings.layoutFlixi.visibility =
-            View.GONE else {
+                View.GONE else {
             if (audienceRating?.toFloat()!! > 3.4) binding.viewRatings.flixterRatingImage.setImageDrawable(
-                ContextCompat.getDrawable(this, R.drawable.popcorn)
+                    ContextCompat.getDrawable(this, R.drawable.popcorn)
             ) else binding.viewRatings.flixterRatingImage.setImageDrawable(
-                ContextCompat.getDrawable(this, R.drawable.spilt)
+                    ContextCompat.getDrawable(this, R.drawable.spilt)
             )
             binding.viewRatings.flixterRating.text = movieRatingAudience
         }
 
         if (movieRatingMetaScore == "N/A") binding.viewRatings.layoutMeta.visibility =
-            View.GONE
+                View.GONE
         else {
             var smallTitle = movieTitleHyphen?.toLowerCase()
             smallTitle = smallTitle?.replace("[^0-9-a-z]".toRegex(), "")
@@ -870,15 +870,15 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
             when {
                 metaScoreRating?.toInt()!! > 60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
-                    Color.parseColor("#66cc33")
+                        Color.parseColor("#66cc33")
                 )
                 metaScoreRating.toInt() in 41..60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
-                    Color.parseColor("#ffcc33")
+                        Color.parseColor("#ffcc33")
                 )
                 else -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
-                    Color.parseColor(
-                        "#ff0000"
-                    )
+                        Color.parseColor(
+                                "#ff0000"
+                        )
                 )
             }
 
@@ -903,9 +903,9 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         binding.viewRatings.ratingBar.visibility = View.GONE
     }
 
-    private fun openCustomTabIntent(url : String, color: Int) {
+    private fun openCustomTabIntent(url: String, color: Int) {
         val builder = CustomTabsIntent.Builder()
-        builder.setToolbarColor(ContextCompat.getColor(this@MovieDetailsActivity,color))
+        builder.setToolbarColor(ContextCompat.getColor(this@MovieDetailsActivity, color))
         val customTabsIntent = builder.build()
         customTabsIntent.launchUrl(this, Uri.parse(url))
     }

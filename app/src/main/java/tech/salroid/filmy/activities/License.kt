@@ -53,19 +53,19 @@ class License : AppCompatActivity() {
     private fun v24Setup() {
         binding.glide.text = Html.fromHtml(getString(R.string.glide), Html.FROM_HTML_MODE_LEGACY)
         binding.materialsearcview.text =
-            Html.fromHtml(getString(R.string.materialsearch), Html.FROM_HTML_MODE_LEGACY)
+                Html.fromHtml(getString(R.string.materialsearch), Html.FROM_HTML_MODE_LEGACY)
         binding.circularimageview.text =
-            Html.fromHtml(getString(R.string.circularimageview), Html.FROM_HTML_MODE_LEGACY)
+                Html.fromHtml(getString(R.string.circularimageview), Html.FROM_HTML_MODE_LEGACY)
         binding.tatarka.text =
-            Html.fromHtml(getString(R.string.tatarka), Html.FROM_HTML_MODE_LEGACY)
+                Html.fromHtml(getString(R.string.tatarka), Html.FROM_HTML_MODE_LEGACY)
         binding.error.text =
-            Html.fromHtml(getString(R.string.errorview), Html.FROM_HTML_MODE_LEGACY)
+                Html.fromHtml(getString(R.string.errorview), Html.FROM_HTML_MODE_LEGACY)
         binding.appintro.text =
-            Html.fromHtml(getString(R.string.appintro), Html.FROM_HTML_MODE_LEGACY)
+                Html.fromHtml(getString(R.string.appintro), Html.FROM_HTML_MODE_LEGACY)
         binding.butterknife.text =
-            Html.fromHtml(getString(R.string.butterknife), Html.FROM_HTML_MODE_LEGACY)
+                Html.fromHtml(getString(R.string.butterknife), Html.FROM_HTML_MODE_LEGACY)
         binding.crashlytics.text =
-            Html.fromHtml(getString(R.string.crashlytics), Html.FROM_HTML_MODE_LEGACY)
+                Html.fromHtml(getString(R.string.crashlytics), Html.FROM_HTML_MODE_LEGACY)
     }
 
     private fun allThemeLogic() {

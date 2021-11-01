@@ -1,15 +1,13 @@
 package tech.salroid.filmy.parser;
 
 import android.content.Context;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.data_classes.CharacterDetailsData;
+import tech.salroid.filmy.data_classes.PersonMovieDetailsData;
 
 /*
  * Filmy Application for Android
@@ -27,62 +25,41 @@ import tech.salroid.filmy.data_classes.CharacterDetailsData;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-public class CharacterDetailActivityParseWork {
+public class CharacterDetailsActivityParseWork {
 
     private Context context;
     private String char_result;
 
-
-    public CharacterDetailActivityParseWork(Context context, String char_result) {
+    public CharacterDetailsActivityParseWork(Context context, String char_result) {
         this.context = context;
         this.char_result = char_result;
     }
 
-
-    public List<CharacterDetailsData> char_parse_cast() {
-
-        final List<CharacterDetailsData> setterGettercharArray = new ArrayList<CharacterDetailsData>();
-        CharacterDetailsData setterGetterchar = null;
-
-
+    public List<PersonMovieDetailsData> parsePersonMovies() {
+        final List<PersonMovieDetailsData> allMovies = new ArrayList<PersonMovieDetailsData>();
+        PersonMovieDetailsData movie = null;
         try {
             JSONObject jsonObject = new JSONObject(char_result);
-
             JSONArray jsonArray = jsonObject.getJSONArray("cast");
-
             for (int i = 0; i < jsonArray.length(); i++) {
-
-                setterGetterchar = new CharacterDetailsData();
-
-                String role, movie, mov_id, img;
-
-                role = jsonArray.getJSONObject(i).getString("character");
-                movie = jsonArray.getJSONObject(i).getString("original_title");
-                mov_id = jsonArray.getJSONObject(i).getString("id");
-                img = "http://image.tmdb.org/t/p/w45"
+                String playedRole = jsonArray.getJSONObject(i).getString("character");
+                String movieTitle = jsonArray.getJSONObject(i).getString("original_title");
+                String movieId = jsonArray.getJSONObject(i).getString("id");
+                String moviePoster = "http://image.tmdb.org/t/p/w45"
                         +jsonArray.getJSONObject(i).getString("poster_path");
 
-                setterGetterchar.setChar_movie(movie);
-                setterGetterchar.setChar_id(mov_id);
-                setterGetterchar.setChar_role(role);
-                setterGetterchar.setCharmovie_img(img);
+                movie = new PersonMovieDetailsData();
+                movie.setMovieTitle(movieTitle);
+                movie.setRolePlayed(playedRole);
+                movie.setMovieId(movieId);
+                movie.setMoviePoster(moviePoster);
 
-                setterGettercharArray.add(setterGetterchar);
-
-
-              /*  int year= jsonArray.getJSONObject(i).getJSONObject("movie").getInt("year");
-                setterGetterchar.setChar_date(year);*/
-
+                allMovies.add(movie);
             }
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-        return setterGettercharArray;
+        return allMovies;
     }
-
-
 }

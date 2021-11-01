@@ -20,11 +20,11 @@ import org.json.JSONObject
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter
-import tech.salroid.filmy.data_classes.CharacterDetailsData
+import tech.salroid.filmy.data_classes.PersonMovieDetailsData
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.fragment.FullReadFragment
 import tech.salroid.filmy.networking.TmdbVolleySingleton
-import tech.salroid.filmy.parser.CharacterDetailActivityParseWork
+import tech.salroid.filmy.parser.CharacterDetailsActivityParseWork
 import java.lang.Exception
 
 class CharacterDetailsActivity : AppCompatActivity(),
@@ -32,7 +32,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
 
     private var characterId: String? = null
     private var characterTitle: String? = null
-    private var movieJson: String? = null
+    private var moviesJson: String? = null
     private var characterBio: String? = null
     private var fullReadFragment: FullReadFragment? = null
     private var nightMode = false
@@ -57,9 +57,9 @@ class CharacterDetailsActivity : AppCompatActivity(),
         }
 
         binding.more.setOnClickListener {
-            if (!(movieJson == null && characterTitle == null)) {
+            if (!(moviesJson == null && characterTitle == null)) {
                 val intent = Intent(this@CharacterDetailsActivity, FullMovieActivity::class.java)
-                intent.putExtra("cast_json", movieJson)
+                intent.putExtra("cast_json", moviesJson)
                 intent.putExtra("toolbar_title", characterTitle)
                 startActivity(intent)
             }
@@ -83,7 +83,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
         if (intent != null) {
             characterId = intent.getStringExtra("id")
         }
-        detailedMovieAndCast
+        personalDetailsAndMovies
     }
 
     private fun allThemeLogic() {
@@ -97,50 +97,49 @@ class CharacterDetailsActivity : AppCompatActivity(),
         if (nightMode != nightModeNew) recreate()
     }
 
-    private val detailedMovieAndCast: Unit
+    private val personalDetailsAndMovies: Unit
         get() {
             val volleySingleton = TmdbVolleySingleton.getInstance()
             val requestQueue = volleySingleton.requestQueue
             val apiKey = BuildConfig.TMDB_API_KEY
 
-            val baseUrlPersonDetail =
+            val baseUrlPersonalDetails =
                 "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
-            val baseUrlPeopleMovies =
+            val baseUrlPersonMovies =
                 "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
 
-            val personDetailRequest = JsonObjectRequest(
-                baseUrlPersonDetail,
-                null, { response ->
-                    parsePersonDetails(response.toString())
-                }) { error ->
-                Log.e("webi", "Volley Error: " + error.cause)
-            }
+            val personalDetailsRequest = JsonObjectRequest(baseUrlPersonalDetails, null,
+                    { response ->
+                        parsePersonalDetails(response.toString())
+                    }
+            ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
 
-            val personMovieDetailRequest = JsonObjectRequest(baseUrlPeopleMovies, null,
+            val personMoviesDetailsRequest = JsonObjectRequest(baseUrlPersonMovies, null,
                 { response ->
-                    movieJson = response.toString()
+                    moviesJson = response.toString()
                     parsePersonMovies(response.toString())
                 }
             ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
-            requestQueue.add(personDetailRequest)
-            requestQueue.add(personMovieDetailRequest)
+
+            requestQueue.add(personalDetailsRequest)
+            requestQueue.add(personMoviesDetailsRequest)
         }
 
-    override fun itemClicked(setterGetterchar: CharacterDetailsData, position: Int) {
+    override fun itemClicked(movie: PersonMovieDetailsData, position: Int) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
-        intent.putExtra("id", setterGetterchar.char_id)
-        intent.putExtra("title", setterGetterchar.char_movie)
+        intent.putExtra("id", movie.movieId)
+        intent.putExtra("title", movie.movieTitle)
         intent.putExtra("network_applicable", true)
         intent.putExtra("activity", false)
         startActivity(intent)
     }
 
-    private fun parsePersonDetails(detailsResult: String) {
+    private fun parsePersonalDetails(personalDetailsResponse: String) {
         try {
-            val jsonObject = JSONObject(detailsResult)
+            val jsonObject = JSONObject(personalDetailsResponse)
             val dataName = jsonObject.getString("name")
             val dataProfile =
-                "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
+                    "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
             val dataOverview = jsonObject.getString("biography")
             val dataBirthday = jsonObject.getString("birthday")
             val dataBirthPlace = jsonObject.getString("place_of_birth")
@@ -184,13 +183,16 @@ class CharacterDetailsActivity : AppCompatActivity(),
     }
 
     private fun parsePersonMovies(cast_result: String) {
-        val par = CharacterDetailActivityParseWork(this, cast_result)
-        val charList = par.char_parse_cast()
-        val charAdapter = CharacterDetailsActivityAdapter(this, charList, true)
+        val par = CharacterDetailsActivityParseWork(this, cast_result)
+        val moviesList = par.parsePersonMovies()
+        val charAdapter = CharacterDetailsActivityAdapter(this, moviesList, true)
         charAdapter.setClickListener(this)
         binding.characterMovies.adapter = charAdapter
-        if (charList.size > 4) binding.more.visibility = View.VISIBLE else binding.more.visibility =
-            View.INVISIBLE
+        if (moviesList.size > 4) {
+            binding.more.visibility = View.VISIBLE
+        } else {
+            binding.more.visibility = View.INVISIBLE
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

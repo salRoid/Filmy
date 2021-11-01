@@ -9,8 +9,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.data_classes.CastDetailsData;
-import tech.salroid.filmy.data_classes.CrewDetailsData;
+import tech.salroid.filmy.data_classes.CastMemberDetailsData;
+import tech.salroid.filmy.data_classes.CrewMemberDetailsData;
 import tech.salroid.filmy.data_classes.SimilarMoviesData;
 
 /*
@@ -39,85 +39,63 @@ public class MovieDetailsActivityParseWork {
         this.result = result;
     }
 
-    public List<CastDetailsData> parse_cast() {
-
-
-        final List<CastDetailsData> setterGettercastArray = new ArrayList<CastDetailsData>();
-        CastDetailsData setterGettercast = null;
+    public List<CastMemberDetailsData> parseCastMembers() {
+        final List<CastMemberDetailsData> allCastMembers = new ArrayList<CastMemberDetailsData>();
+        CastMemberDetailsData castMember = null;
 
         try {
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("cast");
 
             for (int i = 0; i < jsonArray.length(); i++) {
-
-                setterGettercast = new CastDetailsData();
-
                 String id = (jsonArray.getJSONObject(i)).getString("id");
-                String character = (jsonArray.getJSONObject(i)).getString("character");
                 String name = (jsonArray.getJSONObject(i)).getString("name");
-                String cast_poster = (jsonArray.getJSONObject(i)).getString("profile_path");
+                String rolePlayed = (jsonArray.getJSONObject(i)).getString("character");
+                String displayProfile = (jsonArray.getJSONObject(i)).getString("profile_path");
+                displayProfile = "http://image.tmdb.org/t/p/w185" + displayProfile;
 
-                cast_poster = "http://image.tmdb.org/t/p/w185" + cast_poster;
+                castMember = new CastMemberDetailsData();
+                castMember.setCastId(id);
+                castMember.setCastName(name);
+                castMember.setCastRolePlayed(rolePlayed);
+                castMember.setCastDisplayProfile(displayProfile);
 
-
-                setterGettercast.setCastCharacter(character);
-                setterGettercast.setCastName(name);
-                setterGettercast.setCastDisplayProfile(cast_poster);
-                setterGettercast.setCastId(id);
-
-                setterGettercastArray.add(setterGettercast);
-
+                allCastMembers.add(castMember);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-        return setterGettercastArray;
+        return allCastMembers;
     }
 
-    public List<CrewDetailsData> parse_crew() {
-
-        final List<CrewDetailsData> setterGettercrewArray = new ArrayList<CrewDetailsData>();
-        CrewDetailsData setterGetterCrew;
-
+    public List<CrewMemberDetailsData> parseCrewMembers() {
+        final List<CrewMemberDetailsData> allCrewMembers = new ArrayList<CrewMemberDetailsData>();
+        CrewMemberDetailsData crewMember;
         try {
             JSONObject jsonObject = new JSONObject(result);
-
             JSONArray crewArray = jsonObject.getJSONArray("crew");
-
             for (int i = 0; i < crewArray.length(); i++) {
+                String memberId = (crewArray.getJSONObject(i)).getString("id");
+                String memberJobDescription = (crewArray.getJSONObject(i)).getString("job");
+                String memberName = (crewArray.getJSONObject(i)).getString("name");
+                String memberProfile = (crewArray.getJSONObject(i)).getString("profile_path");
+                memberProfile = "http://image.tmdb.org/t/p/w185" + memberProfile;
 
-                setterGetterCrew = new CrewDetailsData();
-
-                String crew_id = (crewArray.getJSONObject(i)).getString("id");
-                String crew_job = (crewArray.getJSONObject(i)).getString("job");
-                String crew_name = (crewArray.getJSONObject(i)).getString("name");
-                String crew_poster = "http://image.tmdb.org/t/p/w185" + (crewArray.getJSONObject(i))
-                        .getString("profile_path");
-
-
-                if (!crew_poster.contains("null")) {
-
-                    //Toast.makeText(context,crew_job,Toast.LENGTH_SHORT).show();
-
-                    setterGetterCrew.setCrewId(crew_id);
-                    setterGetterCrew.setCrewJobDescr(crew_job);
-                    setterGetterCrew.setCrewName(crew_name);
-                    setterGetterCrew.setCrewDisplayProfile(crew_poster);
-                    setterGettercrewArray.add(setterGetterCrew);
-
+                if (!memberProfile.contains("null")) {
+                    crewMember = new CrewMemberDetailsData();
+                    crewMember.setCrewMemberId(memberId);
+                    crewMember.setCrewMemberName(memberName);
+                    crewMember.setCrewMemberJob(memberJobDescription);
+                    crewMember.setCrewDisplayProfile(memberProfile);
+                    allCrewMembers.add(crewMember);
                 }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        return setterGettercrewArray;
+        return allCrewMembers;
     }
 
     public List<SimilarMoviesData> parse_similar_movies() {

@@ -16,50 +16,41 @@ package tech.salroid.filmy.data_classes;
  * limitations under the License.
  */
 
-public class CharacterDetailsData {
+ public class PersonMovieDetailsData {
 
+    String movieTitle, rolePlayed, movieId, moviePoster;
 
-     String char_movie, char_role, char_id, Charmovie_img;
-    //  int char_date;
-
-
-    /*public void setChar_date(int char_date) {
-        this.char_date = char_date;
-    }*/
-
-
-    public String getChar_id() {
-        return char_id;
+    public String getMovieId() {
+        return movieId;
     }
 
-    public void setChar_id(String char_id) {
-        this.char_id = char_id;
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
     }
 
-    public String getChar_movie() {
-        return char_movie;
+    public String getMovieTitle() {
+        return movieTitle;
     }
 
-    public void setChar_movie(String char_movie) {
-        this.char_movie = char_movie;
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
     }
 
-    public String getChar_role() {
-        return char_role;
+    public String getRolePlayed() {
+        return rolePlayed;
     }
 
-    public void setChar_role(String char_role) {
-        this.char_role = char_role;
+    public void setRolePlayed(String rolePlayed) {
+        this.rolePlayed = rolePlayed;
     }
 
-    public String getCharmovie_img() {
-        return Charmovie_img;
+    public String getMoviePoster() {
+        return moviePoster;
     }
 
-    public void setCharmovie_img(String charmovie_img) {
-        Charmovie_img = charmovie_img;
+    public void setMoviePoster(String moviePoster) {
+        this.moviePoster = moviePoster;
     }
-
 
 }
 

@@ -810,35 +810,19 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         movieRatingAudience = audienceRating
         movieRatingMetaScore = metaScoreRating
 
-        if (movieRatingImdb == "N/A") binding.viewRatings.layoutImdb.visibility = View.GONE else {
+        if (movieRatingImdb == "N/A") {
+            binding.viewRatings.layoutImdb.visibility = View.GONE
+        } else {
             binding.viewRatings.imdbRating.text = movieRatingImdb
-            binding.viewRatings.layoutTmdb.setOnClickListener {
-                val builder = CustomTabsIntent.Builder()
-                builder.setToolbarColor(
-                    ContextCompat.getColor(
-                        this@MovieDetailsActivity,
-                        R.color.imdbYellow
-                    )
-                )
-                val customTabsIntent = builder.build()
-                customTabsIntent.launchUrl(
-                    this@MovieDetailsActivity,
-                    Uri.parse(resources.getString(R.string.imdb_link_prefix) + movieImdbId)
-                )
+            binding.viewRatings.layoutImdb.setOnClickListener {
+                openCustomTabIntent(resources.getString(R.string.imdb_link_prefix) + movieImdbId,
+                R.color.imdbYellow)
             }
         }
 
-        if (movieRatingTomatoMeter == "N/A") binding.viewRatings.layoutTomato.visibility =
-            View.GONE else {
-
-            /* if (image.equals("certified"))
-                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.certified));
-            else if (image.equals("fresh"))
-                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.fresh));
-            else if (image.equals("rotten"))
-                tomatoRating_image.setImageDrawable(getResources().getDrawable(R.drawable.rotten));*/
-
-            // Image Logic Changed According to %age due to OMDB API limitations
+        if (movieRatingTomatoMeter == "N/A") {
+            binding.viewRatings.layoutTomato.visibility = View.GONE
+        } else {
             val tomatoMeterScore =
                 movieRatingTomatoMeter.substring(0, movieRatingTomatoMeter.length - 1).toInt()
             when {
@@ -863,15 +847,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
             binding.viewRatings.tomatoRating.text = movieRatingTomatoMeter
             binding.viewRatings.layoutTomato.setOnClickListener {
-                val builder = CustomTabsIntent.Builder()
-                builder.setToolbarColor(
-                    ContextCompat.getColor(
-                        this@MovieDetailsActivity,
-                        R.color.tomatoRed
-                    )
-                )
-                val customTabsIntent = builder.build()
-                customTabsIntent.launchUrl(this@MovieDetailsActivity, Uri.parse(rottenTomatoPage))
+                openCustomTabIntent(rottenTomatoPage.toString(), R.color.tomatoRed)
             }
         }
 
@@ -882,7 +858,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             ) else binding.viewRatings.flixterRatingImage.setImageDrawable(
                 ContextCompat.getDrawable(this, R.drawable.spilt)
             )
-
             binding.viewRatings.flixterRating.text = movieRatingAudience
         }
 
@@ -911,38 +886,27 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             binding.viewRatings.metaRatingView.text = movieRatingMetaScore
 
             binding.viewRatings.layoutMeta.setOnClickListener {
-                val builder = CustomTabsIntent.Builder()
-                builder.setToolbarColor(
-                    ContextCompat.getColor(
-                        this@MovieDetailsActivity,
-                        R.color.metaBlack
-                    )
-                )
-                val customTabsIntent = builder.build()
-                customTabsIntent.launchUrl(this@MovieDetailsActivity, Uri.parse(url))
+                openCustomTabIntent(url, R.color.metaBlack)
             }
         }
 
         if (movieRatingTmdb == "0") binding.viewRatings.layoutTmdb.visibility = View.GONE else {
             binding.viewRatings.tmdbRating.text = movieRatingTmdb
             binding.viewRatings.layoutTmdb.setOnClickListener {
-                val builder = CustomTabsIntent.Builder()
-                builder.setToolbarColor(
-                    ContextCompat.getColor(
-                        this@MovieDetailsActivity,
-                        R.color.tmdbGreen
-                    )
-                )
-                val customTabsIntent = builder.build()
-                customTabsIntent.launchUrl(
-                    this@MovieDetailsActivity,
-                    Uri.parse("https://www.themoviedb.org/movie/$movieId-$movieTitleHyphen")
-                )
+                openCustomTabIntent("https://www.themoviedb.org/movie/$movieId-$movieTitleHyphen",
+                        R.color.tmdbGreen)
             }
         }
     }
 
     fun setRatingGone() {
         binding.viewRatings.ratingBar.visibility = View.GONE
+    }
+
+    private fun openCustomTabIntent(url : String, color: Int) {
+        val builder = CustomTabsIntent.Builder()
+        builder.setToolbarColor(ContextCompat.getColor(this@MovieDetailsActivity,color))
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(url))
     }
 }

@@ -10,7 +10,7 @@ import android.content.Intent
 import android.view.MenuItem
 import android.view.View
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
-import tech.salroid.filmy.data_classes.CrewDetailsData
+import tech.salroid.filmy.data_classes.CrewMemberDetailsData
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import tech.salroid.filmy.databinding.ActivityFullCastBinding
@@ -38,15 +38,15 @@ class FullCrewActivity : AppCompatActivity(), CrewAdapter.ClickListener {
         supportActionBar?.title = intent.getStringExtra("toolbar_title")
 
         val par = MovieDetailsActivityParseWork(this, crewResult)
-        val crewList = par.parse_crew()
+        val crewList = par.parseCrewMembers()
         val fullCrewAdapter = CrewAdapter(this, crewList, false)
         fullCrewAdapter.setClickListener(this)
         binding.fullCastRecycler.adapter = fullCrewAdapter
     }
 
-    override fun itemClicked(setterGetter: CrewDetailsData, position: Int, view: View) {
+    override fun itemClicked(crewMember: CrewMemberDetailsData, position: Int, view: View) {
         val intent = Intent(this, CharacterDetailsActivity::class.java)
-        intent.putExtra("id", setterGetter.crewId)
+        intent.putExtra("id", crewMember.crewMemberId)
         val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
         val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)

@@ -8,9 +8,9 @@ import tech.salroid.filmy.R
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.content.Intent
 import android.view.MenuItem
-import tech.salroid.filmy.parser.CharacterDetailActivityParseWork
-import tech.salroid.filmy.data_classes.CharacterDetailsData
+import tech.salroid.filmy.data_classes.PersonMovieDetailsData
 import tech.salroid.filmy.databinding.ActivityFullMovieBinding
+import tech.salroid.filmy.parser.CharacterDetailsActivityParseWork
 
 class FullMovieActivity : AppCompatActivity(), CharacterDetailsActivityAdapter.ClickListener {
 
@@ -35,17 +35,17 @@ class FullMovieActivity : AppCompatActivity(), CharacterDetailsActivityAdapter.C
         supportActionBar?.title = intent?.getStringExtra("toolbar_title")
 
 
-        val par = CharacterDetailActivityParseWork(this, movieResult)
-        val charList = par.char_parse_cast()
-        val charAdapter = CharacterDetailsActivityAdapter(this, charList, false)
-        charAdapter.setClickListener(this)
-        binding.fullMovieRecycler.setAdapter(charAdapter)
+        val par = CharacterDetailsActivityParseWork(this, movieResult.toString())
+        val moviesList = par.parsePersonMovies()
+        val movieAdapter = CharacterDetailsActivityAdapter(this, moviesList, false)
+        movieAdapter.setClickListener(this)
+        binding.fullMovieRecycler.setAdapter(movieAdapter)
     }
 
-    override fun itemClicked(setterGetterChar: CharacterDetailsData, position: Int) {
+    override fun itemClicked(movie: PersonMovieDetailsData, position: Int) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
-        intent.putExtra("id", setterGetterChar.char_id)
-        intent.putExtra("title", setterGetterChar.char_movie)
+        intent.putExtra("id", movie.movieId)
+        intent.putExtra("title", movie.movieTitle)
         intent.putExtra("network_applicable", true)
         intent.putExtra("activity", false)
         startActivity(intent)

@@ -30,7 +30,7 @@ import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.FullCastActivity;
 import tech.salroid.filmy.custom_adapter.CastAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
-import tech.salroid.filmy.data_classes.CastDetailsData;
+import tech.salroid.filmy.data_classes.CastMemberDetailsData;
 import tech.salroid.filmy.networking.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
@@ -117,7 +117,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     private void parseCastOutput(String castResult) {
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), castResult);
-        List<CastDetailsData> castList = par.parse_cast();
+        List<CastMemberDetailsData> castList = par.parseCastMembers();
         CastAdapter castAdapter = new CastAdapter(getActivity(), castList, true);
         castAdapter.setClickListener(this);
         cast_recycler.setAdapter(castAdapter);
@@ -150,7 +150,7 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     }
 
     @Override
-    public void itemClicked(CastDetailsData setterGetter, int position, View view) {
+    public void itemClicked(CastMemberDetailsData setterGetter, int position, View view) {
         Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCastId());
 

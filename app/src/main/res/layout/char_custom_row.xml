@@ -29,7 +29,7 @@
         android:textAppearance="?android:textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/movie_description"
+        android:id="@+id/movie_role_played"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_name"

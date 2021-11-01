@@ -232,6 +232,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             castFragment.getCastFromNetwork(movieIdFinal)
             similarFragment.getSimilarFromNetwork(movieIdFinal)
 
+
             getRating(this, movieImdbId)
 
             // Poster and Banner
@@ -813,7 +814,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         movieRatingMetaScore = metaScoreRating
 
         if (movieRatingImdb == "N/A") binding.viewRatings.layoutImdb.visibility = View.GONE else {
-            binding.viewRatings.tmdbRating.text = movieRatingImdb
+            binding.viewRatings.imdbRating.text = movieRatingImdb
             binding.viewRatings.layoutTmdb.setOnClickListener {
                 val builder = CustomTabsIntent.Builder()
                 builder.setToolbarColor(

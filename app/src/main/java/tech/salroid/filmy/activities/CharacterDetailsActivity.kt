@@ -118,7 +118,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
             val personMovieDetailRequest = JsonObjectRequest(baseUrlPeopleMovies, null,
                 { response ->
                     movieJson = response.toString()
-                    castParseOutput(response.toString())
+                    parseCastOutput(response.toString())
                 }
             ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
             requestQueue.add(personDetailRequest)
@@ -184,7 +184,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
         }
     }
 
-    private fun castParseOutput(cast_result: String) {
+    private fun parseCastOutput(cast_result: String) {
         val par = CharacterDetailActivityParseWork(this, cast_result)
         val charList = par.char_parse_cast()
         val charAdapter = CharacterDetailsActivityAdapter(this, charList, true)

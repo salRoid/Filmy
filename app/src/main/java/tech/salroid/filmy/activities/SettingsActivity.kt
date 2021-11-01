@@ -60,7 +60,7 @@ class SettingsActivity : AppCompatActivity() {
             addPreferencesFromResource(R.xml.preference)
 
             val myPreference = PreferenceManager.getDefaultSharedPreferences(activity).edit()
-            imagePref = findPreference("imagequality") as SwitchPreference
+            imagePref = findPreference("image_quality") as SwitchPreference
             imagePref?.onPreferenceChangeListener = OnPreferenceChangeListener { preference, o ->
                 val quality: String
                 val switchPreference = preference as SwitchPreference

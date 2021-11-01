@@ -18,7 +18,6 @@ internal object Rating {
 
     @JvmStatic
     fun getRating(context: Context, movie_id_final: String) {
-
         val volleySingleton = VolleySingleton.getInstance()
         val requestQueue = volleySingleton.requestQueue
         val baseRatingUrl =

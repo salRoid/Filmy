@@ -39,11 +39,12 @@ class CharacterDetailsActivity : AppCompatActivity(),
     private lateinit var binding: ActivityDetailedCastBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityDetailedCastBinding.inflate(layoutInflater)
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         nightMode = sp.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
+
         super.onCreate(savedInstanceState)
+        binding = ActivityDetailedCastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)

@@ -12,7 +12,6 @@ import tech.salroid.filmy.fragment.CrewFragment
 import tech.salroid.filmy.fragment.SimilarFragment
 import android.os.Bundle
 import android.preference.PreferenceManager
-import butterknife.ButterKnife
 import tech.salroid.filmy.utility.FilmyUtility
 import android.content.Intent
 import android.database.Cursor
@@ -89,19 +88,14 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
     private lateinit var binding: ActivityDetailedBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityDetailedBinding.inflate(layoutInflater)
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         nightMode = sp.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.DetailsActivityThemeDark) else setTheme(R.style.DetailsActivityTheme)
-
+        binding = ActivityDetailedBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        ButterKnife.bind(this)
 
-        if (!nightMode) allThemeLogic() else {
-            nightModeLogic()
-            binding.castDivider.visibility = View.GONE
-        }
+        if (!nightMode) allThemeLogic() else nightModeLogic()
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -156,16 +150,19 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         getStuffFromNetwork.setDataFetchedListener(this)
 
         if (networkApplicable) getStuffFromNetwork.getMovieDetailsFromNetwork(movieId)
+
         if (databaseApplicable) supportLoaderManager.initLoader(
             MovieLoaders.MOVIE_DETAILS_LOADER,
             null,
             this
         )
+
         if (savedDatabaseApplicable) supportLoaderManager.initLoader(
             MovieLoaders.SAVED_MOVIE_DETAILS_LOADER,
             null,
             this
         )
+
         if (!databaseApplicable && !savedDatabaseApplicable) {
             binding.main.visibility = View.INVISIBLE
             binding.breathingProgress.visibility = View.VISIBLE
@@ -263,10 +260,12 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 var mainTrailer = true
 
                 for (i in 0 until youTubeArray.length()) {
+
                     val singleTrailer = youTubeArray.getJSONObject(i)
                     trailerArray[i] = singleTrailer.getString("source")
                     trailerArrayName[i] = singleTrailer.getString("name")
                     val type = singleTrailer.getString("type")
+
                     if (mainTrailer) {
                         if (type == "Trailer") {
                             trailor = singleTrailer.getString("source")
@@ -374,10 +373,10 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     ) {
 
                         binding.backdrop.setImageBitmap(resource)
-                        Palette.from(resource).generate { pallete ->
+                        Palette.from(resource).generate { palette ->
 
-                            val swatch = pallete?.vibrantSwatch
-                            val trailerSwatch = pallete?.darkVibrantSwatch
+                            val swatch = palette?.vibrantSwatch
+                            val trailerSwatch = palette?.darkVibrantSwatch
 
                             if (swatch != null) {
                                 binding.header.setBackgroundColor(swatch.rgb)
@@ -432,13 +431,11 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                         FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
                         MovieProjection.GET_MOVIE_COLUMNS, null, null, null
                     )
-
                     1 -> cursorLoader = CursorLoader(
                         this,
                         FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movieId),
                         MovieProjection.GET_MOVIE_COLUMNS, null, null, null
                     )
-
                     2 -> cursorLoader = CursorLoader(
                         this,
                         FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movieId),
@@ -536,10 +533,10 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                             transition: Transition<in Bitmap?>?
                         ) {
                             binding.backdrop.setImageBitmap(resource)
-                            Palette.from(resource).generate { pallete -> // Use generated instance
+                            Palette.from(resource).generate { palette -> // Use generated instance
 
-                                val swatch = pallete?.vibrantSwatch
-                                val trailerSwatch = pallete?.darkVibrantSwatch
+                                val swatch = palette?.vibrantSwatch
+                                val trailerSwatch = palette?.darkVibrantSwatch
 
                                 if (swatch != null) {
                                     binding.header.setBackgroundColor(swatch.rgb)

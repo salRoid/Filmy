@@ -17,8 +17,8 @@ class FullScreenImage : AppCompatActivity() {
     private lateinit var binding: ActivityFullScreenImageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityFullScreenImageBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityFullScreenImageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.breathingProgress.visibility = View.VISIBLE

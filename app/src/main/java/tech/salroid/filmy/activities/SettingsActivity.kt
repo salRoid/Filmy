@@ -22,12 +22,12 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        val sp = PreferenceManager.getDefaultSharedPreferences(this)
 
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
         nightMode = sp.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
 
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 

@@ -30,12 +30,11 @@ class CollectionsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCollectionsBinding.inflate(layoutInflater)
-
         val pref = PreferenceManager.getDefaultSharedPreferences(this)
         val nightMode = pref.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
 
+        binding = ActivityCollectionsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ButterKnife.bind(this)
         setSupportActionBar(binding.toolbar)

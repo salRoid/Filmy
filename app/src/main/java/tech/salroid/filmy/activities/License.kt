@@ -18,13 +18,13 @@ class License : AppCompatActivity() {
     private lateinit var binding: ActivityLicenseBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityLicenseBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        val sp = PreferenceManager.getDefaultSharedPreferences(this)
 
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
         nightMode = sp.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
 
+        binding = ActivityLicenseBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 

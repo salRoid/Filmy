@@ -15,27 +15,34 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:resizeableActivity="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Base"
         android:usesCleartextTraffic="true"
-        android:resizeableActivity="true"
         tools:targetApi="n">
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <activity
             android:name=".FilmyIntro"
             android:label=" "
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/SplashTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data android:name="android.app.shortcuts"
+
+            <meta-data
+                android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -47,10 +54,12 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.MovieDetailsActivity"
             android:label=" "
             android:theme="@style/DetailsActivityTheme" />
+
         <activity
             android:name=".activities.CharacterDetailsActivity"
             android:label="@string/details"
@@ -66,18 +75,22 @@
             android:name=".activities.FullCastActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
+
         <activity
             android:name=".activities.FullCrewActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
+
         <activity
             android:name=".activities.FullMovieActivity"
             android:label="@string/title_activity_full_movie"
             android:theme="@style/AppTheme.Base" />
+
         <activity
             android:name=".activities.FullScreenImage"
             android:label=" "
             android:theme="@style/FullScreenTheme" />
+
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -101,12 +114,12 @@
         </receiver>
 
         <activity android:name=".activities.CollectionsActivity" />
+
         <activity android:name=".activities.LoginActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
 
     </application>
 

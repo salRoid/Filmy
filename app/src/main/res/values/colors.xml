@@ -5,7 +5,6 @@
     <color name="primaryColorDark">#BDBDBD</color>
     <color name="primaryColorLight">#F0F0F0</color>
 
-
     <color name="colorAccent">#2196F3</color>
     <color name="colorMore">#2196F3</color>
 
@@ -24,4 +23,5 @@
     <color name="tomatoRed">#F44336</color>
     <color name="metaBlack">#212121</color>
     <color name="tmdbGreen">#4CAF50</color>
+
 </resources>

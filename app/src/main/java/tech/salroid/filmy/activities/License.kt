@@ -18,13 +18,13 @@ class License : AppCompatActivity() {
     private lateinit var binding: ActivityLicenseBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityLicenseBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        val sp = PreferenceManager.getDefaultSharedPreferences(this)
 
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
         nightMode = sp.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
 
+        binding = ActivityLicenseBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
@@ -52,13 +52,20 @@ class License : AppCompatActivity() {
     @TargetApi(Build.VERSION_CODES.N)
     private fun v24Setup() {
         binding.glide.text = Html.fromHtml(getString(R.string.glide), Html.FROM_HTML_MODE_LEGACY)
-        binding.materialsearcview.text = Html.fromHtml(getString(R.string.materialsearch), Html.FROM_HTML_MODE_LEGACY)
-        binding.circularimageview.text = Html.fromHtml(getString(R.string.circularimageview), Html.FROM_HTML_MODE_LEGACY)
-        binding.tatarka.text = Html.fromHtml(getString(R.string.tatarka), Html.FROM_HTML_MODE_LEGACY)
-        binding.error.text = Html.fromHtml(getString(R.string.errorview), Html.FROM_HTML_MODE_LEGACY)
-        binding.appintro.text = Html.fromHtml(getString(R.string.appintro), Html.FROM_HTML_MODE_LEGACY)
-        binding.butterknife.text = Html.fromHtml(getString(R.string.butterknife), Html.FROM_HTML_MODE_LEGACY)
-        binding.crashlytics.text = Html.fromHtml(getString(R.string.crashlytics), Html.FROM_HTML_MODE_LEGACY)
+        binding.materialsearcview.text =
+            Html.fromHtml(getString(R.string.materialsearch), Html.FROM_HTML_MODE_LEGACY)
+        binding.circularimageview.text =
+            Html.fromHtml(getString(R.string.circularimageview), Html.FROM_HTML_MODE_LEGACY)
+        binding.tatarka.text =
+            Html.fromHtml(getString(R.string.tatarka), Html.FROM_HTML_MODE_LEGACY)
+        binding.error.text =
+            Html.fromHtml(getString(R.string.errorview), Html.FROM_HTML_MODE_LEGACY)
+        binding.appintro.text =
+            Html.fromHtml(getString(R.string.appintro), Html.FROM_HTML_MODE_LEGACY)
+        binding.butterknife.text =
+            Html.fromHtml(getString(R.string.butterknife), Html.FROM_HTML_MODE_LEGACY)
+        binding.crashlytics.text =
+            Html.fromHtml(getString(R.string.crashlytics), Html.FROM_HTML_MODE_LEGACY)
     }
 
     private fun allThemeLogic() {

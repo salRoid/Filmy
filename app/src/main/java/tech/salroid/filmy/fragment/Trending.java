@@ -207,9 +207,7 @@ public class Trending extends Fragment implements MainActivityAdapter.ClickListe
         intent.putExtra("network_applicable", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
-
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
-            getActivity().overridePendingTransition(0, 0);
+        getActivity().overridePendingTransition(0, 0);
     }
 
 

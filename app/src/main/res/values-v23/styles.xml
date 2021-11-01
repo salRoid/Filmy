@@ -8,7 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="divider">@color/dividerColor</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:colorBackground">#E0E0E0</item>
 
     </style>
 

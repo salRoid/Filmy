@@ -35,7 +35,7 @@ import tech.salroid.filmy.activities.MovieDetailsActivity;
 import tech.salroid.filmy.custom_adapter.SearchResultAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.SearchData;
-import tech.salroid.filmy.network_stuff.VolleySingleton;
+import tech.salroid.filmy.networking.VolleySingleton;
 import tech.salroid.filmy.parser.SearchResultParseWork;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;

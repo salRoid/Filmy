@@ -40,7 +40,6 @@
     </style>
 
     <style name="DetailsActivityThemeDark" parent="Theme.AppCompat.NoActionBar">
-
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="colorPrimary">@color/colorDarkThemePrimary</item>
         <item name="colorPrimaryDark">@color/colorDarkThemePrimaryDark</item>

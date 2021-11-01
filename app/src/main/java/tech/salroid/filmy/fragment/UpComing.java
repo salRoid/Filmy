@@ -147,7 +147,6 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
         int id_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID);
         int title_index = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE);
 
-
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra("title", cursor.getString(title_index));
         intent.putExtra("activity", true);
@@ -156,10 +155,7 @@ public class UpComing extends Fragment implements MainActivityAdapter.ClickListe
         intent.putExtra("network_applicable", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
-
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
-            getActivity().overridePendingTransition(0,0);
-
+        getActivity().overridePendingTransition(0,0);
     }
 
     @NonNull

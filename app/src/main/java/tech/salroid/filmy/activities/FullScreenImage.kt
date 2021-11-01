@@ -17,8 +17,8 @@ class FullScreenImage : AppCompatActivity() {
     private lateinit var binding: ActivityFullScreenImageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityFullScreenImageBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityFullScreenImageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.breathingProgress.visibility = View.VISIBLE
@@ -26,15 +26,18 @@ class FullScreenImage : AppCompatActivity() {
 
         try {
             Glide.with(this)
-                    .asBitmap()
-                    .load(bannerImageUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(object : SimpleTarget<Bitmap?>() {
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap?>?) {
-                            binding.ivCentered.setImageBitmap(resource)
-                            binding.breathingProgress.visibility = View.INVISIBLE
-                        }
-                    })
+                .asBitmap()
+                .load(bannerImageUrl)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(object : SimpleTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap?>?
+                    ) {
+                        binding.ivCentered.setImageBitmap(resource)
+                        binding.breathingProgress.visibility = View.INVISIBLE
+                    }
+                })
         } catch (e: Exception) {
         }
     }

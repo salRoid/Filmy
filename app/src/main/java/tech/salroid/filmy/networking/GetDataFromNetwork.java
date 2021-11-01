@@ -1,4 +1,4 @@
-package tech.salroid.filmy.network_stuff;
+package tech.salroid.filmy.networking;
 
 import android.util.Log;
 

@@ -1,7 +1,6 @@
 package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,28 +31,10 @@ import tech.salroid.filmy.activities.FullCastActivity;
 import tech.salroid.filmy.custom_adapter.CastAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
 import tech.salroid.filmy.data_classes.CastDetailsData;
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
+import tech.salroid.filmy.networking.TmdbVolleySingleton;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
-/*
- * Filmy Application for Android
- * Copyright (c) 2016 Ramankit Singh (http://github.com/webianks).
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 
 public class CastFragment extends Fragment implements View.OnClickListener, CastAdapter.ClickListener {
-
 
     @BindView(R.id.more)
     TextView more;
@@ -113,8 +94,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
 
     public void getCastFromNetwork(String movieId) {
 
-        String TMBD_API_KEY = BuildConfig.TMDB_API_KEY;
-        final String BASE_MOVIE_CAST_DETAILS = "http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=" + TMBD_API_KEY;
+        String TMDB_API_KEY = BuildConfig.TMDB_API_KEY;
+        final String BASE_MOVIE_CAST_DETAILS = "http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=" + TMDB_API_KEY;
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(BASE_MOVIE_CAST_DETAILS, null,
                 response -> {
                     jsonCast = response.toString();
@@ -123,7 +104,6 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
                     if (gotCrewListener != null) gotCrewListener.gotCrew(response.toString());
 
                 }, error -> {
-
                     Log.e("webi", "Volley Error: " + error.getCause());
                     breathingProgress.setVisibility(View.GONE);
                 }
@@ -138,9 +118,9 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), castResult);
         List<CastDetailsData> castList = par.parse_cast();
-        CastAdapter cast_adapter = new CastAdapter(getActivity(), castList, true);
-        cast_adapter.setClickListener(this);
-        cast_recycler.setAdapter(cast_adapter);
+        CastAdapter castAdapter = new CastAdapter(getActivity(), castList, true);
+        castAdapter.setClickListener(this);
+        cast_recycler.setAdapter(castAdapter);
 
         if (castList.size() > 4) {
             more.setVisibility(View.VISIBLE);
@@ -160,7 +140,6 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     public void onClick(View view) {
 
         if (view.getId() == R.id.more) {
-            Log.d("webi", "" + movieTitle);
             if (jsonCast != null && movieTitle != null) {
                 Intent intent = new Intent(getActivity(), FullCastActivity.class);
                 intent.putExtra("cast_json", jsonCast);
@@ -175,16 +154,11 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
         Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCastId());
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            Pair<View, String> p1 = Pair.create(view.findViewById(R.id.cast_poster), "profile");
-            Pair<View, String> p2 = Pair.create(view.findViewById(R.id.cast_name), "name");
+        Pair<View, String> p1 = Pair.create(view.findViewById(R.id.cast_poster), "profile");
+        Pair<View, String> p2 = Pair.create(view.findViewById(R.id.cast_name), "name");
 
-            ActivityOptionsCompat options = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation(getActivity(), p1, p2);
-            startActivity(intent, options.toBundle());
-        } else {
-            startActivity(intent);
-        }
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), p1, p2);
+        startActivity(intent, options.toBundle());
     }
 
     public interface GotCrewListener {

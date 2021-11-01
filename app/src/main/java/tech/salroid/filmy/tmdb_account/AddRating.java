@@ -25,7 +25,7 @@ import java.util.Random;
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.R;
 import tech.salroid.filmy.customs.CustomToast;
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton;
+import tech.salroid.filmy.networking.TmdbVolleySingleton;
 
 /*
  * Filmy Application for Android

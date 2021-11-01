@@ -1,7 +1,7 @@
 package tech.salroid.filmy.activities
 
 import androidx.appcompat.app.AppCompatActivity
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton
+import tech.salroid.filmy.networking.TmdbVolleySingleton
 import android.os.Bundle
 import android.preference.PreferenceManager
 import tech.salroid.filmy.R
@@ -19,7 +19,6 @@ import android.util.Log
 import android.view.MenuItem
 import org.json.JSONException
 import tech.salroid.filmy.BuildConfig
-import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -34,11 +33,12 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
 
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         nightMode = sp.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
+
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
@@ -77,7 +77,12 @@ class LoginActivity : AppCompatActivity() {
         val apiKey = BuildConfig.TMDB_API_KEY
         val baseUrl = "https://api.themoviedb.org/3/authentication/token/new?api_key=$apiKey"
         val jsonObjectRequest = JsonObjectRequest(baseUrl, null,
-                { response -> parseOutput(response) }) { error -> Log.e("webi", "Volley Error: " + error.cause) }
+            { response -> parseOutput(response) }) { error ->
+            Log.e(
+                "webi",
+                "Volley Error: " + error.cause
+            )
+        }
         tmdbrequestQueue.add(jsonObjectRequest)
     }
 
@@ -109,14 +114,21 @@ class LoginActivity : AppCompatActivity() {
         super.onResume()
         if (tokenization && requestToken != null) {
             val apiKey = BuildConfig.TMDB_API_KEY
-            val sessionQuery = "https://api.themoviedb.org/3/authentication/session/new?api_key=$apiKey&request_token=$requestToken"
+            val sessionQuery =
+                "https://api.themoviedb.org/3/authentication/session/new?api_key=$apiKey&request_token=$requestToken"
             querySession(sessionQuery)
         }
     }
 
     private fun querySession(session_query: String) {
-        val jsonObjectRequest = JsonObjectRequest(session_query, null,
-                { response -> parseSession(response) }) { error -> Log.e("webi", "Volley Error: " + error.cause) }
+        val jsonObjectRequest = JsonObjectRequest(
+            session_query,
+            null, { response -> parseSession(response) }) { error ->
+            Log.e(
+                "webi",
+                "Volley Error: " + error.cause
+            )
+        }
         tmdbrequestQueue.add(jsonObjectRequest)
     }
 
@@ -125,13 +137,13 @@ class LoginActivity : AppCompatActivity() {
             val status = response.getBoolean("success")
             if (status) {
                 val sessionId = response.getString("session_id")
-                progressDialog!!.dismiss()
+                progressDialog?.dismiss()
                 val resultIntent = Intent()
                 resultIntent.putExtra("session_id", sessionId)
                 setResult(RESULT_OK, resultIntent)
                 finish()
             } else {
-                progressDialog!!.dismiss()
+                progressDialog?.dismiss()
                 CustomToast.show(this, "Failed to login", false)
             }
         } catch (e: JSONException) {

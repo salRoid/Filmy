@@ -23,11 +23,11 @@ class AboutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDevelopersBinding.inflate(layoutInflater)
 
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         nightMode = sp.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
+        binding = ActivityDevelopersBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
@@ -41,10 +41,14 @@ class AboutActivity : AppCompatActivity() {
     }
 
     private fun setBannerAndProfile() {
-        Glide.with(this).load(getString(R.string.profile_webianks)).into((findViewById<View>(R.id.profile_webianks) as ImageView))
-        Glide.with(this).load(getString(R.string.profile_salroid)).into((findViewById<View>(R.id.profile_salroid) as ImageView))
-        Glide.with(this).load(getString(R.string.banner_webianks)).into((findViewById<View>(R.id.banner_webianks) as ImageView))
-        Glide.with(this).load(getString(R.string.banner_salroid)).into((findViewById<View>(R.id.banner_salroid) as ImageView))
+        Glide.with(this).load(getString(R.string.profile_webianks))
+            .into((findViewById<View>(R.id.profile_webianks) as ImageView))
+        Glide.with(this).load(getString(R.string.profile_salroid))
+            .into((findViewById<View>(R.id.profile_salroid) as ImageView))
+        Glide.with(this).load(getString(R.string.banner_webianks))
+            .into((findViewById<View>(R.id.banner_webianks) as ImageView))
+        Glide.with(this).load(getString(R.string.banner_salroid))
+            .into((findViewById<View>(R.id.banner_salroid) as ImageView))
     }
 
     private fun allThemeLogic() {

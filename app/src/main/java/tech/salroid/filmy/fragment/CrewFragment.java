@@ -87,20 +87,15 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
         return view;
     }
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle savedBundle = getArguments();
-
         if (savedBundle != null) {
-
             movieId = savedBundle.getString("movie_id");
             movieTitle = savedBundle.getString("movie_title");
-
         }
-
     }
 
     public void parseCrewOutput(String crewResult) {
@@ -109,7 +104,6 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
         List<CrewDetailsData> crewList = par.parse_crew();
 
         jsonCrew = crewResult;
-
         CrewAdapter crewAdapter = new CrewAdapter(getActivity(), crewList, true);
         crewAdapter.setClickListener(this);
         crew_recycler.setAdapter(crewAdapter);
@@ -129,11 +123,9 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
         relativeLayout.setMinimumHeight(0);
     }
 
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.crew_more) {
-            Log.d("webi", "" + movieTitle);
             if (jsonCrew != null && movieTitle != null) {
                 Intent intent = new Intent(getActivity(), FullCrewActivity.class);
                 intent.putExtra("crew_json", jsonCrew);
@@ -149,14 +141,10 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
         Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
         intent.putExtra("id", setterGetter.getCrewId());
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
-            Pair<View, String> p2 = Pair.create(view.findViewById(R.id.crew_name), "name");
-            ActivityOptionsCompat options = ActivityOptionsCompat.
+        Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
+        Pair<View, String> p2 = Pair.create(view.findViewById(R.id.crew_name), "name");
+        ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(getActivity(), p1, p2);
-            startActivity(intent, options.toBundle());
-        } else {
-            startActivity(intent);
-        }
+        startActivity(intent, options.toBundle());
     }
 }

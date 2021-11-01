@@ -22,13 +22,12 @@ class FullCastActivity : AppCompatActivity(), CastAdapter.ClickListener {
     private lateinit var binding: ActivityFullCastBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityFullCastBinding.inflate(layoutInflater)
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
-
         nightMode = sp.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
 
         super.onCreate(savedInstanceState)
+        binding = ActivityFullCastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)

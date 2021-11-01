@@ -23,11 +23,12 @@ import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter
 import tech.salroid.filmy.data_classes.CharacterDetailsData
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.fragment.FullReadFragment
-import tech.salroid.filmy.network_stuff.TmdbVolleySingleton
+import tech.salroid.filmy.networking.TmdbVolleySingleton
 import tech.salroid.filmy.parser.CharacterDetailActivityParseWork
 import java.lang.Exception
 
-class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAdapter.ClickListener {
+class CharacterDetailsActivity : AppCompatActivity(),
+    CharacterDetailsActivityAdapter.ClickListener {
 
     private var characterId: String? = null
     private var characterTitle: String? = null
@@ -38,11 +39,12 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
     private lateinit var binding: ActivityDetailedCastBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityDetailedCastBinding.inflate(layoutInflater)
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         nightMode = sp.getBoolean("dark", false)
         if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
+
         super.onCreate(savedInstanceState)
+        binding = ActivityDetailedCastBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
@@ -74,7 +76,7 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
                 args.putString("desc", characterBio)
                 fullReadFragment!!.arguments = args
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
+                    .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
             }
         }
         val intent = intent
@@ -101,17 +103,24 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
             val requestQueue = volleySingleton.requestQueue
             val apiKey = BuildConfig.TMDB_API_KEY
 
-            val baseUrlPersonDetail = "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
-            val baseUrlPeopleMovies = "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
+            val baseUrlPersonDetail =
+                "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
+            val baseUrlPeopleMovies =
+                "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
 
-            val personDetailRequest = JsonObjectRequest(baseUrlPersonDetail, null,
-                    { response -> personDetailsParsing(response.toString()) })
-            { error -> Log.e("webi", "Volley Error: " + error.cause) }
+            val personDetailRequest = JsonObjectRequest(
+                baseUrlPersonDetail,
+                null, { response ->
+                    parsePersonDetails(response.toString())
+                }) { error ->
+                Log.e("webi", "Volley Error: " + error.cause)
+            }
+
             val personMovieDetailRequest = JsonObjectRequest(baseUrlPeopleMovies, null,
-                    { response ->
-                        movieJson = response.toString()
-                        castParseOutput(response.toString())
-                    }
+                { response ->
+                    movieJson = response.toString()
+                    parsePersonMovies(response.toString())
+                }
             ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
             requestQueue.add(personDetailRequest)
             requestQueue.add(personMovieDetailRequest)
@@ -126,11 +135,12 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
         startActivity(intent)
     }
 
-    private fun personDetailsParsing(detailsResult: String) {
+    private fun parsePersonDetails(detailsResult: String) {
         try {
             val jsonObject = JSONObject(detailsResult)
             val dataName = jsonObject.getString("name")
-            val dataProfile = "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
+            val dataProfile =
+                "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
             val dataOverview = jsonObject.getString("biography")
             val dataBirthday = jsonObject.getString("birthday")
             val dataBirthPlace = jsonObject.getString("place_of_birth")
@@ -157,30 +167,30 @@ class CharacterDetailsActivity : AppCompatActivity(), CharacterDetailsActivityAd
             } else {
                 if (Build.VERSION.SDK_INT >= 24) {
                     binding.overview.text = Html.fromHtml(dataOverview, Html.FROM_HTML_MODE_LEGACY)
-                } else {
-                    binding.overview.text = Html.fromHtml(dataOverview)
                 }
             }
 
             try {
                 Glide.with(this)
-                        .load(dataProfile)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .fitCenter().into(binding.displayProfile)
-            } catch (e: Exception) { }
+                    .load(dataProfile)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter().into(binding.displayProfile)
+            } catch (e: Exception) {
+            }
 
         } catch (e: JSONException) {
             e.printStackTrace()
         }
     }
 
-    private fun castParseOutput(cast_result: String) {
+    private fun parsePersonMovies(cast_result: String) {
         val par = CharacterDetailActivityParseWork(this, cast_result)
         val charList = par.char_parse_cast()
         val charAdapter = CharacterDetailsActivityAdapter(this, charList, true)
         charAdapter.setClickListener(this)
         binding.characterMovies.adapter = charAdapter
-        if (charList.size > 4) binding.more.visibility = View.VISIBLE else binding.more.visibility = View.INVISIBLE
+        if (charList.size > 4) binding.more.visibility = View.VISIBLE else binding.more.visibility =
+            View.INVISIBLE
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

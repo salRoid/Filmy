@@ -28,7 +28,6 @@ import android.graphics.Color
 import androidx.palette.graphics.Palette
 import android.graphics.PorterDuff
 import android.net.Uri
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -375,12 +374,9 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     ) {
 
                         binding.backdrop.setImageBitmap(resource)
-                        Log.d("webi", "here");
-
                         Palette.from(resource).generate { pallete ->
 
                             val swatch = pallete?.vibrantSwatch
-                            Log.d("webi", swatch.toString());
                             val trailerSwatch = pallete?.darkVibrantSwatch
 
                             if (swatch != null) {

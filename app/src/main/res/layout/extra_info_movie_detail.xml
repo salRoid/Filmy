@@ -22,7 +22,7 @@
             android:fontFamily="@font/circularstd_book"
             android:text="@string/runtime"
             android:textSize="16sp"
-            app:drawableStartCompat="@drawable/twotone_access_time_24" />
+            android:drawableStart="@drawable/twotone_access_time_24" />
 
         <TextView
             android:id="@+id/detail_runtime"
@@ -45,7 +45,7 @@
             android:fontFamily="@font/circularstd_book"
             android:text="@string/genre"
             android:textSize="16sp"
-            app:drawableStartCompat="@drawable/twotone_movie_24" />
+            android:drawableStart="@drawable/twotone_movie_24" />
 
         <TextView
             android:id="@+id/detail_certification"
@@ -71,7 +71,7 @@
             android:fontFamily="@font/circularstd_book"
             android:text="@string/language"
             android:textSize="16sp"
-            app:drawableStartCompat="@drawable/twotone_language_24" />
+            android:drawableStart="@drawable/twotone_language_24" />
 
         <TextView
             android:id="@+id/detail_language"
@@ -95,7 +95,7 @@
             android:fontFamily="@font/circularstd_book"
             android:text="@string/release_date"
             android:textSize="16sp"
-            app:drawableStartCompat="@drawable/twotone_calendar_today_24" />
+            android:drawableStart="@drawable/twotone_calendar_today_24" />
 
         <TextView
             android:id="@+id/detail_released"

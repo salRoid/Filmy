@@ -110,7 +110,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
             val personDetailRequest = JsonObjectRequest(
                 baseUrlPersonDetail,
                 null, { response ->
-                    personDetailsParsing(response.toString())
+                    parsePersonDetails(response.toString())
                 }) { error ->
                 Log.e("webi", "Volley Error: " + error.cause)
             }
@@ -118,7 +118,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
             val personMovieDetailRequest = JsonObjectRequest(baseUrlPeopleMovies, null,
                 { response ->
                     movieJson = response.toString()
-                    parseCastOutput(response.toString())
+                    parsePersonMovies(response.toString())
                 }
             ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
             requestQueue.add(personDetailRequest)
@@ -134,7 +134,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
         startActivity(intent)
     }
 
-    private fun personDetailsParsing(detailsResult: String) {
+    private fun parsePersonDetails(detailsResult: String) {
         try {
             val jsonObject = JSONObject(detailsResult)
             val dataName = jsonObject.getString("name")
@@ -166,8 +166,6 @@ class CharacterDetailsActivity : AppCompatActivity(),
             } else {
                 if (Build.VERSION.SDK_INT >= 24) {
                     binding.overview.text = Html.fromHtml(dataOverview, Html.FROM_HTML_MODE_LEGACY)
-                } else {
-                    binding.overview.text = Html.fromHtml(dataOverview)
                 }
             }
 
@@ -184,7 +182,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
         }
     }
 
-    private fun parseCastOutput(cast_result: String) {
+    private fun parsePersonMovies(cast_result: String) {
         val par = CharacterDetailActivityParseWork(this, cast_result)
         val charList = par.char_parse_cast()
         val charAdapter = CharacterDetailsActivityAdapter(this, charList, true)

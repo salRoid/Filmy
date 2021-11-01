@@ -94,8 +94,8 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
 
     public void getCastFromNetwork(String movieId) {
 
-        String TMBD_API_KEY = BuildConfig.TMDB_API_KEY;
-        final String BASE_MOVIE_CAST_DETAILS = "http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=" + TMBD_API_KEY;
+        String TMDB_API_KEY = BuildConfig.TMDB_API_KEY;
+        final String BASE_MOVIE_CAST_DETAILS = "http://api.themoviedb.org/3/movie/" + movieId + "/casts?api_key=" + TMDB_API_KEY;
         JsonObjectRequest jsonObjectRequestForMovieCastDetails = new JsonObjectRequest(BASE_MOVIE_CAST_DETAILS, null,
                 response -> {
                     jsonCast = response.toString();
@@ -104,7 +104,6 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
                     if (gotCrewListener != null) gotCrewListener.gotCrew(response.toString());
 
                 }, error -> {
-
                     Log.e("webi", "Volley Error: " + error.getCause());
                     breathingProgress.setVisibility(View.GONE);
                 }
@@ -119,9 +118,9 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), castResult);
         List<CastDetailsData> castList = par.parse_cast();
-        CastAdapter cast_adapter = new CastAdapter(getActivity(), castList, true);
-        cast_adapter.setClickListener(this);
-        cast_recycler.setAdapter(cast_adapter);
+        CastAdapter castAdapter = new CastAdapter(getActivity(), castList, true);
+        castAdapter.setClickListener(this);
+        cast_recycler.setAdapter(castAdapter);
 
         if (castList.size() > 4) {
             more.setVisibility(View.VISIBLE);
@@ -141,7 +140,6 @@ public class CastFragment extends Fragment implements View.OnClickListener, Cast
     public void onClick(View view) {
 
         if (view.getId() == R.id.more) {
-            Log.d("webi", "" + movieTitle);
             if (jsonCast != null && movieTitle != null) {
                 Intent intent = new Intent(getActivity(), FullCastActivity.class);
                 intent.putExtra("cast_json", jsonCast);

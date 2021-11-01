@@ -191,8 +191,7 @@ public class InTheaters extends Fragment implements LoaderManager.LoaderCallback
         intent.putExtra("network_applicable", true);
         intent.putExtra("id", cursor.getString(id_index));
         startActivity(intent);
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
-            getActivity().overridePendingTransition(0, 0);
+        getActivity().overridePendingTransition(0, 0);
     }
 
     @Override

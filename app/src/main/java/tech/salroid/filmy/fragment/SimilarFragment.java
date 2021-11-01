@@ -63,7 +63,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
     TextView card_holder;
     @BindView(R.id.detail_fragment_views_layout)
     RelativeLayout relativeLayout;
-    private String json_data_similar;
+    private String jsonSimilar;
     private String movieId, movieTitle;
 
     public static SimilarFragment newInstance(String movie_Id, String movie_Title) {
@@ -105,7 +105,6 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
 
         if (movieId != null)
             getSimilarFromNetwork(movieId);
-
     }
 
 
@@ -117,8 +116,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
-                        json_data_similar = response.toString();
+                        jsonSimilar = response.toString();
                         parseSimilarOutput(response.toString());
 
                     }
@@ -139,8 +137,8 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
     }
 
 
-    private void parseSimilarOutput(String response) {
-        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), response);
+    private void parseSimilarOutput(String similarMoviesResult) {
+        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), similarMoviesResult);
         List<SimilarMoviesData> similarMoviesList = par.parse_similar_movies();
 
         SimilarMovieActivityAdapter similar_adapter = new SimilarMovieActivityAdapter(getActivity(), similarMoviesList, true);

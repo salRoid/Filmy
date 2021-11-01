@@ -63,7 +63,7 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
     TextView card_holder;
     @BindView(R.id.detail_fragment_views_layout)
     RelativeLayout relativeLayout;
-    private String similar_json;
+    private String json_data_similar;
     private String movieId, movieTitle;
 
     public static SimilarFragment newInstance(String movie_Id, String movie_Title) {
@@ -118,8 +118,8 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        similar_json = response.toString();
-                        similar_parseOutput(response.toString());
+                        json_data_similar = response.toString();
+                        parseSimilarOutput(response.toString());
 
                     }
                 }, new Response.ErrorListener() {
@@ -127,13 +127,11 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
             public void onErrorResponse(VolleyError error) {
 
                 Log.e("webi", "Volley Error: " + error.getCause());
-
                 breathingProgress.setVisibility(View.GONE);
 
             }
         }
         );
-
 
         TmdbVolleySingleton volleySingleton = TmdbVolleySingleton.getInstance();
         RequestQueue requestQueue = volleySingleton.getRequestQueue();
@@ -141,19 +139,15 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
     }
 
 
-    private void similar_parseOutput(String similar_result) {
+    private void parseSimilarOutput(String response) {
+        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), response);
+        List<SimilarMoviesData> similarMoviesList = par.parse_similar_movies();
 
-        MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), similar_result);
-
-        List<SimilarMoviesData> similar_list = par.parse_similar_movies();
-
-        SimilarMovieActivityAdapter similar_adapter = new SimilarMovieActivityAdapter(getActivity(), similar_list, true);
+        SimilarMovieActivityAdapter similar_adapter = new SimilarMovieActivityAdapter(getActivity(), similarMoviesList, true);
         similar_adapter.setClickListener(this);
         similar_recycler.setAdapter(similar_adapter);
 
-        if (similar_list.size() == 0) {
-            card_holder.setVisibility(View.INVISIBLE);
-        }
+        if (similarMoviesList.size() == 0) { card_holder.setVisibility(View.INVISIBLE); }
 
         breathingProgress.setVisibility(View.GONE);
         similar_recycler.setVisibility(View.VISIBLE);
@@ -170,6 +164,5 @@ public class SimilarFragment extends Fragment implements SimilarMovieActivityAda
         intent.putExtra("activity", false);
 
         startActivity(intent);
-
     }
 }

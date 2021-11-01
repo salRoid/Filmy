@@ -28,6 +28,7 @@ import android.graphics.Color
 import androidx.palette.graphics.Palette
 import android.graphics.PorterDuff
 import android.net.Uri
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -130,14 +131,14 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun nightModeLogic() {
-        binding.allDetailsContainer.setBackgroundColor(Color.parseColor("#212121"))
+        binding.allDetailsContainer.setBackgroundColor(Color.parseColor("#121212"))
         binding.headerContainer.setBackgroundColor(Color.parseColor("#212121"))
         binding.viewExtraInfo.extraDetails.setBackgroundColor(Color.parseColor("#212121"))
         binding.viewRatings.ratingBar.setBackgroundColor(Color.parseColor("#212121"))
     }
 
     private fun allThemeLogic() {
-        binding.allDetailsContainer.setBackgroundColor(Color.parseColor("#f5f5f5"))
+        binding.allDetailsContainer.setBackgroundColor(Color.parseColor("#E0E0E0"))
         binding.headerContainer.setBackgroundColor(resources.getColor(R.color.primaryColor))
         binding.viewExtraInfo.extraDetails.setBackgroundColor(resources.getColor(R.color.primaryColor))
         binding.viewRatings.ratingBar.setBackgroundColor(resources.getColor(R.color.primaryColor))
@@ -347,10 +348,11 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
     }
 
     private fun showParsedContent(
-        title: String, banner_profile: String, imgUrl: String?, tagline: String,
+        title: String, displayBanner: String, imgUrl: String?, tagline: String,
         overview: String, rating: String?, runtime: String,
         released: String, certification: String, language: String
     ) {
+
         binding.detailTagline.text = tagline
         binding.detailTitle.text = title
         binding.detailOverview.text = overview
@@ -364,7 +366,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         try {
             Glide.with(this)
                 .asBitmap()
-                .load(banner_profile)
+                .load(displayBanner)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(object : SimpleTarget<Bitmap?>() {
                     override fun onResourceReady(
@@ -373,10 +375,12 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     ) {
 
                         binding.backdrop.setImageBitmap(resource)
+                        Log.d("webi", "here");
 
                         Palette.from(resource).generate { pallete ->
 
                             val swatch = pallete?.vibrantSwatch
+                            Log.d("webi", swatch.toString());
                             val trailerSwatch = pallete?.darkVibrantSwatch
 
                             if (swatch != null) {

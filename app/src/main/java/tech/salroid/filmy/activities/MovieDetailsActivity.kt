@@ -226,9 +226,11 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             movieRatingTmdb = jsonObject.getString("vote_average")
 
             if (tagline != "") binding.detailTagline.visibility = View.VISIBLE
-            castFragment.getCastFromNetwork(movieIdFinal)
-            similarFragment.getSimilarFromNetwork(movieIdFinal)
 
+            movieIdFinal?.let {
+                castFragment.getCastFromNetwork(it)
+                similarFragment.getSimilarFromNetwork(it)
+            }
 
             getRating(this, movieImdbId)
 

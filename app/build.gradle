@@ -75,8 +75,6 @@ dependencies {
     implementation 'tr.xip.errorview:library:4.0.0'
     implementation 'com.github.paolorotolo:appintro:4.0.0'
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    kapt 'com.jakewharton:butterknife-compiler:10.1.0'
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     testImplementation 'junit:junit:4.13.1'

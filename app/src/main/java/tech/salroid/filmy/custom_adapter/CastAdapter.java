@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.data_classes.CastDetailsData;
+import tech.salroid.filmy.data_classes.CastMemberDetailsData;
 
 /*
  * Filmy Application for Android
@@ -40,21 +40,18 @@ import tech.salroid.filmy.data_classes.CastDetailsData;
 public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
 
     private final Boolean ret_size;
-    private List<CastDetailsData> castList = new ArrayList<>();
+    private List<CastMemberDetailsData> castList = new ArrayList<>();
     private Context context;
     private ClickListener clickListener;
 
-    public CastAdapter(Context context, List<CastDetailsData> castList, Boolean size) {
-
+    public CastAdapter(Context context, List<CastMemberDetailsData> castList, Boolean size) {
         this.context = context;
         this.castList = castList;
         this.ret_size = size;
-
     }
 
     @Override
     public Ho onCreateViewHolder(ViewGroup parent, int viewType) {
-
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.cast_custom_row, parent, false);
         return new Ho(view);
@@ -63,13 +60,13 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
     @Override
     public void onBindViewHolder(Ho holder, int position) {
 
-        String castName = castList.get(position).getCastName();
-        String castCharacter = castList.get(position).getCastCharacter();
-        String castDisplayProfile = castList.get(position).getCastDisplayProfile();
         String castId = castList.get(position).getCastId();
+        String castName = castList.get(position).getCastName();
+        String castRole = castList.get(position).getCastRolePlayed();
+        String castDisplayProfile = castList.get(position).getCastDisplayProfile();
 
         holder.castName.setText(castName);
-        holder.castCharacter.setText(castCharacter);
+        holder.castRole.setText(castRole);
 
         try {
             Glide.with(context)
@@ -96,22 +93,19 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.Ho> {
     }
 
     public interface ClickListener {
-
-        void itemClicked(CastDetailsData setterGetter, int position, View view);
+        void itemClicked(CastMemberDetailsData setterGetter, int position, View view);
 
     }
 
     class Ho extends RecyclerView.ViewHolder {
-
         @BindView(R.id.cast_name)
         TextView castName;
         @BindView(R.id.cast_description)
-        TextView castCharacter;
+        TextView castRole;
         @BindView(R.id.cast_poster)
         CircularImageView castDisplayProfile;
 
         Ho(View itemView) {
-
             super(itemView);
             ButterKnife.bind(this, itemView);
 

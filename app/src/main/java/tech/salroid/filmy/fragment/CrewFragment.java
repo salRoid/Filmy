@@ -1,9 +1,7 @@
 package tech.salroid.filmy.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +25,7 @@ import tech.salroid.filmy.activities.CharacterDetailsActivity;
 import tech.salroid.filmy.activities.FullCrewActivity;
 import tech.salroid.filmy.custom_adapter.CrewAdapter;
 import tech.salroid.filmy.customs.BreathingProgress;
-import tech.salroid.filmy.data_classes.CrewDetailsData;
+import tech.salroid.filmy.data_classes.CrewMemberDetailsData;
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork;
 
 /*
@@ -101,7 +99,7 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
     public void parseCrewOutput(String crewResult) {
 
         MovieDetailsActivityParseWork par = new MovieDetailsActivityParseWork(getActivity(), crewResult);
-        List<CrewDetailsData> crewList = par.parse_crew();
+        List<CrewMemberDetailsData> crewList = par.parseCrewMembers();
 
         jsonCrew = crewResult;
         CrewAdapter crewAdapter = new CrewAdapter(getActivity(), crewList, true);
@@ -136,10 +134,10 @@ public class CrewFragment extends Fragment implements View.OnClickListener, Crew
     }
 
     @Override
-    public void itemClicked(CrewDetailsData setterGetter, int position, View view) {
+    public void itemClicked(CrewMemberDetailsData setterGetter, int position, View view) {
 
         Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
-        intent.putExtra("id", setterGetter.getCrewId());
+        intent.putExtra("id", setterGetter.getCrewMemberId());
 
         Pair<View, String> p1 = Pair.create(view.findViewById(R.id.crew_poster), "profile");
         Pair<View, String> p2 = Pair.create(view.findViewById(R.id.crew_name), "name");

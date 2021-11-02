@@ -42,13 +42,13 @@ class AboutActivity : AppCompatActivity() {
 
     private fun setBannerAndProfile() {
         Glide.with(this).load(getString(R.string.profile_webianks))
-            .into((findViewById<View>(R.id.profile_webianks) as ImageView))
+                .into((findViewById<View>(R.id.profile_webianks) as ImageView))
         Glide.with(this).load(getString(R.string.profile_salroid))
-            .into((findViewById<View>(R.id.profile_salroid) as ImageView))
+                .into((findViewById<View>(R.id.profile_salroid) as ImageView))
         Glide.with(this).load(getString(R.string.banner_webianks))
-            .into((findViewById<View>(R.id.banner_webianks) as ImageView))
+                .into((findViewById<View>(R.id.banner_webianks) as ImageView))
         Glide.with(this).load(getString(R.string.banner_salroid))
-            .into((findViewById<View>(R.id.banner_salroid) as ImageView))
+                .into((findViewById<View>(R.id.banner_salroid) as ImageView))
     }
 
     private fun allThemeLogic() {
@@ -80,41 +80,30 @@ class AboutActivity : AppCompatActivity() {
     fun redirectGithub(view: View) {
         when (view.id) {
             R.id.github_webianks -> {
-                val builder = CustomTabsIntent.Builder()
-                builder.setToolbarColor(ContextCompat.getColor(this, R.color.black))
-                val customTabsIntent = builder.build()
-                customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.git_webianks)))
+                openCustomTabIntent(getString(R.string.git_webianks), R.color.black)
             }
             R.id.github_salroid -> {
-                val builder1 = CustomTabsIntent.Builder()
-                builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black))
-                val customTabsIntent1 = builder1.build()
-                customTabsIntent1.launchUrl(this, Uri.parse(getString(R.string.git_salroid)))
+                openCustomTabIntent(getString(R.string.git_salroid), R.color.black)
             }
         }
-    }
-
-    private fun viewIntent(url: String) {
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(url)
-        startActivity(i)
     }
 
     fun redirectWebsite(view: View) {
         when (view.id) {
             R.id.website_webianks -> {
-                val builder = CustomTabsIntent.Builder()
-                builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorAccent))
-                val customTabsIntent = builder.build()
-                customTabsIntent.launchUrl(this, Uri.parse(getString(R.string.website_webianks)))
+                openCustomTabIntent(getString(R.string.website_webianks), R.color.colorAccent)
             }
             R.id.website_salroid -> {
-                val builder1 = CustomTabsIntent.Builder()
-                builder1.setToolbarColor(ContextCompat.getColor(this, R.color.black))
-                val customTabsIntent1 = builder1.build()
-                customTabsIntent1.launchUrl(this, Uri.parse(getString(R.string.website_salroid)))
+                openCustomTabIntent(getString(R.string.website_salroid), R.color.colorAccent)
             }
         }
+    }
+
+    private fun openCustomTabIntent(url: String, color: Int) {
+        val builder = CustomTabsIntent.Builder()
+        builder.setToolbarColor(ContextCompat.getColor(this@AboutActivity, color))
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(url))
     }
 
     override fun onResume() {

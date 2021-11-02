@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.data_classes.CharacterDetailsData;
+import tech.salroid.filmy.data_classes.PersonMovieDetailsData;
 /*
  * Filmy Application for Android
  * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
@@ -40,17 +40,16 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
     private final LayoutInflater inflater;
     private final Boolean ret_size;
-    private Context con;
-    private List<CharacterDetailsData> ch;
+    private Context context;
+    private List<PersonMovieDetailsData> moviesList;
     private ClickListener clickListener;
 
-    public CharacterDetailsActivityAdapter(Context context, List<CharacterDetailsData> ch, Boolean size) {
+    public CharacterDetailsActivityAdapter(Context context, List<PersonMovieDetailsData> moviesList, Boolean size) {
         inflater = LayoutInflater.from(context);
-        con = context;
-        this.ch = ch;
+        this.context = context;
+        this.moviesList = moviesList;
         this.ret_size = size;
     }
-
 
     @Override
     public Fo onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,24 +60,20 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
     @Override
     public void onBindViewHolder(@NonNull Fo holder, int position) {
+        String movieName = moviesList.get(position).getMovieTitle();
+        String moviePoster = moviesList.get(position).getMoviePoster();
+        String rolePlayed = moviesList.get(position).getRolePlayed();
 
-        String m_name, m_profile, m_desc;
-        // String m_id;
-
-        m_name = ch.get(position).getChar_movie();
-        m_profile = ch.get(position).getCharmovie_img();
-        m_desc = ch.get(position).getChar_role();
-        //m_id = ch.get(position).getChar_id();
-
-        // Log.d("webi","charAdapter"+m_id);
-
-        holder.mov_name.setText(m_name);
-        holder.mov_char.setText(m_desc);
+        holder.movieName.setText(movieName);
+        holder.rolePlayed.setText(rolePlayed);
 
         try {
-            Glide.with(con).load(m_profile).diskCacheStrategy(DiskCacheStrategy.NONE).fitCenter().into(holder.mov_img);
+            Glide.with(context)
+                    .load(moviePoster)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter()
+                    .into(holder.moviePoster);
         } catch (Exception e) {
-            //Log.d(LOG_TAG, e.getMessage());
         }
     }
 
@@ -86,10 +81,10 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
     public int getItemCount() {
         if (ret_size)
-            return (ch.size() >= 5) ? 5 : ch.size();
+            return (moviesList.size() >= 5) ? 5 : moviesList.size();
 
         else
-            return ch.size();
+            return moviesList.size();
     }
 
     public void setClickListener(ClickListener clickListener) {
@@ -98,18 +93,18 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
     public interface ClickListener {
 
-        void itemClicked(CharacterDetailsData setterGetter, int position);
+        void itemClicked(PersonMovieDetailsData setterGetter, int position);
 
     }
 
     class Fo extends RecyclerView.ViewHolder {
 
         @BindView(R.id.movie_poster)
-        CircularImageView mov_img;
+        CircularImageView moviePoster;
         @BindView(R.id.movie_name)
-        TextView mov_name;
-        @BindView(R.id.movie_description)
-        TextView mov_char;
+        TextView movieName;
+        @BindView(R.id.movie_role_played)
+        TextView rolePlayed;
 
         Fo(View itemView) {
             super(itemView);
@@ -119,7 +114,7 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null) {
-                        clickListener.itemClicked(ch.get(getPosition()), getPosition());
+                        clickListener.itemClicked(moviesList.get(getPosition()), getPosition());
                     }
                 }
             });

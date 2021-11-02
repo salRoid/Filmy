@@ -1,5 +1,4 @@
 package tech.salroid.filmy.data_classes;
-
 /*
  * Filmy Application for Android
  * Copyright (c) 2016 Sajal Gupta (http://github.com/salroid).
@@ -17,37 +16,42 @@ package tech.salroid.filmy.data_classes;
  * limitations under the License.
  */
 
-public class CrewDetailsData {
+public class PersonMovieDetailsData {
 
-    private String crewName, crewJobDescr, crewDisplayProfile, crewId;
+    String movieTitle, rolePlayed, movieId, moviePoster;
 
-    public void setCrewId(String crewId) { this.crewId = crewId; }
-
-    public String getCrewId() {
-        return crewId;
+    public String getMovieId() {
+        return movieId;
     }
 
-    public void setCrewJobDescr(String crewJobDescr) {
-        this.crewJobDescr = crewJobDescr;
+    public void setMovieId(String movieId) {
+        this.movieId = movieId;
     }
 
-    public String getCrewJobDescr() {
-        return crewJobDescr;
+    public String getMovieTitle() {
+        return movieTitle;
     }
 
-    public void setCrewName(String crewName) {
-        this.crewName = crewName;
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
     }
 
-    public String getCrewName() {
-        return crewName;
+    public String getRolePlayed() {
+        return rolePlayed;
     }
 
-    public void setCrewDisplayProfile(String crewDisplayProfile) {
-        this.crewDisplayProfile = crewDisplayProfile;
+    public void setRolePlayed(String rolePlayed) {
+        this.rolePlayed = rolePlayed;
     }
 
-    public String getCrewDisplayProfile() {
-        return crewDisplayProfile;
+    public String getMoviePoster() {
+        return moviePoster;
     }
+
+    public void setMoviePoster(String moviePoster) {
+        this.moviePoster = moviePoster;
+    }
+
 }
+
+

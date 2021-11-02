@@ -92,8 +92,8 @@ class SettingsActivity : AppCompatActivity() {
                 val myIntent = Intent(Intent.ACTION_SEND)
                 myIntent.type = "text/plain"
                 myIntent.putExtra(
-                    Intent.EXTRA_TEXT,
-                    "Check out this awesome movie app.\n*filmy*\n$appShareDetails"
+                        Intent.EXTRA_TEXT,
+                        "Check out this awesome movie app.\n*filmy*\n$appShareDetails"
                 )
                 startActivity(Intent.createChooser(myIntent, "Share with"))
                 true

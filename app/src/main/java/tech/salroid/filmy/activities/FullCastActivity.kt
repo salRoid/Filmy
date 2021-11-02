@@ -10,7 +10,7 @@ import android.content.Intent
 import android.view.MenuItem
 import android.view.View
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
-import tech.salroid.filmy.data_classes.CastDetailsData
+import tech.salroid.filmy.data_classes.CastMemberDetailsData
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import tech.salroid.filmy.databinding.ActivityFullCastBinding
@@ -38,13 +38,13 @@ class FullCastActivity : AppCompatActivity(), CastAdapter.ClickListener {
         supportActionBar?.title = intent?.getStringExtra("toolbar_title")
 
         val par = MovieDetailsActivityParseWork(this, castResult)
-        val castList = par.parse_cast()
+        val castList = par.parseCastMembers()
         val fullCastAdapter = CastAdapter(this, castList, false)
         fullCastAdapter.setClickListener(this)
         binding.fullCastRecycler.adapter = fullCastAdapter
     }
 
-    override fun itemClicked(setterGetter: CastDetailsData, position: Int, view: View) {
+    override fun itemClicked(setterGetter: CastMemberDetailsData, position: Int, view: View) {
         val intent = Intent(this, CharacterDetailsActivity::class.java)
         intent.putExtra("id", setterGetter.castId)
         val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")

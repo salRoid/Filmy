@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.data_classes.CrewDetailsData;
+import tech.salroid.filmy.data_classes.CrewMemberDetailsData;
 
 /*
  * Filmy Application for Android
@@ -40,12 +40,11 @@ import tech.salroid.filmy.data_classes.CrewDetailsData;
 public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
 
     private final Boolean ret_size;
-    private List<CrewDetailsData> crewList;
+    private List<CrewMemberDetailsData> crewList;
     private Context context;
     private ClickListener clickListener;
 
-    public CrewAdapter(Context context, List<CrewDetailsData> crewList, Boolean size) {
-
+    public CrewAdapter(Context context, List<CrewMemberDetailsData> crewList, Boolean size) {
         this.context = context;
         this.crewList = crewList;
         this.ret_size = size;
@@ -62,21 +61,21 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
     @Override
     public void onBindViewHolder(@NonNull Ho holder, int position) {
 
-        String crewName = crewList.get(position).getCrewName();
-        String crewJobDescr = crewList.get(position).getCrewJobDescr();
-        String crewDisplayProfile = crewList.get(position).getCrewDisplayProfile();
-        String crewId = crewList.get(position).getCrewId();
+        String id = crewList.get(position).getCrewMemberId();
+        String name = crewList.get(position).getCrewMemberName();
+        String job = crewList.get(position).getCrewMemberJob();
+        String displayProfile = crewList.get(position).getCrewMemberProfile();
 
-        holder.crew_name.setText(crewName);
-        holder.crew_description.setText(crewJobDescr);
+        holder.crewMemberName.setText(name);
+        holder.crewMemberJob.setText(job);
 
         try {
             Glide.with(context)
-                    .load(crewDisplayProfile)
+                    .load(displayProfile)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
-                    .into(holder.crew_poster);
-        } catch (Exception e){
+                    .into(holder.crewMemberProfile);
+        } catch (Exception e) {
         }
     }
 
@@ -94,19 +93,17 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
     }
 
     public interface ClickListener {
-
-        void itemClicked(CrewDetailsData setterGetter, int position, View view);
-
+        void itemClicked(CrewMemberDetailsData setterGetter, int position, View view);
     }
 
     class Ho extends RecyclerView.ViewHolder {
 
         @BindView(R.id.crew_name)
-        TextView crew_name;
+        TextView crewMemberName;
         @BindView(R.id.crew_description)
-        TextView crew_description;
+        TextView crewMemberJob;
         @BindView(R.id.crew_poster)
-        CircularImageView crew_poster;
+        CircularImageView crewMemberProfile;
 
         Ho(View itemView) {
 
@@ -117,7 +114,7 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.Ho> {
                 @Override
                 public void onClick(View view) {
                     if (clickListener != null) {
-                        clickListener.itemClicked(crewList.get(getPosition()), getPosition(),view);
+                        clickListener.itemClicked(crewList.get(getPosition()), getPosition(), view);
                     }
                 }
             });

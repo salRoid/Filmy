@@ -16,9 +16,17 @@ package tech.salroid.filmy.data_classes;
  * limitations under the License.
  */
 
-public class CastDetailsData {
+public class CastMemberDetailsData {
 
-   private String castName, castCharacter, castDisplayProfile, castId;
+    private String castId, castName, castRolePlayed, castDisplayProfile;
+
+    public void setCastId(String castId) {
+        this.castId = castId;
+    }
+
+    public String getCastId() {
+        return castId;
+    }
 
     public void setCastName(String castName) {
         this.castName = castName;
@@ -28,12 +36,12 @@ public class CastDetailsData {
         return castName;
     }
 
-    public void setCastId(String castId) {
-        this.castId = castId;
+    public void setCastRolePlayed(String castRolePlayed) {
+        this.castRolePlayed = castRolePlayed;
     }
 
-    public String getCastId() {
-        return castId;
+    public String getCastRolePlayed() {
+        return castRolePlayed;
     }
 
     public void setCastDisplayProfile(String castDisplayProfile) {
@@ -44,11 +52,4 @@ public class CastDetailsData {
         return castDisplayProfile;
     }
 
-    public void setCastCharacter(String castCharacter) {
-        this.castCharacter = castCharacter;
-    }
-
-    public String getCastCharacter() {
-        return castCharacter;
-    }
 }

@@ -15,13 +15,12 @@ import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.FullCastActivity
-import tech.salroid.filmy.custom_adapter.CastAdapter
-import tech.salroid.filmy.data.CastMemberDetailsData
+import tech.salroid.filmy.adapters.CastAdapter
 import tech.salroid.filmy.databinding.CastFragmentBinding
 import tech.salroid.filmy.networking.TmdbVolleySingleton
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
 
-class CastFragment : Fragment(), CastAdapter.ClickListener {
+class CastFragment : Fragment() {
 
     private var jsonCast: String? = null
     private var movieId: String? = null
@@ -95,15 +94,22 @@ class CastFragment : Fragment(), CastAdapter.ClickListener {
         val par = MovieDetailsActivityParseWork(castResult)
         val castList = par.parseCastMembers()
 
-        val castAdapter = CastAdapter(activity, castList, true)
-        castAdapter.setClickListener(this)
+        val castAdapter = CastAdapter(castList, true) { castMemberDetailsData, _, view ->
+            val intent = Intent(activity, CharacterDetailsActivity::class.java)
+            intent.putExtra("id", castMemberDetailsData.castId)
+            val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")
+            val p2 = Pair.create(view.findViewById<View>(R.id.cast_name), "name")
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, p1, p2)
+            startActivity(intent, options.toBundle())
+        }
+
         binding.castRecycler.adapter = castAdapter
 
         when {
             castList.size > 4 -> {
                 binding.more.visibility = View.VISIBLE
             }
-            castList.size == 0 -> {
+            castList.isEmpty() -> {
                 binding.more.visibility = View.INVISIBLE
                 binding.cardHolder.visibility = View.INVISIBLE
             }
@@ -115,17 +121,6 @@ class CastFragment : Fragment(), CastAdapter.ClickListener {
         binding.breathingProgressFragment.visibility = View.GONE
         binding.castRecycler.visibility = View.VISIBLE
         binding.detailFragmentViewsLayout.minimumHeight = 0
-    }
-
-    override fun itemClicked(actor: CastMemberDetailsData, position: Int, view: View) {
-        val intent = Intent(activity, CharacterDetailsActivity::class.java)
-        intent.putExtra("id", actor.castId)
-
-        val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")
-        val p2 = Pair.create(view.findViewById<View>(R.id.cast_name), "name")
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, p1, p2)
-
-        startActivity(intent, options.toBundle())
     }
 
     interface GotCrewListener {

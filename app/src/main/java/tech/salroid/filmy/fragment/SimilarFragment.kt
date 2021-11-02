@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.JsonObjectRequest
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.activities.MovieDetailsActivity
-import tech.salroid.filmy.custom_adapter.SimilarMovieActivityAdapter
+import tech.salroid.filmy.adapters.SimilarMovieActivityAdapter
 import tech.salroid.filmy.data.SimilarMoviesData
 import tech.salroid.filmy.databinding.SimilarFragmentBinding
 import tech.salroid.filmy.networking.TmdbVolleySingleton
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
 
-class SimilarFragment : Fragment(), SimilarMovieActivityAdapter.ClickListener {
+class SimilarFragment : Fragment() {
 
     private var jsonSimilar: String? = null
     private var movieId: String? = null
@@ -70,14 +70,16 @@ class SimilarFragment : Fragment(), SimilarMovieActivityAdapter.ClickListener {
     }
 
     private fun parseSimilarOutput(similarMoviesResult: String) {
-        val par = MovieDetailsActivityParseWork(similarMoviesResult)
-        val similarMoviesList = par.parse_similar_movies()
-        val similarAdapter = SimilarMovieActivityAdapter(activity, similarMoviesList, true)
+        val parser = MovieDetailsActivityParseWork(similarMoviesResult)
+        val similarMoviesList = parser.parseSimilarMovies()
 
-        similarAdapter.setClickListener(this)
+        val similarAdapter =
+            SimilarMovieActivityAdapter(similarMoviesList) { similarMoviesData, _ ->
+                itemClicked(similarMoviesData)
+            }
         binding.similarRecycler.adapter = similarAdapter
 
-        if (similarMoviesList.size == 0) {
+        if (similarMoviesList.isEmpty()) {
             binding.cardHolder.visibility = View.INVISIBLE
         }
 
@@ -86,7 +88,7 @@ class SimilarFragment : Fragment(), SimilarMovieActivityAdapter.ClickListener {
         binding.detailFragmentViewsLayout.minimumHeight = 0
     }
 
-    override fun itemClicked(movie: SimilarMoviesData, position: Int, view: View) {
+    private fun itemClicked(movie: SimilarMoviesData) {
         val intent = Intent(activity, MovieDetailsActivity::class.java)
         intent.putExtra("title", movie.title)
         intent.putExtra("id", movie.id)

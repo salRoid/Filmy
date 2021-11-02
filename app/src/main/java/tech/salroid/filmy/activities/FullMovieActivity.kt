@@ -1,18 +1,17 @@
 package tech.salroid.filmy.activities
 
-import androidx.appcompat.app.AppCompatActivity
-import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import tech.salroid.filmy.R
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.content.Intent
 import android.view.MenuItem
-import tech.salroid.filmy.data.PersonMovieDetailsData
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import tech.salroid.filmy.R
+import tech.salroid.filmy.adapters.CharacterDetailsActivityAdapter
 import tech.salroid.filmy.databinding.ActivityFullMovieBinding
 import tech.salroid.filmy.parser.CharacterDetailsActivityParseWork
 
-class FullMovieActivity : AppCompatActivity(), CharacterDetailsActivityAdapter.ClickListener {
+class FullMovieActivity : AppCompatActivity() {
 
     private var movieResult: String? = null
     private var nightMode = false
@@ -35,20 +34,19 @@ class FullMovieActivity : AppCompatActivity(), CharacterDetailsActivityAdapter.C
         supportActionBar?.title = intent?.getStringExtra("toolbar_title")
 
 
-        val par = CharacterDetailsActivityParseWork(this, movieResult.toString())
+        val par = CharacterDetailsActivityParseWork(movieResult.toString())
         val moviesList = par.parsePersonMovies()
-        val movieAdapter = CharacterDetailsActivityAdapter(this, moviesList, false)
-        movieAdapter.setClickListener(this)
-        binding.fullMovieRecycler.setAdapter(movieAdapter)
-    }
+        val movieAdapter =
+            CharacterDetailsActivityAdapter(moviesList, false) { personMovieDetail, position ->
+                val intent = Intent(this, MovieDetailsActivity::class.java)
+                intent.putExtra("id", personMovieDetail.movieId)
+                intent.putExtra("title", personMovieDetail.movieTitle)
+                intent.putExtra("network_applicable", true)
+                intent.putExtra("activity", false)
+                startActivity(intent)
+            }
 
-    override fun itemClicked(movie: PersonMovieDetailsData, position: Int) {
-        val intent = Intent(this, MovieDetailsActivity::class.java)
-        intent.putExtra("id", movie.movieId)
-        intent.putExtra("title", movie.movieTitle)
-        intent.putExtra("network_applicable", true)
-        intent.putExtra("activity", false)
-        startActivity(intent)
+        binding.fullMovieRecycler.adapter = movieAdapter
     }
 
     override fun onResume() {

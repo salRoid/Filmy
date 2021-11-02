@@ -10,9 +10,11 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.13541666666666666" />
         <entry key="app/src/main/res/layout/all_trailer_layout.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/cast_fragment.xml" value="0.1381340579710145" />
+        <entry key="app/src/main/res/layout/char_custom_row.xml" value="0.125" />
         <entry key="app/src/main/res/layout/extra_info_movie_detail.xml" value="0.22554347826086957" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/ratings.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/single_trailer_view.xml" value="0.16576086956521738" />
         <entry key="app/src/main/res/xml/preference.xml" value="0.14175724637681159" />
       </map>
     </option>

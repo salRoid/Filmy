@@ -16,13 +16,13 @@ import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.MovieDetailsActivity
-import tech.salroid.filmy.custom_adapter.SearchResultAdapter
+import tech.salroid.filmy.adapters.SearchResultAdapter
 import tech.salroid.filmy.data.SearchData
 import tech.salroid.filmy.databinding.FragmentSearchBinding
 import tech.salroid.filmy.networking.VolleySingleton
 import tech.salroid.filmy.parser.SearchResultParseWork
 
-class SearchFragment : Fragment(), SearchResultAdapter.ClickListener {
+class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
@@ -84,15 +84,15 @@ class SearchFragment : Fragment(), SearchResultAdapter.ClickListener {
         return view
     }
 
-    override fun itemClicked(setterGetter: SearchData, position: Int) {
+    private fun itemClicked(searchData: SearchData, position: Int) {
         val intent: Intent
-        if (setterGetter.type == "person") intent =
+        if (searchData.type == "person") intent =
             Intent(activity, CharacterDetailsActivity::class.java) else {
             intent = Intent(activity, MovieDetailsActivity::class.java)
             intent.putExtra("network_applicable", true)
         }
-        intent.putExtra("title", setterGetter.movie)
-        intent.putExtra("id", setterGetter.id)
+        intent.putExtra("title", searchData.movie)
+        intent.putExtra("id", searchData.id)
         intent.putExtra("activity", false)
         startActivity(intent)
     }
@@ -115,9 +115,10 @@ class SearchFragment : Fragment(), SearchResultAdapter.ClickListener {
         val park = SearchResultParseWork(results)
         val list = park.parseSearchData()
 
-        val adapter = SearchResultAdapter(activity, list)
+        val adapter = SearchResultAdapter(list) { searchData, position ->
+            itemClicked(searchData, position)
+        }
         binding.searchResultsRecycler.adapter = adapter
-        adapter.setClickListener(this)
 
         hideProgress()
         hideSoftKeyboard()

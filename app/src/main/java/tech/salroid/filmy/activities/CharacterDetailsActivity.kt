@@ -19,16 +19,13 @@ import org.json.JSONException
 import org.json.JSONObject
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
-import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter
-import tech.salroid.filmy.data.PersonMovieDetailsData
+import tech.salroid.filmy.adapters.CharacterDetailsActivityAdapter
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.fragment.FullReadFragment
 import tech.salroid.filmy.networking.TmdbVolleySingleton
 import tech.salroid.filmy.parser.CharacterDetailsActivityParseWork
-import java.lang.Exception
 
-class CharacterDetailsActivity : AppCompatActivity(),
-        CharacterDetailsActivityAdapter.ClickListener {
+class CharacterDetailsActivity : AppCompatActivity() {
 
     private var characterId: String? = null
     private var characterTitle: String? = null
@@ -76,7 +73,7 @@ class CharacterDetailsActivity : AppCompatActivity(),
                 args.putString("desc", characterBio)
                 fullReadFragment!!.arguments = args
                 supportFragmentManager.beginTransaction()
-                        .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
+                    .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
             }
         }
         val intent = intent
@@ -104,42 +101,33 @@ class CharacterDetailsActivity : AppCompatActivity(),
             val apiKey = BuildConfig.TMDB_API_KEY
 
             val baseUrlPersonalDetails =
-                    "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
+                "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
             val baseUrlPersonMovies =
-                    "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
+                "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
 
             val personalDetailsRequest = JsonObjectRequest(baseUrlPersonalDetails, null,
-                    { response ->
-                        parsePersonalDetails(response.toString())
-                    }
+                { response ->
+                    parsePersonalDetails(response.toString())
+                }
             ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
 
             val personMoviesDetailsRequest = JsonObjectRequest(baseUrlPersonMovies, null,
-                    { response ->
-                        moviesJson = response.toString()
-                        parsePersonMovies(response.toString())
-                    }
+                { response ->
+                    moviesJson = response.toString()
+                    parsePersonMovies(response.toString())
+                }
             ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
 
             requestQueue.add(personalDetailsRequest)
             requestQueue.add(personMoviesDetailsRequest)
         }
 
-    override fun itemClicked(movie: PersonMovieDetailsData, position: Int) {
-        val intent = Intent(this, MovieDetailsActivity::class.java)
-        intent.putExtra("id", movie.movieId)
-        intent.putExtra("title", movie.movieTitle)
-        intent.putExtra("network_applicable", true)
-        intent.putExtra("activity", false)
-        startActivity(intent)
-    }
-
     private fun parsePersonalDetails(personalDetailsResponse: String) {
         try {
             val jsonObject = JSONObject(personalDetailsResponse)
             val dataName = jsonObject.getString("name")
             val dataProfile =
-                    "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
+                "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
             val dataOverview = jsonObject.getString("biography")
             val dataBirthday = jsonObject.getString("birthday")
             val dataBirthPlace = jsonObject.getString("place_of_birth")
@@ -171,9 +159,9 @@ class CharacterDetailsActivity : AppCompatActivity(),
 
             try {
                 Glide.with(this)
-                        .load(dataProfile)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .fitCenter().into(binding.displayProfile)
+                    .load(dataProfile)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .fitCenter().into(binding.displayProfile)
             } catch (e: Exception) {
             }
 
@@ -183,10 +171,18 @@ class CharacterDetailsActivity : AppCompatActivity(),
     }
 
     private fun parsePersonMovies(cast_result: String) {
-        val par = CharacterDetailsActivityParseWork(this, cast_result)
+        val par = CharacterDetailsActivityParseWork(cast_result)
         val moviesList = par.parsePersonMovies()
-        val charAdapter = CharacterDetailsActivityAdapter(this, moviesList, true)
-        charAdapter.setClickListener(this)
+
+        val charAdapter = CharacterDetailsActivityAdapter(moviesList, true) { movie, _ ->
+            val intent = Intent(this, MovieDetailsActivity::class.java)
+            intent.putExtra("id", movie.movieId)
+            intent.putExtra("title", movie.movieTitle)
+            intent.putExtra("network_applicable", true)
+            intent.putExtra("activity", false)
+            startActivity(intent)
+        }
+
         binding.characterMovies.adapter = charAdapter
         if (moviesList.size > 4) {
             binding.more.visibility = View.VISIBLE

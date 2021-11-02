@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.youtube.player.YouTubeStandalonePlayer
 import tech.salroid.filmy.R
-import tech.salroid.filmy.custom_adapter.TrailerAdapter
+import tech.salroid.filmy.adapters.TrailerAdapter
 import tech.salroid.filmy.databinding.AllTrailerLayoutBinding
 import kotlin.math.hypot
 
-class AllTrailerFragment : Fragment(), View.OnClickListener, TrailerAdapter.OnItemClickListener {
+class AllTrailerFragment : Fragment(), View.OnClickListener {
 
     private var titleValue: String? = null
     private var trailers: Array<String>? = null
@@ -110,8 +110,13 @@ class AllTrailerFragment : Fragment(), View.OnClickListener, TrailerAdapter.OnIt
         recyclerView.layoutManager = linearLayoutManager
         binding.textViewTitle.text = titleValue
 
-        val trailerAdapter = TrailerAdapter(trailers, trailersName, activity)
-        trailerAdapter.setOnItemClickListener(this)
+        val trailerAdapter = trailers?.let {
+            trailersName?.let { it1 ->
+                TrailerAdapter(it, it1) { trailerId ->
+                    trailerItemClicked(trailerId)
+                }
+            }
+        }
         recyclerView.adapter = trailerAdapter
     }
 
@@ -119,7 +124,7 @@ class AllTrailerFragment : Fragment(), View.OnClickListener, TrailerAdapter.OnIt
         fragmentManager?.popBackStack()
     }
 
-    override fun itemClicked(trailerId: String) {
+    private fun trailerItemClicked(trailerId: String) {
         val timeMilliSeconds = 0
         val autoPlay = true
         val lightBoxMode = false

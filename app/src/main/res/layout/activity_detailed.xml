@@ -189,7 +189,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <tech.salroid.filmy.customs.BreathingProgress
+    <tech.salroid.filmy.views.BreathingProgress
         android:id="@+id/breathingProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

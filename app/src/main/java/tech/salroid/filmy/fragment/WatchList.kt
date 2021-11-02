@@ -18,13 +18,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.MovieDetailsActivity
-import tech.salroid.filmy.custom_adapter.SavedMoviesAdapter
+import tech.salroid.filmy.adapters.SavedMoviesAdapter
 import tech.salroid.filmy.database.FilmContract
 import tech.salroid.filmy.databinding.FragmentWatchMoviesBinding
 import tech.salroid.filmy.utility.Constants
 
-class WatchList : Fragment(), LoaderManager.LoaderCallbacks<Cursor?>,
-    SavedMoviesAdapter.ClickListener, SavedMoviesAdapter.LongClickListener {
+class WatchList : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
 
     private var mainActivityAdapter: SavedMoviesAdapter? = null
     private var _binding: FragmentWatchMoviesBinding? = null
@@ -71,10 +70,13 @@ class WatchList : Fragment(), LoaderManager.LoaderCallbacks<Cursor?>,
                 }
             }
         }
-        mainActivityAdapter = SavedMoviesAdapter(activity, null)
+        mainActivityAdapter = SavedMoviesAdapter(clickListener = { movieId, title ->
+            itemClicked(movieId, title)
+        }, longClickListener = { dataCursor, position ->
+            itemLongClicked(dataCursor, position)
+        })
+
         binding.mySavedRecycler.adapter = mainActivityAdapter
-        mainActivityAdapter?.setClickListener(this)
-        mainActivityAdapter?.setLongClickListener(this)
 
         return view
     }
@@ -104,7 +106,7 @@ class WatchList : Fragment(), LoaderManager.LoaderCallbacks<Cursor?>,
         binding.emptyContainer.visibility = View.VISIBLE
     }
 
-    override fun itemClicked(movieId: String, title: String) {
+    private fun itemClicked(movieId: String, title: String) {
         val intent = Intent(activity, MovieDetailsActivity::class.java)
         intent.putExtra("saved_database_applicable", true)
         intent.putExtra("network_applicable", true)
@@ -113,7 +115,7 @@ class WatchList : Fragment(), LoaderManager.LoaderCallbacks<Cursor?>,
         startActivity(intent)
     }
 
-    override fun itemLongClicked(mycursor: Cursor, position: Int) {
+    private fun itemLongClicked(dataCursor: Cursor, position: Int) {
         val adb = MaterialAlertDialogBuilder(activity!!)
         val arrayAdapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_list_item_1)
         arrayAdapter.add("Remove")
@@ -123,10 +125,10 @@ class WatchList : Fragment(), LoaderManager.LoaderCallbacks<Cursor?>,
             val deleteSelection =
                 FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_ID + " = ? AND " +
                         FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.SAVE_FLAG + " = ? "
-            val flagIndex = mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_FLAG)
-            val flag = mycursor.getInt(flagIndex)
+            val flagIndex = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_FLAG)
+            val flag = dataCursor.getInt(flagIndex)
             val deletionArgs = arrayOf(
-                mycursor.getString(mycursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID)),
+                dataCursor.getString(dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_ID)),
                 flag.toString()
             )
 

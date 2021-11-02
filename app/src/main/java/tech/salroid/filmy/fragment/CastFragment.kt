@@ -117,9 +117,9 @@ class CastFragment : Fragment(), CastAdapter.ClickListener {
         binding.detailFragmentViewsLayout.minimumHeight = 0
     }
 
-    override fun itemClicked(setterGetter: CastMemberDetailsData, position: Int, view: View) {
+    override fun itemClicked(actor: CastMemberDetailsData, position: Int, view: View) {
         val intent = Intent(activity, CharacterDetailsActivity::class.java)
-        intent.putExtra("id", setterGetter.castId)
+        intent.putExtra("id", actor.castId)
 
         val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")
         val p2 = Pair.create(view.findViewById<View>(R.id.cast_name), "name")

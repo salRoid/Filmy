@@ -13,7 +13,7 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.FullCrewActivity
 import tech.salroid.filmy.custom_adapter.CrewAdapter
-import tech.salroid.filmy.data_classes.CrewDetailsData
+import tech.salroid.filmy.data_classes.CrewMemberDetailsData
 import tech.salroid.filmy.databinding.CrewFragmentBinding
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
 
@@ -59,7 +59,7 @@ class CrewFragment : Fragment(), CrewAdapter.ClickListener {
 
     fun parseCrewOutput(crewResult: String?) {
         val par = MovieDetailsActivityParseWork(activity, crewResult)
-        val crewList = par.parse_crew()
+        val crewList = par.parseCrewMembers()
         jsonCrew = crewResult
 
         binding.crewRecycler.adapter = CrewAdapter(activity, crewList, true).apply {
@@ -85,9 +85,9 @@ class CrewFragment : Fragment(), CrewAdapter.ClickListener {
     }
 
 
-    override fun itemClicked(setterGetter: CrewDetailsData, position: Int, view: View) {
+    override fun itemClicked(member: CrewMemberDetailsData, position: Int, view: View) {
         val intent = Intent(activity, CharacterDetailsActivity::class.java)
-        intent.putExtra("id", setterGetter.crewId)
+        intent.putExtra("id", member.crewMemberId)
 
         val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
         val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")

@@ -1,6 +1,6 @@
-package tech.salroid.filmy.data_classes
+package tech.salroid.filmy.data
 
-data class PersonMovieDetailsData(
+data class PersonMovieDetailsData @JvmOverloads constructor(
     var movieId: String,
     var movieTitle: String? = null,
     var moviePoster: String? = null,

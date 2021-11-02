@@ -1,6 +1,6 @@
-package tech.salroid.filmy.data_classes
+package tech.salroid.filmy.data
 
-data class CastMemberDetailsData(
+data class CastMemberDetailsData @JvmOverloads constructor(
     var castId: String,
     var castName: String? = null,
     var castRolePlayed: String? = null,

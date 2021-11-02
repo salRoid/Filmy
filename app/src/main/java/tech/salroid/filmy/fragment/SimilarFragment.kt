@@ -11,7 +11,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.activities.MovieDetailsActivity
 import tech.salroid.filmy.custom_adapter.SimilarMovieActivityAdapter
-import tech.salroid.filmy.data_classes.SimilarMoviesData
+import tech.salroid.filmy.data.SimilarMoviesData
 import tech.salroid.filmy.databinding.SimilarFragmentBinding
 import tech.salroid.filmy.networking.TmdbVolleySingleton
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
@@ -70,7 +70,7 @@ class SimilarFragment : Fragment(), SimilarMovieActivityAdapter.ClickListener {
     }
 
     private fun parseSimilarOutput(similarMoviesResult: String) {
-        val par = MovieDetailsActivityParseWork(activity, similarMoviesResult)
+        val par = MovieDetailsActivityParseWork(similarMoviesResult)
         val similarMoviesList = par.parse_similar_movies()
         val similarAdapter = SimilarMovieActivityAdapter(activity, similarMoviesList, true)
 
@@ -86,10 +86,10 @@ class SimilarFragment : Fragment(), SimilarMovieActivityAdapter.ClickListener {
         binding.detailFragmentViewsLayout.minimumHeight = 0
     }
 
-    override fun itemClicked(setterGetter: SimilarMoviesData, position: Int, view: View) {
+    override fun itemClicked(movie: SimilarMoviesData, position: Int, view: View) {
         val intent = Intent(activity, MovieDetailsActivity::class.java)
-        intent.putExtra("title", setterGetter.movie_title)
-        intent.putExtra("id", setterGetter.movie_id)
+        intent.putExtra("title", movie.title)
+        intent.putExtra("id", movie.id)
         intent.putExtra("network_applicable", true)
         intent.putExtra("activity", false)
         startActivity(intent)

@@ -20,7 +20,7 @@ import org.json.JSONObject
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.custom_adapter.CharacterDetailsActivityAdapter
-import tech.salroid.filmy.data_classes.PersonMovieDetailsData
+import tech.salroid.filmy.data.PersonMovieDetailsData
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.fragment.FullReadFragment
 import tech.salroid.filmy.networking.TmdbVolleySingleton

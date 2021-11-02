@@ -19,7 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.data_classes.SearchData;
+import tech.salroid.filmy.data.SearchData;
 
 /*
  * Filmy Application for Android

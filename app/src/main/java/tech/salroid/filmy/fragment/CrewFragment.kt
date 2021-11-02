@@ -13,7 +13,7 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.FullCrewActivity
 import tech.salroid.filmy.custom_adapter.CrewAdapter
-import tech.salroid.filmy.data_classes.CrewMemberDetailsData
+import tech.salroid.filmy.data.CrewMemberDetailsData
 import tech.salroid.filmy.databinding.CrewFragmentBinding
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
 
@@ -58,7 +58,7 @@ class CrewFragment : Fragment(), CrewAdapter.ClickListener {
     }
 
     fun parseCrewOutput(crewResult: String?) {
-        val par = MovieDetailsActivityParseWork(activity, crewResult)
+        val par = MovieDetailsActivityParseWork(crewResult)
         val crewList = par.parseCrewMembers()
         jsonCrew = crewResult
 

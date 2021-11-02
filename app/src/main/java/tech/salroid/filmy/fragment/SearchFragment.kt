@@ -17,7 +17,7 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.MovieDetailsActivity
 import tech.salroid.filmy.custom_adapter.SearchResultAdapter
-import tech.salroid.filmy.data_classes.SearchData
+import tech.salroid.filmy.data.SearchData
 import tech.salroid.filmy.databinding.FragmentSearchBinding
 import tech.salroid.filmy.networking.VolleySingleton
 import tech.salroid.filmy.parser.SearchResultParseWork
@@ -111,9 +111,9 @@ class SearchFragment : Fragment(), SearchResultAdapter.ClickListener {
         requestQueue.add(jsonObjectRequest)
     }
 
-    private fun parseSearchedOutput(s: String) {
-        val park = SearchResultParseWork(activity, s)
-        val list = park.parsesearchdata()
+    private fun parseSearchedOutput(results: String) {
+        val park = SearchResultParseWork(results)
+        val list = park.parseSearchData()
 
         val adapter = SearchResultAdapter(activity, list)
         binding.searchResultsRecycler.adapter = adapter

@@ -10,7 +10,7 @@ import android.content.Intent
 import android.view.MenuItem
 import android.view.View
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
-import tech.salroid.filmy.data_classes.CrewMemberDetailsData
+import tech.salroid.filmy.data.CrewMemberDetailsData
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import tech.salroid.filmy.databinding.ActivityFullCastBinding
@@ -37,7 +37,7 @@ class FullCrewActivity : AppCompatActivity(), CrewAdapter.ClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = intent.getStringExtra("toolbar_title")
 
-        val par = MovieDetailsActivityParseWork(this, crewResult)
+        val par = MovieDetailsActivityParseWork(crewResult)
         val crewList = par.parseCrewMembers()
         val fullCrewAdapter = CrewAdapter(this, crewList, false)
         fullCrewAdapter.setClickListener(this)

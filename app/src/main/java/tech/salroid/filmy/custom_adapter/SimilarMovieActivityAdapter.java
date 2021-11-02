@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.salroid.filmy.R;
-import tech.salroid.filmy.data_classes.SimilarMoviesData;
+import tech.salroid.filmy.data.SimilarMoviesData;
 
 /*
  * Filmy Application for Android
@@ -61,18 +61,18 @@ public class SimilarMovieActivityAdapter extends RecyclerView.Adapter<SimilarMov
     @Override
     public void onBindViewHolder(@NonNull Ho holder, int position) {
 
-        String similar_title = similar.get(position).getMovie_title();
-        String similar_banner = similar.get(position).getMovie_banner();
-        String similar_id = similar.get(position).getMovie_id();
+        String title = similar.get(position).getTitle();
+        String banner = similar.get(position).getBanner();
+        String id = similar.get(position).getId();
 
-        holder.title.setText(similar_title);
+        holder.title.setText(title);
         try {
             Glide.with(context)
-                    .load(similar_banner)
+                    .load(banner)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter()
                     .into(holder.poster);
-        } catch (Exception e){
+        } catch (Exception ignored){
         }
     }
 
@@ -88,10 +88,7 @@ public class SimilarMovieActivityAdapter extends RecyclerView.Adapter<SimilarMov
     }
 
 
-
-
     public interface ClickListener {
-
         void itemClicked(SimilarMoviesData setterGetter, int position, View view);
 
     }
@@ -118,8 +115,6 @@ public class SimilarMovieActivityAdapter extends RecyclerView.Adapter<SimilarMov
             });
         }
     }
-
-
 }
 
 

@@ -8,7 +8,7 @@ import tech.salroid.filmy.R
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.content.Intent
 import android.view.MenuItem
-import tech.salroid.filmy.data_classes.PersonMovieDetailsData
+import tech.salroid.filmy.data.PersonMovieDetailsData
 import tech.salroid.filmy.databinding.ActivityFullMovieBinding
 import tech.salroid.filmy.parser.CharacterDetailsActivityParseWork
 

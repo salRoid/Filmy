@@ -10,7 +10,7 @@ import android.content.Intent
 import android.view.MenuItem
 import android.view.View
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
-import tech.salroid.filmy.data_classes.CastMemberDetailsData
+import tech.salroid.filmy.data.CastMemberDetailsData
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import tech.salroid.filmy.databinding.ActivityFullCastBinding
@@ -37,7 +37,7 @@ class FullCastActivity : AppCompatActivity(), CastAdapter.ClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = intent?.getStringExtra("toolbar_title")
 
-        val par = MovieDetailsActivityParseWork(this, castResult)
+        val par = MovieDetailsActivityParseWork(castResult)
         val castList = par.parseCastMembers()
         val fullCastAdapter = CastAdapter(this, castList, false)
         fullCastAdapter.setClickListener(this)

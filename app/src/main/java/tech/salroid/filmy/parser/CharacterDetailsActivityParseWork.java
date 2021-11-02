@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.salroid.filmy.data_classes.PersonMovieDetailsData;
+import tech.salroid.filmy.data.PersonMovieDetailsData;
 
 /*
  * Filmy Application for Android
@@ -50,10 +50,9 @@ public class CharacterDetailsActivityParseWork {
                 String moviePoster = "http://image.tmdb.org/t/p/w45"
                         + jsonArray.getJSONObject(i).getString("poster_path");
 
-                movie = new PersonMovieDetailsData();
+                movie = new PersonMovieDetailsData(movieId);
                 movie.setMovieTitle(movieTitle);
                 movie.setRolePlayed(playedRole);
-                movie.setMovieId(movieId);
                 movie.setMoviePoster(moviePoster);
 
                 allMovies.add(movie);

@@ -6,7 +6,6 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.common.api.GoogleApiClient
 import android.os.Bundle
 import android.preference.PreferenceManager
-import butterknife.ButterKnife
 import androidx.core.content.res.ResourcesCompat
 import android.content.Intent
 import android.graphics.Color
@@ -36,7 +35,6 @@ class CollectionsActivity : AppCompatActivity() {
 
         binding = ActivityCollectionsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ButterKnife.bind(this)
         setSupportActionBar(binding.toolbar)
 
         supportActionBar?.title = " "

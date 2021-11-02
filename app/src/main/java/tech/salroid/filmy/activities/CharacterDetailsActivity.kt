@@ -210,9 +210,4 @@ class CharacterDetailsActivity : AppCompatActivity(),
             super.onBackPressed()
         }
     }
-
-    override fun onStop() {
-        super.onStop()
-        Glide.with(this).clear(binding.displayProfile)
-    }
 }

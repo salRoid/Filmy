@@ -8,15 +8,15 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:strokeWidth="0dp"
+        app:cardCornerRadius="0dp"
         app:strokeColor="@color/grey"
-        app:cardCornerRadius="0dp">
+        app:strokeWidth="0dp">
 
         <RelativeLayout
             android:id="@+id/detail_fragment_views_layout"
             android:layout_width="match_parent"
-            android:minHeight="200dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:minHeight="200dp">
 
             <TextView
                 android:id="@+id/card_holder"
@@ -32,7 +32,7 @@
                 android:id="@+id/more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:background="?android:selectableItemBackground"
                 android:fontFamily="@font/circularstd_book"
                 android:padding="16dp"
@@ -47,19 +47,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/card_holder"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
-
 
             <tech.salroid.filmy.customs.BreathingProgress
                 android:id="@+id/breathingProgressFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
         </RelativeLayout>
+
     </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>

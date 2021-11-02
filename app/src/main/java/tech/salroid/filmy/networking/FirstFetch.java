@@ -9,7 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import tech.salroid.filmy.BuildConfig;
 import tech.salroid.filmy.parser.MainActivityParseWork;
-import tech.salroid.filmy.work_manager.FilmyWorkManager;
+import tech.salroid.filmy.workers.FilmyWorkManager;
 
 public class FirstFetch {
 

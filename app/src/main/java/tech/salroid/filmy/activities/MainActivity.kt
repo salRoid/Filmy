@@ -36,7 +36,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.appcompat.widget.Toolbar
-import tech.salroid.filmy.utility.Network
+import tech.salroid.filmy.utility.NetworkUtil
 
 /*
  * Filmy Application for Android
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         mErrorView!!.setRetryListener {
-            if (Network.isNetworkConnected(this@MainActivity)) {
+            if (NetworkUtil.isNetworkConnected(this@MainActivity)) {
                 fetchingFromNetwork = true
                 setScheduler()
             }
@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity() {
                 enableToolbarScrolling()
             }
         })
-        if (Network.isNetworkConnected(this)) {
+        if (NetworkUtil.isNetworkConnected(this)) {
             fetchingFromNetwork = true
             setScheduler()
         }

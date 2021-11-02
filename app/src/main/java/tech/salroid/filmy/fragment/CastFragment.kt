@@ -16,7 +16,7 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.FullCastActivity
 import tech.salroid.filmy.custom_adapter.CastAdapter
-import tech.salroid.filmy.data_classes.CastDetailsData
+import tech.salroid.filmy.data_classes.CastMemberDetailsData
 import tech.salroid.filmy.databinding.CastFragmentBinding
 import tech.salroid.filmy.networking.TmdbVolleySingleton
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
@@ -93,7 +93,7 @@ class CastFragment : Fragment(), CastAdapter.ClickListener {
 
     private fun parseCastOutput(castResult: String) {
         val par = MovieDetailsActivityParseWork(activity, castResult)
-        val castList = par.parse_cast()
+        val castList = par.parseCastMembers()
 
         val castAdapter = CastAdapter(activity, castList, true)
         castAdapter.setClickListener(this)
@@ -117,7 +117,7 @@ class CastFragment : Fragment(), CastAdapter.ClickListener {
         binding.detailFragmentViewsLayout.minimumHeight = 0
     }
 
-    override fun itemClicked(setterGetter: CastDetailsData, position: Int, view: View) {
+    override fun itemClicked(setterGetter: CastMemberDetailsData, position: Int, view: View) {
         val intent = Intent(activity, CharacterDetailsActivity::class.java)
         intent.putExtra("id", setterGetter.castId)
 

@@ -30,18 +30,18 @@ import tech.salroid.filmy.data_classes.PersonMovieDetailsData;
 public class CharacterDetailsActivityParseWork {
 
     private Context context;
-    private String char_result;
+    private String moviesResponse;
 
-    public CharacterDetailsActivityParseWork(Context context, String char_result) {
+    public CharacterDetailsActivityParseWork(Context context, String moviesResponse) {
         this.context = context;
-        this.char_result = char_result;
+        this.moviesResponse = moviesResponse;
     }
 
     public List<PersonMovieDetailsData> parsePersonMovies() {
         final List<PersonMovieDetailsData> allMovies = new ArrayList<PersonMovieDetailsData>();
         PersonMovieDetailsData movie = null;
         try {
-            JSONObject jsonObject = new JSONObject(char_result);
+            JSONObject jsonObject = new JSONObject(moviesResponse);
             JSONArray jsonArray = jsonObject.getJSONArray("cast");
             for (int i = 0; i < jsonArray.length(); i++) {
                 String playedRole = jsonArray.getJSONObject(i).getString("character");

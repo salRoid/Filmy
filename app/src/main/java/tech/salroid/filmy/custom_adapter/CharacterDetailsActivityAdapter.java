@@ -60,10 +60,9 @@ public class CharacterDetailsActivityAdapter extends RecyclerView.Adapter<Charac
 
     @Override
     public void onBindViewHolder(@NonNull Fo holder, int position) {
-        String movieName, moviePoster, rolePlayed;
-        movieName = moviesList.get(position).getMovieTitle();
-        moviePoster = moviesList.get(position).getMoviePoster();
-        rolePlayed = moviesList.get(position).getRolePlayed();
+        String movieName = moviesList.get(position).getMovieTitle();
+        String moviePoster = moviesList.get(position).getMoviePoster();
+        String rolePlayed = moviesList.get(position).getRolePlayed();
 
         holder.movieName.setText(movieName);
         holder.rolePlayed.setText(rolePlayed);

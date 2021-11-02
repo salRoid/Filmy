@@ -72,14 +72,14 @@ internal object Rating {
 
     private fun setRatingCallback(
             context: Context,
-            imdb_rating: String,
+            imdbRating: String,
             tomatoMeterRating: String,
             audienceRating: String,
             metaScoreRating: String,
             rottenTomatoPage: String?
     ) {
         (context as MovieDetailsActivity).setRating(
-                imdb_rating,
+                imdbRating,
                 tomatoMeterRating,
                 audienceRating,
                 metaScoreRating,

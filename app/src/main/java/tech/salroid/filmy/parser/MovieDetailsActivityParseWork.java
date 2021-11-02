@@ -48,10 +48,10 @@ public class MovieDetailsActivityParseWork {
             JSONArray jsonArray = jsonObject.getJSONArray("cast");
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                String id = (jsonArray.getJSONObject(i)).getString("id");
-                String name = (jsonArray.getJSONObject(i)).getString("name");
-                String rolePlayed = (jsonArray.getJSONObject(i)).getString("character");
-                String displayProfile = (jsonArray.getJSONObject(i)).getString("profile_path");
+                String id = jsonArray.getJSONObject(i).getString("id");
+                String name = jsonArray.getJSONObject(i).getString("name");
+                String rolePlayed = jsonArray.getJSONObject(i).getString("character");
+                String displayProfile = jsonArray.getJSONObject(i).getString("profile_path");
                 displayProfile = "http://image.tmdb.org/t/p/w185" + displayProfile;
 
                 castMember = new CastMemberDetailsData();
@@ -77,10 +77,10 @@ public class MovieDetailsActivityParseWork {
             JSONObject jsonObject = new JSONObject(result);
             JSONArray crewArray = jsonObject.getJSONArray("crew");
             for (int i = 0; i < crewArray.length(); i++) {
-                String memberId = (crewArray.getJSONObject(i)).getString("id");
-                String memberJobDescription = (crewArray.getJSONObject(i)).getString("job");
-                String memberName = (crewArray.getJSONObject(i)).getString("name");
-                String memberProfile = (crewArray.getJSONObject(i)).getString("profile_path");
+                String memberId = crewArray.getJSONObject(i).getString("id");
+                String memberJobDescription = crewArray.getJSONObject(i).getString("job");
+                String memberName = crewArray.getJSONObject(i).getString("name");
+                String memberProfile = crewArray.getJSONObject(i).getString("profile_path");
                 memberProfile = "http://image.tmdb.org/t/p/w185" + memberProfile;
 
                 if (!memberProfile.contains("null")) {

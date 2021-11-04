@@ -14,7 +14,7 @@ import android.view.MenuItem
 import tech.salroid.filmy.fragment.Favorite
 import tech.salroid.filmy.fragment.WatchList
 import com.google.android.gms.appindexing.AppIndex
-import tech.salroid.filmy.custom_adapter.MyPagerAdapter
+import tech.salroid.filmy.adapters.MyPagerAdapter
 import tech.salroid.filmy.fragment.SavedMovies
 import androidx.core.content.ContextCompat
 import com.google.android.gms.appindexing.Action

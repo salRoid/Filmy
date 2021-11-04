@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.FullCrewActivity
-import tech.salroid.filmy.custom_adapter.CrewAdapter
-import tech.salroid.filmy.data.CrewMemberDetailsData
+import tech.salroid.filmy.adapters.CrewAdapter
 import tech.salroid.filmy.databinding.CrewFragmentBinding
 import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
 
-class CrewFragment : Fragment(), CrewAdapter.ClickListener {
+class CrewFragment : Fragment() {
 
     private var jsonCrew: String? = null
     private var movieId: String? = null
@@ -57,20 +56,26 @@ class CrewFragment : Fragment(), CrewAdapter.ClickListener {
         movieTitle = arguments?.getString("movie_title")
     }
 
-    fun parseCrewOutput(crewResult: String?) {
-        val par = MovieDetailsActivityParseWork(crewResult)
-        val crewList = par.parseCrewMembers()
+    fun parseCrewOutput(crewResult: String) {
+        val parser = MovieDetailsActivityParseWork(crewResult)
+        val crewList = parser.parseCrewMembers()
         jsonCrew = crewResult
 
-        binding.crewRecycler.adapter = CrewAdapter(activity, crewList, true).apply {
-            setClickListener(this@CrewFragment)
+        binding.crewRecycler.adapter = CrewAdapter(crewList, true) { member, _, view ->
+            val intent = Intent(activity, CharacterDetailsActivity::class.java)
+            intent.putExtra("id", member.crewMemberId)
+            val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
+            val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, p1, p2)
+
+            startActivity(intent, options.toBundle())
         }
 
         when {
             crewList.size > 4 -> {
                 binding.crewMore.visibility = View.VISIBLE
             }
-            crewList.size == 0 -> {
+            crewList.isEmpty() -> {
                 binding.crewMore.visibility = View.INVISIBLE
                 binding.cardHolder.visibility = View.INVISIBLE
             }
@@ -82,18 +87,6 @@ class CrewFragment : Fragment(), CrewAdapter.ClickListener {
         binding.breathingProgressFragment.visibility = View.GONE
         binding.crewRecycler.visibility = View.VISIBLE
         binding.detailFragmentViewsLayout.minimumHeight = 0
-    }
-
-
-    override fun itemClicked(member: CrewMemberDetailsData, position: Int, view: View) {
-        val intent = Intent(activity, CharacterDetailsActivity::class.java)
-        intent.putExtra("id", member.crewMemberId)
-
-        val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
-        val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, p1, p2)
-
-        startActivity(intent, options.toBundle())
     }
 
     companion object {

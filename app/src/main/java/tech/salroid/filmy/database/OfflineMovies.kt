@@ -1,7 +1,7 @@
 package tech.salroid.filmy.database
 
 import android.content.ContentValues
-import tech.salroid.filmy.customs.CustomToast
+import tech.salroid.filmy.views.CustomToast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tech.salroid.filmy.R
 import android.widget.TextView
@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.content.ContentUris
 import android.content.Context
 import android.graphics.Color
-import java.util.HashMap
 
 class OfflineMovies(private val context: Context) {
 

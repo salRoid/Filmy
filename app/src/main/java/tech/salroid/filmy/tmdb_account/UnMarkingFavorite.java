@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tech.salroid.filmy.BuildConfig;
-import tech.salroid.filmy.customs.CustomToast;
+import tech.salroid.filmy.views.CustomToast;
 import tech.salroid.filmy.networking.TmdbVolleySingleton;
 
 /*

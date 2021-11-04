@@ -5,11 +5,10 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:paddingBottom="8dp"
     android:paddingLeft="16dp"
+    android:paddingTop="8dp"
     android:paddingRight="16dp"
-    android:paddingTop="8dp">
-
+    android:paddingBottom="8dp">
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/movie_poster"
@@ -23,8 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/movie_poster"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/movie_poster"
         android:fontFamily="@font/circularstd_book"
         android:textAppearance="?android:textAppearanceMedium" />
 
@@ -33,10 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_name"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/movie_poster"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/movie_poster"
         android:fontFamily="@font/circularstd_book"
         android:textAppearance="?android:textAppearanceSmall" />
-
 
 </RelativeLayout>

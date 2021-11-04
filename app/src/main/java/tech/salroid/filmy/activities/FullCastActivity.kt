@@ -1,23 +1,21 @@
 package tech.salroid.filmy.activities
 
-import androidx.appcompat.app.AppCompatActivity
-import tech.salroid.filmy.custom_adapter.CastAdapter
-import tech.salroid.filmy.R
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.content.Intent
 import android.view.MenuItem
 import android.view.View
-import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
-import tech.salroid.filmy.data.CastMemberDetailsData
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.recyclerview.widget.LinearLayoutManager
+import tech.salroid.filmy.R
+import tech.salroid.filmy.adapters.CastAdapter
 import tech.salroid.filmy.databinding.ActivityFullCastBinding
+import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
 
-class FullCastActivity : AppCompatActivity(), CastAdapter.ClickListener {
+class FullCastActivity : AppCompatActivity() {
 
-    private var castResult: String? = null
     private var nightMode = false
     private lateinit var binding: ActivityFullCastBinding
 
@@ -33,24 +31,25 @@ class FullCastActivity : AppCompatActivity(), CastAdapter.ClickListener {
         setSupportActionBar(binding.toolbar)
         binding.fullCastRecycler.layoutManager = LinearLayoutManager(this@FullCastActivity)
 
-        castResult = intent?.getStringExtra("cast_json")
+        val castResult = intent?.getStringExtra("cast_json")
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = intent?.getStringExtra("toolbar_title")
 
-        val par = MovieDetailsActivityParseWork(castResult)
-        val castList = par.parseCastMembers()
-        val fullCastAdapter = CastAdapter(this, castList, false)
-        fullCastAdapter.setClickListener(this)
-        binding.fullCastRecycler.adapter = fullCastAdapter
-    }
+        val parser = castResult?.let { MovieDetailsActivityParseWork(it) }
+        val castList = parser?.parseCastMembers()
 
-    override fun itemClicked(setterGetter: CastMemberDetailsData, position: Int, view: View) {
-        val intent = Intent(this, CharacterDetailsActivity::class.java)
-        intent.putExtra("id", setterGetter.castId)
-        val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")
-        val p2 = Pair.create(view.findViewById<View>(R.id.cast_name), "name")
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)
-        startActivity(intent, options.toBundle())
+        val fullCastAdapter = castList?.let {
+            CastAdapter(it, false) { castData, _, view ->
+                val intent = Intent(this, CharacterDetailsActivity::class.java)
+                intent.putExtra("id", castData.castId)
+                val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")
+                val p2 = Pair.create(view.findViewById<View>(R.id.cast_name), "name")
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)
+                startActivity(intent, options.toBundle())
+            }
+        }
+
+        binding.fullCastRecycler.adapter = fullCastAdapter
     }
 
     override fun onResume() {

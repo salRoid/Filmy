@@ -1,23 +1,21 @@
 package tech.salroid.filmy.activities
 
-import androidx.appcompat.app.AppCompatActivity
-import tech.salroid.filmy.custom_adapter.CrewAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import tech.salroid.filmy.R
-import androidx.recyclerview.widget.LinearLayoutManager
-import android.content.Intent
 import android.view.MenuItem
 import android.view.View
-import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
-import tech.salroid.filmy.data.CrewMemberDetailsData
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.recyclerview.widget.LinearLayoutManager
+import tech.salroid.filmy.R
+import tech.salroid.filmy.adapters.CrewAdapter
 import tech.salroid.filmy.databinding.ActivityFullCastBinding
+import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
 
-class FullCrewActivity : AppCompatActivity(), CrewAdapter.ClickListener {
+class FullCrewActivity : AppCompatActivity() {
 
-    private var crewResult: String? = null
     private var nightMode = false
     private lateinit var binding: ActivityFullCastBinding
 
@@ -32,25 +30,27 @@ class FullCrewActivity : AppCompatActivity(), CrewAdapter.ClickListener {
 
         setSupportActionBar(binding.toolbar)
         binding.fullCastRecycler.layoutManager = LinearLayoutManager(this@FullCrewActivity)
-        crewResult = intent?.getStringExtra("crew_json")
+        val crewResult = intent?.getStringExtra("crew_json")
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = intent.getStringExtra("toolbar_title")
 
-        val par = MovieDetailsActivityParseWork(crewResult)
-        val crewList = par.parseCrewMembers()
-        val fullCrewAdapter = CrewAdapter(this, crewList, false)
-        fullCrewAdapter.setClickListener(this)
-        binding.fullCastRecycler.adapter = fullCrewAdapter
-    }
+        val parser = crewResult?.let { MovieDetailsActivityParseWork(it) }
+        val crewList = parser?.parseCrewMembers()
 
-    override fun itemClicked(crewMember: CrewMemberDetailsData, position: Int, view: View) {
-        val intent = Intent(this, CharacterDetailsActivity::class.java)
-        intent.putExtra("id", crewMember.crewMemberId)
-        val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
-        val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)
-        startActivity(intent, options.toBundle())
+        val fullCrewAdapter =
+            crewList?.let {
+                CrewAdapter(it, false) { crewMember, _, view ->
+                    val intent = Intent(this, CharacterDetailsActivity::class.java)
+                    intent.putExtra("id", crewMember.crewMemberId)
+                    val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
+                    val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)
+                    startActivity(intent, options.toBundle())
+                }
+            }
+
+        binding.fullCastRecycler.adapter = fullCrewAdapter
     }
 
     override fun onResume() {

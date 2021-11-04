@@ -8,7 +8,7 @@ import tech.salroid.filmy.R
 import androidx.core.content.res.ResourcesCompat
 import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
-import tech.salroid.filmy.customs.CustomToast
+import tech.salroid.filmy.views.CustomToast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import android.content.Intent

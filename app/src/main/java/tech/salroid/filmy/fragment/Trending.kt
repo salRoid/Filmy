@@ -16,14 +16,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.MainActivity
 import tech.salroid.filmy.activities.MovieDetailsActivity
-import tech.salroid.filmy.custom_adapter.MainActivityAdapter
-import tech.salroid.filmy.customs.CustomToast
+import tech.salroid.filmy.adapters.MainActivityAdapter
 import tech.salroid.filmy.database.FilmContract
 import tech.salroid.filmy.database.MovieProjection
 import tech.salroid.filmy.databinding.FragmentTrendingBinding
+import tech.salroid.filmy.views.CustomToast
 
-class Trending : Fragment(), MainActivityAdapter.ClickListener,
-    LoaderManager.LoaderCallbacks<Cursor?> {
+class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
 
     private var mainActivityAdapter: MainActivityAdapter? = null
     private var gridLayoutManager: StaggeredGridLayoutManager? = null
@@ -105,9 +104,8 @@ class Trending : Fragment(), MainActivityAdapter.ClickListener,
                 }
             }
         }
-        mainActivityAdapter = MainActivityAdapter(activity, null)
+        mainActivityAdapter = MainActivityAdapter { itemClicked(it) }
         binding.recycler.adapter = mainActivityAdapter
-        mainActivityAdapter?.setClickListener(this)
 
         return view
     }
@@ -149,7 +147,7 @@ class Trending : Fragment(), MainActivityAdapter.ClickListener,
         mainActivityAdapter?.swapCursor(null)
     }
 
-    override fun itemClicked(cursor: Cursor) {
+    private fun itemClicked(cursor: Cursor) {
         val idIndex = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID)
         val titleIndex = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE)
 

@@ -12,6 +12,7 @@ class FilmyIntro : AppIntro2() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         addSlide(IntroFragmentA())
         addSlide(IntroFragmentB())
         addSlide(IntroFragmentC())

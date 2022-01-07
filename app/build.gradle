@@ -77,9 +77,13 @@ dependencies {
     implementation 'com.github.paolorotolo:appintro:4.0.0'
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.jakewharton:butterknife:10.1.0'
+    implementation 'androidx.test:core-ktx:1.4.0'
     kapt 'com.jakewharton:butterknife-compiler:10.1.0'
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'junit:junit:4.13.2'
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+    androidTestImplementation "androidx.test:runner:1.4.0"
+    androidTestImplementation "androidx.test:rules:1.4.0"
 }

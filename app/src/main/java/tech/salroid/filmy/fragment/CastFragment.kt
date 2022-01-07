@@ -85,8 +85,7 @@ class CastFragment : Fragment() {
         ) {
             binding.breathingProgressFragment.visibility = View.GONE
         }
-        val volleySingleton = TmdbVolleySingleton.getInstance()
-        val requestQueue = volleySingleton.requestQueue
+        val requestQueue = TmdbVolleySingleton.requestQueue
         requestQueue.add(jsonObjectRequestForMovieCastDetails)
     }
 

@@ -21,8 +21,7 @@ class AddRating {
 
     private val apiKey = BuildConfig.TMDB_API_KEY
     private val pref = "SESSION_PREFERENCE"
-    private val tmdbVolleySingleton = TmdbVolleySingleton.getInstance()
-    private val tmdbrequestQueue = tmdbVolleySingleton.requestQueue
+    private val tmdbRequestQueue = TmdbVolleySingleton.requestQueue
     private var context: Context? = null
     private var notifId = 0
     private lateinit var mNotifyManager: NotificationManager
@@ -60,7 +59,7 @@ class AddRating {
                     rating
                 )
             }) { error -> Log.e("webi", "Volley Error: " + error.cause) }
-        tmdbrequestQueue.add(jsonObjectRequest)
+        tmdbRequestQueue.add(jsonObjectRequest)
     }
 
     private fun parseOutput(response: JSONObject, sessionId: String?, mediaId: Int, rating: Int) {
@@ -107,7 +106,7 @@ class AddRating {
                 return headers
             }
         }
-        tmdbrequestQueue.add(jsonObjectRequest)
+        tmdbRequestQueue.add(jsonObjectRequest)
     }
 
     private fun parseMarkedResponse(response: JSONObject) {

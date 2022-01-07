@@ -18,8 +18,7 @@ class InTheatersWorker(
     workParameters: WorkerParameters
 ) : ListenableWorker(context, workParameters) {
 
-    private val tmdbVolleySingleton = TmdbVolleySingleton.getInstance()
-    private val tmdbRequestQueue = tmdbVolleySingleton.requestQueue
+    private val tmdbRequestQueue = TmdbVolleySingleton.requestQueue
     private var taskFinished = 0
 
     override fun startWork(): ListenableFuture<Result> {

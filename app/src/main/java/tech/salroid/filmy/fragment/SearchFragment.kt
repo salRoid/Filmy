@@ -100,8 +100,7 @@ class SearchFragment : Fragment() {
     fun getSearchedResult(query: String) {
         val trimmedQuery = query.trim { it <= ' ' }
         val finalQuery = trimmedQuery.replace(" ", "-")
-        val volleySingleton = VolleySingleton.getInstance()
-        val requestQueue = volleySingleton.requestQueue
+        val requestQueue = VolleySingleton.requestQueue
 
         val baseUrl =
             "https://api.themoviedb.org/3/search/movie?api_key=${BuildConfig.TMDB_API_KEY}&query=$finalQuery"

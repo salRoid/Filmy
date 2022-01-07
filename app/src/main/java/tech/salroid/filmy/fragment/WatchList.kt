@@ -164,7 +164,7 @@ class WatchList : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             FilmContract.SaveEntry.SAVE_RATING,
             FilmContract.SaveEntry.SAVE_LANGUAGE,
             FilmContract.SaveEntry.SAVE_RELEASED,
-            FilmContract.SaveEntry._ID,
+            FilmContract.SaveEntry.getID(),
             FilmContract.SaveEntry.SAVE_YEAR,
             FilmContract.SaveEntry.SAVE_CERTIFICATION,
             FilmContract.SaveEntry.SAVE_RUNTIME,

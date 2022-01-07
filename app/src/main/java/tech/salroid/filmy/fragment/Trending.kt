@@ -29,24 +29,23 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     private var isInMultiWindowMode = false
     var isShowingFromDatabase = false
 
-    private var _binding: FragmentTrendingBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentTrendingBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTrendingBinding.inflate(inflater, container, false)
+        binding = FragmentTrendingBinding.inflate(inflater, container, false)
         val view = binding.root
 
         val tabletSize = resources.getBoolean(R.bool.isTablet)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            isInMultiWindowMode = activity!!.isInMultiWindowMode
+            isInMultiWindowMode = activity?.isInMultiWindowMode == true
         }
 
         when {
             tabletSize -> {
-                when (activity!!.resources.configuration.orientation) {
+                when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
                         gridLayoutManager = StaggeredGridLayoutManager(
                             6,
@@ -75,7 +74,7 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
                 }
             }
             else -> {
-                when (activity!!.resources.configuration.orientation) {
+                when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
                         gridLayoutManager = StaggeredGridLayoutManager(
                             3,
@@ -112,7 +111,7 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
 
     override fun onResume() {
         super.onResume()
-        activity!!.supportLoaderManager.initLoader(
+        activity?.supportLoaderManager?.initLoader(
             MovieProjection.TRENDING_MOVIE_LOADER,
             null,
             this
@@ -123,7 +122,7 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
         val moviesForTheUri = FilmContract.MoviesEntry.CONTENT_URI
 
         return CursorLoader(
-            activity!!,
+            requireContext(),
             moviesForTheUri,
             MovieProjection.MOVIE_COLUMNS,
             null,
@@ -166,7 +165,7 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean) {
         super.onMultiWindowModeChanged(isInMultiWindowMode)
 
-        if (activity!!.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             gridLayoutManager = if (isInMultiWindowMode) StaggeredGridLayoutManager(
                 3,
                 StaggeredGridLayoutManager.VERTICAL
@@ -182,10 +181,5 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             null,
             this
         )
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

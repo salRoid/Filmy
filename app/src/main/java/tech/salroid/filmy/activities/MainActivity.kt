@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        if (supportActionBar != null) supportActionBar!!.setTitle(" ")
+        supportActionBar?.title = " "
         introLogic()
         if (nightMode) allThemeLogic()
 
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         binding.searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 getSearchedResult(query)
-                searchFragment!!.showProgress()
+                searchFragment.showProgress()
                 return true
             }
 
@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                 disableToolbarScrolling()
                 searchFragment = SearchFragment()
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.search_container, searchFragment!!)
+                    .replace(R.id.search_container, searchFragment)
                     .commit()
             }
 

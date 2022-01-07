@@ -29,24 +29,23 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     private var isShowingFromDatabase = false
     private var isInMultiWindowMode = false
 
-    private var _binding: FragmentUpComingBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentUpComingBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentUpComingBinding.inflate(inflater, container, false)
+        binding = FragmentUpComingBinding.inflate(inflater, container, false)
         val view = binding.root
 
         val tabletSize = resources.getBoolean(R.bool.isTablet)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            isInMultiWindowMode = activity!!.isInMultiWindowMode
+            isInMultiWindowMode = activity?.isInMultiWindowMode == true
         }
 
         when {
             tabletSize -> {
-                when (activity!!.resources.configuration.orientation) {
+                when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
                         gridLayoutManager = StaggeredGridLayoutManager(
                             6,
@@ -72,7 +71,7 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
                 }
             }
             else -> {
-                when (activity!!.resources.configuration.orientation) {
+                when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
                         gridLayoutManager =
                             StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
@@ -100,7 +99,7 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
 
     override fun onResume() {
         super.onResume()
-        activity!!.supportLoaderManager.initLoader(
+        requireActivity().supportLoaderManager.initLoader(
             MovieProjection.UPCOMING_MOVIE_LOADER,
             null,
             this
@@ -126,7 +125,7 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor?> {
         val moviesForTheUri = FilmContract.UpComingMoviesEntry.CONTENT_URI
         return CursorLoader(
-            activity!!,
+            requireContext(),
             moviesForTheUri,
             MovieProjection.MOVIE_COLUMNS,
             null,
@@ -142,7 +141,7 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             binding.breathingProgress.visibility = View.GONE
         } else if (!(activity as MainActivity).fetchingFromNetwork) {
             CustomToast.show(activity, "Failed to get Upcoming movies.", true)
-            (activity as MainActivity).cantProceed(-1)
+            (activity as MainActivity?)?.cantProceed(-1)
         }
     }
 
@@ -153,7 +152,7 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean) {
         super.onMultiWindowModeChanged(isInMultiWindowMode)
 
-        if (activity!!.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             gridLayoutManager = if (isInMultiWindowMode) StaggeredGridLayoutManager(
                 3,
                 StaggeredGridLayoutManager.VERTICAL
@@ -162,10 +161,5 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             binding.recycler.layoutManager = gridLayoutManager
             binding.recycler.adapter = mainActivityAdapter
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

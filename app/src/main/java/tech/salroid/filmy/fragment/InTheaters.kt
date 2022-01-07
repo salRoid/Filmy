@@ -30,25 +30,24 @@ class InTheaters : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     private var gridLayoutManager: StaggeredGridLayoutManager? = null
     private var isInMultiWindowMode = false
 
-    private var _binding: FragmentInTheatersBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentInTheatersBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentInTheatersBinding.inflate(inflater, container, false)
+        binding = FragmentInTheatersBinding.inflate(inflater, container, false)
         val view = binding.root
         val tabletSize = resources.getBoolean(R.bool.isTablet)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            isInMultiWindowMode = activity!!.isInMultiWindowMode
+            isInMultiWindowMode = activity?.isInMultiWindowMode == true
         }
 
         when {
             tabletSize -> {
-                when (activity!!.resources.configuration.orientation) {
+                when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
                         gridLayoutManager = StaggeredGridLayoutManager(
                             6,
@@ -74,7 +73,7 @@ class InTheaters : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
                 }
             }
             else -> {
-                if (activity!!.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT) {
                     gridLayoutManager =
                         StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
                     binding.recycler.layoutManager = gridLayoutManager
@@ -108,7 +107,7 @@ class InTheaters : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor?> {
         val moviesForTheUri = FilmContract.InTheatersMoviesEntry.CONTENT_URI
         return CursorLoader(
-            activity!!,
+            requireContext(),
             moviesForTheUri,
             MovieProjection.MOVIE_COLUMNS,
             null,
@@ -125,7 +124,7 @@ class InTheaters : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             binding.breathingProgress.visibility = View.GONE
         } else if (!(activity as MainActivity).fetchingFromNetwork) {
             CustomToast.show(activity, "Failed to get In Theaters movies.", true)
-            (activity as MainActivity?)!!.cantProceed(-1)
+            (activity as MainActivity?)?.cantProceed(-1)
         }
     }
 
@@ -160,10 +159,5 @@ class InTheaters : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             binding.recycler.layoutManager = gridLayoutManager
             binding.recycler.adapter = mainActivityAdapter
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

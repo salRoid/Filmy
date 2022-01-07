@@ -18,8 +18,8 @@ internal object Rating {
 
     @JvmStatic
     fun getRating(context: Context, movie_id_final: String) {
-        val volleySingleton = VolleySingleton.getInstance()
-        val requestQueue = volleySingleton.requestQueue
+
+        val requestQueue = VolleySingleton.requestQueue
         val baseRatingUrl =
                 "http://www.omdbapi.com/?i=$movie_id_final&apikey=$OMDB_API_KEY&tomatoes=true&r=json"
 

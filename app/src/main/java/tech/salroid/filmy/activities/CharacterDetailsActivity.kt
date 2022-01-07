@@ -96,8 +96,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
 
     private val personalDetailsAndMovies: Unit
         get() {
-            val volleySingleton = TmdbVolleySingleton.getInstance()
-            val requestQueue = volleySingleton.requestQueue
+            val requestQueue = TmdbVolleySingleton.requestQueue
             val apiKey = BuildConfig.TMDB_API_KEY
 
             val baseUrlPersonalDetails =

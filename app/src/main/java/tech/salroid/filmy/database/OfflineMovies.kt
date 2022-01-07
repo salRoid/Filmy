@@ -66,6 +66,7 @@ class OfflineMovies(private val context: Context) {
     }
 
     private fun addToDatabase(saveValues: ContentValues) {
+
         val returnedCursor = context.contentResolver.query(
             FilmContract.SaveEntry.CONTENT_URI,
             null,
@@ -88,7 +89,7 @@ class OfflineMovies(private val context: Context) {
 
             params.setMargins(96, 48, 96, 48)
             input.layoutParams = params
-            input.text = "Save Limit reached , want to remove the oldest movie and save this one ?"
+            input.text = "Save limit reached , want to remove the oldest movie and save this one ?"
             input.setTextColor(Color.parseColor("#303030"))
             container.addView(input)
             alertDialog.setView(container)
@@ -96,7 +97,7 @@ class OfflineMovies(private val context: Context) {
                 "Okay"
             ) { dialog, which ->
                 val deleteSelection =
-                    FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry._ID + " = ? "
+                    FilmContract.SaveEntry.TABLE_NAME + "." + FilmContract.SaveEntry.getID() + " = ? "
                 returnedCursor.moveToFirst()
 
                 //Log.d(LOG_TAG, "This is the last index value which is going to be deleted "+returnedCursor.getInt(0));
@@ -136,8 +137,10 @@ class OfflineMovies(private val context: Context) {
             }
             alertDialog.show()
         } else {
+
             val uri = context.contentResolver.insert(FilmContract.SaveEntry.CONTENT_URI, saveValues)
             val movieRowId = ContentUris.parseId(uri!!)
+
             if (movieRowId != -1L) CustomToast.show(
                 context,
                 "Movie saved successfully.",

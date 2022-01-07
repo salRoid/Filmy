@@ -5,7 +5,7 @@ import android.content.Context
 
 object MovieDetailsUpdate {
 
-   fun performMovieDetailsUpdate(
+    fun performMovieDetailsUpdate(
         context: Context,
         type: Int,
         movieMap: MutableMap<String, String?>,
@@ -36,9 +36,9 @@ object MovieDetailsUpdate {
                     selectionArgs
                 ).toLong()
 
-               /* if (id != -1L) {
-                    Log.d(LOG_TAG, "Movie row updated with new values.");
-                }*/
+                /* if (id != -1L) {
+                     Log.d(LOG_TAG, "Movie row updated with new values.");
+                 }*/
             }
             1 -> {
                 val selection2 = FilmContract.InTheatersMoviesEntry.TABLE_NAME +
@@ -52,9 +52,9 @@ object MovieDetailsUpdate {
                     selectionArgs2
                 ).toLong()
 
-               /* if (id2 != -1L) {
-                    Log.d(LOG_TAG, "Movie row updated with new values.");
-                }*/
+                /* if (id2 != -1L) {
+                     Log.d(LOG_TAG, "Movie row updated with new values.");
+                 }*/
             }
             2 -> {
 

@@ -18,8 +18,7 @@ class UnMarkingFavorite {
 
     private val apiKey = BuildConfig.TMDB_API_KEY
     private val pref = "SESSION_PREFERENCE"
-    private val tmdbVolleySingleton = TmdbVolleySingleton.getInstance()
-    private val tmdbrequestQueue = tmdbVolleySingleton.requestQueue
+    private val tmdbRequestQueue = TmdbVolleySingleton.requestQueue
     private var context: Context? = null
     private var listener: UnmarkedListener? = null
     private var position = 0
@@ -42,7 +41,7 @@ class UnMarkingFavorite {
                     Integer.valueOf(media_id)
                 )
             }) { error -> Log.e("webi", "Volley Error: " + error.cause) }
-        tmdbrequestQueue.add(jsonObjectRequest)
+        tmdbRequestQueue.add(jsonObjectRequest)
     }
 
     private fun parseOutput(response: JSONObject, session_id: String?, media_id: Int) {
@@ -92,7 +91,7 @@ class UnMarkingFavorite {
                 return headers
             }
         }
-        tmdbrequestQueue.add(jsonObjectRequest)
+        tmdbRequestQueue.add(jsonObjectRequest)
     }
 
     private fun parseUnMarkedResponse(response: JSONObject) {

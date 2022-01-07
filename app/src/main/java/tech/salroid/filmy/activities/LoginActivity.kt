@@ -23,8 +23,7 @@ import tech.salroid.filmy.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
-    private val tmdbVolleySingleton = TmdbVolleySingleton.getInstance()
-    private val tmdbrequestQueue = tmdbVolleySingleton.requestQueue
+    private val tmdbrequestQueue = TmdbVolleySingleton.requestQueue
     private var progressDialog: ProgressDialog? = null
     private var tokenization = false
     private var requestToken: String? = null

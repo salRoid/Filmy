@@ -17,8 +17,7 @@ class FilmySyncAdapter(context: Context?, autoInitialize: Boolean) :
     AbstractThreadedSyncAdapter(context, autoInitialize) {
 
     private var resource = FilmyApplication.context.resources
-    private var tmdbVolleySingleton = TmdbVolleySingleton.getInstance()
-    private var tmdbrequestQueue = tmdbVolleySingleton.requestQueue
+    private var tmdbRequestQueue = TmdbVolleySingleton.requestQueue
     private val apiKey = BuildConfig.TMDB_API_KEY
 
     override fun onPerformSync(
@@ -42,7 +41,7 @@ class FilmySyncAdapter(context: Context?, autoInitialize: Boolean) :
                 "Volley Error: " + error.cause
             )
         }
-        tmdbrequestQueue.add(jsonRequest)
+        tmdbRequestQueue.add(jsonRequest)
     }
 
     private fun syncNowUpComing() {
@@ -55,7 +54,7 @@ class FilmySyncAdapter(context: Context?, autoInitialize: Boolean) :
                 "Volley Error: " + error.cause
             )
         }
-        tmdbrequestQueue.add(jsonRequest)
+        tmdbRequestQueue.add(jsonRequest)
     }
 
     private fun syncNowTrending() {
@@ -64,7 +63,7 @@ class FilmySyncAdapter(context: Context?, autoInitialize: Boolean) :
         val jsonObjectRequest = JsonObjectRequest(BASE_URL, null,
             { response -> parseOutput(response.toString()) }
         ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
-        tmdbrequestQueue.add(jsonObjectRequest)
+        tmdbRequestQueue.add(jsonObjectRequest)
     }
 
     private fun inTheatresParseOutput(s: String, type: Int) {

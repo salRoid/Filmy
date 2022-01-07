@@ -2,7 +2,7 @@ package tech.salroid.filmy.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity

@@ -3,7 +3,6 @@ package tech.salroid.filmy.activities
 import androidx.appcompat.app.AppCompatActivity
 import tech.salroid.filmy.R
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import android.content.Intent
@@ -14,6 +13,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import tech.salroid.filmy.databinding.ActivityDevelopersBinding
 
 class AboutActivity : AppCompatActivity() {

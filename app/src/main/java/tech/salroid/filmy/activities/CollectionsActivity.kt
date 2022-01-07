@@ -5,7 +5,7 @@ import tech.salroid.filmy.R
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.common.api.GoogleApiClient
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.core.content.res.ResourcesCompat
 import android.content.Intent
 import android.graphics.Color

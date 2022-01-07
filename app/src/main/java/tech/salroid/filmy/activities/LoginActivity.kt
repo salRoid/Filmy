@@ -3,7 +3,7 @@ package tech.salroid.filmy.activities
 import androidx.appcompat.app.AppCompatActivity
 import tech.salroid.filmy.networking.TmdbVolleySingleton
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import tech.salroid.filmy.R
 import androidx.core.content.res.ResourcesCompat
 import com.android.volley.toolbox.JsonObjectRequest

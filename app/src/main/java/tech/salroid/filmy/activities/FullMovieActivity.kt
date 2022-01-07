@@ -2,7 +2,7 @@ package tech.salroid.filmy.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +37,7 @@ class FullMovieActivity : AppCompatActivity() {
         val par = CharacterDetailsActivityParseWork(movieResult.toString())
         val moviesList = par.parsePersonMovies()
         val movieAdapter =
-            CharacterDetailsActivityAdapter(moviesList, false) { personMovieDetail, position ->
+            CharacterDetailsActivityAdapter(moviesList, false) { personMovieDetail, _ ->
                 val intent = Intent(this, MovieDetailsActivity::class.java)
                 intent.putExtra("id", personMovieDetail.movieId)
                 intent.putExtra("title", personMovieDetail.movieTitle)

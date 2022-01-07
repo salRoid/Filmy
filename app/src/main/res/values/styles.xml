@@ -5,41 +5,34 @@
     <!-- Customize your theme here. -->
 
     <style name="AppTheme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
-
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="divider">@color/dividerColor</item>
-
     </style>
 
-
     <style name="AppTheme.Base.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
-
         <item name="colorPrimary">@color/colorAccent</item>
-
     </style>
 
     <style name="AppTheme.Base.Dark" parent="Theme.MaterialComponents.NoActionBar">
-
         <item name="colorPrimary">@color/colorDarkThemePrimary</item>
         <item name="colorPrimaryDark">@color/colorDarkThemePrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="divider">@color/dividerColorDarkTheme</item>
-
     </style>
 
-
-    <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="FullScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">#000000</item>
         <item name="colorPrimaryDark">#000000</item>
     </style>
 
     <style name="DetailsActivityTheme" parent="AppTheme">
         <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
     </style>
 
-    <style name="DetailsActivityThemeDark" parent="Theme.AppCompat.NoActionBar">
+    <style name="DetailsActivityThemeDark" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="colorPrimary">@color/colorDarkThemePrimary</item>
         <item name="colorPrimaryDark">@color/colorDarkThemePrimaryDark</item>
@@ -55,19 +48,13 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-
-
     <style name="MyToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">#FFFFFF</item>
     </style>
 
-
     <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-
-
 
     <style name="MaterialSearchViewStyle">
         <!-- Background for the search bar -->
@@ -100,6 +87,5 @@
     <style name="SplashTheme">
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
-
 
 </resources>

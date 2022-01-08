@@ -3,16 +3,13 @@ package tech.salroid.filmy.activities
 import androidx.appcompat.app.AppCompatActivity
 import tech.salroid.filmy.R
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.core.content.res.ResourcesCompat
-import android.preference.PreferenceFragment
-import android.preference.SwitchPreference
-import android.preference.CheckBoxPreference
-import android.preference.Preference.OnPreferenceChangeListener
-import android.preference.Preference.OnPreferenceClickListener
+import androidx.preference.Preference.OnPreferenceChangeListener
+import androidx.preference.Preference.OnPreferenceClickListener
 import android.content.Intent
 import android.graphics.Color
 import android.view.MenuItem
+import androidx.preference.*
 import tech.salroid.filmy.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
@@ -36,7 +33,8 @@ class SettingsActivity : AppCompatActivity() {
 
         binding.logo.typeface = ResourcesCompat.getFont(this, R.font.rubik)
         if (nightMode) allThemeLogic()
-        fragmentManager.beginTransaction().replace(R.id.container, MyPreferenceFragment()).commit()
+
+        supportFragmentManager.beginTransaction().replace(R.id.container, MyPreferenceFragment()).commit()
     }
 
     private fun allThemeLogic() {
@@ -50,17 +48,17 @@ class SettingsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    class MyPreferenceFragment : PreferenceFragment() {
+    class MyPreferenceFragment : PreferenceFragmentCompat() {
 
-        private var imagePref: SwitchPreference? = null
+        private var imagePref: SwitchPreferenceCompat? = null
         private var darkPref: CheckBoxPreference? = null
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            addPreferencesFromResource(R.xml.preference)
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.preference, rootKey)
 
             val myPreference = PreferenceManager.getDefaultSharedPreferences(activity).edit()
-            imagePref = findPreference("imagequality") as SwitchPreference
+
+            imagePref = findPreference("imagequality") as? SwitchPreferenceCompat
             imagePref?.onPreferenceChangeListener = OnPreferenceChangeListener { preference, o ->
                 val quality: String
                 val switchPreference = preference as SwitchPreference
@@ -74,40 +72,40 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
-            darkPref = findPreference("dark") as CheckBoxPreference
+            darkPref = findPreference("dark") as? CheckBoxPreference
             darkPref?.onPreferenceChangeListener = OnPreferenceChangeListener { _, _ ->
                 recreateActivity()
                 true
             }
 
-            val license = findPreference("license")
-            license.onPreferenceClickListener = OnPreferenceClickListener {
+            val license = findPreference("license") as? Preference
+            license?.onPreferenceClickListener = OnPreferenceClickListener {
                 startActivity(Intent(activity, License::class.java))
                 true
             }
 
-            val share = findPreference("Share")
-            share.onPreferenceClickListener = OnPreferenceClickListener {
+            val share = findPreference("Share") as? Preference
+            share?.onPreferenceClickListener = OnPreferenceClickListener {
                 val appShareDetails = resources.getString(R.string.app_share_link)
                 val myIntent = Intent(Intent.ACTION_SEND)
                 myIntent.type = "text/plain"
                 myIntent.putExtra(
-                        Intent.EXTRA_TEXT,
-                        "Check out this awesome movie app.\n*filmy*\n$appShareDetails"
+                    Intent.EXTRA_TEXT,
+                    "Check out this awesome movie app.\n*filmy*\n$appShareDetails"
                 )
                 startActivity(Intent.createChooser(myIntent, "Share with"))
                 true
             }
 
-            val about = findPreference("About")
-            about.onPreferenceClickListener = OnPreferenceClickListener {
+            val about = findPreference("About") as? Preference
+            about?.onPreferenceClickListener = OnPreferenceClickListener {
                 startActivity(Intent(activity, AboutActivity::class.java))
                 true
             }
         }
 
         private fun recreateActivity() {
-            activity.recreate()
+            activity?.recreate()
         }
     }
 }

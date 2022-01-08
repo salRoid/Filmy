@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,15 +37,22 @@ class SearchFragment : Fragment() {
 
         val sp = PreferenceManager.getDefaultSharedPreferences(activity)
         val nightMode = sp.getBoolean("dark", false)
-        if (nightMode) binding.fragmentRl.setBackgroundColor(activity!!.resources.getColor(R.color.black))
-        else binding.fragmentRl.setBackgroundColor(
-            activity!!.resources.getColor(R.color.grey)
-        )
+
+        if (nightMode) activity?.resources?.getColor(R.color.black)?.let {
+            binding.fragmentRl.setBackgroundColor(
+                it
+            )
+        }
+        else activity?.resources?.getColor(R.color.grey)?.let {
+            binding.fragmentRl.setBackgroundColor(
+                it
+            )
+        }
 
         val tabletSize = resources.getBoolean(R.bool.isTablet)
         when {
             tabletSize -> {
-                when (activity!!.resources.configuration.orientation) {
+                when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
                         val gridLayoutManager = StaggeredGridLayoutManager(
                             6,
@@ -63,7 +70,7 @@ class SearchFragment : Fragment() {
                 }
             }
             else -> {
-                when (activity!!.resources.configuration.orientation) {
+                when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
                         val gridLayoutManager = StaggeredGridLayoutManager(
                             3,
@@ -134,10 +141,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun hideSoftKeyboard() {
-        if (activity != null && activity!!.currentFocus != null) {
+        if (activity != null && activity?.currentFocus != null) {
             val inputMethodManager =
-                activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(activity!!.currentFocus!!.windowToken, 0)
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
         }
     }
 

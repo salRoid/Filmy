@@ -7,7 +7,7 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.speech.RecognizerIntent
 import android.text.TextUtils
 import android.view.Menu

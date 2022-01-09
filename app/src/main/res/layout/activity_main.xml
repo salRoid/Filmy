@@ -1,42 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinatorLayout"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="0dp">
+        android:layout_height="80dp"
+        app:elevation="0dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
             android:id="@+id/toolbarScroller"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:padding="0dp"
                 app:popupTheme="@style/ThemeOverlay.MaterialComponents"
                 app:theme="@style/ThemeOverlay.MaterialComponents">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/ic_launcher"
+                    />
 
                 <TextView
                     android:id="@+id/logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/rubik"
+                    android:fontFamily="@font/lobster_regular"
                     android:text="@string/app_name"
-                    android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="27sp"
+                    android:layout_marginTop="20dp"
+                    android:paddingStart="8dp"
+                    android:textStyle="bold" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -52,6 +64,7 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorColor="@color/dark"
             app:tabIndicatorFullWidth="false"
@@ -79,30 +92,106 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginRight="4dp"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+        android:layout_height="wrap_content">
 
-    <tr.xip.errorview.ErrorView
-        android:id="@+id/main_error_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:visibility="gone"
-        app:ev_retryColor="@color/colorAccent"
-        app:ev_retryText="TRY AGAIN"
-        app:ev_subtitle="Something went wrong!" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/coordinatorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/search_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize" />
+            <TextView
+                android:id="@+id/tvPopular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Popular"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/circularstd_book"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <fragment
+                android:id="@+id/fragmentTrending"
+                class="tech.salroid.filmy.fragment.Trending"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPopular" />
+
+            <TextView
+                android:id="@+id/tvInTheaters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="In Theaters"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/circularstd_book"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragmentTrending"
+                />
+
+            <fragment
+                android:id="@+id/fragmentInTheaters"
+                class="tech.salroid.filmy.fragment.InTheaters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvInTheaters" />
+
+            <TextView
+                android:id="@+id/tvUpcoming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upcoming"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/circularstd_book"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragmentInTheaters"
+                />
+
+            <fragment
+                class="tech.salroid.filmy.fragment.UpComing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvUpcoming" />
+
+            <tr.xip.errorview.ErrorView
+                android:id="@+id/main_error_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:visibility="gone"
+                app:ev_retryColor="@color/colorAccent"
+                app:ev_retryText="TRY AGAIN"
+                app:ev_subtitle="Something went wrong!"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <FrameLayout
+                    android:id="@+id/search_container"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp" />
+            </tr.xip.errorview.ErrorView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

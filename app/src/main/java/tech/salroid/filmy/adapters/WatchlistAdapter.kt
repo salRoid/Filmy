@@ -39,9 +39,8 @@ class WatchlistAdapter(
         }
 
         fun bindData(watchlistData: WatchlistData) {
-            val title = watchlistData.title
+
             val poster = watchlistData.poster
-            binding.title.text = title
 
             try {
                 Glide.with(binding.root.context).load(poster)

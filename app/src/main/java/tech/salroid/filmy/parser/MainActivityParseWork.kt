@@ -37,7 +37,7 @@ class MainActivityParseWork(private val context: Context, private val result: St
                     movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year)
                     movieValues.put(
                         FilmContract.MoviesEntry.MOVIE_POSTER_LINK,
-                        "http://image.tmdb.org/t/p/w185$poster"
+                        "http://image.tmdb.org/t/p/w342$poster"
                     )
                     cVVector.add(movieValues)
                 }
@@ -87,7 +87,7 @@ class MainActivityParseWork(private val context: Context, private val result: St
                     movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year)
                     movieValues.put(
                         FilmContract.MoviesEntry.MOVIE_POSTER_LINK,
-                        "http://image.tmdb.org/t/p/w185$poster"
+                        "http://image.tmdb.org/t/p/w342$poster"
                     )
                     cVVector.add(movieValues)
                 }
@@ -140,7 +140,7 @@ class MainActivityParseWork(private val context: Context, private val result: St
                     movieValues.put(FilmContract.MoviesEntry.MOVIE_YEAR, year)
                     movieValues.put(
                         FilmContract.MoviesEntry.MOVIE_POSTER_LINK,
-                        "http://image.tmdb.org/t/p/w185$poster"
+                        "http://image.tmdb.org/t/p/w342$poster"
                     )
                     cVVector.add(movieValues)
                 }

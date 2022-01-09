@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.MainActivity
 import tech.salroid.filmy.activities.MovieDetailsActivity
@@ -24,8 +24,8 @@ import tech.salroid.filmy.views.CustomToast
 
 class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
 
-    private var mainActivityAdapter: MainActivityAdapter? = null
-    private var gridLayoutManager: StaggeredGridLayoutManager? = null
+    private var adapter: MainActivityAdapter? = null
+    private var gridLayoutManager: GridLayoutManager? = null
     private var isInMultiWindowMode = false
     var isShowingFromDatabase = false
 
@@ -47,25 +47,31 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             tabletSize -> {
                 when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
-                        gridLayoutManager = StaggeredGridLayoutManager(
-                            6,
-                            StaggeredGridLayoutManager.VERTICAL
+                        gridLayoutManager = GridLayoutManager(
+                            context,
+                            2,
+                            GridLayoutManager.HORIZONTAL,
+                            false
                         )
                         binding.recycler.layoutManager = gridLayoutManager
                     }
                     else -> {
                         when {
                             isInMultiWindowMode -> {
-                                gridLayoutManager = StaggeredGridLayoutManager(
+                                gridLayoutManager = GridLayoutManager(
+                                    context,
                                     6,
-                                    StaggeredGridLayoutManager.VERTICAL
+                                    GridLayoutManager.HORIZONTAL,
+                                    false
                                 )
                                 binding.recycler.layoutManager = gridLayoutManager
                             }
                             else -> {
-                                gridLayoutManager = StaggeredGridLayoutManager(
+                                gridLayoutManager = GridLayoutManager(
+                                    context,
                                     8,
-                                    StaggeredGridLayoutManager.VERTICAL
+                                    GridLayoutManager.HORIZONTAL,
+                                    false
                                 )
                                 binding.recycler.layoutManager = gridLayoutManager
                             }
@@ -76,25 +82,31 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             else -> {
                 when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
-                        gridLayoutManager = StaggeredGridLayoutManager(
-                            3,
-                            StaggeredGridLayoutManager.VERTICAL
+                        gridLayoutManager = GridLayoutManager(
+                            context,
+                            1,
+                            GridLayoutManager.HORIZONTAL,
+                            false
                         )
                         binding.recycler.layoutManager = gridLayoutManager
                     }
                     else -> {
                         when {
                             isInMultiWindowMode -> {
-                                gridLayoutManager = StaggeredGridLayoutManager(
-                                    3,
-                                    StaggeredGridLayoutManager.VERTICAL
+                                gridLayoutManager = GridLayoutManager(
+                                    context,
+                                    1,
+                                    GridLayoutManager.HORIZONTAL,
+                                    false
                                 )
                                 binding.recycler.layoutManager = gridLayoutManager
                             }
                             else -> {
-                                gridLayoutManager = StaggeredGridLayoutManager(
-                                    5,
-                                    StaggeredGridLayoutManager.VERTICAL
+                                gridLayoutManager = GridLayoutManager(
+                                    context,
+                                    1,
+                                    GridLayoutManager.HORIZONTAL,
+                                    false
                                 )
                                 binding.recycler.layoutManager = gridLayoutManager
                             }
@@ -103,8 +115,8 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
                 }
             }
         }
-        mainActivityAdapter = MainActivityAdapter { itemClicked(it) }
-        binding.recycler.adapter = mainActivityAdapter
+        adapter = MainActivityAdapter { itemClicked(it) }
+        binding.recycler.adapter = adapter
 
         return view
     }
@@ -134,7 +146,7 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     override fun onLoadFinished(loader: Loader<Cursor?>, cursor: Cursor?) {
         if (cursor != null && cursor.count > 0) {
             isShowingFromDatabase = true
-            mainActivityAdapter?.swapCursor(cursor)
+            adapter?.swapCursor(cursor)
             binding.breathingProgress.visibility = View.GONE
         } else if (!(activity as MainActivity).fetchingFromNetwork) {
             CustomToast.show(activity, "Failed to get latest movies.", true)
@@ -143,7 +155,7 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     }
 
     override fun onLoaderReset(loader: Loader<Cursor?>) {
-        mainActivityAdapter?.swapCursor(null)
+        adapter?.swapCursor(null)
     }
 
     private fun itemClicked(cursor: Cursor) {
@@ -166,12 +178,14 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
         super.onMultiWindowModeChanged(isInMultiWindowMode)
 
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            gridLayoutManager = if (isInMultiWindowMode) StaggeredGridLayoutManager(
-                3,
-                StaggeredGridLayoutManager.VERTICAL
-            ) else StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL)
+            gridLayoutManager = if (isInMultiWindowMode) GridLayoutManager(
+                context,
+                2,
+                GridLayoutManager.HORIZONTAL,
+                false
+            ) else GridLayoutManager(context, 3, GridLayoutManager.HORIZONTAL, false)
             binding.recycler.layoutManager = gridLayoutManager
-            binding.recycler.adapter = mainActivityAdapter
+            binding.recycler.adapter = adapter
         }
     }
 

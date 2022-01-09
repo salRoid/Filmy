@@ -102,6 +102,6 @@ class FilmDbHelper(context: Context?) : SQLiteOpenHelper(context, DB_NAME, null,
 
     companion object {
         const val DB_NAME = "filmy.db"
-        private const val DB_VERSION = 790
+        private const val DB_VERSION = 792
     }
 }

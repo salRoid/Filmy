@@ -3,17 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v21/main_background.xml" value="0.25729166666666664" />
+        <entry key="app/src/main/res/drawable/main_background.xml" value="0.25729166666666664" />
         <entry key="app/src/main/res/layout/activity_detailed.xml" value="0.14492753623188406" />
         <entry key="app/src/main/res/layout/activity_developers.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_full_screen_image.xml" value="0.2028985507246377" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2028985507246377" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
         <entry key="app/src/main/res/layout/all_trailer_layout.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/cast_fragment.xml" value="0.1381340579710145" />
         <entry key="app/src/main/res/layout/char_custom_row.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/custom_row.xml" value="0.13134057971014493" />
+        <entry key="app/src/main/res/layout/custom_row_trending.xml" value="0.192481884057971" />
         <entry key="app/src/main/res/layout/extra_info_movie_detail.xml" value="0.22554347826086957" />
+        <entry key="app/src/main/res/layout/fragment_in_theaters.xml" value="0.20606884057971014" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.19610507246376813" />
+        <entry key="app/src/main/res/layout/fragment_trending.xml" value="0.13677536231884058" />
+        <entry key="app/src/main/res/layout/fragment_up_coming.xml" value="0.20606884057971014" />
         <entry key="app/src/main/res/layout/ratings.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/similar_custom_row.xml" value="0.1308876811594203" />
         <entry key="app/src/main/res/layout/single_trailer_view.xml" value="0.16576086956521738" />
         <entry key="app/src/main/res/xml/preference.xml" value="0.14175724637681159" />
       </map>

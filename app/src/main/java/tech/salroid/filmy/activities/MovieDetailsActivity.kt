@@ -20,7 +20,6 @@ import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.youtube.player.YouTubeStandalonePlayer
@@ -362,7 +361,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             Glide.with(this)
                 .asBitmap()
                 .load(displayBanner)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(object : SimpleTarget<Bitmap?>() {
                     override fun onResourceReady(
                         resource: Bitmap,
@@ -399,7 +397,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             Glide.with(this)
                 .asBitmap()
                 .load(imgUrl)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(object : SimpleTarget<Bitmap?>() {
                     override fun onResourceReady(
                         resource: Bitmap,
@@ -522,7 +519,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 Glide.with(this)
                     .asBitmap()
                     .load(bannerUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(object : SimpleTarget<Bitmap?>() {
 
                         override fun onResourceReady(
@@ -566,7 +562,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 Glide.with(this)
                     .asBitmap()
                     .load(thumbnail)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(object : SimpleTarget<Bitmap?>() {
                         override fun onResourceReady(
                             resource: Bitmap,
@@ -625,7 +620,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 Glide.with(this)
                     .asBitmap()
                     .load(bannerUrl)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(object : SimpleTarget<Bitmap?>() {
                         override fun onResourceReady(
                             resource: Bitmap,
@@ -662,7 +656,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 Glide.with(this)
                     .asBitmap()
                     .load(trailer)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(object : SimpleTarget<Bitmap?>() {
                         override fun onResourceReady(
                             resource: Bitmap,

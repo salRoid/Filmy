@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = " "
         introLogic()
-        if (nightMode) allThemeLogic()
+        if (nightMode) allThemeLogic() else lightThemeLogic()
 
         binding.mainErrorView.apply {
             title = getString(R.string.error_title_damn)
@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.mainErrorView.visibility = View.GONE
-        setupViewPager(binding.viewpager)
-        binding.tabLayout.setupWithViewPager(binding.viewpager)
+        //setupViewPager(binding.viewpager)
+        //binding.tabLayout.setupWithViewPager(binding.viewpager)
 
         binding.searchView.setVoiceSearch(true)
         binding.searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
@@ -146,6 +146,10 @@ class MainActivity : AppCompatActivity() {
         binding.searchView.setTextColor(Color.parseColor("#ffffff"))
     }
 
+    private fun lightThemeLogic() {
+        binding.logo.setTextColor(ContextCompat.getColor(this, R.color.dark))
+    }
+
     private fun introLogic() {
         val thread = Thread {
             val getPrefs = PreferenceManager.getDefaultSharedPreferences(baseContext)
@@ -171,7 +175,7 @@ class MainActivity : AppCompatActivity() {
             if (trendingFragment != null && !trendingFragment!!.isShowingFromDatabase) {
                 cantProceed = true
                 binding.tabLayout.visibility = View.GONE
-                binding.viewpager.visibility = View.GONE
+                //binding.viewpager.visibility = View.GONE
                 binding.mainErrorView.visibility = View.VISIBLE
                 disableToolbarScrolling()
             }
@@ -181,7 +185,7 @@ class MainActivity : AppCompatActivity() {
     private fun canProceed() {
         cantProceed = false
         binding.tabLayout.visibility = View.VISIBLE
-        binding.viewpager.visibility = View.VISIBLE
+        //binding.viewpager.visibility = View.VISIBLE
         binding.mainErrorView.visibility = View.GONE
         trendingFragment?.retryLoading()
         enableToolbarScrolling()
@@ -205,8 +209,8 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = MyPagerAdapter(supportFragmentManager)
         adapter.addFragment(trendingFragment!!, getString(R.string.trending))
-        adapter.addFragment(inTheatersFragment, getString(R.string.theatres))
-        adapter.addFragment(upComingFragment, getString(R.string.upcoming))
+       // adapter.addFragment(inTheatersFragment, getString(R.string.theatres))
+       // adapter.addFragment(upComingFragment, getString(R.string.upcoming))
         viewPager.adapter = adapter
     }
 

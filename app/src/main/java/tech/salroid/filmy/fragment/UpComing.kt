@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.MainActivity
 import tech.salroid.filmy.activities.MovieDetailsActivity
@@ -25,7 +25,7 @@ import tech.salroid.filmy.views.CustomToast
 class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
 
     private var mainActivityAdapter: MainActivityAdapter? = null
-    private var gridLayoutManager: StaggeredGridLayoutManager? = null
+    private var gridLayoutManager: GridLayoutManager? = null
     private var isShowingFromDatabase = false
     private var isInMultiWindowMode = false
 
@@ -47,23 +47,29 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             tabletSize -> {
                 when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
-                        gridLayoutManager = StaggeredGridLayoutManager(
-                            6,
-                            StaggeredGridLayoutManager.VERTICAL
+                        gridLayoutManager = GridLayoutManager(
+                            context,
+                            3,
+                            GridLayoutManager.HORIZONTAL,
+                            false
                         )
                         binding.recycler.layoutManager = gridLayoutManager
                     }
                     else -> {
                         if (isInMultiWindowMode) {
-                            gridLayoutManager = StaggeredGridLayoutManager(
-                                6,
-                                StaggeredGridLayoutManager.VERTICAL
+                            gridLayoutManager = GridLayoutManager(
+                                context,
+                                1,
+                                GridLayoutManager.HORIZONTAL,
+                                false
                             )
                             binding.recycler.layoutManager = gridLayoutManager
                         } else {
-                            gridLayoutManager = StaggeredGridLayoutManager(
-                                8,
-                                StaggeredGridLayoutManager.VERTICAL
+                            gridLayoutManager = GridLayoutManager(
+                                context,
+                                3,
+                                GridLayoutManager.HORIZONTAL,
+                                false
                             )
                             binding.recycler.layoutManager = gridLayoutManager
                         }
@@ -74,17 +80,30 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
                 when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
                         gridLayoutManager =
-                            StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+                            GridLayoutManager(
+                                context,
+                                1, GridLayoutManager.HORIZONTAL,
+                                false
+                            )
                         binding.recycler.layoutManager = gridLayoutManager
                     }
                     else -> {
                         if (isInMultiWindowMode) {
                             gridLayoutManager =
-                                StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+                                GridLayoutManager(
+                                    context,
+                                    1,
+                                    GridLayoutManager.HORIZONTAL,
+                                    false
+                                )
                             binding.recycler.layoutManager = gridLayoutManager
                         } else {
                             gridLayoutManager =
-                                StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL)
+                                GridLayoutManager(
+                                    context,
+                                    1, GridLayoutManager.HORIZONTAL,
+                                    false
+                                )
                             binding.recycler.layoutManager = gridLayoutManager
                         }
                     }
@@ -153,10 +172,16 @@ class UpComing : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
         super.onMultiWindowModeChanged(isInMultiWindowMode)
 
         if (activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            gridLayoutManager = if (isInMultiWindowMode) StaggeredGridLayoutManager(
-                3,
-                StaggeredGridLayoutManager.VERTICAL
-            ) else StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL)
+            gridLayoutManager = if (isInMultiWindowMode) GridLayoutManager(
+                context,
+                1,
+                GridLayoutManager.HORIZONTAL,
+                false
+            ) else GridLayoutManager(
+                context,
+                2, GridLayoutManager.HORIZONTAL,
+                false
+            )
 
             binding.recycler.layoutManager = gridLayoutManager
             binding.recycler.adapter = mainActivityAdapter

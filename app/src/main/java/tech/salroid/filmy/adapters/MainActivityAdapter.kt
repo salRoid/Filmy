@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import tech.salroid.filmy.FilmyApplication.Companion.context
 import tech.salroid.filmy.database.FilmContract
 import tech.salroid.filmy.databinding.CustomRowBinding
@@ -13,8 +12,7 @@ import tech.salroid.filmy.databinding.CustomRowBinding
 class MainActivityAdapter(
     private var dataCursor: Cursor? = null,
     private val clickListener: ((Cursor) -> Unit)? = null
-) :
-    RecyclerView.Adapter<MainActivityAdapter.MainActivityViewHolder>() {
+) : RecyclerView.Adapter<MainActivityAdapter.MainActivityViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainActivityViewHolder {
         val binding = CustomRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -57,18 +55,11 @@ class MainActivityAdapter(
         fun bindData(dataCursor: Cursor) {
             dataCursor.moveToPosition(adapterPosition)
 
-            val titleIndex = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE)
             val posterIndex = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_POSTER_LINK)
-            val yearIndex = dataCursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_YEAR)
-            val movieTitle = dataCursor.getString(titleIndex)
             val moviePoster = dataCursor.getString(posterIndex)
-            val movieYear = dataCursor.getInt(yearIndex)
-
-            binding.title.text = "$movieTitle / $movieYear"
 
             Glide.with(context)
                 .load(moviePoster)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.poster)
         }
     }

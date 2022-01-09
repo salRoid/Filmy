@@ -32,8 +32,6 @@ class FavouriteAdapter(
             val title = favouriteData.title
             val poster = favouriteData.poster
 
-            binding.title.text = title
-
             Glide.with(binding.root.context)
                 .load(poster)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)

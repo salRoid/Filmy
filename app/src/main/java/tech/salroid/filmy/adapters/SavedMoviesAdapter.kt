@@ -48,12 +48,8 @@ class SavedMoviesAdapter(
 
         fun bindData(dataCursor: Cursor) {
 
-            val titleIndex = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_TITLE)
             val posterIndex = dataCursor.getColumnIndex(FilmContract.SaveEntry.SAVE_POSTER_LINK)
-
-            val movieTitle = dataCursor.getString(titleIndex)
             val moviePoster = dataCursor.getString(posterIndex)
-            binding.title.text = movieTitle
 
             Glide.with(binding.root.context)
                 .load(moviePoster)

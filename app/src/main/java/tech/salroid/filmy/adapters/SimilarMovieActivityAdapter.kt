@@ -30,9 +30,7 @@ class SimilarMovieActivityAdapter(
 
         fun bindData(similarMoviesData: SimilarMoviesData) {
 
-            val title = similarMoviesData.title
             val banner = similarMoviesData.banner
-            binding.title.text = title
 
             Glide.with(binding.root.context)
                 .load(banner)

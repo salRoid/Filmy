@@ -333,7 +333,7 @@ limitations under the License.
     <string name="git_webianks" translatable="false">https://github.com/webianks</string>
     <string name="git_salroid" translatable="false">https://github.com/salroid</string>
     <string name="shareappdetails">Share this App</string>
-    <string name="dark">Night Mode</string>
+    <string name="dark">Dark Theme</string>
     <string name="content_authority" translatable="false">tech.salroid.filmy</string>
     <string name="openDrawer" translatable="false">Drawer Opened</string>
     <string name="closeDrawer" translatable="false">Drawer Closed</string>
@@ -357,7 +357,6 @@ limitations under the License.
     <string name="you_dont_hav_fav">No movies in the list.</string>
 
     <string name="error_string" translatable="false">There was an error initializing the YouTube Player</string>
-    <string name="Youtube_Api_Key" translatable="false">AIzaSyBtyakzoKg3sueLC1mfKSZqSYs7sUIqVG4</string>
     <string name="collections" translatable="false">Collections</string>
     <string name="offline" translatable="false">Offline</string>
 

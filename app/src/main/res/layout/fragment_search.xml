@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    android:focusableInTouchMode="true"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_results_recycler"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_margin="8dp"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true">
 
-    <tech.salroid.filmy.views.BreathingProgress
-        android:id="@+id/breathingProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="invisible" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_results_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp" />
 
-</RelativeLayout>
+        <tech.salroid.filmy.ui.custom.BreathingProgress
+            android:id="@+id/breathingProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -9,8 +9,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import tech.salroid.filmy.database.FilmContract
-import tech.salroid.filmy.database.FilmDbHelper
+import tech.salroid.filmy.data.local.database.FilmContract
+import tech.salroid.filmy.data.local.database.FilmDbHelper
 import java.util.*
 
 @RunWith(AndroidJUnit4::class)

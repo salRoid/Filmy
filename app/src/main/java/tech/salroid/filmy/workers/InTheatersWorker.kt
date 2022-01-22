@@ -5,7 +5,7 @@ import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import com.google.common.util.concurrent.ListenableFuture
-import tech.salroid.filmy.network.NetworkUtil
+import tech.salroid.filmy.data.network.NetworkUtil
 
 class InTheatersWorker(
     context: Context,

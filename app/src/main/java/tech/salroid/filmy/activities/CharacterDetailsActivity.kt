@@ -4,32 +4,29 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.text.Html
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.toolbox.JsonObjectRequest
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import org.json.JSONException
-import org.json.JSONObject
-import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.adapters.CharacterDetailsActivityAdapter
+import tech.salroid.filmy.data.CastDetailsResponse
+import tech.salroid.filmy.data.CastMovie
+import tech.salroid.filmy.data.CastMovieDetailsResponse
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.fragment.FullReadFragment
-import tech.salroid.filmy.networking.TmdbVolleySingleton
-import tech.salroid.filmy.parser.CharacterDetailsActivityParseWork
+import tech.salroid.filmy.network.NetworkUtil
 
 class CharacterDetailsActivity : AppCompatActivity() {
 
     private var characterId: String? = null
     private var characterTitle: String? = null
-    private var moviesJson: String? = null
+    private var moviesList: ArrayList<CastMovie>? = null
     private var characterBio: String? = null
     private var fullReadFragment: FullReadFragment? = null
     private var nightMode = false
@@ -54,9 +51,9 @@ class CharacterDetailsActivity : AppCompatActivity() {
         }
 
         binding.more.setOnClickListener {
-            if (!(moviesJson == null && characterTitle == null)) {
+            if (!(moviesList == null && characterTitle == null)) {
                 val intent = Intent(this@CharacterDetailsActivity, FullMovieActivity::class.java)
-                intent.putExtra("cast_json", moviesJson)
+                intent.putExtra("cast_movies", moviesList)
                 intent.putExtra("toolbar_title", characterTitle)
                 startActivity(intent)
             }
@@ -80,7 +77,23 @@ class CharacterDetailsActivity : AppCompatActivity() {
         if (intent != null) {
             characterId = intent.getStringExtra("id")
         }
-        personalDetailsAndMovies
+
+        characterId?.let {
+            NetworkUtil.getCastDetails(it, { details ->
+                details?.let { it1 ->
+                    showPersonalDetails(it1)
+                }
+            }, {
+            })
+
+            NetworkUtil.getCastMovieDetails(it, { details ->
+                details?.let { it1 ->
+                    this.moviesList = it1.castMovies
+                    showPersonMovies(it1)
+                }
+            }, {
+            })
+        }
     }
 
     private fun allThemeLogic() {
@@ -94,42 +107,14 @@ class CharacterDetailsActivity : AppCompatActivity() {
         if (nightMode != nightModeNew) recreate()
     }
 
-    private val personalDetailsAndMovies: Unit
-        get() {
-            val requestQueue = TmdbVolleySingleton.requestQueue
-            val apiKey = BuildConfig.TMDB_API_KEY
 
-            val baseUrlPersonalDetails =
-                "https://api.themoviedb.org/3/person/$characterId?api_key=$apiKey"
-            val baseUrlPersonMovies =
-                "https://api.themoviedb.org/3/person/$characterId/movie_credits?api_key=$apiKey"
-
-            val personalDetailsRequest = JsonObjectRequest(baseUrlPersonalDetails, null,
-                { response ->
-                    parsePersonalDetails(response.toString())
-                }
-            ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
-
-            val personMoviesDetailsRequest = JsonObjectRequest(baseUrlPersonMovies, null,
-                { response ->
-                    moviesJson = response.toString()
-                    parsePersonMovies(response.toString())
-                }
-            ) { error -> Log.e("webi", "Volley Error: " + error.cause) }
-
-            requestQueue.add(personalDetailsRequest)
-            requestQueue.add(personMoviesDetailsRequest)
-        }
-
-    private fun parsePersonalDetails(personalDetailsResponse: String) {
+    private fun showPersonalDetails(details: CastDetailsResponse) {
         try {
-            val jsonObject = JSONObject(personalDetailsResponse)
-            val dataName = jsonObject.getString("name")
-            val dataProfile =
-                "http://image.tmdb.org/t/p/w185" + jsonObject.getString("profile_path")
-            val dataOverview = jsonObject.getString("biography")
-            val dataBirthday = jsonObject.getString("birthday")
-            val dataBirthPlace = jsonObject.getString("place_of_birth")
+            val dataName = details.name
+            val dataProfile = "http://image.tmdb.org/t/p/w185" + details.profilePath
+            val dataOverview = details.biography
+            val dataBirthday = details.birthday
+            val dataBirthPlace = details.placeOfBirth
 
             characterTitle = dataName
             characterBio = dataOverview
@@ -147,7 +132,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
                 binding.birthPlace.text = dataBirthPlace
             }
 
-            if (dataOverview.isEmpty()) {
+            if (dataOverview?.isEmpty() == true) {
                 binding.overviewContainer.visibility = View.GONE
                 binding.overview.visibility = View.GONE
             } else {
@@ -155,11 +140,9 @@ class CharacterDetailsActivity : AppCompatActivity() {
                     binding.overview.text = Html.fromHtml(dataOverview, Html.FROM_HTML_MODE_LEGACY)
                 }
             }
-
             try {
                 Glide.with(this)
                     .load(dataProfile)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .fitCenter().into(binding.displayProfile)
             } catch (e: Exception) {
             }
@@ -169,21 +152,20 @@ class CharacterDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun parsePersonMovies(cast_result: String) {
-        val par = CharacterDetailsActivityParseWork(cast_result)
-        val moviesList = par.parsePersonMovies()
+    private fun showPersonMovies(castMovieDetails: CastMovieDetailsResponse) {
 
-        val charAdapter = CharacterDetailsActivityAdapter(moviesList, true) { movie, _ ->
-            val intent = Intent(this, MovieDetailsActivity::class.java)
-            intent.putExtra("id", movie.movieId)
-            intent.putExtra("title", movie.movieTitle)
-            intent.putExtra("network_applicable", true)
-            intent.putExtra("activity", false)
-            startActivity(intent)
-        }
+        val charAdapter =
+            CharacterDetailsActivityAdapter(castMovieDetails.castMovies, true) { movie, _ ->
+                val intent = Intent(this, MovieDetailsActivity::class.java)
+                intent.putExtra("id", movie.id.toString())
+                intent.putExtra("title", movie.title)
+                intent.putExtra("network_applicable", true)
+                intent.putExtra("activity", false)
+                startActivity(intent)
+            }
 
         binding.characterMovies.adapter = charAdapter
-        if (moviesList.size > 4) {
+        if (castMovieDetails.castMovies.size > 4) {
             binding.more.visibility = View.VISIBLE
         } else {
             binding.more.visibility = View.INVISIBLE

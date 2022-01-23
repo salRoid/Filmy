@@ -53,7 +53,6 @@ class SavedMoviesAdapter(
 
             Glide.with(binding.root.context)
                 .load(moviePoster)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.poster)
         }
 

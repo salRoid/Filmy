@@ -1,3 +1,4 @@
+/*
 package tech.salroid.filmy.parser
 
 import org.json.JSONException
@@ -35,4 +36,4 @@ class WatchListMovieParseWork(private val result: String) {
         }
         return favouriteArray
     }
-}
+}*/

@@ -4,23 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.android.volley.toolbox.JsonObjectRequest
-import tech.salroid.filmy.BuildConfig
+import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.GridLayoutManager
 import tech.salroid.filmy.R
-import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.MovieDetailsActivity
 import tech.salroid.filmy.adapters.SearchResultAdapter
-import tech.salroid.filmy.data.SearchData
+import tech.salroid.filmy.data.SearchResult
 import tech.salroid.filmy.databinding.FragmentSearchBinding
-import tech.salroid.filmy.networking.VolleySingleton
-import tech.salroid.filmy.parser.SearchResultParseWork
+import tech.salroid.filmy.network.NetworkUtil
 
 class SearchFragment : Fragment() {
 
@@ -54,16 +50,16 @@ class SearchFragment : Fragment() {
             tabletSize -> {
                 when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
-                        val gridLayoutManager = StaggeredGridLayoutManager(
-                            6,
-                            StaggeredGridLayoutManager.VERTICAL
+                        val gridLayoutManager = GridLayoutManager(
+                            context,
+                            2
                         )
                         binding.searchResultsRecycler.layoutManager = gridLayoutManager
                     }
                     else -> {
-                        val gridLayoutManager = StaggeredGridLayoutManager(
+                        val gridLayoutManager = GridLayoutManager(
+                            context,
                             8,
-                            StaggeredGridLayoutManager.VERTICAL
                         )
                         binding.searchResultsRecycler.layoutManager = gridLayoutManager
                     }
@@ -72,16 +68,16 @@ class SearchFragment : Fragment() {
             else -> {
                 when (activity?.resources?.configuration?.orientation) {
                     Configuration.ORIENTATION_PORTRAIT -> {
-                        val gridLayoutManager = StaggeredGridLayoutManager(
+                        val gridLayoutManager = GridLayoutManager(
+                            context,
                             3,
-                            StaggeredGridLayoutManager.VERTICAL
                         )
                         binding.searchResultsRecycler.layoutManager = gridLayoutManager
                     }
                     else -> {
-                        val gridLayoutManager = StaggeredGridLayoutManager(
+                        val gridLayoutManager = GridLayoutManager(
+                            context,
                             5,
-                            StaggeredGridLayoutManager.VERTICAL
                         )
                         binding.searchResultsRecycler.layoutManager = gridLayoutManager
                     }
@@ -91,37 +87,31 @@ class SearchFragment : Fragment() {
         return view
     }
 
-    private fun itemClicked(searchData: SearchData, position: Int) {
-        val intent: Intent
-        if (searchData.type == "person") intent =
-            Intent(activity, CharacterDetailsActivity::class.java) else {
-            intent = Intent(activity, MovieDetailsActivity::class.java)
-            intent.putExtra("network_applicable", true)
+    private fun itemClicked(searchData: SearchResult, position: Int) {
+        Intent(activity, MovieDetailsActivity::class.java).run {
+            putExtra("network_applicable", true)
+            putExtra("title", searchData.originalTitle)
+            putExtra("id", searchData.id.toString())
+            putExtra("activity", false)
+            startActivity(this)
         }
-        intent.putExtra("title", searchData.movie)
-        intent.putExtra("id", searchData.id)
-        intent.putExtra("activity", false)
-        startActivity(intent)
     }
 
     fun getSearchedResult(query: String) {
         val trimmedQuery = query.trim { it <= ' ' }
         val finalQuery = trimmedQuery.replace(" ", "-")
-        val requestQueue = VolleySingleton.requestQueue
 
-        val baseUrl =
-            "https://api.themoviedb.org/3/search/movie?api_key=${BuildConfig.TMDB_API_KEY}&query=$finalQuery"
-        val jsonObjectRequest = JsonObjectRequest(baseUrl, null, { response ->
-            parseSearchedOutput(response.toString())
-        }) {}
-        requestQueue.add(jsonObjectRequest)
+        NetworkUtil.searchMovies(finalQuery, { searchResultResponse ->
+            searchResultResponse?.let {
+                showSearchResults(it.results)
+            }
+        }, {
+
+        })
     }
 
-    private fun parseSearchedOutput(results: String) {
-        val park = SearchResultParseWork(results)
-        val list = park.parseSearchData()
-
-        val adapter = SearchResultAdapter(list) { searchData, position ->
+    private fun showSearchResults(results: List<SearchResult>) {
+        val adapter = SearchResultAdapter(results) { searchData, position ->
             itemClicked(searchData, position)
         }
         binding.searchResultsRecycler.adapter = adapter

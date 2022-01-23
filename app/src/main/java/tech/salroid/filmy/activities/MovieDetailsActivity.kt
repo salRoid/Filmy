@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,39 +14,31 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.CursorLoader
-import androidx.loader.content.Loader
 import androidx.palette.graphics.Palette
+import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.youtube.player.YouTubeStandalonePlayer
-import org.json.JSONException
-import org.json.JSONObject
 import tech.salroid.filmy.R
-import tech.salroid.filmy.activities.Rating.getRating
 import tech.salroid.filmy.animations.RevealAnimation
+import tech.salroid.filmy.data.MovieDetailsResponse
+import tech.salroid.filmy.data.RatingResponse
 import tech.salroid.filmy.database.FilmContract
-import tech.salroid.filmy.database.MovieDetailsUpdate.performMovieDetailsUpdate
-import tech.salroid.filmy.database.MovieLoaders
-import tech.salroid.filmy.database.MovieProjection
-import tech.salroid.filmy.database.OfflineMovies
 import tech.salroid.filmy.databinding.ActivityDetailedBinding
 import tech.salroid.filmy.fragment.*
-import tech.salroid.filmy.fragment.CastFragment.GotCrewListener
-import tech.salroid.filmy.networking.GetDataFromNetwork
-import tech.salroid.filmy.networking.GetDataFromNetwork.DataFetchedListener
+import tech.salroid.filmy.network.NetworkUtil
 import tech.salroid.filmy.utility.Confirmation
 import tech.salroid.filmy.utility.Constants
 import tech.salroid.filmy.utility.FilmyUtility
 import tech.salroid.filmy.utility.NullChecker
+import java.util.ArrayList
 
-class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
-    LoaderManager.LoaderCallbacks<Cursor>, DataFetchedListener, GotCrewListener {
+class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var trailerArray: Array<String?>
-    private lateinit var trailerArrayName: Array<String?>
+    private var trailerArray = mutableListOf<String?>()
+    private var trailerArrayName = mutableListOf<String?>()
+    private var movieImdbId: String? = null
 
     private lateinit var movieMap: MutableMap<String, String?>
     private var networkApplicable = false
@@ -64,7 +55,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
     private var movieTagline: String? = null
     private val movieRating: String? = null
     private var movieRatingTmdb: String? = null
-    private var showCentreImgUrl: String? = null
+    private var bannerForFullScreen: String? = null
     private var movieTitle: String? = null
     private var movieIdFinal: String? = null
 
@@ -75,7 +66,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
     private lateinit var fullReadFragment: FullReadFragment
 
     private var nightMode = false
-    private lateinit var movieImdbId: String
+
     private var movieRatingAudience: String? = null
     private var movieRatingMetaScore: String? = null
     private var movieTitleHyphen: String? = null
@@ -136,26 +127,35 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         val nightModeNew = sp.getBoolean("dark", false)
         if (nightMode != nightModeNew) recreate()
+
         performDataFetching()
     }
 
     private fun performDataFetching() {
-        val getStuffFromNetwork = GetDataFromNetwork()
-        getStuffFromNetwork.setDataFetchedListener(this)
 
-        if (networkApplicable) getStuffFromNetwork.getMovieDetailsFromNetwork(movieId)
+        if (networkApplicable) {
+            movieId?.let {
+                NetworkUtil.getMovieDetails(it, { movieDetailsResponse ->
+                    movieDetailsResponse?.let { it1 ->
+                        showMovieDetails(it1)
+                    }
+                }, {
 
-        if (databaseApplicable) supportLoaderManager.initLoader(
-            MovieLoaders.MOVIE_DETAILS_LOADER,
-            null,
-            this
-        )
+                })
+            }
+        }
 
-        if (savedDatabaseApplicable) supportLoaderManager.initLoader(
+        /*  if (databaseApplicable) supportLoaderManager.initLoader(
+              MovieLoaders.MOVIE_DETAILS_LOADER,
+              null,
+              this
+          )*/
+
+        /*if (savedDatabaseApplicable) supportLoaderManager.initLoader(
             MovieLoaders.SAVED_MOVIE_DETAILS_LOADER,
             null,
             this
-        )
+        )*/
 
         if (!databaseApplicable && !savedDatabaseApplicable) {
             binding.main.visibility = View.INVISIBLE
@@ -176,191 +176,114 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun showCastFragment() {
         castFragment = CastFragment.newInstance(null, movieTitle)
-        supportFragmentManager.beginTransaction().replace(R.id.cast_container, castFragment)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.cast_container, castFragment)
             .commit()
-        castFragment.setGotCrewListener(this)
     }
 
     private fun showCrewFragment() {
         crewFragment = CrewFragment.newInstance(null, movieTitle)
-        supportFragmentManager.beginTransaction().replace(R.id.crew_container, crewFragment)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.crew_container, crewFragment)
             .commit()
     }
 
     private fun showSimilarFragment() {
         similarFragment = SimilarFragment.newInstance(null, movieTitle)
-        supportFragmentManager.beginTransaction().replace(R.id.similar_container, similarFragment)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.similar_container, similarFragment)
             .commit()
     }
 
-    private fun parseMovieDetails(movieDetails: String) {
-        val title: String
-        val tagline: String
-        val overview: String
-        val bannerProfile: String
-        val runtime: String
-        val language: String
-        val released: String
-        val poster: String
-        var imgUrl: String? = null
-        val getPosterPathFromJson: String
-        val getBannerFromJson: String
+    private fun showMovieDetails(movie: MovieDetailsResponse) {
+        movieIdFinal = movie.id?.toString()
+        movieDesc = movie.overview
+        movieTitle = movie.title
+        movieImdbId = movie.imdbId
+        movieRatingTmdb = movie.voteAverage?.toString()
+        movieTitleHyphen = movieTitle?.replace(' ', '-')
+        movieTagline = movie.tagline
 
-        try {
-            val jsonObject = JSONObject(movieDetails)
-            title = jsonObject.getString("title")
-            tagline = jsonObject.getString("tagline")
-            overview = jsonObject.getString("overview")
-            released = jsonObject.getString("release_date")
-            runtime = jsonObject.getString("runtime") + " mins"
-            language = jsonObject.getString("original_language")
-            movieIdFinal = jsonObject.getString("id")
-            movieImdbId = jsonObject.getString("imdb_id")
-            movieTitleHyphen = movieTitle?.replace(' ', '-')
-            movieRatingTmdb = jsonObject.getString("vote_average")
+        // Generes
+        var genre = ""
+        val genreArray = movie.genres
+        for (i in 0 until genreArray.size) {
+            if (i > 3) break
+            val finalGenre = genreArray[i].name
+            var punctuation = ", "
+            if (i == genre.length) punctuation = ""
+            genre = genre + punctuation + finalGenre
+        }
 
-            if (tagline != "") binding.detailTagline.visibility = View.VISIBLE
+        // Banners
+        val posterPrefix500 = resources.getString(R.string.poster_prefix_500)
+        val posterPrefixAddQuality = resources.getString(R.string.poster_prefix_add_quality)
 
-            movieIdFinal?.let {
-                castFragment.getCastFromNetwork(it)
-                similarFragment.getSimilarFromNetwork(it)
-            }
+        val bannerTop: String
+        val bannerPath = movie.backdropPath
+        val posterPath = movie.posterPath
 
-            getRating(this, movieImdbId)
+        if (bannerPath != "null") {
+            bannerTop = posterPrefix500 + bannerPath
+            bannerForFullScreen = posterPrefixAddQuality + quality + bannerPath
+        } else {
+            bannerTop = posterPrefix500 + posterPath
+            bannerForFullScreen = posterPrefixAddQuality + quality + posterPath
+        }
 
-            // Poster and Banner
-            getPosterPathFromJson = jsonObject.getString("poster_path")
-            getBannerFromJson = jsonObject.getString("backdrop_path")
-            poster = resources.getString(R.string.poster_prefix_185) + getPosterPathFromJson
+        // Trailers
+        val youTubeTrailers = movie.trailers?.youtube
 
-            val bannerForFullActivity: String
-            val posterPrefix500 = resources.getString(R.string.poster_prefix_500)
-            val posterPrefixAddQuality = resources.getString(R.string.poster_prefix_add_quality)
-
-            if (getBannerFromJson != "null") {
-                bannerProfile = posterPrefix500 + getBannerFromJson
-                bannerForFullActivity = posterPrefixAddQuality + quality + getBannerFromJson
-            } else {
-                bannerProfile = posterPrefix500 + getPosterPathFromJson
-                bannerForFullActivity = posterPrefixAddQuality + quality + getPosterPathFromJson
-            }
-
-            // Trailer
-            val trailersObject = jsonObject.getJSONObject("trailers")
-            val youTubeArray = trailersObject.getJSONArray("youtube")
-
-            trailerArray = arrayOfNulls(youTubeArray.length())
-            trailerArrayName = arrayOfNulls(youTubeArray.length())
-
-            if (youTubeArray.length() != 0) {
+        youTubeTrailers?.let {
+            if (youTubeTrailers.size != 0) {
                 var mainTrailer = true
 
-                for (i in 0 until youTubeArray.length()) {
+                for (i in 0 until youTubeTrailers.size) {
+                    val singleTrailer = youTubeTrailers[i]
+                    trailerArray.add(singleTrailer.source)
+                    trailerArrayName.add(singleTrailer.name)
 
-                    val singleTrailer = youTubeArray.getJSONObject(i)
-                    trailerArray[i] = singleTrailer.getString("source")
-                    trailerArrayName[i] = singleTrailer.getString("name")
-                    val type = singleTrailer.getString("type")
-
+                    val type = singleTrailer.type
                     if (mainTrailer) {
                         if (type == "Trailer") {
-                            trailor = singleTrailer.getString("source")
+                            trailor = singleTrailer.source
                             mainTrailer = false
-                        } else trailor = youTubeArray.getJSONObject(0).getString("source")
+                        } else trailor = youTubeTrailers[0].source
                     }
                 }
-
                 trailer = resources.getString(R.string.trailer_link_prefix) + trailor
-
             } else trailer = null
-
-            //Genre
-            var genre = ""
-            val genreArray = jsonObject.getJSONArray("genres")
-            for (i in 0 until genreArray.length()) {
-                if (i > 3) break
-                val finalgenre = genreArray.getJSONObject(i).getString("name")
-                var punctuation = ", "
-                if (i == genre.length) punctuation = ""
-                genre = genre + punctuation + finalgenre
-            }
-            movieDesc = overview
-            movieTitle = title
-            movieTagline = tagline
-            showCentreImgUrl = bannerForFullActivity
-
-            movieMap = mutableMapOf()
-            movieMap["imdb_id"] = movieIdFinal
-            movieMap["title"] = movieTitle
-            movieMap["tagline"] = tagline
-            movieMap["overview"] = overview
-            movieMap["rating"] = movieRating
-            movieMap["certification"] = genre
-            movieMap["language"] = language
-            movieMap["released"] = released
-            movieMap["runtime"] = runtime
-            movieMap["trailer"] = trailer
-            movieMap["banner"] = bannerProfile
-            movieMap["poster"] = poster
-
-            try {
-                if (trailor != null) {
-                    trailerBoolean = true
-                    //String videoId = extractYoutubeId(trailer);
-                    imgUrl = (resources.getString(R.string.trailer_img_prefix) + trailor
-                            + resources.getString(R.string.trailer_img_suffix))
-                } else {
-                    imgUrl =
-                        resources.getString(R.string.poster_prefix_185) + jsonObject.getString("poster_path")
-                }
-                movieMap["trailer_img"] = imgUrl
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-
-                if (databaseApplicable) performMovieDetailsUpdate(
-                    this@MovieDetailsActivity,
-                    type,
-                    movieMap,
-                    movieId
-                ) else showParsedContent(
-                    title,
-                    bannerProfile,
-                    imgUrl,
-                    tagline,
-                    overview,
-                    movieRating,
-                    runtime,
-                    released,
-                    genre,
-                    language
-                )
-            }
-        } catch (e: JSONException) {
-            e.printStackTrace()
         }
-    }
 
-    private fun showParsedContent(
-        title: String, displayBanner: String, imgUrl: String?, tagline: String,
-        overview: String, rating: String?, runtime: String,
-        released: String, certification: String, language: String
-    ) {
+        val trailerThumbnailUrl: String
+        if (trailor != null) {
+            trailerBoolean = true
+            //String videoId = extractYoutubeId(trailer);
+            trailerThumbnailUrl = (resources.getString(R.string.trailer_img_prefix) + trailor
+                    + resources.getString(R.string.trailer_img_suffix))
+        } else {
+            trailerThumbnailUrl = resources.getString(R.string.poster_prefix_185) + posterPath
+        }
 
-        binding.detailTagline.text = tagline
-        binding.detailTitle.text = title
-        binding.detailOverview.text = overview
+        binding.detailTagline.text = movie.tagline
+        binding.detailTitle.text = movie.title
+        binding.detailOverview.text = movie.overview
 
         //det_rating.setText(rating);
-        binding.viewExtraInfo.detailRuntime.text = runtime
-        binding.viewExtraInfo.detailReleased.text = released
-        binding.viewExtraInfo.detailCertification.text = certification
-        binding.viewExtraInfo.detailLanguage.text = language
+        binding.viewExtraInfo.detailRuntime.text = "${movie.runtime} mins"
+        binding.viewExtraInfo.detailReleased.text = movie.releaseDate
+        binding.viewExtraInfo.detailCertification.text = genre
+        binding.viewExtraInfo.detailLanguage.text = movie.originalLanguage
+
+        if (movie.tagline != "") binding.detailTagline.visibility = View.VISIBLE
 
         try {
             Glide.with(this)
                 .asBitmap()
-                .load(displayBanner)
+                .load(bannerTop)
                 .into(object : SimpleTarget<Bitmap?>() {
                     override fun onResourceReady(
                         resource: Bitmap,
@@ -385,6 +308,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                                     trailerSwatch.bodyTextColor,
                                     PorterDuff.Mode.SRC_IN
                                 )
+                                binding.moreTv.setTextColor(trailerSwatch.bodyTextColor)
                             }
                         }
                     }
@@ -396,7 +320,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         try {
             Glide.with(this)
                 .asBitmap()
-                .load(imgUrl)
+                .load(trailerThumbnailUrl)
                 .into(object : SimpleTarget<Bitmap?>() {
                     override fun onResourceReady(
                         resource: Bitmap,
@@ -407,71 +331,104 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     }
                 })
         } catch (e: Exception) {
-            //Log.d(LOG_TAG, e.getMessage());
         }
+
+        // Get Ratings
+        movieImdbId?.let { it ->
+            NetworkUtil.getRating(it, { ratings ->
+                ratings?.let { it1 ->
+                    setRating(it1)
+                }
+            }, {
+
+            })
+        }
+
+        // Get Cast, Crew and Similar Movies
+        movieIdFinal?.let {
+            castFragment.getCastAndCrew(it){ crews ->
+                crewFragment.showCrews(ArrayList(crews))
+            }
+            similarFragment.getSimilarMovies(it)
+        }
+
+        movieMap = mutableMapOf()
+        movieMap["imdb_id"] = movieIdFinal
+        movieMap["title"] = movieTitle
+        movieMap["tagline"] = movie.tagline
+        movieMap["overview"] = movie.overview
+        movieMap["rating"] = movieRating
+        movieMap["certification"] = genre
+        movieMap["language"] = movie.originalLanguage
+        movieMap["released"] = movie.releaseDate
+        movieMap["runtime"] = "${movie.runtime} mins"
+        movieMap["trailer"] = trailer
+        movieMap["banner"] = bannerTop
+        movieMap["poster"] = posterPath
+        movieMap["trailer_img"] = trailerThumbnailUrl
 
         binding.main.visibility = View.VISIBLE
         binding.breathingProgress.visibility = View.INVISIBLE
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-        val cursorLoader: CursorLoader
+    /*  override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+          val cursorLoader: CursorLoader
 
-        when (id) {
-            MovieLoaders.MOVIE_DETAILS_LOADER -> {
-                when (type) {
-                    0 -> cursorLoader = CursorLoader(
-                        this,
-                        FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
-                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
-                    )
-                    1 -> cursorLoader = CursorLoader(
-                        this,
-                        FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movieId),
-                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
-                    )
-                    2 -> cursorLoader = CursorLoader(
-                        this,
-                        FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movieId),
-                        MovieProjection.GET_MOVIE_COLUMNS, null, null, null
-                    )
-                    else -> {
-                        cursorLoader = CursorLoader(
-                            this,
-                            FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
-                            MovieProjection.GET_MOVIE_COLUMNS, null, null, null
-                        )
-                    }
-                }
-            }
-            MovieLoaders.SAVED_MOVIE_DETAILS_LOADER -> {
-                val selection = FilmContract.SaveEntry.TABLE_NAME +
-                        "." + FilmContract.SaveEntry.SAVE_ID + " = ? "
-                val selectionArgs = arrayOf(movieId)
-                cursorLoader = CursorLoader(
-                    this, FilmContract.SaveEntry.CONTENT_URI,
-                    MovieProjection.GET_SAVE_COLUMNS, selection, selectionArgs, null
-                )
-            }
-            else -> {
-                cursorLoader = CursorLoader(
-                    this,
-                    FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
-                    MovieProjection.GET_MOVIE_COLUMNS, null, null, null
-                )
-            }
-        }
-        return cursorLoader
-    }
+          when (id) {
+              MovieLoaders.MOVIE_DETAILS_LOADER -> {
+                  when (type) {
+                      0 -> cursorLoader = CursorLoader(
+                          this,
+                          FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
+                          MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                      )
+                      1 -> cursorLoader = CursorLoader(
+                          this,
+                          FilmContract.InTheatersMoviesEntry.buildMovieWithMovieId(movieId),
+                          MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                      )
+                      2 -> cursorLoader = CursorLoader(
+                          this,
+                          FilmContract.UpComingMoviesEntry.buildMovieWithMovieId(movieId),
+                          MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                      )
+                      else -> {
+                          cursorLoader = CursorLoader(
+                              this,
+                              FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
+                              MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                          )
+                      }
+                  }
+              }
+              MovieLoaders.SAVED_MOVIE_DETAILS_LOADER -> {
+                  val selection = FilmContract.SaveEntry.TABLE_NAME +
+                          "." + FilmContract.SaveEntry.SAVE_ID + " = ? "
+                  val selectionArgs = arrayOf(movieId)
+                  cursorLoader = CursorLoader(
+                      this, FilmContract.SaveEntry.CONTENT_URI,
+                      MovieProjection.GET_SAVE_COLUMNS, selection, selectionArgs, null
+                  )
+              }
+              else -> {
+                  cursorLoader = CursorLoader(
+                      this,
+                      FilmContract.MoviesEntry.buildMovieWithMovieId(movieId),
+                      MovieProjection.GET_MOVIE_COLUMNS, null, null, null
+                  )
+              }
+          }
+          return cursorLoader
+      }*/
 
-    override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
-        val id = loader.id
-        if (id == MovieLoaders.MOVIE_DETAILS_LOADER) {
-            fetchMovieDetailsFromCursor(data)
-        } else if (id == MovieLoaders.SAVED_MOVIE_DETAILS_LOADER) {
-            fetchSavedMovieDetailsFromCursor(data)
-        }
-    }
+    /* override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor) {
+         val id = loader.id
+         if (id == MovieLoaders.MOVIE_DETAILS_LOADER) {
+             fetchMovieDetailsFromCursor(data)
+         } else if (id == MovieLoaders.SAVED_MOVIE_DETAILS_LOADER) {
+             fetchSavedMovieDetailsFromCursor(data)
+         }
+     }*/
 
     private fun fetchSavedMovieDetailsFromCursor(data: Cursor?) {
 
@@ -513,7 +470,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             binding.viewExtraInfo.detailCertification.text = certification
             binding.viewExtraInfo.detailLanguage.text = language
             movieDesc = overview
-            showCentreImgUrl = bannerUrl
+            //showCentreImgUrl = bannerUrl
 
             try {
                 Glide.with(this)
@@ -607,8 +564,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             if (NullChecker.isSettable(title)) binding.detailTitle.text = title
             if (NullChecker.isSettable(tagline)) binding.detailTagline.text = tagline
             if (NullChecker.isSettable(overview)) binding.detailOverview.text = overview
-            if (runtime != null && runtime != "null mins") binding.viewExtraInfo.detailRuntime.text =
-                runtime
+            if (runtime != null && runtime != "null mins") binding.viewExtraInfo.detailRuntime.text = runtime
             if (NullChecker.isSettable(released)) binding.viewExtraInfo.detailReleased.text =
                 released
             if (NullChecker.isSettable(certification)) binding.viewExtraInfo.detailCertification.text =
@@ -671,8 +627,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor>) {}
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -681,8 +635,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             }
             R.id.action_share -> shareMovie()
             R.id.action_save -> {
-                val offlineMovies = OfflineMovies(this)
-                offlineMovies.saveMovie(movieMap, movieId, movieIdFinal, Constants.FLAG_OFFLINE)
+                //val offlineMovies = OfflineMovies(this)
+                //offlineMovies.saveMovie(movieMap, movieId, movieIdFinal, Constants.FLAG_OFFLINE)
             }
             R.id.action_fav -> Confirmation.confirmFav(
                 this,
@@ -733,9 +687,9 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                     .commit()
             }
 
-            R.id.new_main -> if (showCentreImgUrl != null) {
+            R.id.new_main -> if (bannerForFullScreen != null) {
                 val intent = Intent(this@MovieDetailsActivity, FullScreenImage::class.java)
-                intent.putExtra("img_url", showCentreImgUrl)
+                intent.putExtra("img_url", bannerForFullScreen)
                 startActivity(intent)
             }
 
@@ -760,20 +714,12 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
                 // Log.d(TAG, "onClick: "+ Arrays.toString(trailer_array));
                 val args = Bundle()
                 args.putString("title", movieTitle)
-                args.putStringArray("trailers", trailerArray)
-                args.putStringArray("trailers_name", trailerArrayName)
+                args.putStringArray("trailers", trailerArray.toTypedArray())
+                args.putStringArray("trailers_name", trailerArrayName.toTypedArray())
                 allTrailerFragment.arguments = args
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.all_details_container, allTrailerFragment)
                     .addToBackStack("TRAILER").commit()
-            }
-        }
-    }
-
-    override fun dataFetched(response: String, code: Int) {
-        when (code) {
-            GetDataFromNetwork.MOVIE_DETAILS_CODE -> parseMovieDetails(response)
-            GetDataFromNetwork.CAST_CODE -> {
             }
         }
     }
@@ -788,22 +734,29 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
         }
     }
 
-    override fun gotCrew(crewData: String) {
-        crewFragment.parseCrewOutput(crewData)
-    }
+    private fun setRating(rating: RatingResponse) {
+        val imdbRating = rating.imdbRating
+        var tomatoMeterRating = rating.tomatoRating
+        val audienceRating = rating.tomatoUserRating
+        val metaScoreRating = rating.metascore
+        val image = rating.tomatoImage
+        val rottenTomatoPage = rating.tomatoURL
 
-    fun setRating(
-        movieRatingImdb: String, movieRatingTomatoMeter: String,
-        audienceRating: String?, metaScoreRating: String?, rottenTomatoPage: String?
-    ) {
+        // Above TomatoMeter does not work this does
+        val ratingArray = rating.ratings
+        for (i in 0 until ratingArray.size) {
+            if (ratingArray[i].source == "Rotten Tomatoes") {
+                tomatoMeterRating = ratingArray[i].value
+            }
+        }
 
         movieRatingAudience = audienceRating
         movieRatingMetaScore = metaScoreRating
 
-        if (movieRatingImdb == "N/A") {
+        if (imdbRating == "N/A") {
             binding.viewRatings.layoutImdb.visibility = View.GONE
         } else {
-            binding.viewRatings.imdbRating.text = movieRatingImdb
+            binding.viewRatings.imdbRating.text = imdbRating
             binding.viewRatings.layoutImdb.setOnClickListener {
                 openCustomTabIntent(
                     resources.getString(R.string.imdb_link_prefix) + movieImdbId,
@@ -812,32 +765,33 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener,
             }
         }
 
-        if (movieRatingTomatoMeter == "N/A") {
+        if (tomatoMeterRating == "N/A") {
             binding.viewRatings.layoutTomato.visibility = View.GONE
         } else {
-            val tomatoMeterScore =
-                movieRatingTomatoMeter.substring(0, movieRatingTomatoMeter.length - 1).toInt()
-            when {
-                tomatoMeterScore > 74 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.certified
+            val tomatoMeterScore = tomatoMeterRating?.substring(0, tomatoMeterRating.length - 1)?.toInt()
+            if (tomatoMeterScore != null) {
+                when {
+                    tomatoMeterScore > 74 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            this,
+                            R.drawable.certified
+                        )
                     )
-                )
-                tomatoMeterScore > 59 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.fresh
+                    tomatoMeterScore > 59 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            this,
+                            R.drawable.fresh
+                        )
                     )
-                )
-                tomatoMeterScore < 60 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this, R.drawable.rotten
+                    tomatoMeterScore < 60 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            this, R.drawable.rotten
+                        )
                     )
-                )
+                }
             }
 
-            binding.viewRatings.tomatoRating.text = movieRatingTomatoMeter
+            binding.viewRatings.tomatoRating.text = tomatoMeterRating
             binding.viewRatings.layoutTomato.setOnClickListener {
                 openCustomTabIntent(rottenTomatoPage.toString(), R.color.tomatoRed)
             }

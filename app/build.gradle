@@ -69,7 +69,6 @@ dependencies {
     implementation "androidx.work:work-runtime:2.4.0"
     implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-    implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'tr.xip.errorview:library:4.0.0'
@@ -77,6 +76,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'androidx.test:core-ktx:1.4.0'
     implementation "androidx.preference:preference-ktx:1.1.1"
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     testImplementation 'junit:junit:4.13.2'

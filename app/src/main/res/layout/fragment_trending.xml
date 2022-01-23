@@ -19,8 +19,8 @@
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="350dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 
             <ProgressBar
                 android:id="@+id/moreProgress"
@@ -32,14 +32,7 @@
                 android:indeterminate="true"
                 android:visibility="gone" />
 
-
         </FrameLayout>
-
-        <tech.salroid.filmy.views.BreathingProgress
-            android:id="@+id/breathingProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
 
     </RelativeLayout>
 

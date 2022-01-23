@@ -1,23 +1,21 @@
 package tech.salroid.filmy.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import tech.salroid.filmy.data.SearchData
-import tech.salroid.filmy.databinding.CustomRowSearchBinding
+import tech.salroid.filmy.data.SearchResult
+import tech.salroid.filmy.databinding.CustomRowBinding
 
 class SearchResultAdapter(
-    private val searchList: List<SearchData>,
-    private val clickListener: ((SearchData, Int) -> Unit)? = null
+    private val searchList: List<SearchResult>,
+    private val clickListener: ((SearchResult, Int) -> Unit)? = null
 ) :
     RecyclerView.Adapter<SearchResultAdapter.SearchResultsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultsViewHolder {
         val binding =
-            CustomRowSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            CustomRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SearchResultsViewHolder(binding)
     }
 
@@ -27,23 +25,14 @@ class SearchResultAdapter(
 
     override fun getItemCount(): Int = searchList.size
 
-    inner class SearchResultsViewHolder(private val binding: CustomRowSearchBinding) :
+    inner class SearchResultsViewHolder(private val binding: CustomRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(searchData: SearchData) {
-
-            val name = searchData.movie
-            val poster = searchData.poster
-            val date = searchData.date
-            binding.title.text = name
-
-            if (date != "null") binding.date.text = date else {
-                binding.date.visibility = View.INVISIBLE
-            }
+        fun bindData(searchData: SearchResult) {
+            val poster = searchData.posterPath
 
             Glide.with(binding.root.context)
-                .load(poster)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .load("http://image.tmdb.org/t/p/w185$poster")
                 .into(binding.poster)
         }
 

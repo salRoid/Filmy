@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.adapters.CharacterDetailsActivityAdapter
+import tech.salroid.filmy.data.CastMovie
 import tech.salroid.filmy.databinding.ActivityFullMovieBinding
-import tech.salroid.filmy.parser.CharacterDetailsActivityParseWork
 
 class FullMovieActivity : AppCompatActivity() {
 
-    private var movieResult: String? = null
+    private var movieList: List<CastMovie>? = null
     private var nightMode = false
     private lateinit var binding: ActivityFullMovieBinding
 
@@ -28,25 +28,23 @@ class FullMovieActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         binding.fullMovieRecycler.layoutManager = LinearLayoutManager(this@FullMovieActivity)
-        movieResult = intent?.getStringExtra("cast_json")
+        movieList = intent?.getSerializableExtra("cast_movies") as List<CastMovie>
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = intent?.getStringExtra("toolbar_title")
 
-
-        val par = CharacterDetailsActivityParseWork(movieResult.toString())
-        val moviesList = par.parsePersonMovies()
-        val movieAdapter =
-            CharacterDetailsActivityAdapter(moviesList, false) { personMovieDetail, _ ->
-                val intent = Intent(this, MovieDetailsActivity::class.java)
-                intent.putExtra("id", personMovieDetail.movieId)
-                intent.putExtra("title", personMovieDetail.movieTitle)
-                intent.putExtra("network_applicable", true)
-                intent.putExtra("activity", false)
-                startActivity(intent)
-            }
-
-        binding.fullMovieRecycler.adapter = movieAdapter
+        movieList?.let {
+            val movieAdapter =
+                CharacterDetailsActivityAdapter(it, false) { movie, _ ->
+                    val intent = Intent(this, MovieDetailsActivity::class.java)
+                    intent.putExtra("id", movie.id.toString())
+                    intent.putExtra("title", movie.title)
+                    intent.putExtra("network_applicable", true)
+                    intent.putExtra("activity", false)
+                    startActivity(intent)
+                }
+            binding.fullMovieRecycler.adapter = movieAdapter
+        }
     }
 
     override fun onResume() {

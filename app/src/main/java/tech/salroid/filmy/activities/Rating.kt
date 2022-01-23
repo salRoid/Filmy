@@ -1,3 +1,4 @@
+/*
 package tech.salroid.filmy.activities
 
 import android.content.Context
@@ -8,12 +9,14 @@ import tech.salroid.filmy.BuildConfig
 
 internal object Rating {
 
-    private var imdbRating = "0"
+    */
+/*private var imdbRating = "0"
     private var tomatoMeterRating = "0"
     private var audienceRating = "0"
     private var metaScoreRating = "0"
     private var image: String? = null
-    private var rottenTomatoPage: String? = null
+    private var rottenTomatoPage: String? = null*//*
+
     private const val OMDB_API_KEY = BuildConfig.OMDB_API_KEY
 
     @JvmStatic
@@ -86,4 +89,4 @@ internal object Rating {
                 rottenTomatoPage
         )
     }
-}
+}*/

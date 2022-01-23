@@ -1,29 +1,25 @@
 package tech.salroid.filmy.activities
 
-import androidx.appcompat.app.AppCompatActivity
-import tech.salroid.filmy.networking.TmdbVolleySingleton
-import android.os.Bundle
-import androidx.preference.PreferenceManager
-import tech.salroid.filmy.R
-import androidx.core.content.res.ResourcesCompat
-import com.android.volley.toolbox.JsonObjectRequest
-import org.json.JSONObject
-import tech.salroid.filmy.views.CustomToast
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat
-import android.content.Intent
 import android.app.ProgressDialog
+import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
+import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.preference.PreferenceManager
 import org.json.JSONException
+import org.json.JSONObject
 import tech.salroid.filmy.BuildConfig
+import tech.salroid.filmy.R
 import tech.salroid.filmy.databinding.ActivityLoginBinding
+import tech.salroid.filmy.views.CustomToast
 
 class LoginActivity : AppCompatActivity() {
 
-    private val tmdbrequestQueue = TmdbVolleySingleton.requestQueue
     private var progressDialog: ProgressDialog? = null
     private var tokenization = false
     private var requestToken: String? = null
@@ -73,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun logInBackground() {
-        val apiKey = BuildConfig.TMDB_API_KEY
+      /*  val apiKey = BuildConfig.TMDB_API_KEY
         val baseUrl = "https://api.themoviedb.org/3/authentication/token/new?api_key=$apiKey"
         val jsonObjectRequest = JsonObjectRequest(baseUrl, null,
                 { response -> parseOutput(response) }) { error ->
@@ -82,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                     "Volley Error: " + error.cause
             )
         }
-        tmdbrequestQueue.add(jsonObjectRequest)
+        tmdbrequestQueue.add(jsonObjectRequest)*/
     }
 
     private fun parseOutput(response: JSONObject) {
@@ -120,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun querySession(session_query: String) {
-        val jsonObjectRequest = JsonObjectRequest(
+       /* val jsonObjectRequest = JsonObjectRequest(
                 session_query,
                 null, { response -> parseSession(response) }) { error ->
             Log.e(
@@ -128,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
                     "Volley Error: " + error.cause
             )
         }
-        tmdbrequestQueue.add(jsonObjectRequest)
+        tmdbrequestQueue.add(jsonObjectRequest)*/
     }
 
     private fun parseSession(response: JSONObject) {

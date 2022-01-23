@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -9,9 +8,9 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:elevation="0dp"
+        android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        app:elevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -34,20 +33,19 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
+                    android:visibility="gone"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_launcher"
-                    />
+                    android:src="@mipmap/ic_launcher" />
 
                 <TextView
                     android:id="@+id/logo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:fontFamily="@font/lobster_regular"
                     android:text="@string/app_name"
                     android:textColor="@color/black"
                     android:textSize="27sp"
-                    android:layout_marginTop="20dp"
-                    android:paddingStart="8dp"
                     android:textStyle="bold" />
 
             </androidx.appcompat.widget.Toolbar>
@@ -105,15 +103,20 @@
                 android:id="@+id/tvPopular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Popular"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:textSize="16sp"
                 android:fontFamily="@font/circularstd_book"
+                android:text="Popular"
+                android:textAllCaps="true"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/outline_movie_24"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <fragment
                 android:id="@+id/fragmentTrending"
@@ -128,15 +131,20 @@
                 android:id="@+id/tvInTheaters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="In Theaters"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:textSize="16sp"
                 android:fontFamily="@font/circularstd_book"
+                android:text="In Theaters"
+                android:textAllCaps="true"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/outline_movie_24"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragmentTrending"
-                />
+                app:layout_constraintTop_toBottomOf="@id/fragmentTrending" />
 
             <fragment
                 android:id="@+id/fragmentInTheaters"
@@ -151,15 +159,20 @@
                 android:id="@+id/tvUpcoming"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upcoming"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:textSize="16sp"
                 android:fontFamily="@font/circularstd_book"
+                android:text="Upcoming"
+                android:textAllCaps="true"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/outline_movie_24"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragmentInTheaters"
-                />
+                app:layout_constraintTop_toBottomOf="@id/fragmentInTheaters" />
 
             <fragment
                 class="tech.salroid.filmy.fragment.UpComing"
@@ -182,13 +195,16 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" >
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <FrameLayout
-                    android:id="@+id/search_container"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp" />
-            </tr.xip.errorview.ErrorView>
+            <FrameLayout
+                android:id="@+id/search_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

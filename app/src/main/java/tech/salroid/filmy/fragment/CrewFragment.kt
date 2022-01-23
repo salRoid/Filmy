@@ -13,12 +13,12 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.FullCrewActivity
 import tech.salroid.filmy.adapters.CrewAdapter
+import tech.salroid.filmy.data.Crew
 import tech.salroid.filmy.databinding.CrewFragmentBinding
-import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
 
 class CrewFragment : Fragment() {
 
-    private var jsonCrew: String? = null
+    private var crewList: ArrayList<Crew>? = null
     private var movieId: String? = null
     private var movieTitle: String? = null
 
@@ -38,9 +38,9 @@ class CrewFragment : Fragment() {
         binding.crewRecycler.visibility = View.INVISIBLE
 
         binding.crewMore.setOnClickListener {
-            if (jsonCrew != null && movieTitle != null) {
+            if (crewList != null && movieTitle != null) {
                 val intent = Intent(activity, FullCrewActivity::class.java)
-                intent.putExtra("crew_json", jsonCrew)
+                intent.putExtra("crew_list", crewList)
                 intent.putExtra("toolbar_title", movieTitle)
                 startActivity(intent)
             }
@@ -56,17 +56,15 @@ class CrewFragment : Fragment() {
         movieTitle = arguments?.getString("movie_title")
     }
 
-    fun parseCrewOutput(crewResult: String) {
-        val parser = MovieDetailsActivityParseWork(crewResult)
-        val crewList = parser.parseCrewMembers()
-        jsonCrew = crewResult
-
+    fun showCrews(crewList: ArrayList<Crew>) {
+        this.crewList = crewList
         binding.crewRecycler.adapter = CrewAdapter(crewList, true) { member, _, view ->
             val intent = Intent(activity, CharacterDetailsActivity::class.java)
-            intent.putExtra("id", member.crewMemberId)
+            intent.putExtra("id", member.id.toString())
             val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
             val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, p1, p2)
+            val options =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), p1, p2)
 
             startActivity(intent, options.toBundle())
         }

@@ -9,24 +9,20 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.toolbox.JsonObjectRequest
-import org.json.JSONObject
-import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.activities.CharacterDetailsActivity
 import tech.salroid.filmy.activities.FullCastActivity
 import tech.salroid.filmy.adapters.CastAdapter
+import tech.salroid.filmy.data.Cast
+import tech.salroid.filmy.data.Crew
 import tech.salroid.filmy.databinding.CastFragmentBinding
-import tech.salroid.filmy.networking.TmdbVolleySingleton
-import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
+import tech.salroid.filmy.network.NetworkUtil
 
 class CastFragment : Fragment() {
 
-    private var jsonCast: String? = null
+    private var castList: ArrayList<Cast>? = null
     private var movieId: String? = null
     private var movieTitle: String? = null
-    private var gotCrewListener: GotCrewListener? = null
-
     private var _binding: CastFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -44,19 +40,15 @@ class CastFragment : Fragment() {
         binding.castRecycler.visibility = View.INVISIBLE
 
         binding.more.setOnClickListener {
-            if (jsonCast != null && movieTitle != null) {
+            if (castList != null && movieTitle != null) {
                 val intent = Intent(activity, FullCastActivity::class.java)
-                intent.putExtra("cast_json", jsonCast)
+                intent.putExtra("cast_list", castList)
                 intent.putExtra("toolbar_title", movieTitle)
                 startActivity(intent)
             }
         }
 
         return view
-    }
-
-    fun setGotCrewListener(gotCrewListener: GotCrewListener?) {
-        this.gotCrewListener = gotCrewListener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,37 +60,33 @@ class CastFragment : Fragment() {
             movieTitle = savedBundle.getString("movie_title")
         }
         movieId?.let {
-            getCastFromNetwork(it)
-        }
-    }
-
-    fun getCastFromNetwork(movieId: String) {
-        val url =
-            "http://api.themoviedb.org/3/movie/$movieId/casts?api_key=${BuildConfig.TMDB_API_KEY}"
-
-        val jsonObjectRequestForMovieCastDetails = JsonObjectRequest(url, null,
-            { response: JSONObject ->
-                jsonCast = response.toString()
-                parseCastOutput(response.toString())
-                if (gotCrewListener != null) gotCrewListener!!.gotCrew(response.toString())
+            getCastAndCrew(it) {
+                // TODO Show Crew
             }
-        ) {
-            binding.breathingProgressFragment.visibility = View.GONE
         }
-        val requestQueue = TmdbVolleySingleton.requestQueue
-        requestQueue.add(jsonObjectRequestForMovieCastDetails)
     }
 
-    private fun parseCastOutput(castResult: String) {
-        val par = MovieDetailsActivityParseWork(castResult)
-        val castList = par.parseCastMembers()
+    fun getCastAndCrew(movieId: String, crewCallback: (List<Crew>) -> Unit) {
+        NetworkUtil.getCastAndCrew(movieId, { castCrewResponse ->
+            castCrewResponse?.let { it1 ->
+                this.castList = it1.cast
+                showCasts(it1.cast)
+                crewCallback(it1.crew)
+            }
+        }, {
+
+        })
+    }
+
+    private fun showCasts(castList: ArrayList<Cast>) {
 
         val castAdapter = CastAdapter(castList, true) { castMemberDetailsData, _, view ->
             val intent = Intent(activity, CharacterDetailsActivity::class.java)
-            intent.putExtra("id", castMemberDetailsData.castId)
+            intent.putExtra("id", castMemberDetailsData.id.toString())
             val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")
             val p2 = Pair.create(view.findViewById<View>(R.id.cast_name), "name")
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity!!, p1, p2)
+            val options =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), p1, p2)
             startActivity(intent, options.toBundle())
         }
 
@@ -120,10 +108,6 @@ class CastFragment : Fragment() {
         binding.breathingProgressFragment.visibility = View.GONE
         binding.castRecycler.visibility = View.VISIBLE
         binding.detailFragmentViewsLayout.minimumHeight = 0
-    }
-
-    interface GotCrewListener {
-        fun gotCrew(crewData: String)
     }
 
     companion object {

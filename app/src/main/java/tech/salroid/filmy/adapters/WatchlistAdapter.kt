@@ -44,7 +44,6 @@ class WatchlistAdapter(
 
             try {
                 Glide.with(binding.root.context).load(poster)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.poster)
             } catch (e: Exception) {
             }

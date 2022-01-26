@@ -2,28 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-
-
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_action_action_search2"
-        android:orderInCategory="100"
         android:title="@string/abc_search_hint"
         app:showAsAction="always" />
-
 
     <item
         android:id="@+id/ic_collections"
         android:icon="@drawable/ic_action_collections_bookmark"
         android:title="@string/collections"
-        app:showAsAction="never"
-        />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/ic_setting"
         android:title="@string/title_activity_settings"
         app:showAsAction="never" />
-
 
 </menu>

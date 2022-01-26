@@ -34,7 +34,6 @@ class FavouriteAdapter(
 
             Glide.with(binding.root.context)
                 .load(poster)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(binding.poster)
         }
 

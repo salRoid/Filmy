@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="4dp">
 
     <LinearLayout
         android:id="@+id/container"
@@ -10,16 +12,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/detail_youtube"
-                android:layout_width="150dp"
-                android:layout_height="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
                 android:contentDescription="@string/trailer"
                 android:scaleType="centerCrop" />
 
@@ -28,18 +30,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:alpha="0.8"
                 android:background="@drawable/ic_play_circle_filled_white_48dp"
                 android:contentDescription="@string/play" />
 
-        </RelativeLayout>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/trailerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
+            android:layout_margin="16dp"
             android:ellipsize="end"
             android:fontFamily="@font/circularstd_book"
             android:maxLines="3"
@@ -47,4 +50,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tech.salroid.filmy.R
-import tech.salroid.filmy.database.OfflineMovies
 
 object Confirmation {
 
@@ -16,10 +15,8 @@ object Confirmation {
             .setTitle("Favorite")
             .setMessage("Are you sure you want to add this to favorite section?")
             .setPositiveButton(android.R.string.yes) { _: DialogInterface?, _: Int ->
-                val offlineMovies = OfflineMovies(
-                    context
-                )
-                offlineMovies.saveMovie(movieMap, movieId, movieIdFinal, flagFavorite)
+                /* val offlineMovies = OfflineMovies(context)
+                 offlineMovies.saveMovie(movieMap, movieId, movieIdFinal, flagFavorite)*/
             }
             .setNegativeButton(android.R.string.no) { dialog: DialogInterface, _: Int -> dialog.cancel() }
             .show()
@@ -35,10 +32,8 @@ object Confirmation {
             .setIcon(null)
             .setMessage("Are you sure you want to add this to watchlist section?")
             .setPositiveButton(android.R.string.yes) { _: DialogInterface?, _: Int ->
-                val offlineMovies = OfflineMovies(
-                    context
-                )
-                offlineMovies.saveMovie(movieMap, movieId, movieIdFinal, flagWatchlist)
+                /* val offlineMovies = OfflineMovies(context)
+                 offlineMovies.saveMovie(movieMap, movieId, movieIdFinal, flagWatchlist)*/
             }
             .setNegativeButton(android.R.string.no) { dialog: DialogInterface, _: Int -> dialog.cancel() }
             .show()

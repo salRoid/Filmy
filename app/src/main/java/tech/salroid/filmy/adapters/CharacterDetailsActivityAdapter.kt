@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import tech.salroid.filmy.data.PersonMovieDetailsData
+import tech.salroid.filmy.data.CastMovie
 import tech.salroid.filmy.databinding.CharCustomRowBinding
 
 class CharacterDetailsActivityAdapter(
-    private val moviesList: List<PersonMovieDetailsData>,
+    private val moviesList: List<CastMovie>,
     private val fixedSize: Boolean,
-    private val clickListener: ((PersonMovieDetailsData, Int) -> Unit)? = null
+    private val clickListener: ((CastMovie, Int) -> Unit)? = null
 ) : RecyclerView.Adapter<CharacterDetailsActivityAdapter.CharacterDetailsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterDetailsViewHolder {
@@ -30,18 +30,17 @@ class CharacterDetailsActivityAdapter(
     inner class CharacterDetailsViewHolder(private val binding: CharCustomRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(personMovieDetailsData: PersonMovieDetailsData) {
+        fun bindData(movie: CastMovie) {
 
-            val movieName = personMovieDetailsData.movieTitle
-            val moviePoster = personMovieDetailsData.moviePoster
-            val rolePlayed = personMovieDetailsData.rolePlayed
+            val movieName = movie.originalTitle
+            val moviePoster = movie.posterPath
+            val rolePlayed = movie.character
 
             binding.movieName.text = movieName
             binding.movieRolePlayed.text = rolePlayed
 
             Glide.with(binding.root.context)
-                .load(moviePoster)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .load("http://image.tmdb.org/t/p/w45${moviePoster}")
                 .fitCenter()
                 .into(binding.moviePoster)
         }

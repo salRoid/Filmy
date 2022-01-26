@@ -1,3 +1,4 @@
+/*
 package tech.salroid.filmy
 
 import android.content.ComponentName
@@ -24,7 +25,6 @@ import tech.salroid.filmy.TestUtilities.Companion.validateCurrentRecord
 import tech.salroid.filmy.TestUtilities.Companion.validateCursor
 import tech.salroid.filmy.database.FilmContract
 import tech.salroid.filmy.database.FilmDbHelper
-import tech.salroid.filmy.providers.FilmProvider
 
 @RunWith(AndroidJUnit4::class)
 class ProviderTest {
@@ -278,7 +278,8 @@ class ProviderTest {
     }
 
     fun testBulkInsertInMovie() {
-        /* // first, let'FilmyAuthenticator create a location value
+        */
+/* // first, let'FilmyAuthenticator create a location value
         ContentValues testValues = TestUtilities.createMovieTestValues();
         Uri locationUri = mContext.getContentResolver().insert(LocationEntry.CONTENT_URI, testValues);
         long locationRowId = ContentUris.parseId(locationUri);
@@ -303,7 +304,8 @@ class ProviderTest {
 
         // Now we can bulkInsert some weather.  In fact, we only implement BulkInsert for weather
         // entries.  With ContentProviders, you really only have to implement the features you
-        // use, after all.*/
+        // use, after all.*//*
+
         val bulkInsertContentValues = createBulkInsertMovieValues()
 
         // Register a content observer for our bulk insert.
@@ -380,4 +382,4 @@ class ProviderTest {
             return returnContentValues
         }
     }
-}
+}*/

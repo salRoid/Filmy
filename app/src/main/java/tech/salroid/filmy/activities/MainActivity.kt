@@ -28,8 +28,7 @@ import tech.salroid.filmy.fragment.InTheaters
 import tech.salroid.filmy.fragment.SearchFragment
 import tech.salroid.filmy.fragment.Trending
 import tech.salroid.filmy.fragment.UpComing
-import tech.salroid.filmy.networking.FirstFetch
-import tech.salroid.filmy.utility.NetworkUtil
+import tech.salroid.filmy.network.NetworkUtil
 import tech.salroid.filmy.views.CustomToast
 
 class MainActivity : AppCompatActivity() {
@@ -72,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         binding.mainErrorView.setRetryListener {
             if (NetworkUtil.isNetworkConnected(this@MainActivity)) {
                 fetchingFromNetwork = true
-                setScheduler()
+               // fetchMoviesFromNetwork()
             }
             canProceed()
         }
@@ -109,14 +108,13 @@ class MainActivity : AppCompatActivity() {
                     .beginTransaction()
                     .remove(searchFragment)
                     .commit()
-                if (!cantProceed) binding.tabLayout.visibility = View.VISIBLE
                 enableToolbarScrolling()
             }
         })
 
         if (NetworkUtil.isNetworkConnected(this)) {
             fetchingFromNetwork = true
-            setScheduler()
+           // fetchMoviesFromNetwork()
         }
     }
 
@@ -163,11 +161,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         thread.start()
-    }
-
-    private fun setScheduler() {
-        val firstFetch = FirstFetch(this)
-        firstFetch.start()
     }
 
     fun cantProceed(status: Int) {

@@ -11,8 +11,8 @@ import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.adapters.CastAdapter
+import tech.salroid.filmy.data.Cast
 import tech.salroid.filmy.databinding.ActivityFullCastBinding
-import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
 
 class FullCastActivity : AppCompatActivity() {
 
@@ -31,12 +31,12 @@ class FullCastActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         binding.fullCastRecycler.layoutManager = LinearLayoutManager(this@FullCastActivity)
 
-        val castResult = intent?.getStringExtra("cast_json")
+        val castList = intent?.getSerializableExtra("cast_list") as? List<Cast>
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = intent?.getStringExtra("toolbar_title")
 
-        val parser = castResult?.let { MovieDetailsActivityParseWork(it) }
-        val castList = parser?.parseCastMembers()
+      //  val parser = castResult?.let { MovieDetailsActivityParseWork(it) }
+       // val castList = parser?.parseCastMembers()
 
         val fullCastAdapter = castList?.let {
             CastAdapter(it, false) { castData, _, view ->

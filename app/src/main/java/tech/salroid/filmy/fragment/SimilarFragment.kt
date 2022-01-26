@@ -7,14 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.toolbox.JsonObjectRequest
-import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.activities.MovieDetailsActivity
 import tech.salroid.filmy.adapters.SimilarMovieActivityAdapter
-import tech.salroid.filmy.data.SimilarMoviesData
+import tech.salroid.filmy.data.SimilarMovie
 import tech.salroid.filmy.databinding.SimilarFragmentBinding
-import tech.salroid.filmy.networking.TmdbVolleySingleton
-import tech.salroid.filmy.parser.MovieDetailsActivityParseWork
+import tech.salroid.filmy.network.NetworkUtil
 
 class SimilarFragment : Fragment() {
 
@@ -48,49 +45,39 @@ class SimilarFragment : Fragment() {
         movieTitle = arguments?.getString("movie_title")
 
         movieId?.let {
-            getSimilarFromNetwork(it)
+            getSimilarMovies(it)
         }
     }
 
-    fun getSimilarFromNetwork(movieId: String) {
-        val baseMovieCastDetails =
-            "https://api.themoviedb.org/3/movie/$movieId/recommendations?api_key=${BuildConfig.TMDB_API_KEY}"
-
-        val jsonObjectRequestForMovieCastDetails =
-            JsonObjectRequest(baseMovieCastDetails, null, { response ->
-                jsonSimilar = response.toString()
-                parseSimilarOutput(response.toString())
-            }, {
-                binding.breathingProgressFragment.visibility = View.GONE
-            })
-
-        val requestQueue = TmdbVolleySingleton.requestQueue
-        requestQueue.add(jsonObjectRequestForMovieCastDetails)
-    }
-
-    private fun parseSimilarOutput(similarMoviesResult: String) {
-        val parser = MovieDetailsActivityParseWork(similarMoviesResult)
-        val similarMoviesList = parser.parseSimilarMovies()
-
-        val similarAdapter =
-            SimilarMovieActivityAdapter(similarMoviesList) { similarMoviesData, _ ->
-                itemClicked(similarMoviesData)
+    fun getSimilarMovies(movieId: String) {
+        NetworkUtil.getSimilarMovies(movieId, { similars ->
+            similars?.let {
+                showSimilarMovies(it.similars)
             }
-        binding.similarRecycler.adapter = similarAdapter
+        }, {
 
-        if (similarMoviesList.isEmpty()) {
-            binding.cardHolder.visibility = View.INVISIBLE
-        }
-
-        binding.breathingProgressFragment.visibility = View.GONE
-        binding.similarRecycler.visibility = View.VISIBLE
-        binding.detailFragmentViewsLayout.minimumHeight = 0
+        })
     }
 
-    private fun itemClicked(movie: SimilarMoviesData) {
+      private fun showSimilarMovies(similarMoviesList: List<SimilarMovie>) {
+          val similarAdapter = SimilarMovieActivityAdapter(similarMoviesList) { similarMoviesData, _ ->
+                  itemClicked(similarMoviesData)
+              }
+          binding.similarRecycler.adapter = similarAdapter
+
+          if (similarMoviesList.isEmpty()) {
+              binding.cardHolder.visibility = View.INVISIBLE
+          }
+
+          binding.breathingProgressFragment.visibility = View.GONE
+          binding.similarRecycler.visibility = View.VISIBLE
+          binding.detailFragmentViewsLayout.minimumHeight = 0
+      }
+
+    private fun itemClicked(movie: SimilarMovie) {
         val intent = Intent(activity, MovieDetailsActivity::class.java)
         intent.putExtra("title", movie.title)
-        intent.putExtra("id", movie.id)
+        intent.putExtra("id", movie.id.toString())
         intent.putExtra("network_applicable", true)
         intent.putExtra("activity", false)
         startActivity(intent)

@@ -48,7 +48,6 @@ class TrailerAdapter(
 
             Glide.with(binding.root.context)
                 .load(thumbnail)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .fitCenter()
                 .into((binding.detailYoutube))
 

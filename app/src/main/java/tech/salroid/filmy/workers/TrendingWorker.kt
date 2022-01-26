@@ -1,35 +1,29 @@
 package tech.salroid.filmy.workers
 
 import android.content.Context
-import android.content.Intent
 import androidx.concurrent.futures.CallbackToFutureAdapter
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.JsonObjectRequest
 import com.google.common.util.concurrent.ListenableFuture
-import org.json.JSONObject
-import tech.salroid.filmy.BuildConfig
-import tech.salroid.filmy.networking.TmdbVolleySingleton
-import tech.salroid.filmy.parser.MainActivityParseWork
+import tech.salroid.filmy.network.NetworkUtil
 
 class TrendingWorker(
-    private val context: Context,
+    context: Context,
     workParameters: WorkerParameters
 ) : ListenableWorker(context, workParameters) {
 
-    private val tmdbRequestQueue = TmdbVolleySingleton.requestQueue
-    private var taskFinished = 0
-
     override fun startWork(): ListenableFuture<Result> {
-        syncNowTrending()
+        NetworkUtil.getTrendingMovies({
+            // TODO save to DB
+        }, {
+
+        })
         return CallbackToFutureAdapter.getFuture {
             it.set(Result.success())
         }
     }
 
-    private fun syncNowTrending() {
+/*    private fun syncNowTrending() {
         val url =
             "https://api.themoviedb.org/3/movie/popular?api_key=${BuildConfig.TMDB_API_KEY}"
 
@@ -49,16 +43,12 @@ class TrendingWorker(
             )
         }
         tmdbRequestQueue.add(jsonObjectRequest)
-    }
+    }*/
 
-    private fun parseOutput(result: String) {
-        val pa = MainActivityParseWork(context, result)
-        pa.parse()
-    }
 
-    private fun sendFetchFailedMessage(message: Int) {
+    /*private fun sendFetchFailedMessage(message: Int) {
         val intent = Intent("fetch-failed")
         intent.putExtra("message", message)
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
-    }
+    }*/
 }

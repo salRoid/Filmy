@@ -2,29 +2,24 @@ package tech.salroid.filmy.fragment
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.CursorLoader
-import androidx.loader.content.Loader
 import androidx.recyclerview.widget.GridLayoutManager
 import tech.salroid.filmy.R
-import tech.salroid.filmy.activities.MainActivity
 import tech.salroid.filmy.activities.MovieDetailsActivity
-import tech.salroid.filmy.adapters.MainActivityAdapter
-import tech.salroid.filmy.database.FilmContract
-import tech.salroid.filmy.database.MovieProjection
+import tech.salroid.filmy.adapters.MoviesAdapter
+import tech.salroid.filmy.data.MovieResult
+import tech.salroid.filmy.data.MoviesResponse
 import tech.salroid.filmy.databinding.FragmentTrendingBinding
-import tech.salroid.filmy.views.CustomToast
+import tech.salroid.filmy.network.NetworkUtil
 
-class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
+class Trending : Fragment() {
 
-    private var adapter: MainActivityAdapter? = null
+    private var adapter: MoviesAdapter? = null
     private var gridLayoutManager: GridLayoutManager? = null
     private var isInMultiWindowMode = false
     var isShowingFromDatabase = false
@@ -84,7 +79,7 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
                     Configuration.ORIENTATION_PORTRAIT -> {
                         gridLayoutManager = GridLayoutManager(
                             context,
-                            1,
+                            2,
                             GridLayoutManager.HORIZONTAL,
                             false
                         )
@@ -95,7 +90,7 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
                             isInMultiWindowMode -> {
                                 gridLayoutManager = GridLayoutManager(
                                     context,
-                                    1,
+                                    2,
                                     GridLayoutManager.HORIZONTAL,
                                     false
                                 )
@@ -104,7 +99,7 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
                             else -> {
                                 gridLayoutManager = GridLayoutManager(
                                     context,
-                                    1,
+                                    2,
                                     GridLayoutManager.HORIZONTAL,
                                     false
                                 )
@@ -115,35 +110,45 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
                 }
             }
         }
-        adapter = MainActivityAdapter { itemClicked(it) }
+        adapter = MoviesAdapter { itemClicked(it) }
         binding.recycler.adapter = adapter
 
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        NetworkUtil.getTrendingMovies({
+            showMovies(it)
+        }, {
+
+        })
+    }
+
     override fun onResume() {
         super.onResume()
-        activity?.supportLoaderManager?.initLoader(
-            MovieProjection.TRENDING_MOVIE_LOADER,
-            null,
-            this
-        )
+        /* activity?.supportLoaderManager?.initLoader(
+             MovieProjection.TRENDING_MOVIE_LOADER,
+             null,
+             this
+         )*/
     }
 
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor?> {
-        val moviesForTheUri = FilmContract.MoviesEntry.CONTENT_URI
+    /*   override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor?> {
+           val moviesForTheUri = FilmContract.MoviesEntry.CONTENT_URI
 
-        return CursorLoader(
-            requireContext(),
-            moviesForTheUri,
-            MovieProjection.MOVIE_COLUMNS,
-            null,
-            null,
-            null
-        )
-    }
+           return CursorLoader(
+               requireContext(),
+               moviesForTheUri,
+               MovieProjection.MOVIE_COLUMNS,
+               null,
+               null,
+               null
+           )
+       }*/
 
-    override fun onLoadFinished(loader: Loader<Cursor?>, cursor: Cursor?) {
+/*    override fun onLoadFinished(loader: Loader<Cursor?>, cursor: Cursor?) {
         if (cursor != null && cursor.count > 0) {
             isShowingFromDatabase = true
             adapter?.swapCursor(cursor)
@@ -152,23 +157,28 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
             CustomToast.show(activity, "Failed to get latest movies.", true)
             (activity as MainActivity?)?.cantProceed(-1)
         }
+    }*/
+
+    /*override fun onLoaderReset(loader: Loader<Cursor?>) {
+       // adapter?.swapCursor(null)
+    }*/
+
+    private fun showMovies(moviesResponse: MoviesResponse?) {
+
+        moviesResponse?.results?.let {
+            isShowingFromDatabase = true
+            adapter?.swapData(it)
+        }
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor?>) {
-        adapter?.swapCursor(null)
-    }
-
-    private fun itemClicked(cursor: Cursor) {
-        val idIndex = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID)
-        val titleIndex = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE)
-
+    private fun itemClicked(movie: MovieResult) {
         val intent = Intent(activity, MovieDetailsActivity::class.java)
-        intent.putExtra("title", cursor.getString(titleIndex))
+        intent.putExtra("title", movie.title)
         intent.putExtra("activity", true)
         intent.putExtra("type", 0)
         intent.putExtra("database_applicable", true)
         intent.putExtra("network_applicable", true)
-        intent.putExtra("id", cursor.getString(idIndex))
+        intent.putExtra("id", movie.id.toString())
         startActivity(intent)
 
         activity?.overridePendingTransition(0, 0)
@@ -190,10 +200,5 @@ class Trending : Fragment(), LoaderManager.LoaderCallbacks<Cursor?> {
     }
 
     fun retryLoading() {
-        activity?.supportLoaderManager?.restartLoader(
-            MovieProjection.TRENDING_MOVIE_LOADER,
-            null,
-            this
-        )
     }
 }

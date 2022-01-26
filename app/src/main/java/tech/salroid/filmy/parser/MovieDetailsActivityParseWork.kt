@@ -1,17 +1,18 @@
+/*
 package tech.salroid.filmy.parser
 
 import org.json.JSONException
 import org.json.JSONObject
-import tech.salroid.filmy.data.CastMemberDetailsData
-import tech.salroid.filmy.data.CrewMemberDetailsData
-import tech.salroid.filmy.data.SimilarMoviesData
+import tech.salroid.filmy.data.Cast
+import tech.salroid.filmy.data.Crew
+import tech.salroid.filmy.data.SimilarMovie
 import java.util.*
 
 class MovieDetailsActivityParseWork(private val result: String) {
 
-    fun parseCastMembers(): List<CastMemberDetailsData> {
-        val allCastMembers: MutableList<CastMemberDetailsData> = ArrayList()
-        var castMember: CastMemberDetailsData
+    fun parseCastMembers(): List<Cast> {
+        val allCastMembers: MutableList<Cast> = ArrayList()
+        var castMember: Cast
 
         try {
             val jsonObject = JSONObject(result)
@@ -24,7 +25,7 @@ class MovieDetailsActivityParseWork(private val result: String) {
                 var displayProfile = jsonArray.getJSONObject(i).getString("profile_path")
                 displayProfile = "http://image.tmdb.org/t/p/w185$displayProfile"
 
-                castMember = CastMemberDetailsData(id)
+                castMember = Cast(id)
                 castMember.castId = id
                 castMember.castName = name
                 castMember.castRolePlayed = rolePlayed
@@ -39,9 +40,9 @@ class MovieDetailsActivityParseWork(private val result: String) {
         return allCastMembers
     }
 
-    fun parseCrewMembers(): List<CrewMemberDetailsData> {
-        val allCrewMembers: MutableList<CrewMemberDetailsData> = ArrayList()
-        var crewMember: CrewMemberDetailsData
+    fun parseCrewMembers(): List<Crew> {
+        val allCrewMembers: MutableList<Crew> = ArrayList()
+        var crewMember: Crew
 
         try {
             val jsonObject = JSONObject(result)
@@ -53,7 +54,7 @@ class MovieDetailsActivityParseWork(private val result: String) {
                 val memberName = crewArray.getJSONObject(i).getString("name")
                 var memberProfile = crewArray.getJSONObject(i).getString("profile_path")
                 memberProfile = "http://image.tmdb.org/t/p/w185$memberProfile"
-                crewMember = CrewMemberDetailsData(memberId)
+                crewMember = Crew(memberId)
 
                 if (!memberProfile.contains("null")) {
                     crewMember.crewMemberId = memberId
@@ -70,9 +71,9 @@ class MovieDetailsActivityParseWork(private val result: String) {
         return allCrewMembers
     }
 
-    fun parseSimilarMovies(): List<SimilarMoviesData> {
-        val similarArray: MutableList<SimilarMoviesData> = ArrayList()
-        var similar: SimilarMoviesData
+    fun parseSimilarMovies(): List<SimilarMovie> {
+        val similarArray: MutableList<SimilarMovie> = ArrayList()
+        var similar: SimilarMovie
 
         try {
             val jsonObject = JSONObject(result)
@@ -84,7 +85,7 @@ class MovieDetailsActivityParseWork(private val result: String) {
                 val poster = "http://image.tmdb.org/t/p/w185" + jsonArray.getJSONObject(i)
                     .getString("poster_path")
 
-                similar = SimilarMoviesData(id)
+                similar = SimilarMovie(id)
 
                 if (!poster.contains("null")) {
                     similar.id = id
@@ -98,4 +99,4 @@ class MovieDetailsActivityParseWork(private val result: String) {
         }
         return similarArray
     }
-}
+}*/

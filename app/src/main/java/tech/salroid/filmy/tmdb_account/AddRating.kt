@@ -1,3 +1,4 @@
+/*
 package tech.salroid.filmy.tmdb_account
 
 import android.app.NotificationManager
@@ -134,4 +135,4 @@ class AddRating {
             show(context, "Can't add rating.", false)
         }
     }
-}
+}*/

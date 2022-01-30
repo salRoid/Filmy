@@ -5,6 +5,6 @@
         android:width="20dp"
         android:height="20dp"
         android:drawable="@drawable/circle"
-        android:gravity="center"></item>
+        android:gravity="center"/>
 
 </layer-list>

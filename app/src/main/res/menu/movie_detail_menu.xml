@@ -3,24 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_watch"
-        android:icon="@drawable/ic_watch_later_white_24dp"
-        android:orderInCategory="100"
-        android:title="@string/watchlist"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_fav"
-        android:icon="@drawable/ic_favorite_border_white_24dp"
+        android:icon="@drawable/ic_round_favorite_border_24"
         android:orderInCategory="100"
         android:title="@string/favorite"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_save"
-        android:icon="@drawable/ic_bookmark_border_white_24dp"
+        android:id="@+id/action_watch"
+        android:icon="@drawable/ic_round_bookmark_add_24"
         android:orderInCategory="100"
-        android:title="save"
+        android:title="@string/watchlist"
         app:showAsAction="always" />
 
     <item

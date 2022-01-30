@@ -11,7 +11,11 @@
         <item name="divider">@color/dividerColor</item>
     </style>
 
-    <style name="AppTheme.Base.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="AppTheme.Base.Light.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Base.Dialog" parent="Theme.MaterialComponents.Dialog">
         <item name="colorPrimary">@color/colorAccent</item>
     </style>
 

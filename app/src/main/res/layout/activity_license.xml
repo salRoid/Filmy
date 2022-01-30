@@ -12,8 +12,7 @@
         android:background="?attr/colorPrimary"
         android:elevation="2dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:theme="@style/ThemeOverlay.AppCompat" >
-
+        app:theme="@style/ThemeOverlay.AppCompat">
 
         <TextView
             android:id="@+id/logo"
@@ -23,7 +22,7 @@
             android:textColor="#757575"
             android:textSize="20sp" />
 
-        </androidx.appcompat.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -35,82 +34,69 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            tools:context="tech.salroid.filmy.activities.License">
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            tools:context=".ui.activities.License">
 
-            <LinearLayout
+            <ImageView
                 android:id="@+id/powered"
                 android:layout_width="wrap_content"
                 android:layout_height="88dp"
                 android:layout_below="@+id/container"
+                android:layout_gravity="center_horizontal"
                 android:padding="16dp"
-                android:weightSum="2">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@drawable/newtmdb" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/butterknife"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp" />
-
+                android:src="@drawable/newtmdb" />
 
             <TextView
                 android:id="@+id/circularimageview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="16dp" />
 
             <TextView
                 android:id="@+id/materialsearcview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
 
             <TextView
                 android:id="@+id/tatarka"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
 
             <TextView
                 android:id="@+id/error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
 
             <TextView
                 android:id="@+id/appintro"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
 
             <TextView
                 android:id="@+id/crashlytics"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
 
             <TextView
                 android:id="@+id/glide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

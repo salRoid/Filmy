@@ -23,8 +23,8 @@ import tech.salroid.filmy.TestUtilities.Companion.insertMovieValues
 import tech.salroid.filmy.TestUtilities.Companion.testContentObserver
 import tech.salroid.filmy.TestUtilities.Companion.validateCurrentRecord
 import tech.salroid.filmy.TestUtilities.Companion.validateCursor
-import tech.salroid.filmy.database.FilmContract
-import tech.salroid.filmy.database.FilmDbHelper
+import tech.salroid.filmy.data.local.database.FilmContract
+import tech.salroid.filmy.data.local.database.FilmDbHelper
 
 @RunWith(AndroidJUnit4::class)
 class ProviderTest {

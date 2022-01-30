@@ -5,7 +5,7 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tech.salroid.filmy.activities.LoginActivity">
+    tools:context=".ui.activities.LoginActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

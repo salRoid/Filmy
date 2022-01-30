@@ -16,16 +16,15 @@
             <FrameLayout
                 android:id="@+id/new_main"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="280dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:foreground="?android:selectableItemBackground">
 
                 <ImageView
                     android:id="@+id/backdrop"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="match_parent"
                     android:background="@color/dark"
                     android:contentDescription="@string/banner_image"
                     android:scaleType="centerCrop" />
@@ -198,7 +197,7 @@
         android:background="@drawable/toolbar_gradient_background"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <tech.salroid.filmy.views.BreathingProgress
+    <tech.salroid.filmy.ui.custom.BreathingProgress
         android:id="@+id/breathingProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:defaultValue="false"
         android:icon="@drawable/twotone_nights_stay_24"
         android:key="dark"
         android:title="@string/dark" />
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:defaultValue="true"
         android:icon="@drawable/twotone_insert_photo_24"
         android:key="imagequality"
@@ -28,7 +28,7 @@
         android:icon="@drawable/twotone_info_24"
         android:key="Version"
         android:selectable="true"
-        android:summary="2.1.2"
+        android:summary="3.0.0"
         android:title="@string/version" />
 
     <Preference

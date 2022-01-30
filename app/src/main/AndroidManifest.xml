@@ -28,12 +28,12 @@
             android:required="false" />
 
         <activity
-            android:name=".FilmyIntro"
+            android:name=".ui.FilmyIntro"
             android:label=" "
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="tech.salroid.filmy.ui.activities.MainActivity"
             android:theme="@style/SplashTheme">
 
             <intent-filter>
@@ -58,37 +58,37 @@
         </activity>
 
         <activity
-            android:name=".activities.MovieDetailsActivity"
+            android:name="tech.salroid.filmy.ui.activities.MovieDetailsActivity"
             android:label=" "
             android:theme="@style/DetailsActivityTheme" />
 
         <activity
-            android:name=".activities.CharacterDetailsActivity"
+            android:name="tech.salroid.filmy.ui.activities.CharacterDetailsActivity"
             android:label="@string/details"
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".activities.FullCastActivity"
+            android:name="tech.salroid.filmy.ui.activities.FullCastActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".activities.FullCrewActivity"
+            android:name="tech.salroid.filmy.ui.activities.FullCrewActivity"
             android:label=" "
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".activities.FullMovieActivity"
+            android:name="tech.salroid.filmy.ui.activities.FullMovieActivity"
             android:label="@string/title_activity_full_movie"
             android:theme="@style/AppTheme.Base" />
 
         <activity
-            android:name=".activities.FullScreenImage"
+            android:name="tech.salroid.filmy.ui.activities.FullScreenImage"
             android:label=" "
             android:theme="@style/FullScreenTheme" />
 
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name="tech.salroid.filmy.ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -96,10 +96,10 @@
             android:name="io.fabric.ApiKey"
             android:value="62707285253d6b217b66e97e6e602bcab0edc463" />
 
-        <activity android:name=".activities.License" />
-        <activity android:name=".activities.AboutActivity" />
+        <activity android:name="tech.salroid.filmy.ui.activities.License" />
+        <activity android:name="tech.salroid.filmy.ui.activities.AboutActivity" />
 
-        <receiver android:name=".widget.FilmyWidgetProvider">
+        <receiver android:name=".ui.widget.FilmyWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -109,9 +109,9 @@
                 android:resource="@xml/filmy_widget_info" />
         </receiver>
 
-        <activity android:name=".activities.CollectionsActivity" />
+        <activity android:name="tech.salroid.filmy.ui.activities.CollectionsActivity" />
 
-        <activity android:name=".activities.LoginActivity" />
+        <activity android:name="tech.salroid.filmy.ui.activities.LoginActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"

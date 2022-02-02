@@ -1,12 +1,13 @@
 package tech.salroid.filmy.data.network
 
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
-import tech.salroid.filmy.data.local.database.entity.MovieDetails
-import tech.salroid.filmy.data.local.*
+import tech.salroid.filmy.data.local.db.entity.MovieDetails
+import tech.salroid.filmy.data.local.model.*
 
 interface FilmyApi {
 
@@ -48,5 +49,5 @@ interface FilmyApi {
     fun getCastMovieDetails(@Path("person_id") personId: String): Call<CastMovieDetailsResponse>
 
     @GET("search/movie")
-    fun searchMovies(@Query("query") query: String): Call<SearchResultResponse>
+    suspend fun searchMovies(@Query("query") query: String): Response<SearchResultResponse>
 }

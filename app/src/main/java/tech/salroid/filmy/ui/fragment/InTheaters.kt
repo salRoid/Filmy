@@ -13,8 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.ui.activities.MovieDetailsActivity
 import tech.salroid.filmy.ui.adapters.MoviesAdapter
-import tech.salroid.filmy.data.local.database.FilmyDbHelper
-import tech.salroid.filmy.data.local.database.entity.Movie
+import tech.salroid.filmy.data.local.db.FilmyDbHelper
+import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.databinding.FragmentInTheatersBinding
 import tech.salroid.filmy.data.network.NetworkUtil
 

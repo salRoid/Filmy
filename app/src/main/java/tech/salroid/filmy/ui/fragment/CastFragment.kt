@@ -13,8 +13,8 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.activities.CharacterDetailsActivity
 import tech.salroid.filmy.ui.activities.FullCastActivity
 import tech.salroid.filmy.ui.adapters.CastAdapter
-import tech.salroid.filmy.data.local.Cast
-import tech.salroid.filmy.data.local.Crew
+import tech.salroid.filmy.data.local.model.Cast
+import tech.salroid.filmy.data.local.model.Crew
 import tech.salroid.filmy.databinding.CastFragmentBinding
 import tech.salroid.filmy.data.network.NetworkUtil
 

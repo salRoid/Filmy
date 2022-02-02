@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tech.salroid.filmy.FilmyApplication.Companion.context
-import tech.salroid.filmy.data.local.database.entity.Movie
+import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.databinding.CustomRowBinding
 
 class MoviesAdapter(

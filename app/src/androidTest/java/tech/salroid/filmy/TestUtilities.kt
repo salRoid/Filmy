@@ -13,8 +13,8 @@ import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import tech.salroid.filmy.data.local.database.FilmContract
-import tech.salroid.filmy.data.local.database.FilmDbHelper
+import tech.salroid.filmy.data.local.db.FilmContract
+import tech.salroid.filmy.data.local.db.FilmDbHelper
 import tech.salroid.filmy.utility.PollingCheck
 
 class TestUtilities {

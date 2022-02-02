@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.salroid.filmy.ui.activities.MovieDetailsActivity
 import tech.salroid.filmy.ui.adapters.SimilarMovieActivityAdapter
-import tech.salroid.filmy.data.local.SimilarMovie
+import tech.salroid.filmy.data.local.model.SimilarMovie
 import tech.salroid.filmy.databinding.SimilarFragmentBinding
 import tech.salroid.filmy.data.network.NetworkUtil
 

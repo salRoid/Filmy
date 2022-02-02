@@ -25,14 +25,14 @@ import kotlinx.coroutines.launch
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.animations.RevealAnimation
-import tech.salroid.filmy.data.local.RatingResponse
-import tech.salroid.filmy.data.local.database.FilmyDbHelper
-import tech.salroid.filmy.data.local.database.entity.MovieDetails
+import tech.salroid.filmy.data.local.model.RatingResponse
+import tech.salroid.filmy.data.local.db.FilmyDbHelper
+import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.databinding.ActivityDetailedBinding
 import tech.salroid.filmy.ui.activities.fragment.*
 import tech.salroid.filmy.data.network.NetworkUtil
 import tech.salroid.filmy.utility.FilmyUtility
-import tech.salroid.filmy.ui.custom.showSnackBar
+import tech.salroid.filmy.utility.showSnackBar
 
 class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 

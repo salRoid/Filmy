@@ -15,9 +15,9 @@ import com.bumptech.glide.Glide
 import org.json.JSONException
 import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.adapters.CharacterDetailsActivityAdapter
-import tech.salroid.filmy.data.local.CastDetailsResponse
-import tech.salroid.filmy.data.local.CastMovie
-import tech.salroid.filmy.data.local.CastMovieDetailsResponse
+import tech.salroid.filmy.data.local.model.CastDetailsResponse
+import tech.salroid.filmy.data.local.model.CastMovie
+import tech.salroid.filmy.data.local.model.CastMovieDetailsResponse
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.ui.activities.fragment.FullReadFragment
 import tech.salroid.filmy.data.network.NetworkUtil

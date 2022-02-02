@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.adapters.CharacterDetailsActivityAdapter
-import tech.salroid.filmy.data.local.CastMovie
+import tech.salroid.filmy.data.local.model.CastMovie
 import tech.salroid.filmy.databinding.ActivityFullMovieBinding
 
 class FullMovieActivity : AppCompatActivity() {

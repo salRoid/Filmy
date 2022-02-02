@@ -16,10 +16,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.ui.activities.MovieDetailsActivity
 import tech.salroid.filmy.ui.adapters.SavedMoviesAdapter
-import tech.salroid.filmy.data.local.database.FilmyDbHelper
-import tech.salroid.filmy.data.local.database.entity.MovieDetails
+import tech.salroid.filmy.data.local.db.FilmyDbHelper
+import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.databinding.FragmentWatchMoviesBinding
-import tech.salroid.filmy.ui.custom.visible
+import tech.salroid.filmy.utility.visible
 
 class WatchListFragment : Fragment() {
 

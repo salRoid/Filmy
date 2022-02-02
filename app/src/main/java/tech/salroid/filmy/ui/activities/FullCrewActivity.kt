@@ -11,7 +11,7 @@ import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.adapters.CrewAdapter
-import tech.salroid.filmy.data.local.Crew
+import tech.salroid.filmy.data.local.model.Crew
 import tech.salroid.filmy.databinding.ActivityFullCastBinding
 
 class FullCrewActivity : AppCompatActivity() {

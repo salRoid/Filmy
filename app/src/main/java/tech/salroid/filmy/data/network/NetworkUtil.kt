@@ -7,8 +7,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import tech.salroid.filmy.BuildConfig
-import tech.salroid.filmy.data.local.database.entity.MovieDetails
-import tech.salroid.filmy.data.local.*
+import tech.salroid.filmy.data.local.db.entity.MovieDetails
+import tech.salroid.filmy.data.local.model.*
 
 object NetworkUtil {
 
@@ -201,26 +201,13 @@ object NetworkUtil {
         })
     }
 
-
-    fun searchMovies(
-        movieId: String,
-        successCallback: (SearchResultResponse?) -> Unit,
-        errorCallback: () -> Unit
-    ) {
-        val call = RetrofitClient.filmyApi.searchMovies(movieId)
-        call.enqueue(object : Callback<SearchResultResponse> {
-            override fun onResponse(
-                call: Call<SearchResultResponse>,
-                response: Response<SearchResultResponse>
-            ) {
-                Log.d("webi", "Search Results: ${response.body()}")
-                successCallback.invoke(response.body())
-            }
-
-            override fun onFailure(call: Call<SearchResultResponse>, t: Throwable) {
-                Log.d("webi", "Search Results Error: ${t.message}")
-            }
-        })
+    suspend fun searchMovies(query: String): SearchResultResponse? {
+        val response = RetrofitClient.filmyApi.searchMovies(query)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
     }
 
     fun isNetworkConnected(context: Context): Boolean {

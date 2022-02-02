@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tech.salroid.filmy.R
-import tech.salroid.filmy.data.local.Cast
+import tech.salroid.filmy.data.local.model.Cast
 import tech.salroid.filmy.databinding.CastCustomRowBinding
 
 class CastAdapter(

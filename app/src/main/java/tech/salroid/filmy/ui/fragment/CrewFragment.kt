@@ -13,7 +13,7 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.activities.CharacterDetailsActivity
 import tech.salroid.filmy.ui.activities.FullCrewActivity
 import tech.salroid.filmy.ui.adapters.CrewAdapter
-import tech.salroid.filmy.data.local.Crew
+import tech.salroid.filmy.data.local.model.Crew
 import tech.salroid.filmy.databinding.CrewFragmentBinding
 
 class CrewFragment : Fragment() {

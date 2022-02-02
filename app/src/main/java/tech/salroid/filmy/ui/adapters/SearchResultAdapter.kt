@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import tech.salroid.filmy.data.local.SearchResult
+import tech.salroid.filmy.data.local.model.SearchResult
 import tech.salroid.filmy.databinding.CustomRowBinding
 
 class SearchResultAdapter(

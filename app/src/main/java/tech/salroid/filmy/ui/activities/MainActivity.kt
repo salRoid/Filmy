@@ -14,21 +14,26 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.miguelcatalan.materialsearchview.MaterialSearchView.SearchViewListener
-import tech.salroid.filmy.ui.FilmyIntro
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import tech.salroid.filmy.R
-import tech.salroid.filmy.ui.adapters.CollectionsPagerAdapter
+import tech.salroid.filmy.data.network.NetworkUtil
 import tech.salroid.filmy.databinding.ActivityMainBinding
+import tech.salroid.filmy.ui.FilmyIntro
 import tech.salroid.filmy.ui.activities.fragment.InTheaters
-import tech.salroid.filmy.ui.activities.fragment.SearchFragment
 import tech.salroid.filmy.ui.activities.fragment.Trending
 import tech.salroid.filmy.ui.activities.fragment.UpComing
-import tech.salroid.filmy.data.network.NetworkUtil
+import tech.salroid.filmy.ui.adapters.CollectionsPagerAdapter
+import tech.salroid.filmy.ui.fragment.SearchFragment
+import tech.salroid.filmy.utility.getQueryTextChangeStateFlow
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,7 +47,6 @@ class MainActivity : AppCompatActivity() {
     private val mMessageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val statusCode = intent.getIntExtra("message", 0)
-            //CustomToast.show(context, "Failed to get latest movies.", true)
             cantProceed(statusCode)
         }
     }
@@ -76,22 +80,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.mainErrorView.visibility = View.GONE
-        //setupViewPager(binding.viewpager)
-        //binding.tabLayout.setupWithViewPager(binding.viewpager)
 
-        binding.searchView.setVoiceSearch(true)
-        binding.searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                getSearchedResult(query)
-                searchFragment.showProgress()
-                return true
-            }
+        setupSearch()
+    }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                return true
-            }
-        })
-
+    private fun setupSearch() {
+        binding.searchView.setVoiceSearch(false)
         binding.searchView.setOnSearchViewListener(object : SearchViewListener {
             override fun onSearchViewShown() {
                 binding.tabLayout.visibility = View.GONE
@@ -111,9 +105,28 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        if (NetworkUtil.isNetworkConnected(this)) {
-            fetchingFromNetwork = true
-            // fetchMoviesFromNetwork()
+        // Instant search using Flow
+        lifecycleScope.launch(Dispatchers.IO) {
+            binding.searchView.getQueryTextChangeStateFlow()
+                .debounce(300)
+                .filter { query ->
+                    return@filter query.isNotEmpty()
+                }
+                .distinctUntilChanged()
+                .flatMapLatest { query ->
+                    searchFragment.showProgress()
+                    flow {
+                        emit(NetworkUtil.searchMovies(query))
+                    }.catch {
+                        emitAll(flowOf(null))
+                    }
+                }
+                .flowOn(Dispatchers.Main)
+                .collect { result ->
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        result?.results?.let { searchFragment.showSearchResults(it) }
+                    }
+                }
         }
     }
 

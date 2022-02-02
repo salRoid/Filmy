@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.activities.fragment
+package tech.salroid.filmy.ui.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -13,9 +13,8 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import tech.salroid.filmy.ui.activities.MovieDetailsActivity
 import tech.salroid.filmy.ui.adapters.SearchResultAdapter
-import tech.salroid.filmy.data.local.SearchResult
+import tech.salroid.filmy.data.local.model.SearchResult
 import tech.salroid.filmy.databinding.FragmentSearchBinding
-import tech.salroid.filmy.data.network.NetworkUtil
 
 class SearchFragment : Fragment() {
 
@@ -63,19 +62,17 @@ class SearchFragment : Fragment() {
     }
 
     fun getSearchedResult(query: String) {
-        val trimmedQuery = query.trim { it <= ' ' }
-        val finalQuery = trimmedQuery.replace(" ", "-")
 
-        NetworkUtil.searchMovies(finalQuery, { searchResultResponse ->
+     /*   NetworkUtil.searchMovies(finalQuery, { searchResultResponse ->
             searchResultResponse?.let {
                 showSearchResults(it.results)
             }
         }, {
 
-        })
+        })*/
     }
 
-    private fun showSearchResults(results: List<SearchResult>) {
+    fun showSearchResults(results: List<SearchResult>) {
         val adapter = SearchResultAdapter(results) { searchData, position ->
             itemClicked(searchData, position)
         }

@@ -64,22 +64,22 @@ class MainActivity : AppCompatActivity() {
         introLogic()
         if (nightMode) allThemeLogic() else lightThemeLogic()
 
-        binding.mainErrorView.apply {
+       /* binding.mainErrorView.apply {
             title = getString(R.string.error_title_damn)
             titleColor = ContextCompat.getColor(context, R.color.dark)
             setSubtitle(getString(R.string.error_details))
             setRetryText(getString(R.string.error_retry))
-        }
+        }*/
 
-        binding.mainErrorView.setRetryListener {
+        /*binding.mainErrorView.setRetryListener {
             if (NetworkUtil.isNetworkConnected(this@MainActivity)) {
                 fetchingFromNetwork = true
                 // fetchMoviesFromNetwork()
             }
             canProceed()
-        }
+        }*/
 
-        binding.mainErrorView.visibility = View.GONE
+        //binding.mainErrorView.visibility = View.GONE
 
         setupSearch()
     }
@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity() {
                 cantProceed = true
                 binding.tabLayout.visibility = View.GONE
                 //binding.viewpager.visibility = View.GONE
-                binding.mainErrorView.visibility = View.VISIBLE
+                //binding.mainErrorView.visibility = View.VISIBLE
                 disableToolbarScrolling()
             }
         }, 1000)
@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity() {
         cantProceed = false
         binding.tabLayout.visibility = View.VISIBLE
         //binding.viewpager.visibility = View.VISIBLE
-        binding.mainErrorView.visibility = View.GONE
+        //binding.mainErrorView.visibility = View.GONE
         //trendingFragment?.retryLoading()
         enableToolbarScrolling()
     }

@@ -10,17 +10,17 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import org.json.JSONException
 import tech.salroid.filmy.R
-import tech.salroid.filmy.ui.adapters.CharacterDetailsActivityAdapter
 import tech.salroid.filmy.data.local.model.CastDetailsResponse
 import tech.salroid.filmy.data.local.model.CastMovie
 import tech.salroid.filmy.data.local.model.CastMovieDetailsResponse
+import tech.salroid.filmy.data.network.NetworkUtil
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.ui.activities.fragment.FullReadFragment
-import tech.salroid.filmy.data.network.NetworkUtil
+import tech.salroid.filmy.ui.adapters.CharacterDetailsActivityAdapter
 
 class CharacterDetailsActivity : AppCompatActivity() {
 
@@ -44,11 +44,6 @@ class CharacterDetailsActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = ""
-        binding.logo.typeface = ResourcesCompat.getFont(this, R.font.rubik)
-
-        if (nightMode) {
-            allThemeLogic()
-        }
 
         binding.more.setOnClickListener {
             if (!(moviesList == null && characterTitle == null)) {
@@ -59,7 +54,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
             }
         }
 
-        binding.characterMovies.layoutManager = LinearLayoutManager(this@CharacterDetailsActivity)
+        binding.characterMovies.layoutManager = GridLayoutManager(this@CharacterDetailsActivity, 3)
         binding.characterMovies.isNestedScrollingEnabled = false
 
         binding.overviewContainer.setOnClickListener {
@@ -94,10 +89,6 @@ class CharacterDetailsActivity : AppCompatActivity() {
             }, {
             })
         }
-    }
-
-    private fun allThemeLogic() {
-        binding.logo.setTextColor(Color.parseColor("#bdbdbd"))
     }
 
     override fun onResume() {

@@ -30,7 +30,6 @@ class CharacterDetailsActivityAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(movie: CastMovie) {
-
             val movieName = movie.originalTitle
             val moviePoster = movie.posterPath
             val rolePlayed = movie.character
@@ -39,7 +38,7 @@ class CharacterDetailsActivityAdapter(
             binding.movieRolePlayed.text = rolePlayed
 
             Glide.with(binding.root.context)
-                .load("http://image.tmdb.org/t/p/w45${moviePoster}")
+                .load("http://image.tmdb.org/t/p/w342${moviePoster}")
                 .fitCenter()
                 .into(binding.moviePoster)
         }

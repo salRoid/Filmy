@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:paddingLeft="16dp"
+    android:paddingStart="16dp"
     android:paddingTop="8dp"
-    android:paddingRight="16dp"
+    android:paddingEnd="8dp"
     android:paddingBottom="8dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/movie_poster"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="120dp"
+        android:layout_height="170dp"
         android:layout_gravity="center_vertical"
-        android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/circleImageView" />
+        android:scaleType="fitXY"
+        app:shapeAppearanceOverlay="@style/roundedImageView" />
 
     <TextView
         android:id="@+id/movie_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:layout_toEndOf="@id/movie_poster"
+        android:layout_below="@id/movie_poster"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/circularstd_book"
-        android:textAppearance="?android:textAppearanceMedium" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/movie_role_played"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_name"
-        android:layout_marginStart="16dp"
-        android:layout_toEndOf="@id/movie_poster"
+        android:layout_marginTop="2dp"
         android:fontFamily="@font/circularstd_book"
-        android:textAppearance="?android:textAppearanceSmall" />
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

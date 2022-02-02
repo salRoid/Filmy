@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,19 +10,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@android:color/transparent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:theme="@style/ThemeOverlay.AppCompat">
-
-        <TextView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/details"
-            android:textColor="#757575"
-            android:textSize="20sp" />
-
-    </androidx.appcompat.widget.Toolbar>
+        app:theme="@style/ThemeOverlay.AppCompat" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,15 +27,14 @@
                 android:id="@+id/cast_about"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
                 android:orientation="vertical">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/display_profile"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:padding="4dp"
@@ -55,39 +45,50 @@
                     app:strokeWidth="4dp" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/ll_personal_info"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/display_profile"
+                    android:layout_below="@+id/display_profile"
+                    android:layout_centerHorizontal="true"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="28dp"
                         android:layout_marginRight="16dp"
                         android:fontFamily="@font/circularstd_book"
+                        android:gravity="center_horizontal"
                         android:textAppearance="?android:textAppearanceLarge"
-                        android:transitionName="name" />
+                        android:transitionName="name"
+                        tools:text="Jon Doe" />
 
                     <TextView
                         android:id="@+id/dob"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:fontFamily="@font/circularstd_book"
-                        android:textAppearance="?android:textAppearanceMedium" />
+                        android:gravity="center_horizontal"
+                        android:textAppearance="?android:textAppearanceMedium"
+                        tools:text="12-Jan-1995" />
 
                     <TextView
                         android:id="@+id/birth_place"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
+                        android:layout_marginBottom="22dp"
                         android:fontFamily="@font/circularstd_book"
-                        android:textAppearance="?android:textAppearanceMedium" />
+                        android:gravity="center_horizontal"
+                        android:textAppearance="?android:textAppearanceSmall"
+                        tools:text="India" />
 
                 </LinearLayout>
 
@@ -95,11 +96,13 @@
                     android:id="@+id/overview_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/display_profile"
+                    android:layout_below="@id/ll_personal_info"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="?android:selectableItemBackground"
-                    android:padding="16dp">
+                    android:paddingStart="22dp"
+                    android:paddingEnd="22dp"
+                    android:paddingBottom="22dp">
 
                     <TextView
                         android:id="@+id/overview"

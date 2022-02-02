@@ -40,7 +40,7 @@ class FullCrewActivity : AppCompatActivity() {
             crewList?.let {
                 CrewAdapter(it, false) { crewMember, _, view ->
                     val intent = Intent(this, CharacterDetailsActivity::class.java)
-                    intent.putExtra("id", crewMember.id)
+                    intent.putExtra("id", crewMember.id.toString())
                     val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
                     val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
                     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)

@@ -15,6 +15,7 @@
         <entry key="app/src/main/res/drawable/snackbar_bg.xml" value="0.167" />
         <entry key="app/src/main/res/layout/activity_collections.xml" value="0.13134057971014493" />
         <entry key="app/src/main/res/layout/activity_detailed.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/activity_detailed_cast.xml" value="0.13134057971014493" />
         <entry key="app/src/main/res/layout/activity_developers.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_full_screen_image.xml" value="0.2028985507246377" />
         <entry key="app/src/main/res/layout/activity_license.xml" value="0.19293478260869565" />
@@ -23,10 +24,12 @@
         <entry key="app/src/main/res/layout/all_trailer_layout.xml" value="0.20969202898550723" />
         <entry key="app/src/main/res/layout/cast_fragment.xml" value="0.1381340579710145" />
         <entry key="app/src/main/res/layout/char_custom_row.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/crew_custom_row.xml" value="0.19293478260869565" />
         <entry key="app/src/main/res/layout/custom_row.xml" value="0.13134057971014493" />
         <entry key="app/src/main/res/layout/custom_row_saved.xml" value="0.19293478260869565" />
         <entry key="app/src/main/res/layout/custom_row_search.xml" value="0.12681159420289856" />
         <entry key="app/src/main/res/layout/custom_row_trending.xml" value="0.192481884057971" />
+        <entry key="app/src/main/res/layout/custom_toast.xml" value="0.26876737720111216" />
         <entry key="app/src/main/res/layout/extra_info_movie_detail.xml" value="0.22554347826086957" />
         <entry key="app/src/main/res/layout/fragment_fav_movies.xml" value="0.19293478260869565" />
         <entry key="app/src/main/res/layout/fragment_in_theaters.xml" value="0.20606884057971014" />

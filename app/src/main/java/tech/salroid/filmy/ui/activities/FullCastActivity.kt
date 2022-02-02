@@ -38,7 +38,7 @@ class FullCastActivity : AppCompatActivity() {
         val fullCastAdapter = castList?.let {
             CastAdapter(it, false) { castData, _, view ->
                 val intent = Intent(this, CharacterDetailsActivity::class.java)
-                intent.putExtra("id", castData.castId)
+                intent.putExtra("id", castData.castId.toString())
                 val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")
                 val p2 = Pair.create(view.findViewById<View>(R.id.cast_name), "name")
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)

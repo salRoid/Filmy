@@ -10,12 +10,13 @@
     android:paddingRight="16dp"
     android:paddingBottom="8dp">
 
-    <com.mikhaellopez.circularimageview.CircularImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/movie_poster"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_gravity="center_vertical"
-        app:civ_border_width="0dp" />
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/circleImageView" />
 
     <TextView
         android:id="@+id/movie_name"

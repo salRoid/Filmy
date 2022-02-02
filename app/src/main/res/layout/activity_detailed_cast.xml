@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -21,12 +20,13 @@
             android:text="@string/details"
             android:textColor="#757575"
             android:textSize="20sp" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
-        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -39,29 +39,37 @@
                 android:layout_alignParentStart="true"
                 android:orientation="vertical">
 
-                <com.mikhaellopez.circularimageview.CircularImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/display_profile"
                     android:layout_width="100dp"
-                    android:layout_margin="16dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:padding="4dp"
+                    android:scaleType="centerCrop"
                     android:transitionName="profile"
-                    android:layout_height="100dp" />
+                    app:shapeAppearanceOverlay="@style/circleImageView"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="4dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/display_profile"
+                    android:layout_toEndOf="@+id/display_profile"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/name"
-                        android:transitionName="name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
+                        android:layout_marginTop="28dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
                         android:fontFamily="@font/circularstd_book"
-                        android:textAppearance="?android:textAppearanceLarge" />
+                        android:textAppearance="?android:textAppearanceLarge"
+                        android:transitionName="name" />
 
                     <TextView
                         android:id="@+id/dob"
@@ -80,6 +88,7 @@
                         android:layout_marginRight="16dp"
                         android:fontFamily="@font/circularstd_book"
                         android:textAppearance="?android:textAppearanceMedium" />
+
                 </LinearLayout>
 
                 <FrameLayout
@@ -88,6 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/display_profile"
                     android:clickable="true"
+                    android:focusable="true"
                     android:foreground="?android:selectableItemBackground"
                     android:padding="16dp">
 
@@ -99,18 +109,18 @@
                         android:fontFamily="@font/circularstd_book"
                         android:maxLines="6"
                         android:textAppearance="?android:textAppearanceSmall" />
+
                 </FrameLayout>
 
             </RelativeLayout>
 
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:strokeWidth="0dp"
-                app:strokeColor="@color/grey"
                 android:layout_below="@+id/cast_about"
-                app:cardCornerRadius="0dp">
+                app:cardCornerRadius="0dp"
+                app:strokeColor="@color/grey"
+                app:strokeWidth="0dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -142,14 +152,13 @@
                         android:textStyle="bold"
                         android:visibility="invisible" />
 
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/character_movies"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_below="@+id/card_holder"
                         android:layout_alignParentStart="true"
-                        android:layout_marginBottom="16dp"
-                        android:layout_below="@+id/card_holder" />
+                        android:layout_marginBottom="16dp" />
 
                 </RelativeLayout>
 
@@ -158,4 +167,5 @@
         </RelativeLayout>
 
     </ScrollView>
+
 </RelativeLayout>

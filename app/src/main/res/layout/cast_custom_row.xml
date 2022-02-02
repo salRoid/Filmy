@@ -7,25 +7,24 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
 
-
-    <com.mikhaellopez.circularimageview.CircularImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/cast_poster"
         android:layout_width="42dp"
         android:layout_height="42dp"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
         android:transitionName="profile"
-        app:civ_border_width="0dp" />
-
+        app:shapeAppearanceOverlay="@style/circleImageView" />
 
     <TextView
         android:id="@+id/cast_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_toRightOf="@id/cast_poster"
+        android:layout_toEndOf="@id/cast_poster"
         android:fontFamily="@font/circularstd_book"
         android:textAppearance="?android:textAppearanceMedium"
         android:transitionName="name" />
@@ -35,8 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/cast_name"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/cast_poster"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/cast_poster"
         android:ellipsize="end"
         android:fontFamily="@font/circularstd_book"
         android:maxLines="1"
@@ -47,12 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@id/cast_poster"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="58dp"
-        android:background="?attr/divider"
-
-        />
-
+        android:layout_marginTop="16dp"
+        android:background="?attr/divider" />
 
 </RelativeLayout>

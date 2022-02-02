@@ -182,28 +182,6 @@ that this copyright notice remain intact.
 </pre>
     ]]></string>
 
-
-     <string name="circularimageview" translatable="false"><![CDATA[
-    <b>Circular Image View
-    </b>
-     <br>
-     <pre>
-
-     CircularImageView by Lopez Mikhael is licensed under a Apache License 2.0.
-</pre>]]></string>
-
-
-     <string name="tatarka" translatable="false"><![CDATA[
-    <b>Job Scheduler
-    </b>
-     <br>
-     <pre>
-
-      Job Scheduler by Evan Tatarka
-      https://github.com/evant/JobSchedulerCompat
-</pre>]]></string>
-
-
     <string name="appintro" translatable="false"><![CDATA[
     <b>App Intro
     </b>
@@ -214,7 +192,7 @@ that this copyright notice remain intact.
       https://github.com/PaoloRotolo/AppIntro
 </pre>]]></string>
 
-      <string name="crashlytics" translatable="false"><![CDATA[
+    <string name="crashlytics" translatable="false"><![CDATA[
     <b>Crashlytics
     </b>
      <br>
@@ -259,52 +237,6 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 </pre>]]></string>
 
-    <string name="butterknife" translatable="false"><![CDATA[
-    <b>Butter Knife
-    </b>
-     <br>
-     <pre>
-
-     Copyright 2013 Jake Wharton
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-</pre>]]></string>
-
-
-
-     <string name="errorview" translatable="false"><![CDATA[
-    <b>Error View
-    </b>
-     <br>
-     <pre>
-
-         Copyright © 2015 Ihsan Isik
-     Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
-</pre>]]></string>
-
-
-
     <string name="materialsearch" translatable="false"><![CDATA[
     <b>Material Search View
     </b>
@@ -326,7 +258,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 </pre>]]></string>
 
-
     <string name="app_share_link" translatable="false">https://play.google.com/store/apps/details?id=tech.salroid.filmy</string>
     <string name="website_webianks" translatable="false">http://webianks.me</string>
     <string name="website_salroid" translatable="false">http://www.salroid.me</string>
@@ -337,7 +268,6 @@ limitations under the License.
     <string name="content_authority" translatable="false">tech.salroid.filmy</string>
     <string name="openDrawer" translatable="false">Drawer Opened</string>
     <string name="closeDrawer" translatable="false">Drawer Closed</string>
-
 
     <string name="crew">Crew</string>
     <string name="similar">Similar Movies</string>

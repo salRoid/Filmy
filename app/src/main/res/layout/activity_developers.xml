@@ -54,14 +54,19 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_banner_min" />
 
-                    <com.mikhaellopez.circularimageview.CircularImageView
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/profile_webianks"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="55dp"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_marginBottom="16dp"
+                        android:padding="4dp"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/circleImageView"
+                        app:strokeColor="@color/white"
+                        app:strokeWidth="4dp" />
 
                     <TextView
                         android:id="@+id/name_webianks"
@@ -69,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="95dp"
-                        android:layout_toRightOf="@id/profile_webianks"
+                        android:layout_toEndOf="@id/profile_webianks"
                         android:fontFamily="@font/circularstd_book"
                         android:paddingLeft="16dp"
                         android:paddingTop="16dp"
@@ -78,7 +83,6 @@
                         android:text="@string/name_webianks"
                         android:textSize="20sp"
                         android:textStyle="bold" />
-
 
                     <TextView
                         android:id="@+id/bio_webianks"
@@ -89,7 +93,6 @@
                         android:layout_marginRight="16dp"
                         android:layout_toRightOf="@id/profile_webianks"
                         android:text="@string/bio_webianks" />
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -107,7 +110,7 @@
                             android:fontFamily="@font/circularstd_book"
                             android:onClick="sendEmail"
                             android:text="@string/email"
-                            android:textColor="@color/colorAccent"/>
+                            android:textColor="@color/colorAccent" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/github_webianks"
@@ -129,12 +132,11 @@
                             android:fontFamily="@font/circularstd_book"
                             android:onClick="redirectWebsite"
                             android:text="@string/website"
-                            android:textColor="@color/colorAccent"/>
+                            android:textColor="@color/colorAccent" />
 
                     </LinearLayout>
 
                 </RelativeLayout>
-
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -150,7 +152,6 @@
                 app:strokeColor="@color/grey"
                 app:strokeWidth="0dp">
 
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -163,14 +164,19 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_banner_min" />
 
-                    <com.mikhaellopez.circularimageview.CircularImageView
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/profile_salroid"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="55dp"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_marginBottom="16dp"
+                        android:padding="4dp"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/circleImageView"
+                        app:strokeColor="@color/white"
+                        app:strokeWidth="4dp" />
 
                     <TextView
                         android:id="@+id/name_salroid"
@@ -178,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="95dp"
-                        android:layout_toRightOf="@id/profile_salroid"
+                        android:layout_toEndOf="@id/profile_salroid"
                         android:fontFamily="@font/circularstd_book"
                         android:paddingLeft="16dp"
                         android:paddingTop="16dp"
@@ -195,7 +201,7 @@
                         android:layout_below="@id/name_salroid"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_toRightOf="@id/profile_salroid"
+                        android:layout_toEndOf="@id/profile_salroid"
                         android:text="@string/bio_salroid" />
 
                     <LinearLayout
@@ -204,7 +210,6 @@
                         android:layout_below="@id/bio_salroid"
                         android:layout_margin="16dp"
                         android:weightSum="3">
-
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/email_salroid"
@@ -237,13 +242,16 @@
                             android:fontFamily="@font/circularstd_book"
                             android:onClick="redirectWebsite"
                             android:text="@string/website"
-                            android:textColor="@color/colorAccent"/>
+                            android:textColor="@color/colorAccent" />
 
                     </LinearLayout>
+
                 </RelativeLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
         </RelativeLayout>
+
     </ScrollView>
+
 </LinearLayout>

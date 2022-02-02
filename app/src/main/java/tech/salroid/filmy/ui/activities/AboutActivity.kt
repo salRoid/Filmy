@@ -1,19 +1,19 @@
 package tech.salroid.filmy.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
-import tech.salroid.filmy.R
-import android.os.Bundle
-import androidx.core.content.res.ResourcesCompat
-import com.bumptech.glide.Glide
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
+import com.bumptech.glide.Glide
+import tech.salroid.filmy.R
 import tech.salroid.filmy.databinding.ActivityDevelopersBinding
 
 class AboutActivity : AppCompatActivity() {
@@ -43,13 +43,13 @@ class AboutActivity : AppCompatActivity() {
 
     private fun setBannerAndProfile() {
         Glide.with(this).load(getString(R.string.profile_webianks))
-                .into((findViewById<View>(R.id.profile_webianks) as ImageView))
+            .into((findViewById<View>(R.id.profile_webianks) as ImageView))
         Glide.with(this).load(getString(R.string.profile_salroid))
-                .into((findViewById<View>(R.id.profile_salroid) as ImageView))
+            .into((findViewById<View>(R.id.profile_salroid) as ImageView))
         Glide.with(this).load(getString(R.string.banner_webianks))
-                .into((findViewById<View>(R.id.banner_webianks) as ImageView))
+            .into((findViewById<View>(R.id.banner_webianks) as ImageView))
         Glide.with(this).load(getString(R.string.banner_salroid))
-                .into((findViewById<View>(R.id.banner_salroid) as ImageView))
+            .into((findViewById<View>(R.id.banner_salroid) as ImageView))
     }
 
     private fun allThemeLogic() {

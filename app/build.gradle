@@ -76,7 +76,6 @@ dependencies {
     implementation "androidx.work:work-runtime:2.4.0"
     implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-    implementation 'com.mikhaellopez:circularimageview:3.0.2'
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'tr.xip.errorview:library:4.0.0'
     implementation 'com.github.paolorotolo:appintro:4.0.0'

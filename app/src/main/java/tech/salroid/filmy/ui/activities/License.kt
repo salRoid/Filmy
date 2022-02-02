@@ -1,15 +1,15 @@
 package tech.salroid.filmy.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.preference.PreferenceManager
-import tech.salroid.filmy.R
-import androidx.core.content.res.ResourcesCompat
-import android.os.Build
-import android.text.Html
 import android.annotation.TargetApi
 import android.graphics.Color
+import android.os.Build
+import android.os.Bundle
+import android.text.Html
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.preference.PreferenceManager
+import tech.salroid.filmy.R
 import tech.salroid.filmy.databinding.ActivityLicenseBinding
 
 class License : AppCompatActivity() {
@@ -41,9 +41,6 @@ class License : AppCompatActivity() {
     private fun normalSetup() {
         binding.glide.text = Html.fromHtml(getString(R.string.glide))
         binding.materialsearcview.text = Html.fromHtml(getString(R.string.materialsearch))
-        binding.circularimageview.text = Html.fromHtml(getString(R.string.circularimageview))
-        binding.tatarka.text = Html.fromHtml(getString(R.string.tatarka))
-        binding.error.text = Html.fromHtml(getString(R.string.errorview))
         binding.appintro.text = Html.fromHtml(getString(R.string.appintro))
         binding.crashlytics.text = Html.fromHtml(getString(R.string.crashlytics))
     }
@@ -52,17 +49,11 @@ class License : AppCompatActivity() {
     private fun v24Setup() {
         binding.glide.text = Html.fromHtml(getString(R.string.glide), Html.FROM_HTML_MODE_LEGACY)
         binding.materialsearcview.text =
-                Html.fromHtml(getString(R.string.materialsearch), Html.FROM_HTML_MODE_LEGACY)
-        binding.circularimageview.text =
-                Html.fromHtml(getString(R.string.circularimageview), Html.FROM_HTML_MODE_LEGACY)
-        binding.tatarka.text =
-                Html.fromHtml(getString(R.string.tatarka), Html.FROM_HTML_MODE_LEGACY)
-        binding.error.text =
-                Html.fromHtml(getString(R.string.errorview), Html.FROM_HTML_MODE_LEGACY)
+            Html.fromHtml(getString(R.string.materialsearch), Html.FROM_HTML_MODE_LEGACY)
         binding.appintro.text =
-                Html.fromHtml(getString(R.string.appintro), Html.FROM_HTML_MODE_LEGACY)
+            Html.fromHtml(getString(R.string.appintro), Html.FROM_HTML_MODE_LEGACY)
         binding.crashlytics.text =
-                Html.fromHtml(getString(R.string.crashlytics), Html.FROM_HTML_MODE_LEGACY)
+            Html.fromHtml(getString(R.string.crashlytics), Html.FROM_HTML_MODE_LEGACY)
     }
 
     private fun allThemeLogic() {

@@ -44,34 +44,12 @@
                 android:id="@+id/powered"
                 android:layout_width="wrap_content"
                 android:layout_height="88dp"
-                android:layout_below="@+id/container"
                 android:layout_gravity="center_horizontal"
                 android:padding="16dp"
                 android:src="@drawable/newtmdb" />
 
             <TextView
-                android:id="@+id/circularimageview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="16dp" />
-
-            <TextView
                 android:id="@+id/materialsearcview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp" />
-
-            <TextView
-                android:id="@+id/tatarka"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp" />
-
-            <TextView
-                android:id="@+id/error"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
@@ -97,6 +75,9 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp" />
+
         </LinearLayout>
+
     </ScrollView>
+
 </RelativeLayout>

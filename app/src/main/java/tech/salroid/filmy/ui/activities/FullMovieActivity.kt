@@ -2,14 +2,14 @@ package tech.salroid.filmy.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.GridLayoutManager
 import tech.salroid.filmy.R
-import tech.salroid.filmy.ui.adapters.CharacterDetailsActivityAdapter
 import tech.salroid.filmy.data.local.model.CastMovie
 import tech.salroid.filmy.databinding.ActivityFullMovieBinding
+import tech.salroid.filmy.ui.adapters.CharacterDetailsActivityAdapter
 
 class FullMovieActivity : AppCompatActivity() {
 
@@ -27,7 +27,7 @@ class FullMovieActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        binding.fullMovieRecycler.layoutManager = LinearLayoutManager(this@FullMovieActivity)
+        binding.fullMovieRecycler.layoutManager = GridLayoutManager(this@FullMovieActivity, 3)
         movieList = intent?.getSerializableExtra("cast_movies") as List<CastMovie>
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

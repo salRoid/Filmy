@@ -5,10 +5,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:paddingStart="16dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="8dp"
-    android:paddingBottom="8dp">
+    android:padding="12dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/movie_poster"
@@ -24,7 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/movie_poster"
         android:layout_marginTop="16dp"
+        android:ellipsize="end"
         android:fontFamily="@font/circularstd_book"
+        android:maxLines="2"
         android:textSize="16sp" />
 
     <TextView
@@ -32,7 +31,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_name"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="4dp"
+        android:alpha="0.5"
         android:fontFamily="@font/circularstd_book"
         android:textSize="14sp"
         android:textStyle="bold" />

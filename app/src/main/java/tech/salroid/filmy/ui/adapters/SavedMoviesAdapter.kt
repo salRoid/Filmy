@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
-import tech.salroid.filmy.databinding.CustomRowSavedBinding
+import tech.salroid.filmy.databinding.CustomRowBinding
+import tech.salroid.filmy.utility.toReadableDate
 
 class SavedMoviesAdapter(
     private var moviesList: ArrayList<MovieDetails>? = null,
@@ -15,7 +16,7 @@ class SavedMoviesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedMoviesViewHolder {
         val binding =
-            CustomRowSavedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            CustomRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SavedMoviesViewHolder(binding)
     }
 
@@ -35,10 +36,13 @@ class SavedMoviesAdapter(
         notifyItemRemoved(position)
     }
 
-    inner class SavedMoviesViewHolder(private val binding: CustomRowSavedBinding) :
+    inner class SavedMoviesViewHolder(private val binding: CustomRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(movie: MovieDetails) {
+            binding.movieName.text = movie.title
+            binding.movieYear.text = movie.releaseDate?.toReadableDate()
+
             Glide.with(binding.root.context)
                 .load("http://image.tmdb.org/t/p/w342${movie.posterPath}")
                 .into(binding.poster)

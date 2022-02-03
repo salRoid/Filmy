@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import tech.salroid.filmy.R
+import tech.salroid.filmy.data.local.model.Cast
+import tech.salroid.filmy.data.local.model.Crew
+import tech.salroid.filmy.data.network.NetworkUtil
+import tech.salroid.filmy.databinding.CastFragmentBinding
 import tech.salroid.filmy.ui.activities.CharacterDetailsActivity
 import tech.salroid.filmy.ui.activities.FullCastActivity
 import tech.salroid.filmy.ui.adapters.CastAdapter
-import tech.salroid.filmy.data.local.model.Cast
-import tech.salroid.filmy.data.local.model.Crew
-import tech.salroid.filmy.databinding.CastFragmentBinding
-import tech.salroid.filmy.data.network.NetworkUtil
 
 class CastFragment : Fragment() {
 
@@ -80,14 +77,10 @@ class CastFragment : Fragment() {
 
     private fun showCasts(castList: ArrayList<Cast>) {
 
-        val castAdapter = CastAdapter(castList, true) { castMemberDetailsData, _, view ->
+        val castAdapter = CastAdapter(castList, true) { castMemberDetailsData, _, _ ->
             val intent = Intent(activity, CharacterDetailsActivity::class.java)
             intent.putExtra("id", castMemberDetailsData.id.toString())
-            val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")
-            val p2 = Pair.create(view.findViewById<View>(R.id.cast_name), "name")
-            val options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), p1, p2)
-            startActivity(intent, options.toBundle())
+            startActivity(intent)
         }
 
         binding.castRecycler.adapter = castAdapter

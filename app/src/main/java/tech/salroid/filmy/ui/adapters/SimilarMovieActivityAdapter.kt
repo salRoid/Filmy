@@ -27,6 +27,8 @@ class SimilarMovieActivityAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(similarMovie: SimilarMovie) {
+            binding.movieName.text = similarMovie.title
+
             Glide.with(binding.root.context)
                 .load("http://image.tmdb.org/t/p/w185${similarMovie.posterPath}")
                 .fitCenter()

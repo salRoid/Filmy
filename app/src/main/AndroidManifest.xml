@@ -26,8 +26,7 @@
 
         <activity
             android:name=".ui.FilmyIntro"
-            android:label=" "
-            android:screenOrientation="portrait" />
+            android:label=" "/>
 
         <activity
             android:name="tech.salroid.filmy.ui.activities.MainActivity"
@@ -86,10 +85,6 @@
             android:name="tech.salroid.filmy.ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="62707285253d6b217b66e97e6e602bcab0edc463" />
 
         <activity android:name="tech.salroid.filmy.ui.activities.License" />
         <activity android:name="tech.salroid.filmy.ui.activities.AboutActivity" />

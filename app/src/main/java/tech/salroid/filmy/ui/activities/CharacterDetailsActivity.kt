@@ -1,14 +1,12 @@
 package tech.salroid.filmy.ui.activities
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -21,6 +19,7 @@ import tech.salroid.filmy.data.network.NetworkUtil
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
 import tech.salroid.filmy.ui.activities.fragment.FullReadFragment
 import tech.salroid.filmy.ui.adapters.CharacterDetailsActivityAdapter
+import tech.salroid.filmy.utility.toReadableDate
 
 class CharacterDetailsActivity : AppCompatActivity() {
 
@@ -114,7 +113,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
             if (dataBirthday == "null") {
                 binding.dob.visibility = View.GONE
             } else {
-                binding.dob.text = dataBirthday
+                binding.dob.text = dataBirthday?.toReadableDate()
             }
 
             if (dataBirthPlace == "null") {

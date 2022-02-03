@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.activities.fragment
+package tech.salroid.filmy.ui.fragment
 
 import android.content.DialogInterface
 import android.content.Intent

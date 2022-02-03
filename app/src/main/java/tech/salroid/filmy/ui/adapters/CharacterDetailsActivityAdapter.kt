@@ -30,7 +30,7 @@ class CharacterDetailsActivityAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(movie: CastMovie) {
-            val movieName = movie.originalTitle
+            val movieName = movie.title
             val moviePoster = movie.posterPath
             val rolePlayed = movie.character
 

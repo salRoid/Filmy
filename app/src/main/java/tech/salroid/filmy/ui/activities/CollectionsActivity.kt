@@ -12,8 +12,8 @@ import androidx.viewpager.widget.ViewPager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.adapters.CollectionsPagerAdapter
 import tech.salroid.filmy.databinding.ActivityCollectionsBinding
-import tech.salroid.filmy.ui.activities.fragment.FavoriteFragment
-import tech.salroid.filmy.ui.activities.fragment.WatchListFragment
+import tech.salroid.filmy.ui.fragment.FavoriteFragment
+import tech.salroid.filmy.ui.fragment.WatchListFragment
 
 class CollectionsActivity : AppCompatActivity() {
 

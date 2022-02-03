@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.activities.fragment
+package tech.salroid.filmy.ui.fragment
 
 import android.animation.Animator
 import android.graphics.Color
@@ -67,27 +67,11 @@ class AllTrailerFragment : Fragment(), View.OnClickListener {
     }
 
     private fun nightModeLogic() {
-        binding.cross.setImageDrawable(
-            context?.let {
-                ContextCompat.getDrawable(
-                    it,
-                    R.drawable.ic_action_navigation_close_inverted
-                )
-            }
-        )
         binding.mainContent.setBackgroundColor(Color.parseColor("#212121"))
         binding.textViewTitle.setTextColor(Color.parseColor("#ffffff"))
     }
 
     private fun allThemeLogic() {
-        binding.cross.setImageDrawable(
-            context?.let {
-                ContextCompat.getDrawable(
-                    it,
-                    R.drawable.ic_close_black_48dp
-                )
-            }
-        )
         binding.mainContent.setBackgroundColor(Color.parseColor("#ffffff"))
         binding.textViewTitle.setTextColor(Color.parseColor("#000000"))
     }

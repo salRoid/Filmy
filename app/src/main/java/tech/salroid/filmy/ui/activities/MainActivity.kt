@@ -28,16 +28,14 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.data.network.NetworkUtil
 import tech.salroid.filmy.databinding.ActivityMainBinding
 import tech.salroid.filmy.ui.FilmyIntro
-import tech.salroid.filmy.ui.activities.fragment.Trending
-import tech.salroid.filmy.ui.activities.fragment.UpComing
+import tech.salroid.filmy.ui.fragment.Trending
+import tech.salroid.filmy.ui.fragment.UpComing
 import tech.salroid.filmy.ui.adapters.CollectionsPagerAdapter
 import tech.salroid.filmy.ui.fragment.InTheaters
 import tech.salroid.filmy.ui.fragment.SearchFragment
 import tech.salroid.filmy.utility.getQueryTextChangeStateFlow
 
 class MainActivity : AppCompatActivity() {
-
-    var fetchingFromNetwork = false
     private var trendingFragment: Trending? = null
     private lateinit var searchFragment: SearchFragment
     private var cantProceed = false

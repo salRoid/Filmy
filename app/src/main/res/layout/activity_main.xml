@@ -120,7 +120,7 @@
 
             <fragment
                 android:id="@+id/fragmentTrending"
-                class="tech.salroid.filmy.ui.activities.fragment.Trending"
+                class="tech.salroid.filmy.ui.fragment.Trending"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -175,7 +175,7 @@
                 app:layout_constraintTop_toBottomOf="@id/fragmentInTheaters" />
 
             <fragment
-                class="tech.salroid.filmy.ui.activities.fragment.UpComing"
+                class="tech.salroid.filmy.ui.fragment.UpComing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

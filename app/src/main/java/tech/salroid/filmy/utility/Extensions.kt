@@ -30,11 +30,9 @@ fun View.gone() {
 }
 
 fun String.toReadableDate(): String {
-
     if (this.isEmpty()){
         return this
     }
-
     val fromDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val toDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
     return toDateFormat.format(fromDateFormat.parse(this))

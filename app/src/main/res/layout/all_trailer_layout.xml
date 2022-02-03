@@ -33,7 +33,7 @@
                 android:clickable="true"
                 android:contentDescription="@string/close_description"
                 android:focusable="true"
-                android:src="@drawable/ic_close_black_48dp" />
+                android:src="@drawable/ic_round_close_24" />
 
             <TextView
                 android:id="@+id/textViewTitle"

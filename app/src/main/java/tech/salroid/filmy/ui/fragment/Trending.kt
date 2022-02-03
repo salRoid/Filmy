@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.activities.fragment
+package tech.salroid.filmy.ui.fragment
 
 import android.content.Intent
 import android.content.res.Configuration
@@ -11,12 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import tech.salroid.filmy.ui.activities.MovieDetailsActivity
-import tech.salroid.filmy.ui.adapters.MoviesAdapter
 import tech.salroid.filmy.data.local.db.FilmyDbHelper
 import tech.salroid.filmy.data.local.db.entity.Movie
-import tech.salroid.filmy.databinding.FragmentTrendingBinding
 import tech.salroid.filmy.data.network.NetworkUtil
+import tech.salroid.filmy.databinding.FragmentTrendingBinding
+import tech.salroid.filmy.ui.activities.MovieDetailsActivity
+import tech.salroid.filmy.ui.adapters.MoviesAdapter
 
 class Trending : Fragment() {
 
@@ -85,8 +85,8 @@ class Trending : Fragment() {
         // Get movies from Network
         NetworkUtil.getTrendingMovies({ moviesResponse ->
             moviesResponse?.results?.let {
-                if(!showingFromDb){
-                   showMovies(it)
+                if (!showingFromDb) {
+                    showMovies(it)
                 }
                 saveMoviesInDb(it)
             }

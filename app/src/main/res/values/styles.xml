@@ -9,6 +9,7 @@
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="divider">@color/dividerColor</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
 
     <style name="AppTheme.Base.Light.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
@@ -42,7 +43,7 @@
         <item name="colorPrimaryDark">@color/colorDarkThemePrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="divider">@color/dividerColorDarkTheme</item>
-
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
 
     <style name="MyButtonTheme" parent="ThemeOverlay.AppCompat.Dark">
@@ -90,6 +91,19 @@
 
     <style name="SplashTheme">
         <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
+    </style>
+
+    <style name="ModalBottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
     </style>
 
 </resources>

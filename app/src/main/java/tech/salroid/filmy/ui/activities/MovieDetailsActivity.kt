@@ -29,9 +29,8 @@ import tech.salroid.filmy.data.local.model.RatingResponse
 import tech.salroid.filmy.data.local.db.FilmyDbHelper
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.databinding.ActivityDetailedBinding
-import tech.salroid.filmy.ui.activities.fragment.*
 import tech.salroid.filmy.data.network.NetworkUtil
-import tech.salroid.filmy.ui.fragment.SimilarFragment
+import tech.salroid.filmy.ui.fragment.*
 import tech.salroid.filmy.utility.FilmyUtility
 import tech.salroid.filmy.utility.showSnackBar
 import tech.salroid.filmy.utility.toReadableDate
@@ -635,9 +634,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 args.putString("title", movieTitle)
                 args.putString("desc", movieDesc)
                 fullReadFragment.arguments = args
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.all_details_container, fullReadFragment).addToBackStack("DESC")
-                    .commit()
+                fullReadFragment.show(supportFragmentManager, "DESC")
             }
 
             R.id.new_main -> if (bannerForFullScreen != null) {

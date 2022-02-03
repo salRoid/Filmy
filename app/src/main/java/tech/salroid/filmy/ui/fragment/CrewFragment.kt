@@ -1,15 +1,12 @@
-package tech.salroid.filmy.ui.activities.fragment
+package tech.salroid.filmy.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.activities.CharacterDetailsActivity
 import tech.salroid.filmy.ui.activities.FullCrewActivity
 import tech.salroid.filmy.ui.adapters.CrewAdapter

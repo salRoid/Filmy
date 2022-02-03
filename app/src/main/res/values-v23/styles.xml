@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="divider">@color/dividerColor</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -18,6 +19,7 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
 
     <style name="AppTheme.Base.Dark" parent="Theme.MaterialComponents.NoActionBar">
@@ -26,6 +28,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="divider">@color/dividerColorDarkTheme</item>
         <item name="android:windowLightStatusBar">false</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
 
     <style name="circleImageView" parent="">

@@ -17,8 +17,8 @@ import tech.salroid.filmy.data.local.model.CastMovie
 import tech.salroid.filmy.data.local.model.CastMovieDetailsResponse
 import tech.salroid.filmy.data.network.NetworkUtil
 import tech.salroid.filmy.databinding.ActivityDetailedCastBinding
-import tech.salroid.filmy.ui.activities.fragment.FullReadFragment
 import tech.salroid.filmy.ui.adapters.CharacterDetailsActivityAdapter
+import tech.salroid.filmy.ui.fragment.FullReadFragment
 import tech.salroid.filmy.utility.toReadableDate
 
 class CharacterDetailsActivity : AppCompatActivity() {
@@ -62,9 +62,8 @@ class CharacterDetailsActivity : AppCompatActivity() {
                 val args = Bundle()
                 args.putString("title", characterTitle)
                 args.putString("desc", characterBio)
-                fullReadFragment!!.arguments = args
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.main, fullReadFragment!!).addToBackStack("DESC").commit()
+                fullReadFragment?.arguments = args
+                fullReadFragment?.show(supportFragmentManager, "DESC")
             }
         }
         val intent = intent
@@ -172,7 +171,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val fragment = supportFragmentManager.findFragmentByTag("DESC") as FullReadFragment?
         if (fragment != null && fragment.isVisible) {
-            supportFragmentManager.beginTransaction().remove(fullReadFragment!!).commit()
+            fullReadFragment?.dismiss()
         } else {
             super.onBackPressed()
         }

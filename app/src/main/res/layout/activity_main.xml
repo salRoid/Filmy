@@ -148,7 +148,7 @@
 
             <fragment
                 android:id="@+id/fragmentInTheaters"
-                class="tech.salroid.filmy.ui.activities.fragment.InTheaters"
+                class="tech.salroid.filmy.ui.fragment.InTheaters"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

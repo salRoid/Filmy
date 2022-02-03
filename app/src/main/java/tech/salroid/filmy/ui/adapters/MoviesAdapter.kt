@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import tech.salroid.filmy.FilmyApplication.Companion.context
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.databinding.CustomRowBinding
+import tech.salroid.filmy.utility.toReadableDate
 
 class MoviesAdapter(
     private var movies: List<Movie> = emptyList(),
@@ -39,6 +40,9 @@ class MoviesAdapter(
         }
 
         fun bindData(movie: Movie) {
+            binding.movieName.text = movie.title
+            binding.movieYear.text = movie.releaseDate?.toReadableDate()
+
             Glide.with(context)
                 .load("http://image.tmdb.org/t/p/w342${movie.posterPath}")
                 .into(binding.poster)

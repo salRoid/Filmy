@@ -2,17 +2,14 @@ package tech.salroid.filmy.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import tech.salroid.filmy.R
-import tech.salroid.filmy.ui.adapters.CrewAdapter
 import tech.salroid.filmy.data.local.model.Crew
 import tech.salroid.filmy.databinding.ActivityFullCastBinding
+import tech.salroid.filmy.ui.adapters.CrewAdapter
 
 class FullCrewActivity : AppCompatActivity() {
 
@@ -38,16 +35,13 @@ class FullCrewActivity : AppCompatActivity() {
 
         val fullCrewAdapter =
             crewList?.let {
-                CrewAdapter(it, false) { crewMember, _, view ->
+                CrewAdapter(it, false) { crewMember, _, _ ->
                     val intent = Intent(this, CharacterDetailsActivity::class.java)
                     intent.putExtra("id", crewMember.id.toString())
-                    val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
-                    val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)
-                    startActivity(intent, options.toBundle())
+                    startActivity(intent)
                 }
             }
-       binding.fullCastRecycler.adapter = fullCrewAdapter
+        binding.fullCastRecycler.adapter = fullCrewAdapter
     }
 
     override fun onResume() {

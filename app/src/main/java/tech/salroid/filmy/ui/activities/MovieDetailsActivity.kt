@@ -31,8 +31,10 @@ import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.databinding.ActivityDetailedBinding
 import tech.salroid.filmy.ui.activities.fragment.*
 import tech.salroid.filmy.data.network.NetworkUtil
+import tech.salroid.filmy.ui.fragment.SimilarFragment
 import tech.salroid.filmy.utility.FilmyUtility
 import tech.salroid.filmy.utility.showSnackBar
+import tech.salroid.filmy.utility.toReadableDate
 
 class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -346,7 +348,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
         //det_rating.setText(rating);
         binding.viewExtraInfo.detailRuntime.text = "${movie.runtime} mins"
-        binding.viewExtraInfo.detailReleased.text = movie.releaseDate
+        binding.viewExtraInfo.detailReleased.text = movie.releaseDate?.toReadableDate()
         binding.viewExtraInfo.detailCertification.text = genre
         binding.viewExtraInfo.detailLanguage.text = movie.originalLanguage
 
@@ -535,18 +537,20 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
             smallTitle = smallTitle?.replace("[^0-9-a-z]".toRegex(), "")
             val url = "http://www.metacritic.com/movie/$smallTitle"
 
-            when {
-                metaScoreRating?.toInt()!! > 60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
-                    Color.parseColor("#66cc33")
-                )
-                metaScoreRating.toInt() in 41..60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
-                    Color.parseColor("#ffcc33")
-                )
-                else -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
-                    Color.parseColor(
-                        "#ff0000"
+            if (metaScoreRating != null) {
+                when {
+                    metaScoreRating.toInt() > 60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
+                        Color.parseColor("#66cc33")
                     )
-                )
+                    metaScoreRating.toInt() in 41..60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
+                        Color.parseColor("#ffcc33")
+                    )
+                    else -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
+                        Color.parseColor(
+                            "#ff0000"
+                        )
+                    )
+                }
             }
 
             binding.viewRatings.metaRating.text = movieRatingMetaScore

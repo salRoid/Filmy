@@ -36,13 +36,10 @@ class FullCastActivity : AppCompatActivity() {
         supportActionBar?.title = intent?.getStringExtra("toolbar_title")
 
         val fullCastAdapter = castList?.let {
-            CastAdapter(it, false) { castData, _, view ->
+            CastAdapter(it, false) { castData, _, _ ->
                 val intent = Intent(this, CharacterDetailsActivity::class.java)
-                intent.putExtra("id", castData.castId.toString())
-                val p1 = Pair.create(view.findViewById<View>(R.id.cast_poster), "profile")
-                val p2 = Pair.create(view.findViewById<View>(R.id.cast_name), "name")
-                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, p1, p2)
-                startActivity(intent, options.toBundle())
+                intent.putExtra("id", castData.id.toString())
+                startActivity(intent)
             }
         }
 

@@ -28,10 +28,10 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.data.network.NetworkUtil
 import tech.salroid.filmy.databinding.ActivityMainBinding
 import tech.salroid.filmy.ui.FilmyIntro
-import tech.salroid.filmy.ui.activities.fragment.InTheaters
 import tech.salroid.filmy.ui.activities.fragment.Trending
 import tech.salroid.filmy.ui.activities.fragment.UpComing
 import tech.salroid.filmy.ui.adapters.CollectionsPagerAdapter
+import tech.salroid.filmy.ui.fragment.InTheaters
 import tech.salroid.filmy.ui.fragment.SearchFragment
 import tech.salroid.filmy.utility.getQueryTextChangeStateFlow
 
@@ -64,12 +64,12 @@ class MainActivity : AppCompatActivity() {
         introLogic()
         if (nightMode) allThemeLogic() else lightThemeLogic()
 
-       /* binding.mainErrorView.apply {
-            title = getString(R.string.error_title_damn)
-            titleColor = ContextCompat.getColor(context, R.color.dark)
-            setSubtitle(getString(R.string.error_details))
-            setRetryText(getString(R.string.error_retry))
-        }*/
+        /* binding.mainErrorView.apply {
+             title = getString(R.string.error_title_damn)
+             titleColor = ContextCompat.getColor(context, R.color.dark)
+             setSubtitle(getString(R.string.error_details))
+             setRetryText(getString(R.string.error_retry))
+         }*/
 
         /*binding.mainErrorView.setRetryListener {
             if (NetworkUtil.isNetworkConnected(this@MainActivity)) {
@@ -80,7 +80,6 @@ class MainActivity : AppCompatActivity() {
         }*/
 
         //binding.mainErrorView.visibility = View.GONE
-
         setupSearch()
     }
 

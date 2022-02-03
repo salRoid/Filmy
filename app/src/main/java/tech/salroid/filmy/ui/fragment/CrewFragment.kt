@@ -57,15 +57,10 @@ class CrewFragment : Fragment() {
 
     fun showCrews(crewList: ArrayList<Crew>) {
         this.crewList = crewList
-        binding.crewRecycler.adapter = CrewAdapter(crewList, true) { member, _, view ->
+        binding.crewRecycler.adapter = CrewAdapter(crewList, true) { member, _, _ ->
             val intent = Intent(activity, CharacterDetailsActivity::class.java)
             intent.putExtra("id", member.id.toString())
-            val p1 = Pair.create(view.findViewById<View>(R.id.crew_poster), "profile")
-            val p2 = Pair.create(view.findViewById<View>(R.id.crew_name), "name")
-            val options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), p1, p2)
-
-            startActivity(intent, options.toBundle())
+            startActivity(intent)
         }
 
         when {

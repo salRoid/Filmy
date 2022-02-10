@@ -24,7 +24,7 @@ class CharacterDetailsActivityAdapter(
     }
 
     override fun getItemCount(): Int =
-        if (fixedSize) if (moviesList.size >= 5) 5 else moviesList.size else moviesList.size
+        if (fixedSize) if (moviesList.size >= 6) 6 else moviesList.size else moviesList.size
 
     inner class CharacterDetailsViewHolder(private val binding: CharCustomRowBinding) :
         RecyclerView.ViewHolder(binding.root) {

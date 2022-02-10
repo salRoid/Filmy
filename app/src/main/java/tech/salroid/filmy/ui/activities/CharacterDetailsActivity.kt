@@ -154,7 +154,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
             }
 
         binding.characterMovies.adapter = charAdapter
-        if (castMovieDetails.castMovies.size > 4) {
+        if (castMovieDetails.castMovies.size > 5) {
             binding.more.visibility = View.VISIBLE
         } else {
             binding.more.visibility = View.INVISIBLE

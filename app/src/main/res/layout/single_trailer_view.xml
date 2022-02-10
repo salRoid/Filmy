@@ -3,8 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginRight="1dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginTop="1dp"
     android:layout_marginBottom="16dp"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="8dp">
 
     <LinearLayout
         android:id="@+id/container"
@@ -19,6 +22,8 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
                 android:id="@+id/detail_youtube"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
@@ -29,7 +34,6 @@
                 android:id="@+id/play_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:alpha="0.8"
                 android:background="@drawable/ic_play_circle_filled_white_48dp"
@@ -41,12 +45,12 @@
             android:id="@+id/trailerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="16dp"
+            android:layout_gravity="center"
+            android:layout_margin="12dp"
             android:ellipsize="end"
             android:fontFamily="@font/circularstd_book"
             android:maxLines="3"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

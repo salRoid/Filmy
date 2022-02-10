@@ -21,15 +21,17 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/poster"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:ellipsize="end"
+        android:gravity="center"
         android:fontFamily="@font/circularstd_book"
         android:maxLines="2"
         android:textSize="16sp" />
 
     <TextView
+        android:gravity="center"
         android:id="@+id/movie_year"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_name"
         android:layout_marginTop="4dp"

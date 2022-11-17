@@ -292,13 +292,13 @@ limitations under the License.
 
     <!-- About activity -->
     <string name="name_webianks">Ramankit Singh</string>
-    <string name="profile_webianks" translatable="false">http://salroid.me/android/profile_webianks.jpeg</string>
-    <string name="banner_webianks" translatable="false">http://salroid.me/android/banner_webianks.jpg</string>
+    <string name="profile_webianks" translatable="false">https://d1s4mfv15j0tj6.cloudfront.net/android/profile_webianks.jpeg</string>
+    <string name="banner_webianks" translatable="false">https://d1s4mfv15j0tj6.cloudfront.net/android/banner_webianks.jpg</string>
     <string name="bio_webianks">I love Android, designing and music.</string>
 
     <string name="name_salroid">Sajal Gupta</string>
-    <string name="profile_salroid" translatable="false">http://salroid.me/android/profile_salroid.jpeg</string>
-    <string name="banner_salroid" translatable="false">http://salroid.me/android/banner_salroid.jpg</string>
+    <string name="profile_salroid" translatable="false">https://d1s4mfv15j0tj6.cloudfront.net/android/profile_salroid.jpeg</string>
+    <string name="banner_salroid" translatable="false">https://d1s4mfv15j0tj6.cloudfront.net/android/banner_salroid.jpg</string>
     <string name="bio_salroid">The one with devil on the other side of mirror.</string>
 
     <string name="email">Email</string>

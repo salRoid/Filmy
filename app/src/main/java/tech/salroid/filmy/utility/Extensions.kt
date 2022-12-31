@@ -1,6 +1,9 @@
 package tech.salroid.filmy.utility
 
+import android.app.Activity
+import android.graphics.Color
 import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
@@ -11,10 +14,12 @@ import tech.salroid.filmy.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun View.showSnackBar(msg: String) {
+fun View.showSnackBar(msg: String, positive: Boolean = true) {
     val snackBar = Snackbar.make(this, msg, Snackbar.LENGTH_SHORT)
     val snackBarView: View = snackBar.view
-    snackBarView.background = (ContextCompat.getDrawable(this.context, R.drawable.snackbar_bg))
+    snackBarView.background =
+        if (positive) ContextCompat.getDrawable(this.context, R.drawable.snackbar_bg)
+        else ContextCompat.getDrawable(this.context, R.drawable.snackbar_bg_negative)
     val textView =
         snackBarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
     textView.setTextColor(ContextCompat.getColor(this.context, R.color.white))
@@ -30,7 +35,7 @@ fun View.gone() {
 }
 
 fun String.toReadableDate(): String {
-    if (this.isEmpty()){
+    if (this.isEmpty()) {
         return this
     }
     val fromDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -54,4 +59,13 @@ fun MaterialSearchView.getQueryTextChangeStateFlow(): StateFlow<String> {
         }
     })
     return query
+}
+
+fun Activity.makeStatusBarTransparent() {
+    window.apply {
+        clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        statusBarColor = Color.TRANSPARENT
+    }
 }

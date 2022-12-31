@@ -1,15 +1,20 @@
 package tech.salroid.filmy.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
-import tech.salroid.filmy.R
-import android.os.Bundle
-import androidx.core.content.res.ResourcesCompat
-import androidx.preference.Preference.OnPreferenceChangeListener
-import androidx.preference.Preference.OnPreferenceClickListener
 import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
-import androidx.preference.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.preference.Preference
+import androidx.preference.Preference.OnPreferenceChangeListener
+import androidx.preference.Preference.OnPreferenceClickListener
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreferenceCompat
+import tech.salroid.filmy.R
 import tech.salroid.filmy.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
@@ -22,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val sp = PreferenceManager.getDefaultSharedPreferences(this)
         nightMode = sp.getBoolean("dark", false)
-        if (nightMode) setTheme(R.style.AppTheme_Base_Dark) else setTheme(R.style.AppTheme_Base)
+        if (nightMode) setTheme(R.style.Filmy_Material3_Preference_Dark) else setTheme(R.style.Filmy_Material3_Preference)
 
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -34,7 +39,10 @@ class SettingsActivity : AppCompatActivity() {
         binding.logo.typeface = ResourcesCompat.getFont(this, R.font.rubik)
         if (nightMode) allThemeLogic()
 
-        supportFragmentManager.beginTransaction().replace(R.id.container, FilmyPreferenceFragment()).commit()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, FilmyPreferenceFragment())
+            .commit()
     }
 
     private fun allThemeLogic() {
@@ -55,18 +63,14 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preference, rootKey)
-
-            val myPreference = PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
+            val myPreference =
+                PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
 
             imagePref = findPreference("imagequality") as? SwitchPreferenceCompat
             imagePref?.onPreferenceChangeListener = OnPreferenceChangeListener { preference, o ->
                 val quality: String
                 val switchPreference = preference as SwitchPreferenceCompat
-                quality = if (!switchPreference.isChecked) {
-                    "original"
-                } else {
-                    "w1280"
-                }
+                quality = if (!switchPreference.isChecked) "original" else "w1280"
                 myPreference.putString("image_quality", quality)
                 myPreference.apply()
                 true
@@ -105,7 +109,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         private fun recreateActivity() {
-            activity?.recreate()
+            Handler(Looper.getMainLooper()).postDelayed({
+                activity?.recreate()
+            }, 200)
         }
     }
 }

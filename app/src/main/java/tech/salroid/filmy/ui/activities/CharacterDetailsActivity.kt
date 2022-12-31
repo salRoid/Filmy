@@ -96,7 +96,6 @@ class CharacterDetailsActivity : AppCompatActivity() {
         if (nightMode != nightModeNew) recreate()
     }
 
-
     private fun showPersonalDetails(details: CastDetailsResponse) {
         try {
             val dataName = details.name

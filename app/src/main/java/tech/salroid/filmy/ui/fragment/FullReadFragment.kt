@@ -17,7 +17,6 @@ class FullReadFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = ReadFullLayoutBinding.inflate(inflater, container, false)
         val view = binding.root
 

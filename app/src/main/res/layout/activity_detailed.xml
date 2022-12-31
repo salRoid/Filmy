@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/all_details_container"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/motionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scrollingContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
             android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <FrameLayout
-                android:id="@+id/new_main"
+            <ImageView
+                android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
+                android:background="@color/dark"
                 android:clickable="true"
+                android:contentDescription="@string/banner_image"
                 android:focusable="true"
-                android:foreground="?android:selectableItemBackground">
-
-                <ImageView
-                    android:id="@+id/backdrop"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/dark"
-                    android:contentDescription="@string/banner_image"
-                    android:scaleType="centerCrop" />
-            </FrameLayout>
+                android:foreground="?android:selectableItemBackground"
+                android:scaleType="centerCrop" />
 
             <FrameLayout
                 android:id="@+id/header_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/new_main"
+                android:layout_below="@id/backdrop"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:selectableItemBackground">
@@ -140,11 +138,11 @@
                             android:id="@+id/moreTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:textAllCaps="true"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
                             android:fontFamily="@font/circularstd_book"
-                            android:text="+ More" />
+                            android:text="+ More"
+                            android:textAllCaps="true" />
 
                     </LinearLayout>
 
@@ -162,7 +160,7 @@
                     android:id="@+id/cast_divider"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="12dp" />
 
             </LinearLayout>
 
@@ -177,31 +175,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cast_container"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="12dp" />
 
             <FrameLayout
                 android:id="@+id/similar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/crew_container"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="12dp" />
 
         </RelativeLayout>
 
     </ScrollView>
 
+    <View
+        android:id="@+id/toolBarScrimStart"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:alpha="1.0"
+        android:background="@drawable/toolbar_gradient_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/scrollingContent" />
+
+    <View
+        android:id="@+id/toolBarScrimEnd"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:alpha="0.0"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolBarScrimStart" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/toolbar_gradient_background"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolBarScrimEnd" />
 
     <tech.salroid.filmy.ui.custom.BreathingProgress
         android:id="@+id/breathingProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="invisible" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

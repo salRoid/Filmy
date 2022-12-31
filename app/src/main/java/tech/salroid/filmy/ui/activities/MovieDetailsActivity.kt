@@ -4,12 +4,13 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.FrameLayout
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
@@ -24,16 +25,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
-import tech.salroid.filmy.ui.animations.RevealAnimation
-import tech.salroid.filmy.data.local.model.RatingResponse
 import tech.salroid.filmy.data.local.db.FilmyDbHelper
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
-import tech.salroid.filmy.databinding.ActivityDetailedBinding
+import tech.salroid.filmy.data.local.model.RatingResponse
 import tech.salroid.filmy.data.network.NetworkUtil
+import tech.salroid.filmy.databinding.ActivityDetailedBinding
+import tech.salroid.filmy.ui.animations.RevealAnimation
 import tech.salroid.filmy.ui.fragment.*
-import tech.salroid.filmy.utility.FilmyUtility
+import tech.salroid.filmy.utility.FilmyUtility.getStatusBarHeight
+import tech.salroid.filmy.utility.FilmyUtility.getToolBarHeight
+import tech.salroid.filmy.utility.makeStatusBarTransparent
 import tech.salroid.filmy.utility.showSnackBar
 import tech.salroid.filmy.utility.toReadableDate
+import java.text.DecimalFormat
 
 class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -42,7 +46,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private var trailerArray = mutableListOf<String?>()
     private var trailerArrayName = mutableListOf<String?>()
     private var movieImdbId: String? = null
-
     private lateinit var movieDetails: MovieDetails
 
     private var networkApplicable = false
@@ -86,29 +89,52 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         if (!nightMode) allThemeLogic() else nightModeLogic()
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        val statusBarHeight = FilmyUtility.getStatusBarHeight(this)
-        val toolbarParams = binding.toolbar.layoutParams as FrameLayout.LayoutParams
-        toolbarParams.setMargins(0, statusBarHeight, 0, 0)
-
         val pref = PreferenceManager.getDefaultSharedPreferences(this@MovieDetailsActivity)
         quality = pref.getString("image_quality", "original")
 
-        binding.headerContainer.setOnClickListener(this)
-        binding.newMain.setOnClickListener(this)
-        binding.trailorView.setOnClickListener(this)
-        binding.youtubeIconContainer.setOnClickListener(this)
-
+        makeStatusBarTransparent()
+        updateToolBarScrims()
+        setupListeners()
         getDataFromIntent(intent)
 
         if (savedInstanceState == null) {
-            RevealAnimation.performReveal(binding.allDetailsContainer)
+            RevealAnimation.performReveal(binding.motionLayout)
             performDataFetching()
         }
 
         showCastFragment()
         showCrewFragment()
         showSimilarFragment()
+    }
+
+    private fun setupListeners() {
+        binding.headerContainer.setOnClickListener(this)
+        binding.backdrop.setOnClickListener(this)
+        binding.trailorView.setOnClickListener(this)
+        binding.youtubeIconContainer.setOnClickListener(this)
+    }
+
+    private fun updateToolBarScrims() {
+        val toolBarScrimHeight = getStatusBarHeight(this) + getToolBarHeight(this)
+        val toolbarScrimStartParams =
+            binding.toolBarScrimStart.layoutParams as ViewGroup.LayoutParams
+        val toolbarScrimEndParams = binding.toolBarScrimEnd.layoutParams as ViewGroup.LayoutParams
+        toolbarScrimStartParams.height = toolBarScrimHeight
+        toolbarScrimEndParams.height = toolBarScrimHeight
+
+        binding.backdrop.viewTreeObserver.addOnScrollChangedListener {
+            val rect = Rect()
+            binding.backdrop.let {
+                it.getLocalVisibleRect(rect)
+                val heightPixels = it.height + rect.top - rect.bottom
+                var heightPercentage = (100 - ((heightPixels.toDouble() / it.height) * 100)).toInt()
+                if (rect.top < 0) heightPercentage = 0
+
+                val visibilityModifier = (heightPercentage.toDouble() / 100).toFloat()
+                binding.toolBarScrimStart.alpha = visibilityModifier
+                binding.toolBarScrimEnd.alpha = 1.0f - visibilityModifier
+            }
+        }
     }
 
     private fun getDataFromIntent(intent: Intent?) {
@@ -123,14 +149,14 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun nightModeLogic() {
-        binding.allDetailsContainer.setBackgroundColor(Color.parseColor("#121212"))
+        binding.motionLayout.setBackgroundColor(Color.parseColor("#121212"))
         binding.headerContainer.setBackgroundColor(Color.parseColor("#212121"))
         binding.viewExtraInfo.extraDetails.setBackgroundColor(Color.parseColor("#212121"))
         binding.viewRatings.ratingBar.setBackgroundColor(Color.parseColor("#212121"))
     }
 
     private fun allThemeLogic() {
-        binding.allDetailsContainer.setBackgroundColor(Color.parseColor("#E0E0E0"))
+        binding.motionLayout.setBackgroundColor(Color.parseColor("#E0E0E0"))
         binding.headerContainer.setBackgroundColor(resources.getColor(R.color.primaryColor))
         binding.viewExtraInfo.extraDetails.setBackgroundColor(resources.getColor(R.color.primaryColor))
         binding.viewRatings.ratingBar.setBackgroundColor(resources.getColor(R.color.primaryColor))
@@ -192,9 +218,9 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         movieDetails.watchlist = isWatchlist
         movieDetails.favorite = isFavourite
 
-        if(addedDueToCollection){
+        if (addedDueToCollection) {
             if (msg == "watchlist") movieDetails.watchlist = true
-            if (msg == "favorites")  movieDetails.favorite  = true
+            if (msg == "favorites") movieDetails.favorite = true
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
@@ -229,7 +255,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                         if (msg == "watchlist") isWatchlist = false
                         if (msg == "favorites") isFavourite = false
 
-                        binding.backdrop.showSnackBar("Movie removed from $msg")
+                        binding.backdrop.showSnackBar("Movie removed from $msg", positive = false)
                     } else {
                         if (msg == "watchlist") isWatchlist = true
                         if (msg == "favorites") isFavourite = true
@@ -276,7 +302,9 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         movieDesc = movie.overview
         movieTitle = movie.title
         movieImdbId = movie.imdbId
-        movieRatingTmdb = movie.voteAverage?.toString()
+        movieRatingTmdb = movie.voteAverage?.let {
+            DecimalFormat("#.#").format(it)
+        }
         movieTitleHyphen = movieTitle?.replace(' ', '-')
         movieTagline = movie.tagline
 
@@ -345,7 +373,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         binding.detailTitle.text = movie.title
         binding.detailOverview.text = movie.overview
 
-        //det_rating.setText(rating);
+        //det_rating.setText(rating)
         binding.viewExtraInfo.detailRuntime.text = "${movie.runtime} mins"
         binding.viewExtraInfo.detailReleased.text = movie.releaseDate?.toReadableDate()
         binding.viewExtraInfo.detailCertification.text = genre
@@ -435,20 +463,8 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 if (type == -1) startActivity(Intent(this, MainActivity::class.java))
             }
             R.id.action_share -> shareMovie()
-            R.id.action_fav -> {
-                if (isFavourite) {
-                    editFavoriteAndRemove()
-                } else {
-                    editFavoriteAndSave()
-                }
-            }
-            R.id.action_watch -> {
-                if (isWatchlist) {
-                    editWatchlistAndRemove()
-                } else {
-                    editWatchlistAndSave()
-                }
-            }
+            R.id.action_fav ->  if (isFavourite) removeFavorite() else addFavorite()
+            R.id.action_watch -> if (isWatchlist) removeWatchlist() else addWatchlist()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -554,7 +570,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
             binding.viewRatings.metaRating.text = movieRatingMetaScore
             binding.viewRatings.metaRatingView.text = movieRatingMetaScore
-
             binding.viewRatings.layoutMeta.setOnClickListener {
                 openCustomTabIntent(url, R.color.metaBlack)
             }
@@ -571,22 +586,22 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun editWatchlistAndSave() {
+    private fun addWatchlist() {
         movieDetails.watchlist = true
         updateMovieDetailsInDb(movieDetails, "watchlist", false)
     }
 
-    private fun editFavoriteAndSave() {
+    private fun addFavorite() {
         movieDetails.favorite = true
         updateMovieDetailsInDb(movieDetails, "favorites", false)
     }
 
-    private fun editWatchlistAndRemove() {
+    private fun removeWatchlist() {
         movieDetails.watchlist = false
         updateMovieDetailsInDb(movieDetails, "watchlist", true)
     }
 
-    private fun editFavoriteAndRemove() {
+    private fun removeFavorite() {
         movieDetails.favorite = false
         updateMovieDetailsInDb(movieDetails, "favorites", true)
     }
@@ -618,31 +633,28 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
         if (isFavourite) {
             itemFavorite.setIcon(R.drawable.ic_round_favorite_24)
         }
-
         if (isWatchlist) {
             itemWatchlist.setIcon(R.drawable.ic_round_bookmark_added_24)
         }
-
         return true
     }
 
     override fun onClick(view: View) {
         when (view.id) {
             R.id.header_container -> if (movieTitle != null && movieDesc != null) {
-                fullReadFragment = FullReadFragment()
-                val args = Bundle()
-                args.putString("title", movieTitle)
-                args.putString("desc", movieDesc)
-                fullReadFragment.arguments = args
-                fullReadFragment.show(supportFragmentManager, "DESC")
+                fullReadFragment = FullReadFragment().also {
+                    it.arguments = Bundle().apply {
+                        putString("title", movieTitle)
+                        putString("desc", movieDesc)
+                    }
+                    it.show(supportFragmentManager, "DESC")
+                }
             }
-
-            R.id.new_main -> if (bannerForFullScreen != null) {
+            R.id.backdrop -> if (bannerForFullScreen != null) {
                 val intent = Intent(this@MovieDetailsActivity, FullScreenImage::class.java)
                 intent.putExtra("img_url", bannerForFullScreen)
                 startActivity(intent)
             }
-
             R.id.trailorView -> {
                 val timeMilliSeconds = 0
                 val autoPlay = true
@@ -658,7 +670,6 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                     )
                 )
             }
-
             R.id.youtube_icon_container -> if (trailerBoolean) {
                 allTrailerFragment = AllTrailerFragment()
                 val args = Bundle()
@@ -667,7 +678,7 @@ class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 args.putStringArray("trailers_name", trailerArrayName.toTypedArray())
                 allTrailerFragment.arguments = args
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.all_details_container, allTrailerFragment)
+                    .replace(R.id.motionLayout, allTrailerFragment)
                     .addToBackStack("TRAILER").commit()
             }
         }

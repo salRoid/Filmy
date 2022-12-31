@@ -1,63 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="0dp"
+    app:strokeColor="@color/grey"
+    app:strokeWidth="0dp">
 
-    <com.google.android.material.card.MaterialCardView
+    <RelativeLayout
+        android:id="@+id/detail_fragment_views_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="0dp"
-        app:strokeColor="@color/grey"
-        app:strokeWidth="0dp">
+        android:minHeight="200dp">
 
-        <RelativeLayout
-            android:id="@+id/detail_fragment_views_layout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/card_holder"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="200dp">
+            android:fontFamily="@font/circularstd_book"
+            android:padding="16dp"
+            android:text="@string/cast"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/card_holder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/circularstd_book"
-                android:padding="16dp"
-                android:text="@string/cast"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="?android:selectableItemBackground"
+            android:fontFamily="@font/circularstd_book"
+            android:padding="16dp"
+            android:text="@string/more"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/colorMore"
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
-            <TextView
-                android:id="@+id/more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="?android:selectableItemBackground"
-                android:fontFamily="@font/circularstd_book"
-                android:padding="16dp"
-                android:text="@string/more"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/colorMore"
-                android:textStyle="bold"
-                android:visibility="invisible" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cast_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/card_holder"
+            android:layout_alignParentStart="true" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cast_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/card_holder"
-                android:layout_alignParentStart="true" />
+        <tech.salroid.filmy.ui.custom.BreathingProgress
+            android:id="@+id/breathingProgressFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
-            <tech.salroid.filmy.ui.custom.BreathingProgress
-                android:id="@+id/breathingProgressFragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone" />
+    </RelativeLayout>
 
-        </RelativeLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</FrameLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -11,12 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import tech.salroid.filmy.ui.activities.MovieDetailsActivity
-import tech.salroid.filmy.ui.adapters.MoviesAdapter
 import tech.salroid.filmy.data.local.db.FilmyDbHelper
 import tech.salroid.filmy.data.local.db.entity.Movie
-import tech.salroid.filmy.databinding.FragmentInTheatersBinding
 import tech.salroid.filmy.data.network.NetworkUtil
+import tech.salroid.filmy.databinding.FragmentInTheatersBinding
+import tech.salroid.filmy.ui.activities.MovieDetailsActivity
+import tech.salroid.filmy.ui.adapters.MoviesAdapter
 
 class InTheaters : Fragment() {
 
@@ -78,7 +78,7 @@ class InTheaters : Fragment() {
         // Get movies from Network
         NetworkUtil.getInTheatersMovies({ moviesResponse ->
             moviesResponse?.results?.let {
-                if(!showingFromDb) {
+                if (!showingFromDb) {
                     showMovies(it)
                 }
                 saveMoviesInDb(it)

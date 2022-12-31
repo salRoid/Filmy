@@ -6,6 +6,9 @@
     <color name="primaryColorLight">#F0F0F0</color>
 
     <color name="colorAccent">#2196F3</color>
+    <color name="colorOutline">#7DC5FD</color>
+    <color name="colorSurfaceVariant">#22CCE8FF</color>
+    <color name="colorAccentTint">#332196F3</color>
     <color name="colorMore">#2196F3</color>
 
     <color name="grey">#f5f5f5</color>

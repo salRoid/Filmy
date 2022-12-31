@@ -10,12 +10,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "tech.salroid.filmy"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 20
         versionName "3.0.0"
         multiDexEnabled true
@@ -35,7 +35,7 @@ android {
             buildConfigField("String", "TMDB_API_KEY", "\"" + getTMDBApiKey() + "\"")
             buildConfigField("String", "OMDB_API_KEY", "\"" + getOMDBApiKey() + "\"")
             buildConfigField("String", "YOUTUBE_API_KEY", "\"" + getYoutubeApiKey() + "\"")
-            minifyEnabled true
+            minifyEnabled false
         }
     }
 
@@ -72,10 +72,12 @@ dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.android.material:material:1.3.0-alpha03'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
-    implementation 'androidx.browser:browser:1.3.0'
-    implementation "androidx.work:work-runtime:2.4.0"
+    implementation 'com.google.android.material:material:1.8.0-beta01'
+    implementation "androidx.constraintlayout:constraintlayout:2.2.0-alpha05"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    implementation 'androidx.browser:browser:1.4.0'
+    implementation "androidx.work:work-runtime:2.7.1"
     implementation 'androidx.palette:palette-ktx:1.0.0'
     implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
     implementation 'com.github.bumptech.glide:glide:4.11.0'
@@ -85,7 +87,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    def roomVersion = "2.4.1"
+    def lifecycle_version = "2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+    def roomVersion = "2.4.3"
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
 
@@ -95,8 +101,8 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'junit:junit:4.13.2'
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
-    androidTestImplementation "androidx.test:runner:1.4.0"
-    androidTestImplementation "androidx.test:rules:1.4.0"
-    androidTestImplementation 'androidx.test:core-ktx:1.4.0'
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
+    androidTestImplementation "androidx.test:runner:1.5.1"
+    androidTestImplementation "androidx.test:rules:1.5.0"
+    androidTestImplementation 'androidx.test:core-ktx:1.5.0'
 }

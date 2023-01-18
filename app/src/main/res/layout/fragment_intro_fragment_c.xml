@@ -1,12 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".ui.activities.fragment.intro_fragments.IntroFragmentC">
+    android:background="@color/colorDarkThemePrimaryDark">
 
-
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/intro_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,24 +15,23 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/intro_title"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="32dp"
         android:fontFamily="@font/circularstd_book"
         android:text="@string/save_movies_locally_to_see_various_details_even_if_you_don_t_have_internet"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/intro_c" />
-
 
 </RelativeLayout>

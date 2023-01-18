@@ -2,11 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".ui.activities.fragment.intro_fragments.IntroFragmentA">
+    android:background="@color/colorDarkThemePrimaryDark"
+    tools:context=".ui.intro.IntroFragmentA">
 
-
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/intro_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +17,7 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/intro_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,8 +29,7 @@
         android:textColor="#ffffff"
         android:textSize="18sp" />
 
-
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

@@ -15,23 +15,22 @@
         android:scaleType="fitXY"
         app:shapeAppearanceOverlay="@style/roundedImageView" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/movie_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/movie_poster"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/circularstd_book"
+        android:fontFamily="@font/barlow_black"
         android:textSize="16sp" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/movie_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_name"
         android:layout_marginTop="2dp"
-        android:fontFamily="@font/circularstd_book"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:fontFamily="@font/barlow_regular"
+        android:textSize="14sp" />
 
 </RelativeLayout>

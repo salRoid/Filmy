@@ -8,10 +8,9 @@
     <string name="person_details_suffix" translatable="false">extended=full,images</string>
     <string name="person_movies_details" translatable="false">/movies?extended=images,full</string>
     <string name="imdb_link_prefix" translatable="false">http://www.imdb.com/title/</string>
-    <string name="trailer_img_prefix" translatable="false">http://img.youtube.com/vi/</string>
-    <string name="trailer_img_suffix" translatable="false">/0.jpg</string>
+    <string name="trailer_img_url" translatable="false" formatted="false">http://img.youtube.com/vi/%1$s/0.jpg</string>
     <string name="poster_prefix_185" translatable="false">http://image.tmdb.org/t/p/w342</string>
-    <string name="poster_prefix_500" translatable="false">http://image.tmdb.org/t/p/w780</string>
+    <string name="poster_prefix_500" translatable="false">http://image.tmdb.org/t/p/w1280</string>
     <string name="poster_prefix_add_quality" translatable="false">http://image.tmdb.org/t/p/</string>
     <string name="trailer_link_prefix" translatable="false">https://www.youtube.com/watch?v=</string>
 
@@ -304,5 +303,11 @@ limitations under the License.
     <string name="email">Email</string>
     <string name="website">Website</string>
     <string name="github">GitHub</string>
+
+    <!-- New: TODO Finalise position -->
+    <string name="movie_poster_url" formatted="false" translatable="false">http://image.tmdb.org/t/p/w500%1$s</string>
+    <string name="member_profile_url" formatted="false" translatable="false">http://image.tmdb.org/t/p/w185%1$s</string>
+    <string name="member_profile_url_2" formatted="false" translatable="false">http://image.tmdb.org/t/p/w185%1$s</string>
+    <string name="remove" translatable="false">Remove</string>
 
 </resources>

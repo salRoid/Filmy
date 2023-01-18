@@ -164,20 +164,20 @@
 
             </LinearLayout>
 
-            <FrameLayout
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/cast_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/movie_description" />
 
-            <FrameLayout
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/crew_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cast_container"
                 android:layout_marginTop="12dp" />
 
-            <FrameLayout
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/similar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -202,11 +202,11 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:alpha="0.0"
-        android:background="@color/black"
+        android:background="@color/surfaceColorDark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/toolBarScrimStart" />
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

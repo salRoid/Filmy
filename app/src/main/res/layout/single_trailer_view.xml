@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="1dp"
     android:layout_marginLeft="1dp"
     android:layout_marginTop="1dp"
+    android:layout_marginRight="1dp"
     android:layout_marginBottom="16dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:id="@+id/container"
@@ -21,16 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp"
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/detail_youtube"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="200dp"
                 android:contentDescription="@string/trailer"
                 android:scaleType="centerCrop" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/play_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,14 +41,14 @@
 
         </FrameLayout>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/trailerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="12dp"
             android:ellipsize="end"
-            android:fontFamily="@font/circularstd_book"
+            android:fontFamily="@font/barlow_black"
             android:maxLines="3"
             android:textSize="16sp" />
 

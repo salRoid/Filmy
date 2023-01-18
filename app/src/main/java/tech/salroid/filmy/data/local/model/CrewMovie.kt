@@ -38,7 +38,7 @@ data class CrewMovie(
     var video: Boolean? = null,
 
     @SerializedName("vote_average")
-    var voteAverage: Int? = null,
+    var voteAverage: Double? = null,
 
     @SerializedName("vote_count")
     var voteCount: Int? = null,

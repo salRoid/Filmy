@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@id/moviesContainer"
+        android:enabled="true"
+        android:icon="@drawable/outline_movie_24"
+        android:title="@string/movies" />
+
+    <item
+        android:id="@id/collections"
+        android:enabled="true"
+        android:icon="@drawable/ic_collections_bookmark_black_24dp"
+        android:title="@string/collection_short_label" />
+
+    <item
+        android:id="@id/settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_face"
+        android:title="@string/title_activity_settings" />
+
+</menu>

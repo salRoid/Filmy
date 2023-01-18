@@ -22,7 +22,7 @@ interface MovieDetailsDao {
     fun getAllWatchlist(): List<MovieDetails>
 
     @Query("SELECT * FROM movie_details WHERE id = :id AND type = :type")
-    fun getDetailsOfType(id: Int, type: Int = 0): MovieDetails
+    fun getDetailsOfType(id: Int, type: Int = 0): MovieDetails?
 
     @Update
     fun updateDetails(movie: MovieDetails): Int

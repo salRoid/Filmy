@@ -2,22 +2,28 @@
 <resources>
 
     <color name="primaryColor">#ffffff</color>
+    <color name="primaryColorMD3">@color/colorAccentDark</color>
     <color name="primaryColorDark">#BDBDBD</color>
     <color name="primaryColorLight">#F0F0F0</color>
 
-    <color name="colorAccent">#2196F3</color>
+    <color name="colorAccent">#A7D8FF</color>
+    <color name="colorAccentDark">#279BDA</color>
+    <color name="colorAccentMD3">#143C5C</color>
     <color name="colorOutline">#7DC5FD</color>
     <color name="colorSurfaceVariant">#22CCE8FF</color>
-    <color name="colorAccentTint">#332196F3</color>
+    <color name="colorAccentTint">#F7F8FD</color>
     <color name="colorMore">#2196F3</color>
 
     <color name="grey">#f5f5f5</color>
     <color name="grey2">#9e9e9e</color>
+    <color name="grey3">#CCCCCC</color>
 
     <color name="dark">#616161</color>
+    <color name="lightColorOnSurface">#323232</color>
+    <color name="surfaceColorDark">#1C1B20</color>
+    <color name="surfaceColorLight">#FFFBFF</color>
     <color name="black">#212121</color>
     <color name="fullBlack">#000000</color>
-    <color name="colorAccentDark">#0288D1</color>
     <color name="dividerColor">#f5f5f5</color>
     <color name="dividerColorDarkTheme">#424242</color>
     <color name="colorAccent2">#FFAB00</color>

@@ -6,6 +6,7 @@ data class Youtube(
 
     @SerializedName("name")
     var name: String? = null,
+
     @SerializedName("size")
     var size: String? = null,
 

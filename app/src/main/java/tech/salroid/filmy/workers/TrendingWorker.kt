@@ -5,7 +5,6 @@ import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.work.ListenableWorker
 import androidx.work.WorkerParameters
 import com.google.common.util.concurrent.ListenableFuture
-import tech.salroid.filmy.data.network.NetworkUtil
 
 class TrendingWorker(
     context: Context,
@@ -13,11 +12,11 @@ class TrendingWorker(
 ) : ListenableWorker(context, workParameters) {
 
     override fun startWork(): ListenableFuture<Result> {
-        NetworkUtil.getTrendingMovies({
+       /* NetworkUtil.getTrendingMovies({
             // TODO save to DB
         }, {
 
-        })
+        })*/
         return CallbackToFutureAdapter.getFuture {
             it.set(Result.success())
         }

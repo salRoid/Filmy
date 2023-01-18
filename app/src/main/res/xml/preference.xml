@@ -4,7 +4,7 @@
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:icon="@drawable/dark_mode"
-        android:key="dark"
+        android:key="darkMode"
         android:title="@string/dark"
         android:widgetLayout="@layout/preference_material_switch" />
 

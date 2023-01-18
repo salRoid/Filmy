@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -16,29 +17,32 @@
         android:scaleType="fitXY"
         app:shapeAppearanceOverlay="@style/roundedImageView" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/movie_name"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/poster"
         android:layout_marginTop="8dp"
+        android:alpha="0.8"
         android:ellipsize="end"
+        android:fontFamily="@font/barlow_black"
         android:gravity="center"
-        android:fontFamily="@font/circularstd_book"
         android:maxLines="2"
-        android:textSize="16sp" />
+        android:textSize="14sp"
+        tools:text="SpiderMan: India?" />
 
-    <TextView
-        android:gravity="center"
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/movie_year"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_name"
         android:layout_marginTop="4dp"
         android:alpha="0.5"
-        android:fontFamily="@font/circularstd_book"
-        android:textSize="13sp"
+        android:fontFamily="@font/barlow_regular"
+        android:gravity="center"
+        android:textSize="12sp"
         android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:text="22 Jan 2023" />
 
 </RelativeLayout>

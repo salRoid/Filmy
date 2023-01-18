@@ -67,7 +67,7 @@ class BreathingProgress(
 
     private fun getPx(dp: Int): Int {
         val displayMetrics = DisplayMetrics()
-        (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+        (context as? Activity)?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         val logicalDensity = displayMetrics.density
         return ceil((dp * logicalDensity).toDouble()).toInt()
     }

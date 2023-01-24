@@ -1,12 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".ui.activities.fragment.intro_fragments.IntroFragmentC">
+    android:background="@color/colorDarkThemePrimaryDark">
 
-
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/intro_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,28 +11,27 @@
         android:layout_marginTop="50dp"
         android:fontFamily="@font/circularstd_book"
         android:text="@string/categorized"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/intro_title"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="20dp"
+        android:layout_marginRight="16dp"
         android:fontFamily="@font/circularstd_book"
         android:text="@string/get_different_movies_in_different_categories_at_one_place"
-        android:textColor="#ffffff"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/intro_b" />
-
 
 </RelativeLayout>

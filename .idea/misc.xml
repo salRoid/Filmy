@@ -6,8 +6,11 @@
         <entry key="app/src/main/res/drawable-v21/main_background.xml" value="0.25729166666666664" />
         <entry key="app/src/main/res/drawable/awesome_filmy_progress.xml" value="0.167" />
         <entry key="app/src/main/res/drawable/filmy_circle.xml" value="0.167" />
+        <entry key="app/src/main/res/drawable/ic_round_arrow_back_24.xml" value="0.167" />
         <entry key="app/src/main/res/drawable/ic_round_bookmark_add_24.xml" value="0.167" />
         <entry key="app/src/main/res/drawable/ic_round_bookmark_added_24.xml" value="0.167" />
+        <entry key="app/src/main/res/drawable/ic_round_cancel_24.xml" value="0.167" />
+        <entry key="app/src/main/res/drawable/ic_round_close_24.xml" value="0.167" />
         <entry key="app/src/main/res/drawable/ic_round_favorite_24.xml" value="0.167" />
         <entry key="app/src/main/res/drawable/ic_round_favorite_border_24.xml" value="0.167" />
         <entry key="app/src/main/res/drawable/main_background.xml" value="0.25729166666666664" />
@@ -38,6 +41,7 @@
         <entry key="app/src/main/res/layout/fragment_up_coming.xml" value="0.20606884057971014" />
         <entry key="app/src/main/res/layout/fragment_watch_movies.xml" value="0.19293478260869565" />
         <entry key="app/src/main/res/layout/ratings.xml" value="0.14492753623188406" />
+        <entry key="app/src/main/res/layout/read_full_layout.xml" value="0.375" />
         <entry key="app/src/main/res/layout/search_custom_row.xml" value="0.19293478260869565" />
         <entry key="app/src/main/res/layout/similar_custom_row.xml" value="0.1308876811594203" />
         <entry key="app/src/main/res/layout/single_trailer_view.xml" value="0.16576086956521738" />

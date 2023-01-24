@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.animation.AccelerateInterpolator
@@ -14,28 +13,18 @@ import android.widget.FrameLayout
 import tech.salroid.filmy.R
 import kotlin.math.ceil
 
-class BreathingProgress : FrameLayout {
+class BreathingProgress(
+    context: Context,
+    attrs: AttributeSet? = null
+) : FrameLayout(context, attrs) {
 
-    constructor(context: Context) : super(context) {
-        init(context)
-    }
-
-    //XML Inflation
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        init(context)
-    }
-
-    private fun init(context: Context) {
-
-        //createMainProgressBar
-        createProgress(context)
-
-        //invalidate and redraw the views.
-        invalidate()
-        requestLayout()
-
-        //nowShowBreathingAnimation
-        breathingAnimation()
+    init {
+        if(!isInEditMode) {
+            createProgress(context)
+            invalidate()
+            requestLayout()
+            breathingAnimation()
+        }
     }
 
     private fun breathingAnimation() {
@@ -44,8 +33,8 @@ class BreathingProgress : FrameLayout {
     }
 
     private fun createProgress(context: Context) {
-        val r = resources
-        val dp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 50f, r.displayMetrics)
+
+
         val widthPxForFixedRing = getPx(50)
         val heightPxForFixedRing = getPx(50)
 
@@ -78,7 +67,7 @@ class BreathingProgress : FrameLayout {
 
     private fun getPx(dp: Int): Int {
         val displayMetrics = DisplayMetrics()
-        (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
+        (context as? Activity)?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         val logicalDensity = displayMetrics.density
         return ceil((dp * logicalDensity).toDouble()).toInt()
     }

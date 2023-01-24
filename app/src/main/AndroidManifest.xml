@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="tech.salroid.filmy">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".FilmyApplication"
@@ -16,7 +13,7 @@
         android:label="@string/app_name"
         android:resizeableActivity="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Base"
+        android:theme="@style/AppTheme.MD3"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
 
@@ -25,11 +22,14 @@
             android:required="false" />
 
         <activity
-            android:name=".ui.FilmyIntro"
-            android:label=" "/>
+            android:name=".ui.intro.FilmyIntroActivity"
+            android:label=" "
+            android:theme="@style/AppTheme.MD3.Dark" />
 
         <activity
-            android:name="tech.salroid.filmy.ui.activities.MainActivity"
+            android:name="tech.salroid.filmy.ui.home.MainActivity"
+            android:configChanges="uiMode"
+            android:exported="true"
             android:theme="@style/SplashTheme">
 
             <intent-filter>
@@ -43,8 +43,10 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="tech.salroid.com"
                     android:scheme="http" />
@@ -52,54 +54,42 @@
         </activity>
 
         <activity
-            android:name="tech.salroid.filmy.ui.activities.MovieDetailsActivity"
+            android:name="tech.salroid.filmy.ui.details.MovieDetailsActivity"
             android:label=" "
-            android:theme="@style/DetailsActivityTheme" />
+            android:theme="@style/AppTheme.MD3.Details" />
 
         <activity
-            android:name="tech.salroid.filmy.ui.activities.CharacterDetailsActivity"
+            android:name="tech.salroid.filmy.ui.cast_crew.CastCrewDetailsActivity"
             android:label="@string/details"
-            android:theme="@style/AppTheme.Base" />
+            android:theme="@style/AppTheme.MD3" />
 
         <activity
-            android:name="tech.salroid.filmy.ui.activities.FullCastActivity"
+            android:name="tech.salroid.filmy.ui.cast_crew.AllCastCrewActivity"
             android:label=" "
-            android:theme="@style/AppTheme.Base" />
+            android:theme="@style/AppTheme.MD3" />
 
         <activity
-            android:name="tech.salroid.filmy.ui.activities.FullCrewActivity"
-            android:label=" "
-            android:theme="@style/AppTheme.Base" />
-
-        <activity
-            android:name="tech.salroid.filmy.ui.activities.FullMovieActivity"
+            android:name="tech.salroid.filmy.ui.full.AllMoviesActivity"
             android:label="@string/title_activity_full_movie"
-            android:theme="@style/AppTheme.Base" />
+            android:theme="@style/AppTheme.MD3" />
 
         <activity
-            android:name="tech.salroid.filmy.ui.activities.FullScreenImage"
+            android:name="tech.salroid.filmy.ui.full.FullBannerActivity"
             android:label=" "
-            android:theme="@style/FullScreenTheme" />
+            android:theme="@style/AppTheme.MD3.Dark" />
 
-        <activity
-            android:name="tech.salroid.filmy.ui.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="tech.salroid.filmy.ui.settings.LicenseActivity" />
+        <activity android:name="tech.salroid.filmy.ui.settings.AboutActivity" />
 
-        <activity android:name="tech.salroid.filmy.ui.activities.License" />
-        <activity android:name="tech.salroid.filmy.ui.activities.AboutActivity" />
-        <activity android:name="tech.salroid.filmy.ui.activities.CollectionsActivity" />
-        <activity android:name="tech.salroid.filmy.ui.activities.LoginActivity" />
+        <!--  <receiver android:name=".ui.widget.FilmyWidgetProvider">
+              <intent-filter>
+                  <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+              </intent-filter>
 
-      <!--  <receiver android:name=".ui.widget.FilmyWidgetProvider">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/filmy_widget_info" />
-        </receiver>-->
+              <meta-data
+                  android:name="android.appwidget.provider"
+                  android:resource="@xml/filmy_widget_info" />
+          </receiver>-->
     </application>
 
 </manifest>

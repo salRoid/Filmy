@@ -10,7 +10,7 @@ import android.widget.RemoteViews
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.AppWidgetTarget
 import tech.salroid.filmy.R
-import tech.salroid.filmy.ui.activities.MovieDetailsActivity
+import tech.salroid.filmy.ui.details.MovieDetailsActivity
 import tech.salroid.filmy.data.local.database.FilmContract
 
 class FilmyWidgetProvider : AppWidgetProvider() {

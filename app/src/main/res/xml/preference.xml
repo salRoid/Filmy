@@ -3,21 +3,23 @@
 
     <SwitchPreferenceCompat
         android:defaultValue="false"
-        android:icon="@drawable/twotone_nights_stay_24"
-        android:key="dark"
-        android:title="@string/dark" />
+        android:icon="@drawable/dark_mode"
+        android:key="darkMode"
+        android:title="@string/dark"
+        android:widgetLayout="@layout/preference_material_switch" />
 
     <SwitchPreferenceCompat
         android:defaultValue="true"
-        android:icon="@drawable/twotone_insert_photo_24"
+        android:icon="@drawable/ic_photo"
         android:key="imagequality"
         android:summaryOff="@string/low"
         android:summaryOn="@string/high"
-        android:title="@string/image" />
+        android:title="@string/image"
+        android:widgetLayout="@layout/preference_material_switch" />
 
     <Preference
         android:enabled="true"
-        android:icon="@drawable/twotone_description_24"
+        android:icon="@drawable/ic_article"
         android:key="license"
         android:selectable="true"
         android:summary=""
@@ -25,7 +27,7 @@
 
     <Preference
         android:enabled="true"
-        android:icon="@drawable/twotone_info_24"
+        android:icon="@drawable/ic_document"
         android:key="Version"
         android:selectable="true"
         android:summary="3.0.0"
@@ -40,7 +42,7 @@
 
     <Preference
         android:enabled="true"
-        android:icon="@drawable/twotone_insert_emoticon_24"
+        android:icon="@drawable/ic_face"
         android:key="About"
         android:selectable="true"
         android:title="@string/about" />

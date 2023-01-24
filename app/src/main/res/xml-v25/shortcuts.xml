@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_collections_bookmark"
+        android:shortcutId="collections"
+        android:shortcutLongLabel="@string/collection_long_label"
+        android:shortcutShortLabel="@string/collection_short_label">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="tech.salroid.filmy.ui.home.MainActivity"
+            android:targetPackage="tech.salroid.filmy">
+            <extra
+                android:name="throughShortcut"
+                android:value="true" />
+        </intent>
+
+    </shortcut>
+
+</shortcuts>

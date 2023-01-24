@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import tech.salroid.filmy.FilmyApplication.Companion.context
+import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.databinding.CustomRowBinding
 import tech.salroid.filmy.utility.toReadableDate
@@ -27,7 +27,7 @@ class MoviesAdapter(
 
     fun swapData(newMovies: List<Movie>) {
         this.movies = newMovies
-        notifyDataSetChanged() //TODO improvement required
+        notifyDataSetChanged() // TODO improvement required
     }
 
     inner class MoviesViewHolder(private val binding: CustomRowBinding) :
@@ -43,9 +43,11 @@ class MoviesAdapter(
             binding.movieName.text = movie.title
             binding.movieYear.text = movie.releaseDate?.toReadableDate()
 
-            Glide.with(context)
-                .load("http://image.tmdb.org/t/p/w342${movie.posterPath}")
-                .into(binding.poster)
+            binding.root.context.let {
+                Glide.with(it)
+                    .load(it.getString(R.string.movie_poster_url, movie.posterPath))
+                    .into(binding.poster)
+            }
         }
     }
 }

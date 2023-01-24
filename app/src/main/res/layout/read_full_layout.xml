@@ -1,77 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#DD000000"
-    android:clickable="true"
-    android:focusable="true"
-    android:orientation="vertical">
+    app:behavior_peekHeight="400dp"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:layout_height="wrap_content">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        style="?attr/bottomSheetStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/fragment_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="32dp">
+            android:layout_marginBottom="16dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true">
+                android:layout_alignParentTop="true"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/cross"
-                    android:contentDescription="@string/close_description"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginRight="16dp"
-                    android:background="@drawable/main_background"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="?selectableItemBackground"
                     android:clickable="true"
-                    android:src="@drawable/ic_action_navigation_close_inverted" />
+                    android:contentDescription="@string/close_description"
+                    android:focusable="true"
+                    android:src="@drawable/ic_round_close_24" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/cross"
-                    android:fontFamily="@font/circularstd_book"
-                    android:text=""
-                    android:textColor="#ffffff"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/barlow_black"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="Title" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textViewDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/header"
-                android:fontFamily="@font/circularstd_book"
-                android:paddingBottom="48dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:fontFamily="@font/barlow_regular"
+                android:paddingStart="8dp"
                 android:paddingTop="16dp"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textSize="17sp" />
-
+                android:paddingEnd="8dp"
+                android:paddingBottom="48dp"
+                android:textSize="17sp"
+                tools:text="@tools:sample/lorem/random" />
 
         </RelativeLayout>
-    </ScrollView>
 
+    </androidx.core.widget.NestedScrollView>
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

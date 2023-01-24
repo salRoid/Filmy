@@ -8,12 +8,12 @@ Open sourced awesome material designed movie app.
 <img src="http://www.salroid.me/android/filmy_launcher.png" height="128" width="128" >
 
 # Screens
-<img src="/img/screenshot1.png" vspace="5" align= "left" height="500" width="260">
-<img src="/img/screenshot2.png" vspace="5" align= "left"  height="500" width="260" >
-<img src="/img/screenshot3.png" vspace="5" height="500" width="260" >
-<img src="/img/screenshot4.png" vspace="5" align= "left" height="500" width="260" >
-<img src="/img/screenshot5.png" align= "left" vspace="5" height="500" width="260" >
-<img src="/img/screenshot6.png" vspace="5" height="500" width="260" >
+<img src="https://user-images.githubusercontent.com/8144959/214234417-71371a60-fa13-4862-8a0b-29c068c32368.jpg" vspace="5" height="500" width="260" >
+<img src="https://user-images.githubusercontent.com/8144959/214234433-33b919be-beab-46d2-b2c0-bdcb3435bb05.jpg" vspace="5" align= "left" height="500" width="260">
+<img src="https://user-images.githubusercontent.com/8144959/214234437-c8e42187-4113-4fbc-9652-9fd6dac84640.jpg" vspace="5" align= "left"  height="500" width="260" >
+<img src="https://user-images.githubusercontent.com/8144959/214234568-be25c3ad-16a5-41eb-8008-f0154213a7ad.jpg" vspace="5" align= "left" height="500" width="260" >
+<img src="https://user-images.githubusercontent.com/8144959/214234575-7e24e550-ca4c-40e0-8d27-678356be138b.jpg" align= "left" vspace="5" height="500" width="260" >
+<img src="https://user-images.githubusercontent.com/8144959/214234577-5a8c431d-9ebd-4372-ba24-816115aa817a.jpg" vspace="5" height="500" width="260" >
 
 # APIs
 Filmy is powered by the tmdb.

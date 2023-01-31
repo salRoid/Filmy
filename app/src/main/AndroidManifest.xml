@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -11,23 +12,17 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:resizeableActivity="true"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.MD3">
-
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
-        <activity
-            android:name=".ui.intro.FilmyIntroActivity"
-            android:label=" "
-            android:theme="@style/AppTheme.MD3.Dark" />
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="n">
 
         <activity
             android:name=".ui.home.MainActivity"
-            android:configChanges="uiMode"
             android:exported="true"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/Theme.App.Starting">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,39 +45,31 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.details.MovieDetailsActivity"
-            android:label=" "
-            android:theme="@style/AppTheme.MD3" />
-
-        <activity
-            android:name=".ui.cast_crew.CastCrewDetailsActivity"
-            android:label="@string/details"
-            android:theme="@style/AppTheme.MD3" />
-
-        <activity
-            android:name=".ui.cast_crew.AllCastCrewActivity"
-            android:label=" "
-            android:theme="@style/AppTheme.MD3" />
-
-        <activity
-            android:name=".ui.full.AllMoviesActivity"
-            android:label="@string/title_activity_full_movie"
-            android:theme="@style/AppTheme.MD3" />
-
-        <activity
-            android:name=".ui.full.FullBannerActivity"
-            android:label=" "
-            android:theme="@style/AppTheme.MD3.Dark" />
-
+        <activity android:name=".ui.details.MovieDetailsActivity" />
+        <activity android:name=".ui.details.TvDetailsActivity" />
+        <activity android:name=".ui.full.FullBannerActivity" />
+        <activity android:name=".ui.full.AllMoviesActivity" />
         <activity
             android:name=".ui.full.YoutubePlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
             android:exported="false"
             android:hardwareAccelerated="true" />
-
+        <activity android:name=".ui.cast_crew.CastCrewDetailsActivity" />
+        <activity android:name=".ui.cast_crew.AllCastCrewActivity" />
         <activity android:name=".ui.settings.LicenseActivity" />
         <activity android:name=".ui.settings.AboutActivity" />
+        <activity android:name=".ui.intro.FilmyIntroActivity" />
+
+        <receiver
+            android:name=".ui.widget.FilmyWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/filmy_widget_info" />
+        </receiver>
 
     </application>
 </manifest>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:forceDarkAllowed="false"
+    app:shimmer_repeat_mode="restart"
+    app:shimmer_shape="linear"
+    tools:ignore="UnusedAttribute">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/filmy8dp"
+            android:layout_marginTop="@dimen/filmy16dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/filmy24dp"
+                android:layout_height="@dimen/filmy24dp"
+                android:background="@drawable/icon_skeleton" />
+
+            <View
+                android:layout_width="@dimen/filmy80dp"
+                android:layout_height="@dimen/filmy24dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:background="@drawable/title_skeleton" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/filmy16dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:layout_marginTop="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:layout_marginTop="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:layout_marginTop="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/filmy8dp"
+            android:layout_marginTop="@dimen/filmy16dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/filmy24dp"
+                android:layout_height="@dimen/filmy24dp"
+                android:background="@drawable/icon_skeleton" />
+
+            <View
+                android:layout_width="@dimen/filmy80dp"
+                android:layout_height="@dimen/filmy24dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:background="@drawable/title_skeleton" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/filmy16dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:layout_marginTop="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:layout_marginTop="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+
+            <View
+                android:layout_width="120dp"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:layout_marginTop="@dimen/filmy8dp"
+                android:background="@drawable/movie_skeleton" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

@@ -25,7 +25,7 @@ class CastCrewAdapter(
     }
 
     override fun getItemCount(): Int =
-        if (fixedSize) castCrewList.size.coerceAtMost(5) else castCrewList.size
+        if (fixedSize) castCrewList.size.coerceAtMost(3) else castCrewList.size
 
     inner class CastViewHolder(private val binding: ItemMemberBinding) :
         RecyclerView.ViewHolder(binding.root) {

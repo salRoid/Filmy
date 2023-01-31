@@ -2,124 +2,64 @@ package tech.salroid.filmy.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.data.local.db.entity.Movie
+import tech.salroid.filmy.data.local.model.MoviesUiState
+import tech.salroid.filmy.data.local.model.TvShow
+import tech.salroid.filmy.data.local.model.TvShowUiState
 import javax.inject.Inject
 
 @HiltViewModel
+@OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
-    private val _uiStateTrending = MutableStateFlow(listOf<Movie>())
-    private val _uiStateInTheaters = MutableStateFlow(listOf<Movie>())
-    private val _uiStateUpcoming = MutableStateFlow(listOf<Movie>())
+    private val _uiStateMovies: MutableStateFlow<MoviesUiState> =
+        MutableStateFlow(MoviesUiState.Loading)
+    private val _uiStateTvShows: MutableStateFlow<TvShowUiState> =
+        MutableStateFlow(TvShowUiState.Loading)
 
-    val uiStateTrending: StateFlow<List<Movie>> = _uiStateTrending.asStateFlow()
-    val uiStateInTheaters: StateFlow<List<Movie>> = _uiStateInTheaters.asStateFlow()
-    val uiStateUpComing: StateFlow<List<Movie>> = _uiStateUpcoming.asStateFlow()
+    private val _uiStateNavigationVisibility = MutableStateFlow(true)
+    val uiStateNavigationVisibility = _uiStateNavigationVisibility.asStateFlow()
 
-    init {
-        getTrending()
-        getInTheaters()
-        getUpComing()
-    }
+    private val _uiStateMovieItem = MutableStateFlow(Movie.MovieType.TRENDING)
+    private val _uiStateTvItem = MutableStateFlow(TvShow.ShowType.TRENDING)
 
-    private fun getTrending() {
-        // Get Trending movies from local
-        viewModelScope.launch(Dispatchers.IO) {
-            val movies = moviesRepository.getTrendingFromLocal()
-            if (movies.isNotEmpty()) {
-                _uiStateTrending.emit(movies)
-            }
-        }
+    val uiStateMovies: StateFlow<MoviesUiState> = _uiStateMovies
+    val uiStateTvShows: StateFlow<TvShowUiState> = _uiStateTvShows
 
-        // Get trending movies from network
+    val movies = _uiStateMovieItem.flatMapLatest {
+        moviesRepository.getMovies(
+            type = it.toMovieTypeString().removePrefix("movie_"),
+            isTrending = it == Movie.MovieType.TRENDING
+        )
+    }.cachedIn(viewModelScope)
+
+    val tvShows = _uiStateTvItem.flatMapLatest {
+        moviesRepository.getTvShows(
+            type = it.toShowTypeString().removePrefix("tv_show_"),
+            isTrending = it == TvShow.ShowType.TRENDING
+        )
+    }.cachedIn(viewModelScope)
+
+    fun onMovieItemSelected(item: Movie.MovieType) {
         viewModelScope.launch {
-            moviesRepository.getTrendingFromNetwork()
-                .flowOn(Dispatchers.IO)
-                .catch {
-                    // Error
-                    it.printStackTrace()
-                }
-                .collect {
-                    val movies = it.results
-                    if (movies.isNotEmpty()) {
-                        _uiStateTrending.emit(movies)
-                        // Update movies in DB
-                        saveMoviesInDb(movies)
-                    }
-                }
+            _uiStateMovieItem.emit(item)
         }
     }
 
-    private fun getInTheaters() {
-        // Get InTheaters movies from local
-        viewModelScope.launch(Dispatchers.IO) {
-            val movies = moviesRepository.getInTheatersFromLocal()
-            if (movies.isNotEmpty()) {
-                _uiStateInTheaters.emit(movies)
-            }
-        }
-
-        // Get InTheaters movies from network
+    fun onTvItemSelected(item: TvShow.ShowType) {
         viewModelScope.launch {
-            moviesRepository.getInTheatersFromNetwork()
-                .flowOn(Dispatchers.IO)
-                .catch {
-                    // Error
-                    it.printStackTrace()
-                }
-                .collect {
-                    val movies = it.results
-                    if (movies.isNotEmpty()) {
-                        _uiStateInTheaters.emit(movies)
-                        // Update movies in DB
-                        saveMoviesInDb(movies, 1)
-                    }
-                }
+            _uiStateTvItem.emit(item)
         }
     }
 
-    private fun getUpComing() {
-        // Get Upcoming movies from local
-        viewModelScope.launch(Dispatchers.IO) {
-            val movies = moviesRepository.getUpcomingFromLocal()
-            if (movies.isNotEmpty()) {
-                _uiStateUpcoming.emit(movies)
-            }
-        }
+    fun getCurrentSelectedMovieItem() = _uiStateMovieItem.value
 
-        // Get UpComing movies from network
-        viewModelScope.launch {
-            moviesRepository.getUpcomingFromNetwork()
-                .flowOn(Dispatchers.IO)
-                .catch {
-                    // Error
-                    it.printStackTrace()
-                }
-                .collect {
-                    val movies = it.results
-                    if (movies.isNotEmpty()) {
-                        _uiStateUpcoming.emit(movies)
-                        // Update movies in DB
-                        saveMoviesInDb(movies, 2)
-                    }
-                }
-        }
-    }
-
-    private fun saveMoviesInDb(movies: List<Movie>, type: Int = 0) {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (type != 0) {
-                movies.forEach { movie ->
-                    movie.type = type
-                }
-            }
-            moviesRepository.addAllMoviesToDb(movies)
-        }
-    }
+    fun getCurrentSelectedTvItem() = _uiStateTvItem.value
 }

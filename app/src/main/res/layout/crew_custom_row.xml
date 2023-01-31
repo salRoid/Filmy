@@ -4,48 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingHorizontal="@dimen/filmy16dp">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/crew_poster"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:id="@+id/memberProfileImage"
+        android:layout_width="@dimen/filmy42dp"
+        android:layout_height="@dimen/filmy42dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/filmy16dp"
         android:scaleType="centerCrop"
         android:transitionName="profile"
         app:shapeAppearanceOverlay="@style/circleImageView" />
 
-    <TextView
-        android:id="@+id/crew_name"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/memberName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_toEndOf="@id/crew_poster"
+        android:layout_marginStart="@dimen/filmy16dp"
+        android:layout_marginTop="@dimen/filmy16dp"
+        android:layout_toEndOf="@id/memberProfileImage"
         android:fontFamily="@font/circularstd_book"
         android:textAppearance="?android:textAppearanceMedium"
         android:transitionName="name" />
 
-    <TextView
-        android:id="@+id/crew_description"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/memberDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/crew_name"
-        android:layout_marginStart="16dp"
-        android:layout_toEndOf="@id/crew_poster"
+        android:layout_below="@+id/memberName"
+        android:layout_marginStart="@dimen/filmy16dp"
+        android:layout_toEndOf="@id/memberProfileImage"
+        android:ellipsize="end"
         android:fontFamily="@font/circularstd_book"
+        android:maxLines="1"
         android:textAppearance="?android:textAppearanceSmall" />
 
-    <View
-        android:id="@+id/crew_divider"
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/memberDivider"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@id/crew_poster"
-        android:layout_marginStart="58dp"
-        android:layout_marginTop="16dp"
-        android:background="?attr/divider" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/memberProfileImage"
+        android:layout_marginTop="@dimen/filmy16dp"
+        app:dividerInsetStart="58dp"
+        app:dividerThickness="0.5dp" />
 
 </RelativeLayout>

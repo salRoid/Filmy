@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.R
@@ -20,6 +19,7 @@ import tech.salroid.filmy.databinding.CastCrewFragmentBinding
 import tech.salroid.filmy.ui.adapters.CastCrewAdapter
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_ID
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_TITLE
+import tech.salroid.filmy.ui.similar_recommendation.SimilarRecommendationFragment.Companion.IS_TV
 
 @AndroidEntryPoint
 class CastCrewFragment : Fragment() {
@@ -33,6 +33,7 @@ class CastCrewFragment : Fragment() {
     private var movieTitle: String? = null
     private var _binding: CastCrewFragmentBinding? = null
     private val binding get() = _binding!!
+    private var isTv: Boolean? = false
 
     enum class CastCrewType {
         CAST,
@@ -49,13 +50,15 @@ class CastCrewFragment : Fragment() {
         fun newInstance(
             movieId: String?,
             movieTitle: String?,
-            castCrewType: CastCrewType
+            castCrewType: CastCrewType,
+            isTv: Boolean = false
         ): CastCrewFragment {
             val fragment = CastCrewFragment()
             val args = Bundle()
             args.putSerializable(CAST_CREW_TYPE, castCrewType)
             args.putString(MOVIE_ID, movieId)
             args.putString(MOVIE_TITLE, movieTitle)
+            args.putBoolean(IS_TV, isTv)
             fragment.arguments = args
             return fragment
         }
@@ -70,21 +73,19 @@ class CastCrewFragment : Fragment() {
         val view = binding.root
 
         viewModel = ViewModelProvider(requireActivity())[CastCrewViewModel::class.java]
-        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        binding.recyclerView.isNestedScrollingEnabled = false
-        binding.recyclerView.isVisible = true
 
         binding.more.setOnClickListener {
             if (castCrewList.isNotEmpty() && movieTitle != null) {
                 Intent(activity, AllCastCrewActivity::class.java).run {
                     putExtra(CAST_CREW_LIST, castCrewList)
                     putExtra(TOOLBAR_TITLE, movieTitle)
+                    putExtra(IS_TV, isTv)
                     startActivity(this)
                 }
             }
         }
 
-        observeUiState()
+        collectUiState()
         return view
     }
 
@@ -93,6 +94,7 @@ class CastCrewFragment : Fragment() {
 
         movieId = arguments?.getString(MOVIE_ID)
         movieTitle = arguments?.getString(MOVIE_TITLE)
+        isTv = arguments?.getBoolean(IS_TV, false)
         castCrewType = arguments?.getSerializable(CAST_CREW_TYPE) as CastCrewType
 
         val labelString = when (castCrewType) {
@@ -106,7 +108,7 @@ class CastCrewFragment : Fragment() {
         }
     }
 
-    private fun observeUiState() {
+    private fun collectUiState() {
         lifecycleScope.launch {
             viewModel.uiStateCastAndCrew.collect { castAndCrewResponse ->
                 castAndCrewResponse?.let {
@@ -143,23 +145,24 @@ class CastCrewFragment : Fragment() {
                 }
                 val intent = Intent(activity, CastCrewDetailsActivity::class.java)
                 intent.putExtra(MEMBER_ID, id.toString())
+                intent.putExtra(IS_TV, isTv)
                 startActivity(intent)
             }
 
         when {
             castCrewList.size > 4 -> {
-                binding.more.visibility = View.VISIBLE
+                binding.more.isVisible = true
             }
             castCrewList.isEmpty() -> {
-                binding.more.visibility = View.INVISIBLE
-                binding.memberTypeLabel.visibility = View.INVISIBLE
+                binding.more.isVisible = false
+                binding.memberTypeLabel.isVisible = false
+                binding.detailFragmentViewsLayout.isVisible = false
             }
             else -> {
-                binding.more.visibility = View.INVISIBLE
+                binding.more.isVisible = false
             }
         }
 
-        binding.breathingProgressFragment.visibility = View.GONE
         binding.recyclerView.visibility = View.VISIBLE
         binding.detailFragmentViewsLayout.minimumHeight = 0
     }

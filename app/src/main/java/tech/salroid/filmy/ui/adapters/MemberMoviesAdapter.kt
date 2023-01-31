@@ -37,13 +37,15 @@ class MemberMoviesAdapter(
         }
 
         fun bindData(movie: CastMovie) {
-            binding.movieName.text = movie.title
+            binding.movieName.text = movie.title ?: movie.name
             binding.movieRolePlayed.text = movie.character
 
             binding.root.context.let {
                 Glide.with(it)
                     .load(it.getString(R.string.movie_poster_url, movie.posterPath))
                     .fitCenter()
+                    .placeholder(R.drawable.movie_skeleton)
+                    .error(R.drawable.movie_skeleton)
                     .into(binding.moviePoster)
             }
         }

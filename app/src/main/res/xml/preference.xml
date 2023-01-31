@@ -3,34 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
-        android:defaultValue="system"
-        android:entries="@array/theme_entries"
-        android:entryValues="@array/theme_values"
+        android:defaultValue="@string/mode_night_follow_system"
+        android:enabled="true"
+        android:entries="@array/themeEntries"
+        android:entryValues="@array/themeValues"
         android:icon="@drawable/dark_mode"
-        android:key="theme"
-        android:title="@string/theme"
-        app:useSimpleSummaryProvider="true" />
-
-    <SwitchPreferenceCompat
-        android:defaultValue="true"
-        android:icon="@drawable/ic_photo"
-        android:key="imagequality"
-        android:summaryOff="@string/low"
-        android:summaryOn="@string/high"
-        android:title="@string/image" />
+        android:key="@string/theme_key"
+        android:summary="@string/summary_system_default"
+        android:title="@string/theme" />
 
     <Preference
         android:enabled="true"
         android:icon="@drawable/ic_article"
-        android:key="license"
+        android:key="@string/license_key"
         android:selectable="true"
-        android:summary=""
         android:title="@string/license" />
 
     <Preference
         android:enabled="true"
         android:icon="@drawable/ic_document"
-        android:key="Version"
+        android:key="@string/version"
         android:selectable="true"
         android:summary="3.1.0"
         android:title="@string/version" />
@@ -38,14 +30,14 @@
     <Preference
         android:enabled="true"
         android:icon="@drawable/twotone_share_24"
-        android:key="Share"
+        android:key="@string/share_key"
         android:selectable="true"
         android:title="@string/shareappdetails" />
 
     <Preference
         android:enabled="true"
         android:icon="@drawable/ic_face"
-        android:key="About"
+        android:key="@string/about_key"
         android:selectable="true"
         android:title="@string/about" />
 

@@ -5,6 +5,7 @@
             android:innerRadiusRatio="3"
             android:shape="ring"
             android:thicknessRatio="15"
+            android:tint="?colorControlActivated"
             android:useLevel="false">
             <size
                 android:width="48dip"

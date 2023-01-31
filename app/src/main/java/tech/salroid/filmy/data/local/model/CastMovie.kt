@@ -29,6 +29,9 @@ data class CastMovie(
     @SerializedName("title")
     var title: String? = null,
 
+    @SerializedName("name")
+    var name: String? = null,
+
     @SerializedName("video")
     var video: Boolean? = null,
 

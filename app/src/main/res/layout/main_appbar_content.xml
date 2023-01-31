@@ -1,0 +1,67 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="58dp"
+    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/logo"
+        style="@style/TextAppearance.Filmy.Logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/filmy22dp"
+        android:text="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@id/searchButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/searchButton"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/filmy8dp"
+        android:text="@string/search_hint_home"
+        android:textColor="?colorOnSurface"
+        app:icon="@drawable/ic_search_24"
+        app:iconPadding="8dp"
+        app:iconTint="?colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="@id/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/logo" />
+
+    <tech.salroid.filmy.custom.materialsearchview.MaterialSearchView
+        android:id="@+id/search_view"
+        style="@style/MaterialSearchViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerThickness="0.5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchButton" />
+
+    <tech.salroid.filmy.ui.component.FilmyTopNavigationBar
+        android:id="@+id/topNavigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="52dp"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/filmy4dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/filmy2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

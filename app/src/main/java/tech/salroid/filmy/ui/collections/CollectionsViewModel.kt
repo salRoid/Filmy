@@ -17,11 +17,9 @@ class CollectionsViewModel @Inject constructor(
 
     private val _uiStateFavorite = MutableStateFlow<List<MovieDetails>?>(null)
     private val _uiStateWatchlist = MutableStateFlow<List<MovieDetails>?>(null)
-    private val _uiStateRemoved = MutableStateFlow<Int?>(null)
 
     val uiStateFavorites: StateFlow<List<MovieDetails>?> = _uiStateFavorite.asStateFlow()
     val uiStateWatchlist: StateFlow<List<MovieDetails>?> = _uiStateWatchlist.asStateFlow()
-    val uiStateRemoved: StateFlow<Int?> = _uiStateRemoved.asStateFlow()
 
     fun getFavorites() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -41,10 +39,26 @@ class CollectionsViewModel @Inject constructor(
         }
     }
 
-    fun updateMovieDetailsInDb(movie: MovieDetails, position: Int) {
+    fun updateMovieDetailsInDb(
+        movie: MovieDetails,
+        position: Int,
+        currentCollectionType: CollectionTypeFragment.CollectionType
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             moviesRepository.updateMovieDetails(movie)
-            _uiStateRemoved.emit(position)
+
+            when (currentCollectionType) {
+                CollectionTypeFragment.CollectionType.FAVORITE -> {
+                    val currentList = uiStateFavorites.value?.toMutableList() ?: mutableListOf()
+                    currentList.removeAt(position)
+                    _uiStateFavorite.emit(currentList)
+                }
+                CollectionTypeFragment.CollectionType.WATCHLIST -> {
+                    val currentList = uiStateWatchlist.value?.toMutableList() ?: mutableListOf()
+                    currentList.removeAt(position)
+                    _uiStateWatchlist.emit(currentList)
+                }
+            }
         }
     }
 }

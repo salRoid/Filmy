@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">?android:attr/colorBackground</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+       <!-- <item name="android:windowSplashScreenAnimationDuration">1000</item>-->
+        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_filmy</item>
+        <item name="android:statusBarColor">?colorSurfaceVariant</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.CardView.Filled"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/filmy16dp"
+    android:layout_marginTop="@dimen/filmy32dp"
+    app:cardBackgroundColor="?colorSurface"
+    app:strokeColor="?colorSurfaceVariant"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/filmy16dp"
+        android:paddingVertical="@dimen/filmy20dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avatarImage"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:padding="@dimen/filmy2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/circleImageView"
+            app:srcCompat="@drawable/default_avatar" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reviewUser"
+            style="@style/TextAppearance.Filmy.LabelMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/filmy16dp"
+            android:alpha="0.9"
+            android:gravity="start"
+            android:textColor="?colorOnSecondaryContainer"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/reviewDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/avatarImage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="webianks" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reviewDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/filmy16dp"
+            android:layout_marginTop="@dimen/filmy2dp"
+            android:alpha="0.4"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            android:textColor="?colorOnSecondaryContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/avatarImage"
+            app:layout_constraintTop_toBottomOf="@id/reviewUser"
+            tools:text="12 Jan 2023" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/reviewContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/filmy16dp"
+            android:layout_marginTop="@dimen/filmy8dp"
+            android:alpha="0.8"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:textColor="?colorOnSurfaceVariant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/avatarImage"
+            app:layout_constraintTop_toBottomOf="@id/reviewDate"
+            tools:text="Infinity Pool is a horny, horrifying look at ego and self-indulgence based on self-doubt and failure. The film follows novelist James Foster (Alexander Skarsgard) as he is mesmerized by Gabi (Mia Goth) resulting in a stained week of violence and debauchery. \r\n\r\nThe plot is a story of two halves, the first being incredibly strong as the audience is learning the mystery behind the experiments, guests and their past. Viewers can resonate a ton with Foster's wife as she is constantly neglected and misused by her husband. That is ever apparent in the shot selection as she is constantly out of frame or unfocused. This part really worked for me, but as the story progressed the scope grew too large for its own good." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

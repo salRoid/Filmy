@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
-import android.view.animation.AccelerateInterpolator
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.FrameLayout
@@ -19,7 +19,7 @@ class BreathingProgress(
 ) : FrameLayout(context, attrs) {
 
     init {
-        if(!isInEditMode) {
+        if (!isInEditMode) {
             createProgress(context)
             invalidate()
             requestLayout()
@@ -33,8 +33,6 @@ class BreathingProgress(
     }
 
     private fun createProgress(context: Context) {
-
-
         val widthPxForFixedRing = getPx(50)
         val heightPxForFixedRing = getPx(50)
 
@@ -86,7 +84,7 @@ class BreathingProgress(
         mAnimation.duration = 1000
         mAnimation.repeatCount = -1
         mAnimation.repeatMode = Animation.REVERSE
-        mAnimation.interpolator = AccelerateInterpolator()
+        mAnimation.interpolator = AccelerateDecelerateInterpolator()
         mAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {}

@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 
 import com.google.gson.reflect.TypeToken
+import tech.salroid.filmy.data.local.db.entity.Avatar
 import tech.salroid.filmy.data.local.model.*
 import tech.salroid.filmy.data.local.model.Collection
 import java.lang.reflect.Type
@@ -35,14 +36,14 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromStringOfArrayListOfGenres(value: String?): ArrayList<Genres> {
+    fun fromStringOfArrayListOfGenres(value: String?): ArrayList<Genre> {
         if (value.isNullOrEmpty()) return arrayListOf()
-        val listType: Type = object : TypeToken<ArrayList<Genres>>() {}.type
+        val listType: Type = object : TypeToken<ArrayList<Genre>>() {}.type
         return Gson().fromJson(value, listType) ?: arrayListOf()
     }
 
     @TypeConverter
-    fun fromArrayListOfGenres(genres: ArrayList<Genres>): String {
+    fun fromArrayListOfGenres(genres: ArrayList<Genre>): String {
         return Gson().toJson(genres)
     }
 
@@ -90,7 +91,17 @@ class Converters {
 
     @TypeConverter
     fun fromTrailers(genres: Trailers?): String? {
-        val gson = Gson()
-        return gson.toJson(genres)
+        return Gson().toJson(genres)
+    }
+
+    @TypeConverter
+    fun fromStringOfAvatar(value: String?): Avatar? {
+        val listType: Type = object : TypeToken<Avatar?>() {}.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromAvatar(avatar: Avatar?): String? {
+        return Gson().toJson(avatar)
     }
 }

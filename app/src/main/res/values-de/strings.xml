@@ -44,7 +44,7 @@
     <string name="license">Lizenz</string>
     <string name="version">Version</string>
     <string name="about">Über</string>
-    <string name="madefor">Gemacht für Kinoliebhaber</string>
+    <string name="about_screen_tittle">Gemacht für Kinoliebhaber</string>
     <string name="error_details">Filme konnten nicht abgerufen werden. Überprüfe die Internet Verbindung und versuche es noch einmal.</string>
     <string name="trending">Beliebt</string>
     <string name="theatres">IN KINOS</string>

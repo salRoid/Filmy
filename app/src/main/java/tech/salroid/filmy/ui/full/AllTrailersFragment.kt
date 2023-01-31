@@ -1,26 +1,24 @@
 package tech.salroid.filmy.ui.full
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
-import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
-import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.TrailerData
-import tech.salroid.filmy.databinding.AllTrailerLayoutBinding
 import tech.salroid.filmy.ui.adapters.MovieTrailersAdapter
+import tech.salroid.filmy.databinding.AllTrailerLayoutBinding
+import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.VIDEO_ID
+import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.VIDEO_TITLE
+import tech.salroid.filmy.utility.FilmyUtility
 import tech.salroid.filmy.utility.themeSystemBars
 import kotlin.math.hypot
-import androidx.core.graphics.toColorInt
 
 class AllTrailersFragment : Fragment() {
 
-    private var trailerTitle: String? = null
+    private var movieTitle: String? = null
     private var trailers: Array<TrailerData>? = null
-    private var darkMode = false
     private var _binding: AllTrailerLayoutBinding? = null
     private val binding get() = _binding!!
 
@@ -43,9 +41,7 @@ class AllTrailersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        darkMode = isDarkMode()
         _binding = AllTrailerLayoutBinding.inflate(inflater, container, false)
-        if (!darkMode) allThemeLogic() else nightModeLogic()
 
         binding.cross.setOnClickListener {
             binding.cross.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -61,64 +57,35 @@ class AllTrailersFragment : Fragment() {
                 val cx = arguments?.getInt("cx") ?: 0
                 val cy = arguments?.getInt("cy") ?: 0
                 val radius = hypot(right.toDouble(), bottom.toDouble()).toInt()
-                if (v.isAttachedToWindow) {
-                    ViewAnimationUtils.createCircularReveal(v, cx, cy, 0f, radius.toFloat()).run {
-                        interpolator = DecelerateInterpolator(2f)
-                        duration = 1000
-                        start()
-                    }
+                ViewAnimationUtils.createCircularReveal(v, cx, cy, 0f, radius.toFloat()).run {
+                    interpolator = DecelerateInterpolator(2f)
+                    duration = 1000
+                    start()
                 }
             }
         })
 
-        requireActivity().themeSystemBars(!darkMode, lightStatusBar = true)
+        requireActivity().themeSystemBars(
+            lightStatusBar = true,
+            isFullScreen = true,
+            transparentStatus = true
+        )
+
+        setupNavSpace()
         return binding.root
-    }
-
-    private fun isDarkMode(): Boolean {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val themeValue = preferences.getString("theme", "system")
-
-        return when (themeValue) {
-            "light" -> false
-            "dark" -> true
-            else -> { // system
-                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-            }
-        }
-    }
-
-    private fun nightModeLogic() {
-        binding.mainContent.setBackgroundColor(
-            ContextCompat.getColor(
-                requireActivity(),
-                R.color.surfaceColorDark
-            )
-        )
-        binding.textViewTitle.setTextColor("#ffffff".toColorInt())
-    }
-
-    private fun allThemeLogic() {
-        binding.mainContent.setBackgroundColor(
-            ContextCompat.getColor(
-                requireActivity(),
-                R.color.surfaceColorLight
-            )
-        )
-        binding.textViewTitle.setTextColor("#000000".toColorInt())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        trailerTitle = arguments?.getString(MOVIE_TITLE, " ")
+        movieTitle = arguments?.getString(MOVIE_TITLE, " ")
         val parcelableArray = arguments?.getParcelableArray(TRAILERS)
-        trailers = parcelableArray?.mapNotNull { it as? TrailerData }?.toTypedArray()
+        trailers = parcelableArray?.filterIsInstance<TrailerData>()?.toTypedArray()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.textViewTitle.text = trailerTitle
+        binding.textViewTitle.text = movieTitle
 
         binding.allTrailerRecyclerView.adapter = trailers?.let {
             MovieTrailersAdapter(it) { trailerData ->
@@ -129,18 +96,29 @@ class AllTrailersFragment : Fragment() {
         }
     }
 
+    private fun setupNavSpace() {
+        binding.root.doOnLayout {
+            (binding.navSpace.layoutParams as ViewGroup.MarginLayoutParams).height =
+                FilmyUtility.getNavigationBarHeight(requireActivity())
+        }
+    }
+
     private fun playTrailerOnYoutube(trailerId: String, trailerTitle: String?) {
         Intent(activity, YoutubePlayerActivity::class.java).run {
-            putExtra(YoutubePlayerActivity.VIDEO_ID, trailerId)
-            putExtra(YoutubePlayerActivity.VIDEO_TITLE, trailerTitle)
+            putExtra(VIDEO_ID, trailerId)
+            putExtra(VIDEO_TITLE, trailerTitle)
             startActivity(this)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.allTrailerRecyclerView.adapter = null
-        requireActivity().themeSystemBars(!darkMode, lightStatusBar = false)
         _binding = null
+
+        requireActivity().themeSystemBars(
+            lightStatusBar = false,
+            isFullScreen = true,
+            transparentStatus = true
+        )
     }
 }

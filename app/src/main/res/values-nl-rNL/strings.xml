@@ -43,7 +43,7 @@
     <string name="license">licentie</string>
     <string name="version">editie</string>
     <string name="about">over</string>
-    <string name="madefor">Speciaal ontworpen voor filmliefhebbers .</string>
+    <string name="about_screen_tittle">Speciaal ontworpen voor filmliefhebbers .</string>
     <string name="error_details">Niet in staat om films mee te nemen. \n internetverbinding en probeer het opnieuw.</string>
     <string name="trending">populair</string>
     <string name="theatres">in theaters</string>

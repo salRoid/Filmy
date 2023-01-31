@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.CardView.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/filmy8dp"
+    android:layout_marginVertical="@dimen/filmy6dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/filmy8dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/poster"
+            android:layout_width="105dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageView"
+            tools:background="@color/skeletonColor" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/movieTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/filmy16dp"
+            android:layout_marginTop="@dimen/filmy16dp"
+            android:layout_marginEnd="@dimen/filmy16dp"
+            android:gravity="start"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/poster"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="SpiderMan: India?" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/movieYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/filmy2dp"
+            android:gravity="start"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            app:layout_constraintEnd_toEndOf="@id/movieTitle"
+            app:layout_constraintStart_toStartOf="@id/movieTitle"
+            app:layout_constraintTop_toBottomOf="@id/movieTitle"
+            tools:text="22 Jan 2023" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/moviePlot"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/filmy10dp"
+            android:alpha="0.7"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="4"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/poster"
+            app:layout_constraintEnd_toEndOf="@id/movieTitle"
+            app:layout_constraintStart_toStartOf="@id/movieTitle"
+            app:layout_constraintTop_toBottomOf="@id/movieYear"
+            tools:text="A small, wealthy family in New York City gets progressively torn apart by secrets, lies, and the theft that orchestrates all of it.A small, wealthy family in New York City gets progressively torn apart by secrets, lies, and the theft that orchestrates all of it. A small, wealthy family in New York City gets progressively torn apart by secrets, lies, and the theft that orchestrates all of it. A small, wealthy family in New York City gets progressively torn apart by secrets, lies, and the theft that orchestrates all of it. " />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

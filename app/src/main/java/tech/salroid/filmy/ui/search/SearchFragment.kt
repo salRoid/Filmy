@@ -22,6 +22,7 @@ import tech.salroid.filmy.ui.home.MoviesFragment.Companion.FROM_ACTIVITY
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_ID
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_TITLE
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.NETWORK_APPLICABLE
+import tech.salroid.filmy.utility.themeSystemBars
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -46,7 +47,6 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        val view = binding.root
         viewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java]
 
         val spanCount = when (activity?.resources?.configuration?.orientation) {
@@ -55,7 +55,12 @@ class SearchFragment : Fragment() {
         }
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), spanCount)
         observerUiState()
-        return view
+
+        requireActivity().themeSystemBars(
+            lightStatusBar = true,
+            surfaceStatus = true
+        )
+        return binding.root
     }
 
     private fun observerUiState() {
@@ -79,10 +84,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun showSearchResults(results: List<SearchResult>) {
-        val adapter = SearchResultAdapter(results) { searchData, position ->
+        val adapter = SearchResultAdapter { searchData, position ->
             itemClicked(searchData, position)
         }
         binding.recyclerView.adapter = adapter
+        adapter.submitList(results)
 
         hideProgress()
         hideSoftKeyboard()
@@ -109,5 +115,10 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
+        requireActivity().themeSystemBars(
+            lightStatusBar = true,
+            navigationColorAsStatus = false
+        )
     }
 }

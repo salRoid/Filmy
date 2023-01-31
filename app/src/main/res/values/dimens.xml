@@ -1,10 +1,50 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="toolbar_margin">00dp</dimen>
-    <dimen name="widget_margin">8dp</dimen>
-    <dimen name="widget_margin_half">4dp</dimen>
+    <dimen name="filmy0dp">0dp</dimen>
+    <dimen name="filmy2dp">2dp</dimen>
+    <dimen name="filmy4dp">4dp</dimen>
+    <dimen name="filmy6dp">6dp</dimen>
+    <dimen name="filmy8dp">8dp</dimen>
+    <dimen name="filmy10dp">10dp</dimen>
+    <dimen name="filmy12dp">12dp</dimen>
+    <dimen name="filmy14dp">14dp</dimen>
+    <dimen name="filmy16dp">16dp</dimen>
+    <dimen name="filmy18dp">18dp</dimen>
+    <dimen name="filmy20dp">20dp</dimen>
+    <dimen name="filmy22dp">22dp</dimen>
+    <dimen name="filmy24dp">24dp</dimen>
+    <dimen name="filmy26dp">26dp</dimen>
+    <dimen name="filmy28dp">28dp</dimen>
+    <dimen name="filmy30dp">30dp</dimen>
+    <dimen name="filmy32dp">32dp</dimen>
+    <dimen name="filmy34dp">34dp</dimen>
+    <dimen name="filmy38dp">38dp</dimen>
+    <dimen name="filmy42dp">42dp</dimen>
+    <dimen name="filmy44dp">44dp</dimen>
+    <dimen name="filmy46dp">46dp</dimen>
+    <dimen name="filmy50dp">50dp</dimen>
+    <dimen name="filmy60dp">60dp</dimen>
+    <dimen name="filmy80dp">80dp</dimen>
+    <dimen name="filmy100dp">100dp</dimen>
+    <dimen name="filmy120dp">120dp</dimen>
+    <dimen name="filmy132dp">132dp</dimen>
+    <dimen name="filmy140dp">140dp</dimen>
+    <dimen name="filmy150dp">150dp</dimen>
+    <dimen name="filmy156dp">156dp</dimen>
+    <dimen name="filmy160dp">160dp</dimen>
+    <dimen name="filmy170dp">170dp</dimen>
+    <dimen name="filmy180dp">180dp</dimen>
+    <dimen name="filmy190dp">190dp</dimen>
+    <dimen name="filmy200dp">200dp</dimen>
+    <dimen name="filmy240dp">240dp</dimen>
+    <dimen name="filmy260dp">260dp</dimen>
 
+    <dimen name="fab_margin">@dimen/filmy16dp</dimen>
+    <dimen name="toolbar_margin">@dimen/filmy0dp</dimen>
+    <dimen name="widget_margin">@dimen/filmy8dp</dimen>
+    <dimen name="widget_margin_half">@dimen/filmy4dp</dimen>
+    <dimen name="rounded_corners">@dimen/filmy16dp</dimen>
+    <dimen name="rounded_corners_inner">@dimen/filmy8dp</dimen>
+
+    <dimen name="search_icon_padding">12dp</dimen>
+    <dimen name="search_view_text_padding">65dp</dimen>
 </resources>

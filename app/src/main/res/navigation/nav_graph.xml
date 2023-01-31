@@ -18,13 +18,28 @@
     </fragment>
 
     <fragment
+        android:id="@+id/tvContainer"
+        android:name="tech.salroid.filmy.ui.home.TvFragment"
+        android:label="@string/tv"
+        tools:layout="@layout/fragment_tv">
+
+        <action
+            android:id="@+id/action_fragment2_to_fragment1"
+            app:destination="@id/moviesContainer"
+            app:popUpTo="@id/moviesContainer"
+            app:popUpToInclusive="true"
+            app:restoreState="true" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/collections"
         android:name="tech.salroid.filmy.ui.collections.CollectionsFragment"
         android:label="@string/collections"
         tools:layout="@layout/fragment_collections">
 
         <action
-            android:id="@+id/action_fragment2_to_fragment1"
+            android:id="@+id/action_fragment3_to_fragment1"
             app:destination="@id/moviesContainer"
             app:popUpTo="@id/moviesContainer"
             app:popUpToInclusive="true"
@@ -39,12 +54,28 @@
         tools:layout="@layout/fragment_settings">
 
         <action
-            android:id="@+id/action_fragment3_to_fragment1"
+            android:id="@+id/action_fragment4_to_fragment1"
             app:destination="@id/moviesContainer"
             app:popUpTo="@id/moviesContainer"
             app:popUpToInclusive="true"
             app:restoreState="true" />
 
+        <action
+            android:id="@+id/navigate_to_about"
+            app:destination="@id/aboutScreen" />
+
     </fragment>
+
+    <activity
+        android:id="@+id/aboutScreen"
+        android:name="tech.salroid.filmy.ui.settings.AboutActivity"
+        android:label="@string/about"
+        tools:layout="@layout/activity_about" />
+
+    <activity
+        android:id="@+id/licenseScreen"
+        android:name="tech.salroid.filmy.ui.settings.LicenseActivity"
+        android:label="@string/license"
+        tools:layout="@layout/activity_license" />
 
 </navigation>

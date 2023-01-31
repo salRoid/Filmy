@@ -14,5 +14,7 @@ data class MoviesResponse(
     var totalPages: Int? = null,
 
     @SerializedName("total_results")
-    var totalResults: Int? = null
+    var totalResults: Int? = null,
+
+    var resetLocal: Boolean = false
 )

@@ -1,68 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/my_saved_recycler"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/emptyContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:visibility="gone">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/my_saved_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:itemCount="10"
+            tools:listitem="@layout/custom_row_collection" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/database_image"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:layout_gravity="center"
-            android:alpha="0.5"
-            android:contentDescription="@string/no_saved_movies"
-            android:src="@drawable/ic_round_favorite_24" />
-
-        <com.google.android.material.textview.MaterialTextView
+        <LinearLayout
+            android:id="@+id/emptyContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:contentDescription="@string/saved_movies"
-            android:text="@string/your_fav_movies_appear_here"
-            android:textColor="@color/primaryColorDark" />
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/database_image"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:alpha="0.5"
+                android:contentDescription="@string/your_fav_movies_appear_here"
+                android:src="@drawable/ic_round_favorite_24"
+                app:tint="?colorSurfaceVariant" />
 
-    <LinearLayout
-        android:id="@+id/emptyContainerWatch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:visibility="gone">
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmy28dp"
+                android:alpha="0.5"
+                android:contentDescription="@string/your_fav_movies_appear_here"
+                android:text="@string/your_fav_movies_appear_here" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/database_image_watch"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            android:layout_gravity="center"
-            android:alpha="0.5"
-            android:contentDescription="@string/no_saved_movies"
-            android:src="@drawable/ic_round_bookmark_added_24" />
+        </LinearLayout>
 
-        <com.google.android.material.textview.MaterialTextView
+        <LinearLayout
+            android:id="@+id/emptyContainerWatch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:contentDescription="@string/saved_movies"
-            android:text="@string/your_watchlist_movies_appear_here"
-            android:textColor="@color/primaryColorDark" />
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-    </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/database_image_watch"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:alpha="0.5"
+                android:contentDescription="@string/your_watchlist_movies_appear_here"
+                android:src="@drawable/ic_round_bookmark_added_24"
+                android:tint="?colorSurfaceVariant" />
 
-</RelativeLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmy28dp"
+                android:alpha="0.5"
+                android:contentDescription="@string/your_watchlist_movies_appear_here"
+                android:text="@string/your_watchlist_movies_appear_here" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

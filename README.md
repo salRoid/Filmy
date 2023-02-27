@@ -20,29 +20,13 @@ Filmy is powered by the tmdb.
 
 # Implementations
 Contains various advanced api implementations that make it high quality app.
-
-<ul>
-<li>Unit Testing</li>
-<li>SQLite Database</li>
-<li>Content Providers</li>
-<li>Cursor Loaders</li>
-<li>Job Schedulers</li>
-<li>View Binding - ButterKnife</li>
-<li>Volley - for networking</li>
-<li>Glide - for images</li>
-<li>Accessbility Features</li>
-<li>Localised Content</li>
-<li>Animations</li>
-<li>App Widgets</li>
-<li>Custom Views - BreathingProgress, CustomToast</li>
-</ul>
+- TBD
 
 ## Prerequisites
 Generate your own API Keys from  the following : 
 
 <ul>
 <li><a href = 'https://www.themoviedb.org/documentation/api'>TMDB</a>
-<li><a href = 'https://fabric.io/kits/android/crashlytics/install'>Fabric</a>
 <li><a href= 'https://developers.google.com/youtube/v3/getting-started'>Youtube</a> 
 <li><a href= 'https://www.omdbapi.com/apikey.aspx'>OMDB</a> 
 </ul>
@@ -54,7 +38,7 @@ Generate your own API Keys from  the following :
 
 ```
 Filmy for Android
-Copyright (c) 2017 Sajal Gupta (http://github.com/salroid) ,
+Copyright (c) 2023 Sajal Gupta (http://github.com/salroid) ,
 Ramankit Singh (http://github.com.webianks).
 
 Licensed under the Apache License, Version 2.0 (the "License");

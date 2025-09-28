@@ -60,14 +60,14 @@
                 android:paddingTop="4dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="2dp"
-                android:text="@string/search_hint"
+                android:text="Search"
                 app:drawableStartCompat="@drawable/ic_action_action_search2"
                 app:fontFamily="@font/circularstd_book"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
+          <!--  <com.miguelcatalan.materialsearchview.MaterialSearchView
                 android:id="@+id/search_view"
                 style="@style/MaterialSearchViewStyle"
                 android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -92,7 +92,7 @@
     </style>
 
     <style name="Preference.SwitchPreferenceCompat" parent="Preference.SwitchPreferenceCompat.Material">
-        <item name="android:widgetLayout">@layout/preference_material_switch</item>
+        <!--<item name="android:widgetLayout">@layout/preference_material_switch</item>-->
     </style>
 
     <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -100,10 +100,10 @@
     <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="MaterialSearchViewStyle">
-        <item name="searchVoiceIcon">@drawable/ic_action_voice_search</item>
+       <!-- <item name="searchVoiceIcon">@drawable/ic_action_voice_search</item>
         <item name="searchCloseIcon">@drawable/ic_action_navigation_close</item>
         <item name="searchBackIcon">@drawable/ic_action_navigation_arrow_back</item>
-        <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>
+        <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>-->
     </style>
 
     <color name="white">#ffffff</color>

@@ -5,8 +5,7 @@
         android:defaultValue="false"
         android:icon="@drawable/dark_mode"
         android:key="darkMode"
-        android:title="@string/dark"
-        android:widgetLayout="@layout/preference_material_switch" />
+        android:title="@string/dark" />
 
     <SwitchPreferenceCompat
         android:defaultValue="true"
@@ -14,8 +13,7 @@
         android:key="imagequality"
         android:summaryOff="@string/low"
         android:summaryOn="@string/high"
-        android:title="@string/image"
-        android:widgetLayout="@layout/preference_material_switch" />
+        android:title="@string/image" />
 
     <Preference
         android:enabled="true"

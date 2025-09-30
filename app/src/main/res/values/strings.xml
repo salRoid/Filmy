@@ -8,7 +8,7 @@
     <string name="person_details_suffix" translatable="false">extended=full,images</string>
     <string name="person_movies_details" translatable="false">/movies?extended=images,full</string>
     <string name="imdb_link_prefix" translatable="false">http://www.imdb.com/title/</string>
-    <string name="trailer_img_url" translatable="false" formatted="false">http://img.youtube.com/vi/%1$s/0.jpg</string>
+    <string name="trailer_img_url" formatted="false" translatable="false">http://img.youtube.com/vi/%1$s/0.jpg</string>
     <string name="poster_prefix_185" translatable="false">http://image.tmdb.org/t/p/w342</string>
     <string name="poster_prefix_500" translatable="false">http://image.tmdb.org/t/p/w1280</string>
     <string name="poster_prefix_add_quality" translatable="false">http://image.tmdb.org/t/p/</string>
@@ -309,5 +309,7 @@ limitations under the License.
     <string name="member_profile_url" formatted="false" translatable="false">http://image.tmdb.org/t/p/w185%1$s</string>
     <string name="member_profile_url_2" formatted="false" translatable="false">http://image.tmdb.org/t/p/w185%1$s</string>
     <string name="remove" translatable="false">Remove</string>
+    <string name="close_video">Close Video</string>
+    <string name="video_player">Video Player</string>
 
 </resources>

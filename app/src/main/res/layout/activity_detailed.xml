@@ -102,7 +102,6 @@
                             android:layout_height="180dp"
                             android:contentDescription="@string/trailer"
                             android:scaleType="centerCrop" />
-
                         <ImageView
                             android:id="@+id/play_button"
                             android:layout_width="wrap_content"

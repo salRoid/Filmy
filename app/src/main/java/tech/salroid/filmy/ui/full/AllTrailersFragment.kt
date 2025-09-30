@@ -1,17 +1,19 @@
 package tech.salroid.filmy.ui.full
 
+import android.content.Intent // <-- Add this import
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.youtube.player.YouTubeStandalonePlayer
-import tech.salroid.filmy.BuildConfig.YOUTUBE_API_KEY
+// import com.google.android.youtube.player.YouTubeStandalonePlayer // <-- Remove this
+// import tech.salroid.filmy.BuildConfig.YOUTUBE_API_KEY // <-- Remove this if not used elsewhere
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.TrailerData
 import tech.salroid.filmy.ui.adapters.MovieTrailersAdapter
 import tech.salroid.filmy.databinding.AllTrailerLayoutBinding
+import tech.salroid.filmy.ui.details.MovieDetailsViewModel
 import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
 import tech.salroid.filmy.utility.themeSystemBars
 import kotlin.math.hypot
@@ -61,10 +63,18 @@ class AllTrailersFragment : Fragment() {
                 val cx = arguments?.getInt("cx") ?: 0
                 val cy = arguments?.getInt("cy") ?: 0
                 val radius = hypot(right.toDouble(), bottom.toDouble()).toInt()
-                ViewAnimationUtils.createCircularReveal(v, cx, cy, 0f, radius.toFloat()).run {
-                    interpolator = DecelerateInterpolator(2f)
-                    duration = 1000
-                    start()
+                // Ensure ViewAnimationUtils is correctly imported if this is an issue
+                // androidx.core.view.ViewAnimationUtils or android.view.ViewAnimationUtils
+                // For modern apps, prefer the AndroidX version if available and appropriate
+                // However, the original code uses android.view.ViewAnimationUtils
+                // If it's causing issues, ensure the import is correct and the class is available
+                // For this specific change, we are focusing on the YouTube player
+                if (v.isAttachedToWindow) { // Check if view is attached
+                    ViewAnimationUtils.createCircularReveal(v, cx, cy, 0f, radius.toFloat()).run {
+                        interpolator = DecelerateInterpolator(2f)
+                        duration = 1000
+                        start()
+                    }
                 }
             }
         })
@@ -87,7 +97,9 @@ class AllTrailersFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         movieTitle = arguments?.getString(MOVIE_TITLE, " ")
-        trailers = arguments?.getParcelableArray(TRAILERS) as Array<TrailerData>
+        // Make sure the cast is safe
+        val parcelableArray = arguments?.getParcelableArray(TRAILERS)
+        trailers = parcelableArray?.mapNotNull { it as? TrailerData }?.toTypedArray()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,28 +109,30 @@ class AllTrailersFragment : Fragment() {
         binding.allTrailerRecyclerView.adapter = trailers?.let {
             MovieTrailersAdapter(it) { trailerData ->
                 trailerData.url?.let { id ->
-                    playTrailerOnYoutube(id)
+                    playTrailerOnYoutube(id, movieTitle)
                 }
             }
         }
     }
 
-    private fun playTrailerOnYoutube(trailerId: String) {
-        startActivity(
-            YouTubeStandalonePlayer.createVideoIntent(
-                activity,
-                YOUTUBE_API_KEY,
-                trailerId,
-                0,
-                true,
-                false
-            )
-        )
+    private fun playTrailerOnYoutube(trailerId: String, movieTitle: String?) {
+        // Updated to launch FullScreenYoutubeActivity
+        val isShortVideo = MovieDetailsViewModel.isYoutubeShortByUrlCheck(trailerId)
+
+        val intent = Intent(activity, FullScreenYoutubeActivity::class.java).apply {
+            putExtra(FullScreenYoutubeActivity.VIDEO_ID, trailerId)
+            putExtra(FullScreenYoutubeActivity.VIDEO_TITLE, movieTitle)
+        }
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-         requireActivity().themeSystemBars(!darkMode, lightStatusBar = false)
+        // It's good practice to also clear the adapter from the RecyclerView
+        // to prevent potential leaks, especially if the adapter holds references
+        // to the fragment or its context.
+        binding.allTrailerRecyclerView.adapter = null
+        requireActivity().themeSystemBars(!darkMode, lightStatusBar = false)
         _binding = null
     }
 }

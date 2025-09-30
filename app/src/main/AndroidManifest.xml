@@ -16,6 +16,10 @@
         android:theme="@style/AppTheme.MD3"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
+        <activity
+            android:name=".ui.full.FullScreenYoutubeActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:exported="false" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -25,15 +29,14 @@
             android:name=".ui.intro.FilmyIntroActivity"
             android:label=" "
             android:theme="@style/AppTheme.MD3.Dark" />
-
         <activity
-            android:name="tech.salroid.filmy.ui.home.MainActivity"
+            android:name=".ui.home.MainActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:theme="@style/SplashTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -52,44 +55,28 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="tech.salroid.filmy.ui.details.MovieDetailsActivity"
+            android:name=".ui.details.MovieDetailsActivity"
             android:label=" "
             android:theme="@style/AppTheme.MD3.Details" />
-
         <activity
-            android:name="tech.salroid.filmy.ui.cast_crew.CastCrewDetailsActivity"
+            android:name=".ui.cast_crew.CastCrewDetailsActivity"
             android:label="@string/details"
             android:theme="@style/AppTheme.MD3" />
-
         <activity
-            android:name="tech.salroid.filmy.ui.cast_crew.AllCastCrewActivity"
+            android:name=".ui.cast_crew.AllCastCrewActivity"
             android:label=" "
             android:theme="@style/AppTheme.MD3" />
-
         <activity
-            android:name="tech.salroid.filmy.ui.full.AllMoviesActivity"
+            android:name=".ui.full.AllMoviesActivity"
             android:label="@string/title_activity_full_movie"
             android:theme="@style/AppTheme.MD3" />
-
         <activity
-            android:name="tech.salroid.filmy.ui.full.FullBannerActivity"
+            android:name=".ui.full.FullBannerActivity"
             android:label=" "
             android:theme="@style/AppTheme.MD3.Dark" />
-
-        <activity android:name="tech.salroid.filmy.ui.settings.LicenseActivity" />
-        <activity android:name="tech.salroid.filmy.ui.settings.AboutActivity" />
-
-        <!--  <receiver android:name=".ui.widget.FilmyWidgetProvider">
-              <intent-filter>
-                  <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-              </intent-filter>
-
-              <meta-data
-                  android:name="android.appwidget.provider"
-                  android:resource="@xml/filmy_widget_info" />
-          </receiver>-->
+        <activity android:name=".ui.settings.LicenseActivity" />
+        <activity android:name=".ui.settings.AboutActivity" />
     </application>
 
 </manifest>

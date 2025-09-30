@@ -1,5 +1,7 @@
 package tech.salroid.filmy.ui.details
 
+import android.widget.Toast
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +14,8 @@ import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.FAVOURITES
 import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.WATCHLIST
 import tech.salroid.filmy.ui.home.MoviesRepository
 import javax.inject.Inject
+import java.net.HttpURLConnection
+import java.net.URL
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
@@ -111,6 +115,57 @@ class MovieDetailsViewModel @Inject constructor(
                     }.collect { ratingResponse ->
                         _uiStateRatings.emit(ratingResponse)
                     }
+            }
+        }
+    }
+
+    fun checkIfTrailerIsShort(videoId: String?) {
+        if (videoId.isNullOrEmpty()) {
+            // _isTrailerAShort.value = false // Or handle as an error/unknown state
+            return
+        }
+
+        viewModelScope.launch {
+            val isShort = isYoutubeShortByUrlCheck(videoId)
+            // _isTrailerAShort.value = isShort
+            // You'll then observe isTrailerAShort in your Activity
+        }
+    }
+
+    fun isYoutubeShortByUrlCheck(videoId: String): Boolean {
+        try {
+            val url = URL("https://www.youtube.com/shorts/$videoId")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "HEAD"
+            connection.connectTimeout = 5000 // 5 seconds timeout
+            connection.readTimeout = 5000   // 5 seconds timeout
+            // Allow redirects is true by default for HttpURLConnection
+
+            val responseCode = connection.responseCode
+            connection.disconnect()
+            return responseCode == HttpURLConnection.HTTP_OK // 200
+        } catch (e: Exception) {
+            // Log the error e.g., Log.e("ViewModel", "Error checking short URL", e)
+            return false // Handle network errors or other exceptions
+        }
+    }
+
+    companion object {
+        fun isYoutubeShortByUrlCheck(trailerId: String) : Boolean {
+            try {
+                val url = URL("https://www.youtube.com/shorts/$trailerId")
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "HEAD"
+                connection.connectTimeout = 5000 // 5 seconds timeout
+                connection.readTimeout = 5000   // 5 seconds timeout
+                // Allow redirects is true by default for HttpURLConnection
+
+                val responseCode = connection.responseCode
+                connection.disconnect()
+                return responseCode == HttpURLConnection.HTTP_OK // 200
+            } catch (e: Exception) {
+                // Log the error e.g., Log.e("ViewModel", "Error checking short URL", e)
+                return false // Handle network errors or other exceptions
             }
         }
     }

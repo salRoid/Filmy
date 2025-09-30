@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
@@ -21,10 +22,12 @@ import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerView
 import com.google.android.youtube.player.YouTubeStandalonePlayer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.RatingResponse
@@ -40,6 +43,7 @@ import tech.salroid.filmy.ui.full.FullBannerActivity.Companion.IMAGE_URL
 import tech.salroid.filmy.ui.full.FullReadFragment
 import tech.salroid.filmy.ui.full.FullReadFragment.Companion.DESCRIPTION
 import tech.salroid.filmy.ui.full.FullReadFragment.Companion.TITLE
+import tech.salroid.filmy.ui.full.FullScreenYoutubeActivity
 import tech.salroid.filmy.ui.home.MoviesFragment
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.DATABASE_APPLICABLE
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_ID
@@ -79,6 +83,9 @@ class MovieDetailsActivity : AppCompatActivity() {
     private var darkMode = false
     private var movieId: String? = null
     private var trailor: String? = null
+
+    private var trailorTitle: String? = null
+
     private var trailer: String? = null
     private var movieDesc: String? = null
     private var quality: String? = null
@@ -218,21 +225,23 @@ class MovieDetailsActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+
         binding.trailorView.setOnClickListener {
-            val timeMilliSeconds = 0
-            val autoPlay = true
-            val lightBoxMode = false
-            if (trailerBoolean) startActivity(
-                YouTubeStandalonePlayer.createVideoIntent(
-                    this@MovieDetailsActivity,
-                    BuildConfig.YOUTUBE_API_KEY,
-                    trailor,
-                    timeMilliSeconds,
-                    autoPlay,
-                    lightBoxMode
-                )
-            )
+            if (trailerBoolean && trailor != null) {
+
+                val isShortVideo = viewModel.isYoutubeShortByUrlCheck(trailor!!)
+
+                val intent =
+                    Intent(this@MovieDetailsActivity, FullScreenYoutubeActivity::class.java).apply {
+                        putExtra(FullScreenYoutubeActivity.VIDEO_ID, trailor)
+                        putExtra(FullScreenYoutubeActivity.VIDEO_TITLE, trailorTitle)
+                    }
+                startActivity(intent)
+            }
         }
+
+
         binding.youtubeIconContainer.setOnClickListener {
             if (trailerBoolean) {
                 supportFragmentManager.beginTransaction()
@@ -409,6 +418,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                     if (mainTrailer) {
                         if (it.type == "Trailer") {
                             trailor = it.source
+                            trailorTitle = it.name
                             mainTrailer = false
                         } else trailor = youTubeTrailers[0].source
                     }
@@ -508,6 +518,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 onBackPressed()
                 if (type == -1) startActivity(Intent(this, MainActivity::class.java))
             }
+
             R.id.action_share -> shareMovie()
             R.id.action_fav -> if (isFavourite) removeFavorite() else addFavorite()
             R.id.action_watch -> if (isWatchlist) removeWatchlist() else addWatchlist()
@@ -559,12 +570,14 @@ class MovieDetailsActivity : AppCompatActivity() {
                             R.drawable.certified
                         )
                     )
+
                     tomatoMeterScore > 59 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
                         ContextCompat.getDrawable(
                             this,
                             R.drawable.fresh
                         )
                     )
+
                     tomatoMeterScore < 60 -> binding.viewRatings.tomatoRatingImage.setImageDrawable(
                         ContextCompat.getDrawable(
                             this, R.drawable.rotten
@@ -603,9 +616,11 @@ class MovieDetailsActivity : AppCompatActivity() {
                     metaScoreRating.toInt() > 60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
                         Color.parseColor("#66cc33")
                     )
+
                     metaScoreRating.toInt() in 41..60 -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
                         Color.parseColor("#ffcc33")
                     )
+
                     else -> binding.viewRatings.metaRatingBackground.setBackgroundColor(
                         Color.parseColor(
                             "#ff0000"

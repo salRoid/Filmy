@@ -75,3 +75,8 @@ lint/tmp/
 # OS cruft
 .DS_Store
 Thumbs.db
+
+compiler.xml
+misc.xml
+modules.xml
+vcs.xml

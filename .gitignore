@@ -49,6 +49,9 @@ proguard/
 .idea/
 /*.iml
 *.iml
+
+.idea/*.xml
+
 # Keep only shared code style (optional)
 !.idea/codeStyles/
 !.idea/codeStyles/Project.xml
@@ -75,8 +78,3 @@ lint/tmp/
 # OS cruft
 .DS_Store
 Thumbs.db
-
-compiler.xml
-misc.xml
-modules.xml
-vcs.xml

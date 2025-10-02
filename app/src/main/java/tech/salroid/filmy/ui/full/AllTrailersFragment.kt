@@ -7,18 +7,20 @@ import android.view.*
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.TrailerData
 import tech.salroid.filmy.ui.adapters.MovieTrailersAdapter
 import tech.salroid.filmy.databinding.AllTrailerLayoutBinding
-import tech.salroid.filmy.ui.details.MovieDetailsViewModel
 import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
+import tech.salroid.filmy.utility.YoutubeUtils
 import tech.salroid.filmy.utility.themeSystemBars
 import kotlin.math.hypot
 
 class AllTrailersFragment : Fragment() {
 
-    private var movieTitle: String? = null
+    private var trailerTitle: String? = null
     private var trailers: Array<TrailerData>? = null
     private var darkMode = false
     private var _binding: AllTrailerLayoutBinding? = null
@@ -88,7 +90,7 @@ class AllTrailersFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        movieTitle = arguments?.getString(MOVIE_TITLE, " ")
+        trailerTitle = arguments?.getString(MOVIE_TITLE, " ")
         // Make sure the cast is safe
         val parcelableArray = arguments?.getParcelableArray(TRAILERS)
         trailers = parcelableArray?.mapNotNull { it as? TrailerData }?.toTypedArray()
@@ -96,26 +98,30 @@ class AllTrailersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.textViewTitle.text = movieTitle
+        binding.textViewTitle.text = trailerTitle
 
         binding.allTrailerRecyclerView.adapter = trailers?.let {
             MovieTrailersAdapter(it) { trailerData ->
                 trailerData.url?.let { id ->
-                    playTrailerOnYoutube(id, movieTitle)
+                    playTrailerOnYoutube(id, trailerTitle)
                 }
             }
         }
     }
 
-    private fun playTrailerOnYoutube(trailerId: String, movieTitle: String?) {
+    private fun playTrailerOnYoutube(trailerId: String, trailerTitle: String?) {
         // Updated to launch FullScreenYoutubeActivity
-        val isShortVideo = MovieDetailsViewModel.isYoutubeShortByUrlCheck(trailerId)
 
-        val intent = Intent(activity, FullScreenYoutubeActivity::class.java).apply {
-            putExtra(FullScreenYoutubeActivity.VIDEO_ID, trailerId)
-            putExtra(FullScreenYoutubeActivity.VIDEO_TITLE, movieTitle)
+        lifecycleScope.launch {
+            val isShort = YoutubeUtils().isYoutubeShortVideo(trailerId!!)
+            val intent =
+                Intent(activity, FullScreenYoutubeActivity::class.java).apply {
+                    putExtra(FullScreenYoutubeActivity.VIDEO_ID, trailerId)
+                    putExtra(FullScreenYoutubeActivity.VIDEO_TITLE, trailerTitle)
+                    putExtra(FullScreenYoutubeActivity.VIDEO_TYPE, isShort.toString())
+                }
+            startActivity(intent)
         }
-        startActivity(intent)
     }
 
     override fun onDestroyView() {

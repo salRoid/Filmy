@@ -51,6 +51,7 @@ import tech.salroid.filmy.ui.similar.SimilarViewModel
 import tech.salroid.filmy.utility.FilmyUtility.getStatusBarHeight
 import tech.salroid.filmy.utility.FilmyUtility.getToolBarHeight
 import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
+import tech.salroid.filmy.utility.YoutubeUtils
 import tech.salroid.filmy.utility.showSnackBar
 import tech.salroid.filmy.utility.themeSystemBars
 import tech.salroid.filmy.utility.toReadableDate
@@ -79,7 +80,7 @@ class MovieDetailsActivity : AppCompatActivity() {
     private var movieId: String? = null
     private var trailor: String? = null
 
-    private var trailorTitle: String? = null
+    private var trailerTitle: String? = null
 
     private var trailer: String? = null
     private var movieDesc: String? = null
@@ -225,14 +226,16 @@ class MovieDetailsActivity : AppCompatActivity() {
         binding.trailorView.setOnClickListener {
             if (trailerBoolean && trailor != null) {
 
-                val isShortVideo = viewModel.isYoutubeShortByUrlCheck(trailor!!)
-
-                val intent =
-                    Intent(this@MovieDetailsActivity, FullScreenYoutubeActivity::class.java).apply {
-                        putExtra(FullScreenYoutubeActivity.VIDEO_ID, trailor)
-                        putExtra(FullScreenYoutubeActivity.VIDEO_TITLE, trailorTitle)
-                    }
-                startActivity(intent)
+                lifecycleScope.launch {
+                    val isShort = YoutubeUtils().isYoutubeShortVideo(trailor!!)
+                    val intent =
+                        Intent(this@MovieDetailsActivity, FullScreenYoutubeActivity::class.java).apply {
+                            putExtra(FullScreenYoutubeActivity.VIDEO_ID, trailor)
+                            putExtra(FullScreenYoutubeActivity.VIDEO_TITLE, trailerTitle)
+                            putExtra(FullScreenYoutubeActivity.VIDEO_TYPE, isShort.toString())
+                        }
+                    startActivity(intent)
+                }
             }
         }
 
@@ -413,7 +416,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                     if (mainTrailer) {
                         if (it.type == "Trailer") {
                             trailor = it.source
-                            trailorTitle = it.name
+                            trailerTitle = it.name
                             mainTrailer = false
                         } else trailor = youTubeTrailers[0].source
                     }

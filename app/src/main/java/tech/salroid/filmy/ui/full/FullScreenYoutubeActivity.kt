@@ -3,53 +3,63 @@ package tech.salroid.filmy.ui.full
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-// Removed unnecessary Build import if not used directly
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
-// Removed unnecessary WindowInsets and WindowInsetsController imports if System UI is handled by compat
-import android.webkit.WebChromeClient // Keep this
-import android.webkit.WebView
+import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
-//import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-// Removed ViewCompat if not directly used after initial setup
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-// Removed Glance visibility if not used
 import tech.salroid.filmy.R
-import tech.salroid.filmy.databinding.ActivityFullScreenYoutubeBinding // Ensure this is correct
+import tech.salroid.filmy.databinding.ActivityFullScreenYoutubeBinding
+import tech.salroid.filmy.utility.themeSystemBars
 
 class FullScreenYoutubeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFullScreenYoutubeBinding
-    private var youtubeVideoId: String? = null
+
+    private var darkMode = false
+    private var videoId: String? = null
     private var videoTitle: String? = null
+    private var videoType: String? = null
     private var html5VideoView: View? = null
     private var customViewCallback: WebChromeClient.CustomViewCallback? = null
-    private lateinit var activityWebChromeClient: WebChromeClient // Declare as member variable
+    private lateinit var activityWebChromeClient: WebChromeClient
+    private val handler = Handler(Looper.getMainLooper())
+    private val hideHeaderRunnable = Runnable { binding.headerContainer.visibility = View.GONE }
 
     companion object {
-        const val VIDEO_ID = "extra_video_id"
-        const val VIDEO_TITLE = "extra_video_title"
+        const val VIDEO_ID = "video_id"
+        const val VIDEO_TITLE = "video_title"
+        const val VIDEO_TYPE = "video_type"
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        //enableEdgeToEdge()
+
+        videoId = intent.getStringExtra(VIDEO_ID)
+        videoTitle = intent.getStringExtra(VIDEO_TITLE)
+        videoType = intent.getStringExtra(VIDEO_TYPE)
+
+        requestedOrientation = if (videoType == "true") {
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } else {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
         binding = ActivityFullScreenYoutubeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         hideSystemUI()
 
-        youtubeVideoId = intent.getStringExtra(VIDEO_ID)
-        videoTitle = intent.getStringExtra(VIDEO_TITLE)
-
         binding.videoTitleTextView.text = videoTitle ?: getString(R.string.video_player)
 
-        // Initialize the member WebChromeClient
+        setupHeaderAutoHide()
+
         activityWebChromeClient = object : WebChromeClient() {
             override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
                 if (html5VideoView != null) {
@@ -58,8 +68,11 @@ class FullScreenYoutubeActivity : AppCompatActivity() {
                 }
                 html5VideoView = view
                 customViewCallback = callback
+
                 binding.headerContainer.visibility = View.GONE
                 binding.webviewContainer.visibility = View.GONE
+                binding.youtubeWebView.visibility = View.GONE
+
                 binding.videoFullscreenContainer.addView(
                     html5VideoView,
                     android.widget.FrameLayout.LayoutParams(
@@ -73,39 +86,63 @@ class FullScreenYoutubeActivity : AppCompatActivity() {
             }
 
             override fun onHideCustomView() {
-                if (html5VideoView == null) {
-                    return
-                }
-                binding.videoFullscreenContainer.removeView(html5VideoView)
-                binding.videoFullscreenContainer.visibility = View.GONE
+                if (html5VideoView == null) return
+
+                binding.videoFullscreenContainer.removeAllViews()
                 html5VideoView = null
                 customViewCallback?.onCustomViewHidden()
                 customViewCallback = null
-                binding.headerContainer.visibility = View.VISIBLE
+
+                binding.videoFullscreenContainer.visibility = View.GONE
                 binding.webviewContainer.visibility = View.VISIBLE
+                binding.youtubeWebView.visibility = View.VISIBLE
+                binding.headerContainer.visibility = View.VISIBLE
+
                 hideSystemUI()
+                setupHeaderAutoHide()
             }
         }
 
-        youtubeVideoId?.let { videoId ->
+        videoId?.let { id ->
             binding.youtubeWebView.apply {
                 settings.javaScriptEnabled = true
                 settings.mediaPlaybackRequiresUserGesture = false
                 settings.setSupportZoom(false)
                 settings.builtInZoomControls = false
                 settings.displayZoomControls = false
+                setBackgroundColor(android.graphics.Color.TRANSPARENT)
                 webViewClient = WebViewClient()
-                webChromeClient = activityWebChromeClient // Assign the member instance
-                loadData(getYouTubeIframeHTML(videoId), "text/html", "utf-8")
+                webChromeClient = activityWebChromeClient
+                loadDataWithBaseURL(
+                    "https://www.youtube.com",
+                    getYouTubeIframeHTML(id),
+                    "text/html",
+                    "utf-8",
+                    null
+                )
             }
         }
 
-        binding.closeButton.setOnClickListener {
-            finish()
-        }
+        binding.closeButton.setOnClickListener { finish() }
     }
 
-    private fun getYouTubeIframeHTML(videoId: String): String {
+    private fun setupHeaderAutoHide() {
+        binding.headerContainer.visibility = View.VISIBLE
+        binding.main.setOnClickListener {
+            if (binding.headerContainer.visibility == View.VISIBLE) {
+                binding.headerContainer.visibility = View.GONE
+            } else {
+                binding.headerContainer.visibility = View.VISIBLE
+                handler.removeCallbacks(hideHeaderRunnable)
+                handler.postDelayed(hideHeaderRunnable, 4000)
+            }
+        }
+
+        handler.removeCallbacks(hideHeaderRunnable)
+        handler.postDelayed(hideHeaderRunnable, 4000)
+    }
+
+    private fun getYouTubeIframeHTML(youtubeVideoId: String): String {
         return """
             <!DOCTYPE html>
             <html>
@@ -117,7 +154,7 @@ class FullScreenYoutubeActivity : AppCompatActivity() {
                         player = new YT.Player('player', {
                             height: '100%',
                             width: '100%',
-                            videoId: '$videoId',
+                            videoId: '$youtubeVideoId',
                             playerVars: {
                                 'autoplay': 1,
                                 'controls': 1, 
@@ -147,7 +184,8 @@ class FullScreenYoutubeActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, binding.main).let { controller ->
             controller.hide(WindowInsetsCompat.Type.systemBars())
-            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
 
@@ -157,20 +195,16 @@ class FullScreenYoutubeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (html5VideoView != null) {
-            activityWebChromeClient.onHideCustomView() // Now correctly calls the member instance
-        } else if (binding.youtubeWebView.canGoBack()) {
-            binding.youtubeWebView.goBack()
-        } else {
-            super.onBackPressed()
+        when {
+            html5VideoView != null -> activityWebChromeClient.onHideCustomView()
+            binding.youtubeWebView.canGoBack() -> binding.youtubeWebView.goBack()
+            else -> super.onBackPressed()
         }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
-            hideSystemUI()
-        }
+        if (hasFocus) hideSystemUI()
     }
 
     override fun onPause() {
@@ -185,8 +219,9 @@ class FullScreenYoutubeActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        handler.removeCallbacks(hideHeaderRunnable)
         binding.youtubeWebView.destroy()
         super.onDestroy()
     }
-}
 
+}

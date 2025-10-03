@@ -222,7 +222,6 @@ class MovieDetailsActivity : AppCompatActivity() {
             }
         }
 
-
         binding.trailorView.setOnClickListener {
             if (trailerBoolean && trailor != null) {
 

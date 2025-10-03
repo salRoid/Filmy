@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "tech.salroid.filmy"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 35
         versionCode 22
         versionName "3.0.0"
@@ -50,7 +50,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '21' // Or '17' or your chosen version
+        jvmTarget = '21'
     }
 
     buildFeatures {
@@ -59,7 +59,6 @@ android {
     namespace 'tech.salroid.filmy'
 }
 
-// Allow references to generated code
 kapt {
     correctErrorTypes true
 }
@@ -96,7 +95,6 @@ dependencies {
     implementation 'androidx.palette:palette-ktx:1.0.0'
     implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    //implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.github.paolorotolo:appintro:4.0.0'
     implementation "androidx.preference:preference-ktx:1.2.0"
     implementation "androidx.fragment:fragment-ktx:1.5.5"

@@ -1,6 +1,6 @@
 package tech.salroid.filmy.ui.full
 
-import android.content.Intent // <-- Add this import
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
@@ -63,7 +63,7 @@ class AllTrailersFragment : Fragment() {
                 val cx = arguments?.getInt("cx") ?: 0
                 val cy = arguments?.getInt("cy") ?: 0
                 val radius = hypot(right.toDouble(), bottom.toDouble()).toInt()
-                if (v.isAttachedToWindow) { // Check if view is attached
+                if (v.isAttachedToWindow) {
                     ViewAnimationUtils.createCircularReveal(v, cx, cy, 0f, radius.toFloat()).run {
                         interpolator = DecelerateInterpolator(2f)
                         duration = 1000
@@ -91,7 +91,6 @@ class AllTrailersFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         trailerTitle = arguments?.getString(MOVIE_TITLE, " ")
-        // Make sure the cast is safe
         val parcelableArray = arguments?.getParcelableArray(TRAILERS)
         trailers = parcelableArray?.mapNotNull { it as? TrailerData }?.toTypedArray()
     }
@@ -110,7 +109,6 @@ class AllTrailersFragment : Fragment() {
     }
 
     private fun playTrailerOnYoutube(trailerId: String, trailerTitle: String?) {
-        // Updated to launch FullScreenYoutubeActivity
 
         lifecycleScope.launch {
             val isShort = YoutubeUtils().isYoutubeShortVideo(trailerId!!)

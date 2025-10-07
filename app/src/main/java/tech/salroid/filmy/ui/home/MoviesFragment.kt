@@ -1,7 +1,7 @@
 package tech.salroid.filmy.ui.home
 
 import android.content.Intent
-import android.graphics.Color
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.speech.RecognizerIntent
@@ -17,17 +17,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
+import com.miguelcatalan.materialsearchview.MaterialSearchView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.databinding.FragmentMoviesBinding
-import tech.salroid.filmy.ui.details.MovieDetailsActivity
 import tech.salroid.filmy.ui.adapters.MoviesAdapter
+import tech.salroid.filmy.ui.details.MovieDetailsActivity
 import tech.salroid.filmy.ui.search.SearchFragment
 import tech.salroid.filmy.ui.search.SearchViewModel
 import tech.salroid.filmy.utility.FilmyUtility.getGridLayoutManager
-import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
 
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
@@ -70,7 +71,7 @@ class MoviesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        darkMode = isDarkModeEnabled(requireContext())
+        darkMode = isDarkMode()
         binding = FragmentMoviesBinding.inflate(inflater, container, false)
         if (darkMode) darkThemeLogic() else lightThemeLogic()
         viewModelSearch = ViewModelProvider(requireActivity())[SearchViewModel::class.java]
@@ -88,6 +89,19 @@ class MoviesFragment : Fragment() {
         binding.recyclerTrending.adapter = adapterTrending
         binding.recyclerInTheaters.adapter = adapterInTheaters
         binding.recyclerUpComing.adapter = adapterUpComing
+    }
+
+    private fun isDarkMode(): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val themeValue = preferences.getString("theme", "system")
+
+        return when (themeValue) {
+            "light" -> false
+            "dark" -> true
+            else -> { // system
+                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -116,7 +130,7 @@ class MoviesFragment : Fragment() {
         lifecycleScope.launch {
             viewModelSearch.uiStateCloseSearch.collect {
                 if (it) {
-                    //binding.searchView.closeSearch()
+                    binding.searchView.closeSearch()
                     viewModelSearch.closeSearchDone()
                 }
             }
@@ -132,10 +146,14 @@ class MoviesFragment : Fragment() {
     }
 
     private fun darkThemeLogic() {
-        binding.logo.setTextColor(Color.parseColor("#E0E0E0"))
+        binding.logo.setTextColor(
+            ContextCompat.getColor(requireContext(), R.color.logoWhite)
+        )
         binding.ivLogo.imageTintList =
             ContextCompat.getColorStateList(requireActivity(), R.color.colorMore)
-       /* binding.searchView.setBackgroundColor(resources.getColor(R.color.colorDarkThemePrimary))
+        binding.searchView.setBackgroundColor(
+            ContextCompat.getColor(requireActivity(), R.color.colorDarkThemePrimary)
+        )
         binding.searchView.setBackIcon(
             ContextCompat.getDrawable(
                 requireContext(), R.drawable.ic_action_navigation_arrow_back_inverted
@@ -146,7 +164,7 @@ class MoviesFragment : Fragment() {
                 requireContext(), R.drawable.ic_action_navigation_close_inverted
             )
         )
-        binding.searchView.setTextColor(Color.parseColor("#ffffff"))
+        binding.searchView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         binding.searchIcon.background =
             ContextCompat.getDrawable(requireActivity(), R.drawable.bg_search_icon_dark)
         TextViewCompat.setCompoundDrawableTintList(
@@ -159,7 +177,7 @@ class MoviesFragment : Fragment() {
                 requireActivity(),
                 R.color.fullBlack
             )
-        )*/
+        )
     }
 
     private fun lightThemeLogic() {
@@ -172,12 +190,12 @@ class MoviesFragment : Fragment() {
             binding.searchIcon,
             ContextCompat.getColorStateList(requireActivity(), R.color.colorDarkThemePrimary)
         )
-        /*binding.searchView.setBackgroundColor(
+        binding.searchView.setBackgroundColor(
             ContextCompat.getColor(
                 requireActivity(),
                 R.color.colorAccentTint
             )
-        )*/
+        )
     }
 
     private fun setupSearch() {
@@ -192,11 +210,11 @@ class MoviesFragment : Fragment() {
                         SearchFragment.TAG
                     )
                     .commit()
-                //binding.searchView.showSearch()
+                binding.searchView.showSearch()
             }, 100)
         }
 
-        /*binding.searchView.setVoiceSearch(false)
+        binding.searchView.setVoiceSearch(false)
         binding.searchView.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
             override fun onSearchViewShown() {
                 lifecycleScope.launch {
@@ -215,10 +233,10 @@ class MoviesFragment : Fragment() {
                 viewModelSearch.searchViewHidden()
 
             }
-        })*/
+        })
 
         // Emit Search Query
-        /*lifecycleScope.launch {
+        lifecycleScope.launch {
             binding.searchView.setOnQueryTextListener(object :
                 MaterialSearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -232,13 +250,13 @@ class MoviesFragment : Fragment() {
                     return true
                 }
             })
-        }*/
+        }
     }
 
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == AppCompatActivity.RESULT_OK) {
             val matches = data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-            if (matches != null && matches.size > 0) {
+            if (matches != null && matches.isNotEmpty()) {
                 val searchWrd = matches[0]
                 if (!TextUtils.isEmpty(searchWrd)) {
                     binding.searchView.setQuery(searchWrd, false)
@@ -247,7 +265,7 @@ class MoviesFragment : Fragment() {
             return
         }
         super.onActivityResult(requestCode, resultCode, data)
-    }*/
+    }
 
     private fun itemClicked(movie: Movie) {
         Intent(activity, MovieDetailsActivity::class.java).run {

@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.preference.PreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.R
@@ -23,9 +24,7 @@ import tech.salroid.filmy.databinding.ActivityMainBinding
 import tech.salroid.filmy.ui.intro.FilmyIntroActivity
 import tech.salroid.filmy.ui.search.SearchViewModel
 import tech.salroid.filmy.utility.PreferenceHelper.isColdStart
-import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
 import tech.salroid.filmy.utility.PreferenceHelper.setColdStartDone
-import tech.salroid.filmy.utility.PreferenceHelper.setDarkModeEnabled
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -57,16 +56,26 @@ class MainActivity : AppCompatActivity() {
         observerUiStates()
     }
 
-    private fun setupTheme() {
-        darkMode = isDarkModeEnabled(this)
-        if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK)
-            == Configuration.UI_MODE_NIGHT_YES
-        ) {
-            darkMode = true
-            setDarkModeEnabled(this, true)
-        }
+    private fun isDarkMode(): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val themeValue = preferences.getString("theme", "system")
 
-        if (darkMode) setTheme(R.style.AppTheme_MD3_Dark) else setTheme(R.style.AppTheme_MD3)
+        return when (themeValue) {
+            "light" -> false
+            "dark" -> true
+            else -> { // system
+                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            }
+        }
+    }
+
+    private fun setupTheme() {
+        darkMode = isDarkMode()
+        if (darkMode) {
+            setTheme(R.style.AppTheme_MD3_Dark)
+        } else {
+            setTheme(R.style.AppTheme_MD3)
+        }
     }
 
     private fun lightThemeLogic() {
@@ -156,7 +165,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (darkMode != isDarkModeEnabled(this)) recreate()
+        if (darkMode != isDarkMode()) recreate()
         LocalBroadcastManager.getInstance(this)
             .registerReceiver(mMessageReceiver, IntentFilter("fetch-failed"))
     }

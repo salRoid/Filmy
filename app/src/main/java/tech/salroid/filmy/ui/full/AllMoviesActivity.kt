@@ -1,10 +1,12 @@
 package tech.salroid.filmy.ui.full
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.CastMovie
@@ -17,7 +19,6 @@ import tech.salroid.filmy.ui.home.MoviesFragment.Companion.FROM_ACTIVITY
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_ID
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_TITLE
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.NETWORK_APPLICABLE
-import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
 
 class AllMoviesActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class AllMoviesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFullMovieBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        nightMode = isDarkModeEnabled(this)
+        nightMode = isDarkMode()
         if (nightMode) setTheme(R.style.AppTheme_MD3_Dark) else setTheme(R.style.AppTheme_MD3)
 
         super.onCreate(savedInstanceState)
@@ -61,9 +62,22 @@ class AllMoviesActivity : AppCompatActivity() {
         binding.title.setTextColor(Color.parseColor("#bdbdbd"))
     }
 
+    private fun isDarkMode(): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val themeValue = preferences.getString("theme", "system")
+
+        return when (themeValue) {
+            "light" -> false
+            "dark" -> true
+            else -> { // system
+                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        if (nightMode != isDarkModeEnabled(this)) recreate()
+        if (nightMode != isDarkMode()) recreate()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

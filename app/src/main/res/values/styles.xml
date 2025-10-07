@@ -100,10 +100,10 @@
     <style name="AppTheme.Base.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="MaterialSearchViewStyle">
-       <!-- <item name="searchVoiceIcon">@drawable/ic_action_voice_search</item>
+        <item name="searchVoiceIcon">@drawable/ic_action_voice_search</item>
         <item name="searchCloseIcon">@drawable/ic_action_navigation_close</item>
         <item name="searchBackIcon">@drawable/ic_action_navigation_arrow_back</item>
-        <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>-->
+        <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>
     </style>
 
     <color name="white">#ffffff</color>

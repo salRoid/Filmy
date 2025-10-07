@@ -1,6 +1,7 @@
 package tech.salroid.filmy.ui.settings
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -10,10 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import tech.salroid.filmy.R
 import tech.salroid.filmy.databinding.ActivityAboutBinding
-import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
+import androidx.core.graphics.toColorInt
 
 class AboutActivity : AppCompatActivity() {
 
@@ -22,7 +24,7 @@ class AboutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        nightMode = isDarkModeEnabled(this)
+        nightMode = isDarkMode()
         if (nightMode) setTheme(R.style.AppTheme_MD3_Dark) else setTheme(R.style.AppTheme_MD3)
 
         binding = ActivityAboutBinding.inflate(layoutInflater)
@@ -55,7 +57,20 @@ class AboutActivity : AppCompatActivity() {
     }
 
     private fun allThemeLogic() {
-        binding.logo.setTextColor(Color.parseColor("#bdbdbd"))
+        binding.logo.setTextColor("#bdbdbd".toColorInt())
+    }
+
+    private fun isDarkMode(): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val themeValue = preferences.getString("theme", "system")
+
+        return when (themeValue) {
+            "light" -> false
+            "dark" -> true
+            else -> { // system
+                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -119,6 +134,6 @@ class AboutActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (nightMode != isDarkModeEnabled(this)) recreate()
+        if (nightMode != isDarkMode()) recreate()
     }
 }

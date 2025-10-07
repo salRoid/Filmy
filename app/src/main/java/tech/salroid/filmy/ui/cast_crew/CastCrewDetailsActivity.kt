@@ -1,6 +1,7 @@
 package tech.salroid.filmy.ui.cast_crew
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -9,6 +10,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +32,6 @@ import tech.salroid.filmy.ui.home.MoviesFragment.Companion.FROM_ACTIVITY
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_ID
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_TITLE
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.NETWORK_APPLICABLE
-import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
 import tech.salroid.filmy.utility.toReadableDate
 
 @AndroidEntryPoint
@@ -45,7 +46,7 @@ class CastCrewDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailedCastBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        nightMode = isDarkModeEnabled(this)
+        nightMode = isDarkMode()
         if (nightMode) setTheme(R.style.AppTheme_MD3_Dark) else setTheme(R.style.AppTheme_MD3)
 
         super.onCreate(savedInstanceState)
@@ -103,9 +104,22 @@ class CastCrewDetailsActivity : AppCompatActivity() {
 
     }
 
+    private fun isDarkMode(): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val themeValue = preferences.getString("theme", "system")
+
+        return when (themeValue) {
+            "light" -> false
+            "dark" -> true
+            else -> { // system
+                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        if (nightMode != isDarkModeEnabled(this)) recreate()
+        if (nightMode != isDarkMode()) recreate()
     }
 
     private fun showPersonalDetails(details: CastCrewDetailsResponse) {

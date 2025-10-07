@@ -1,6 +1,7 @@
 package tech.salroid.filmy.ui.collections
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
@@ -9,15 +10,15 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import tech.salroid.filmy.R
-import tech.salroid.filmy.ui.adapters.CollectionsPagerAdapter
 import tech.salroid.filmy.databinding.FragmentCollectionsBinding
+import tech.salroid.filmy.ui.adapters.CollectionsPagerAdapter
 import tech.salroid.filmy.ui.home.MainViewModel
-import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
 
 @AndroidEntryPoint
 class CollectionsFragment : Fragment() {
@@ -60,8 +61,21 @@ class CollectionsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        darkMode = isDarkModeEnabled(requireContext())
+        darkMode = isDarkMode()
         if (darkMode) darkThemeLogic() else lightModeLogic()
+    }
+
+    private fun isDarkMode(): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val themeValue = preferences.getString("theme", "system")
+
+        return when (themeValue) {
+            "light" -> false
+            "dark" -> true
+            else -> { // system
+                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            }
+        }
     }
 
     private fun lightModeLogic() {

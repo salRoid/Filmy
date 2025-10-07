@@ -1,22 +1,20 @@
 package tech.salroid.filmy.ui.full
 
 import android.content.Intent
-import android.graphics.Color
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
+import androidx.preference.PreferenceManager
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.TrailerData
-import tech.salroid.filmy.ui.adapters.MovieTrailersAdapter
 import tech.salroid.filmy.databinding.AllTrailerLayoutBinding
-import tech.salroid.filmy.utility.PreferenceHelper.isDarkModeEnabled
-import tech.salroid.filmy.utility.YoutubeUtils
+import tech.salroid.filmy.ui.adapters.MovieTrailersAdapter
 import tech.salroid.filmy.utility.themeSystemBars
 import kotlin.math.hypot
+import androidx.core.graphics.toColorInt
 
 class AllTrailersFragment : Fragment() {
 
@@ -45,7 +43,7 @@ class AllTrailersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        darkMode = isDarkModeEnabled(requireContext())
+        darkMode = isDarkMode()
         _binding = AllTrailerLayoutBinding.inflate(inflater, container, false)
         if (!darkMode) allThemeLogic() else nightModeLogic()
 
@@ -77,14 +75,37 @@ class AllTrailersFragment : Fragment() {
         return binding.root
     }
 
+    private fun isDarkMode(): Boolean {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val themeValue = preferences.getString("theme", "system")
+
+        return when (themeValue) {
+            "light" -> false
+            "dark" -> true
+            else -> { // system
+                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            }
+        }
+    }
+
     private fun nightModeLogic() {
-        binding.mainContent.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.surfaceColorDark))
-        binding.textViewTitle.setTextColor(Color.parseColor("#ffffff"))
+        binding.mainContent.setBackgroundColor(
+            ContextCompat.getColor(
+                requireActivity(),
+                R.color.surfaceColorDark
+            )
+        )
+        binding.textViewTitle.setTextColor("#ffffff".toColorInt())
     }
 
     private fun allThemeLogic() {
-        binding.mainContent.setBackgroundColor(ContextCompat.getColor(requireActivity(), R.color.surfaceColorLight))
-        binding.textViewTitle.setTextColor(Color.parseColor("#000000"))
+        binding.mainContent.setBackgroundColor(
+            ContextCompat.getColor(
+                requireActivity(),
+                R.color.surfaceColorLight
+            )
+        )
+        binding.textViewTitle.setTextColor("#000000".toColorInt())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,16 +130,10 @@ class AllTrailersFragment : Fragment() {
     }
 
     private fun playTrailerOnYoutube(trailerId: String, trailerTitle: String?) {
-
-        lifecycleScope.launch {
-            val isShort = YoutubeUtils().isYoutubeShortVideo(trailerId!!)
-            val intent =
-                Intent(activity, FullScreenYoutubeActivity::class.java).apply {
-                    putExtra(FullScreenYoutubeActivity.VIDEO_ID, trailerId)
-                    putExtra(FullScreenYoutubeActivity.VIDEO_TITLE, trailerTitle)
-                    putExtra(FullScreenYoutubeActivity.VIDEO_TYPE, isShort.toString())
-                }
-            startActivity(intent)
+        Intent(activity, YoutubePlayerActivity::class.java).run {
+            putExtra(YoutubePlayerActivity.VIDEO_ID, trailerId)
+            putExtra(YoutubePlayerActivity.VIDEO_TITLE, trailerTitle)
+            startActivity(this)
         }
     }
 

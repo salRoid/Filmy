@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "tech.salroid.filmy"
         minSdkVersion 24
-        targetSdkVersion 35
+        targetSdkVersion 34
         versionCode 22
         versionName "3.0.0"
         multiDexEnabled true
@@ -95,6 +95,7 @@ dependencies {
     implementation 'androidx.palette:palette-ktx:1.0.0'
     implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'com.github.ZinoKader:MaterialSearchView:1.4.2'
     implementation 'com.github.paolorotolo:appintro:4.0.0'
     implementation "androidx.preference:preference-ktx:1.2.0"
     implementation "androidx.fragment:fragment-ktx:1.5.5"

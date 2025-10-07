@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreferenceCompat
-        android:defaultValue="false"
+    <ListPreference
+        android:defaultValue="system"
+        android:entries="@array/theme_entries"
+        android:entryValues="@array/theme_values"
         android:icon="@drawable/dark_mode"
-        android:key="darkMode"
-        android:title="@string/dark" />
+        android:key="theme"
+        android:title="@string/theme"
+        app:useSimpleSummaryProvider="true" />
 
     <SwitchPreferenceCompat
         android:defaultValue="true"

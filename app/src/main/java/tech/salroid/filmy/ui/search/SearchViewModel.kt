@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.data.local.model.SearchResult
@@ -31,6 +33,7 @@ class SearchViewModel @Inject constructor(
         searchMovies()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     private fun searchMovies() {
         viewModelScope.launch(Dispatchers.IO) {
             query.debounce(300)
@@ -49,13 +52,13 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun searchViewVisible(){
+    fun searchViewVisible() {
         viewModelScope.launch {
             _uiStateSearchView.emit(SearchViewUiState.Visible)
         }
     }
 
-    fun searchViewHidden(){
+    fun searchViewHidden() {
         viewModelScope.launch {
             _uiStateSearchView.emit(SearchViewUiState.Hidden)
             isSearchOpen.emit(false)

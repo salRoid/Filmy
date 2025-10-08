@@ -26,8 +26,7 @@
             android:layout_gravity="center"
             android:alpha="0.5"
             android:contentDescription="@string/no_saved_movies"
-            android:src="@drawable/ic_round_favorite_24"
-            app:tint="?colorAccent" />
+            android:src="@drawable/ic_round_favorite_24" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -54,8 +53,7 @@
             android:layout_gravity="center"
             android:alpha="0.5"
             android:contentDescription="@string/no_saved_movies"
-            android:src="@drawable/ic_round_bookmark_added_24"
-            app:tint="?colorAccent" />
+            android:src="@drawable/ic_round_bookmark_added_24" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"

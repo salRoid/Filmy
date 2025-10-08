@@ -136,16 +136,14 @@ class CastCrewDetailsActivity : AppCompatActivity() {
         details.placeOfBirth?.let {
             binding.birthPlace.text = it
         } ?: run {
-            binding.birthPlace.visibility = View.GONE
+            binding.birthPlace.visibility = View.INVISIBLE
         }
 
         if (details.biography?.isEmpty() == true) {
             binding.overviewContainer.visibility = View.GONE
             binding.overview.visibility = View.GONE
         } else {
-            if (Build.VERSION.SDK_INT >= 24) {
-                binding.overview.text = Html.fromHtml(details.biography, Html.FROM_HTML_MODE_LEGACY)
-            }
+            binding.overview.text = Html.fromHtml(details.biography, Html.FROM_HTML_MODE_LEGACY)
         }
 
         Glide.with(this)

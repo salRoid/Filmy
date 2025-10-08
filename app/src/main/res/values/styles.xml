@@ -45,13 +45,19 @@
     </style>-->
 
     <style name="AppTheme.MD3" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/primaryColorMD3</item>
+        <item name="colorPrimary">@color/colorAccentMD3</item>
+        <item name="colorSecondary">@color/colorAccentMD3</item>
         <item name="colorOnPrimary">@color/primaryColor</item>
+        <item name="containerColor">#F0F3F8</item>
         <item name="colorOnSurface">@color/lightColorOnSurface</item>
         <item name="colorOutline">@color/colorOutline</item>
         <item name="colorSecondaryContainer">@color/colorAccent</item>
         <item name="divider">@color/dividerColor</item>
+        <item name="colorSurfaceContainer">@color/colorSurfaceContainer</item>
+        <item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainer</item>
+        <item name="colorSurfaceContainerHighest">@color/colorOnSecondaryContainer</item>
         <item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
+        <item name="colorOnSurfaceVariant">#405B7A</item>
         <item name="colorSurfaceInverse">@color/colorMore</item>
         <item name="android:statusBarColor">@color/colorAccentTint</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -75,7 +81,10 @@
         <item name="colorOnPrimary">@color/primaryColor</item>
         <item name="colorOnSurface">@color/primaryColor</item>
         <item name="colorOutline">@color/colorOutline</item>
+        <item name="containerColor">#20242A</item>
+        <item name="colorSurfaceContainer">@color/colorSurfaceContainerInverse</item>
         <item name="colorSecondaryContainer">@color/colorAccentMD3</item>
+        <item name="colorSurfaceContainerHighest">@color/colorSurfaceContainerInverse</item>
         <item name="colorOnSecondaryContainer">@color/colorAccent</item>
         <item name="colorSurfaceInverse">@color/colorMore</item>
         <item name="divider">@color/dividerColorDarkTheme</item>
@@ -92,7 +101,7 @@
     </style>
 
     <style name="Preference.SwitchPreferenceCompat" parent="Preference.SwitchPreferenceCompat.Material">
-        <!--<item name="android:widgetLayout">@layout/preference_material_switch</item>-->
+        <item name="android:widgetLayout">@layout/preference_material_switch</item>
     </style>
 
     <style name="AppTheme.Base.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -145,11 +154,5 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">4%</item>
     </style>
-
-    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
-    </style>
-
-    <style name="ThemeOverlay.App.BottomNavigationView" parent="" />
 
 </resources>

@@ -72,7 +72,7 @@
     <string name="theatres">IN THEATERS</string>
     <string name="upcoming">UPCOMING</string>
     <string name="details">Details</string>
-    <string name="theme">Theme</string>
+    <string name="theme" translatable="false">Theme</string>
 
 
     <string name="glide" translatable="false"><![CDATA[

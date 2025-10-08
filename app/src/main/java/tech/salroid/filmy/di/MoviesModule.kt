@@ -7,7 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -25,7 +24,7 @@ object MoviesModule {
     fun provideOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor {
             val original = it.request()
-            val originalHttpUrl: HttpUrl = original.url()
+            val originalHttpUrl = original.url
             val url = originalHttpUrl.newBuilder()
                 .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
                 .build()

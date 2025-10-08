@@ -217,6 +217,7 @@ class MoviesFragment : Fragment() {
         binding.searchView.setVoiceSearch(false)
         binding.searchView.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
             override fun onSearchViewShown() {
+                binding.searchView.requestFocus()
                 lifecycleScope.launch {
                     viewModelSearch.isSearchOpen.value = true
                 }
@@ -235,7 +236,6 @@ class MoviesFragment : Fragment() {
             }
         })
 
-        // Emit Search Query
         lifecycleScope.launch {
             binding.searchView.setOnQueryTextListener(object :
                 MaterialSearchView.OnQueryTextListener {

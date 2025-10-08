@@ -110,6 +110,7 @@ class CollectionsFragment : Fragment() {
                     tab.icon =
                         ContextCompat.getDrawable(requireContext(), R.drawable.ic_round_favorite_24)
                 }
+
                 1 -> {
                     tab.text = getString(R.string.watchlist)
                     tab.icon =

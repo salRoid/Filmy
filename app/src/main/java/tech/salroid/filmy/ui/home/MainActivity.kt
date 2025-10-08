@@ -5,13 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
@@ -46,11 +48,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setupTheme()
         super.onCreate(savedInstanceState)
+
+        // For recreate case
+        if (savedInstanceState != null && Build.VERSION.SDK_INT >= 35) {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+        }
+
+        // For Backward Compatibility
+        WindowCompat.enableEdgeToEdge(window)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         throughShortcut = intent.getBooleanExtra("throughShortcut", false)
 
-        if (darkMode) darkThemeLogic() else lightThemeLogic()
         introLogic()
         setupNavigation()
         observerUiStates()
@@ -78,15 +88,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun lightThemeLogic() {
-        binding.navigationBarView.backgroundTintList = null
-    }
-
-    private fun darkThemeLogic() {
-        binding.navigationBarView.backgroundTintList =
-            ContextCompat.getColorStateList(this, R.color.colorDarkThemePrimaryDark)
-    }
-
     private fun observerUiStates() {
         lifecycleScope.launch {
             viewModelSearch.uiStateSearchView.collect {
@@ -95,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                         SearchViewUiState.Hidden -> {
                             animateBottomNavigation(0)
                         }
+
                         SearchViewUiState.Visible -> {
                             animateBottomNavigation(-250)
                         }

@@ -10,6 +10,9 @@
     <color name="colorAccentDark">#279BDA</color>
     <color name="colorAccentMD3">#143C5C</color>
     <color name="colorOutline">#7DC5FD</color>
+    <color name="colorSurfaceContainer">#E7F1FD</color>
+    <color name="colorSurfaceContainerInverse">#101721</color>
+    <color name="colorOnSecondaryContainer">#27415F</color>
     <color name="colorSurfaceVariant">#22CCE8FF</color>
     <color name="colorAccentTint">#F7F8FD</color>
     <color name="colorMore">#2196F3</color>

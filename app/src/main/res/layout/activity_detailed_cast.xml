@@ -11,10 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:theme="@style/ThemeOverlay.AppCompat" />
 
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
@@ -121,6 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/cast_about"
+                app:cardBackgroundColor="?containerColor"
                 app:cardCornerRadius="0dp"
                 app:strokeColor="@color/grey"
                 app:strokeWidth="0dp">
@@ -147,6 +150,7 @@
                         android:layout_alignParentEnd="true"
                         android:background="?android:selectableItemBackground"
                         android:clickable="true"
+                        android:focusable="true"
                         android:fontFamily="@font/circularstd_book"
                         android:padding="16dp"
                         android:text="@string/more"

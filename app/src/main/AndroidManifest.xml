@@ -15,12 +15,6 @@
         android:theme="@style/AppTheme.MD3"
         android:usesCleartextTraffic="true">
 
-        <activity
-            android:name=".ui.full.YoutubePlayerActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:exported="false"
-            android:hardwareAccelerated="true" />
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -81,6 +75,12 @@
             android:name=".ui.full.FullBannerActivity"
             android:label=" "
             android:theme="@style/AppTheme.MD3.Dark" />
+
+        <activity
+            android:name=".ui.full.YoutubePlayerActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
+            android:exported="false"
+            android:hardwareAccelerated="true" />
 
         <activity android:name=".ui.settings.LicenseActivity" />
         <activity android:name=".ui.settings.AboutActivity" />

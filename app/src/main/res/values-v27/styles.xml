@@ -2,20 +2,26 @@
 <resources>
 
     <style name="AppTheme.MD3" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorAccentMD3</item>
+        <item name="colorSecondary">@color/colorAccentMD3</item>
+        <item name="containerColor">#F0F3F8</item>
         <item name="colorOnPrimary">@color/primaryColor</item>
         <item name="colorOnSurface">@color/lightColorOnSurface</item>
         <item name="colorOutline">@color/colorOutline</item>
         <item name="divider">@color/dividerColor</item>
         <item name="colorSecondaryContainer">@color/colorAccent</item>
+        <item name="colorSurfaceContainer">@color/colorSurfaceContainer</item>
+        <item name="colorSurfaceContainerHighest">@color/colorSurfaceContainer</item>
+        <item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainer</item>
         <item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
+        <item name="colorOnSurfaceVariant">#405B7A</item>
         <item name="android:statusBarColor">@color/colorAccentTint</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:navigationBarColor">@color/colorAccentTint</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="preferenceTheme">@style/MaterialPreferenceThemeOverlay</item>
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
     </style>
-
 
     <style name="AppTheme.MD3.Details" parent="AppTheme.MD3">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

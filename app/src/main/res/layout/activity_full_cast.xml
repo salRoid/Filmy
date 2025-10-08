@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:theme="@style/ThemeOverlay.AppCompat">
 
@@ -17,10 +18,10 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/barlow_black"
-            android:textColor="@color/dark"
-            android:maxLines="2"
             android:ellipsize="end"
+            android:fontFamily="@font/barlow_black"
+            android:maxLines="2"
+            android:textColor="@color/dark"
             android:textSize="20sp" />
 
     </com.google.android.material.appbar.MaterialToolbar>
@@ -28,7 +29,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>

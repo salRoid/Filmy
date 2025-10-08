@@ -30,7 +30,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    companion object{
+    companion object {
         const val TAG = "SEARCH_FRAGMENT"
         fun newInstance(): SearchFragment {
             val args = Bundle()

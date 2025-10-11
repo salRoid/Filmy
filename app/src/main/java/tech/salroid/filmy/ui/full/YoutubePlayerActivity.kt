@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 import android.graphics.Color
 import android.os.Bundle
+import android.view.HapticFeedbackConstants.VIRTUAL_KEY
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -47,7 +48,10 @@ class YoutubePlayerActivity : AppCompatActivity() {
 
     private fun setupUI() {
         binding.videoTitleTextView.text = videoTitle ?: getString(R.string.video_player)
-        binding.closeButton.setOnClickListener { super.onBackPressed() }
+        binding.closeButton.setOnClickListener {
+            binding.closeButton.performHapticFeedback(VIRTUAL_KEY)
+            onBackPressedDispatcher.onBackPressed()
+        }
         hideSystemUI()
         setupWebView()
     }
@@ -85,6 +89,16 @@ class YoutubePlayerActivity : AppCompatActivity() {
             view: WebView?,
             request: WebResourceRequest?
         ): Boolean {
+            try {
+                view?.context?.startActivity(
+                    android.content.Intent(
+                        android.content.Intent.ACTION_VIEW,
+                        request?.url
+                    )
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             return true
         }
     }

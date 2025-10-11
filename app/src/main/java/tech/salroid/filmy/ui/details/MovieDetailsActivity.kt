@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
@@ -48,13 +47,16 @@ import tech.salroid.filmy.ui.home.MoviesFragment.Companion.NETWORK_APPLICABLE
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.SAVED_DATABASE_APPLICABLE
 import tech.salroid.filmy.ui.similar.SimilarFragment
 import tech.salroid.filmy.ui.similar.SimilarViewModel
-import tech.salroid.filmy.utility.FilmyUtility.getStatusBarHeight
 import tech.salroid.filmy.utility.FilmyUtility.getToolBarHeight
 import tech.salroid.filmy.utility.showSnackBar
 import tech.salroid.filmy.utility.themeSystemBars
 import tech.salroid.filmy.utility.toReadableDate
 import java.text.DecimalFormat
 import androidx.core.graphics.toColorInt
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.VIDEO_ID
 import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.VIDEO_TITLE
 
@@ -104,6 +106,9 @@ class MovieDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         updateTheme()
         super.onCreate(savedInstanceState)
+
+        // For Backward Compatibility
+        WindowCompat.enableEdgeToEdge(window)
 
         binding = ActivityDetailedBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -205,11 +210,33 @@ class MovieDetailsActivity : AppCompatActivity() {
     private fun updateToolBar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Set a listener to respond to window insets
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { view, insets ->
+            val systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            view.setPadding(
+                systemBarInsets.left,
+                systemBarInsets.top,
+                systemBarInsets.right,
+                0
+            )
+
+            val toolBarScrimHeight = systemBarInsets.top + getToolBarHeight(this)
+            binding.toolBarScrimStart.updateLayoutParams {
+                height = toolBarScrimHeight
+            }
+            binding.toolBarScrimEnd.updateLayoutParams {
+                height = toolBarScrimHeight
+            }
+
+            insets
+        }
     }
 
     private fun updateTheme() {
         darkMode = isDarkMode()
-        if (darkMode) setTheme(R.style.AppTheme_MD3_Dark_Details) else setTheme(R.style.AppTheme_MD3_Details)
+        if (darkMode) setTheme(R.style.AppTheme_MD3_Dark_Details) else setTheme(R.style.AppTheme_MD3)
     }
 
     private fun setupListeners() {
@@ -262,14 +289,6 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun updateToolBarScrims() {
-        val toolBarScrimHeight = getStatusBarHeight(this) + getToolBarHeight(this)
-        val toolbarScrimStartParams =
-            binding.toolBarScrimStart.layoutParams as ViewGroup.LayoutParams
-        val toolbarScrimEndParams =
-            binding.toolBarScrimEnd.layoutParams as ViewGroup.LayoutParams
-        toolbarScrimStartParams.height = toolBarScrimHeight
-        toolbarScrimEndParams.height = toolBarScrimHeight
-
         binding.backdrop.viewTreeObserver.addOnScrollChangedListener {
             val rect = Rect()
             binding.backdrop.let {

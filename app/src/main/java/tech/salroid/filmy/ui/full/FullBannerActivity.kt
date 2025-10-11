@@ -30,7 +30,7 @@ class FullBannerActivity : AppCompatActivity() {
 
         binding.cross.setOnClickListener {
             binding.cross.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         Glide.with(this)

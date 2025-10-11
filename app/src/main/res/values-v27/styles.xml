@@ -23,9 +23,4 @@
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
     </style>
 
-    <style name="AppTheme.MD3.Details" parent="AppTheme.MD3">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:navigationBarColor">@color/surfaceColorLight</item>
-    </style>
-
 </resources>

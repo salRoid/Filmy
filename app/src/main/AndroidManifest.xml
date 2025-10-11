@@ -54,7 +54,7 @@
         <activity
             android:name=".ui.details.MovieDetailsActivity"
             android:label=" "
-            android:theme="@style/AppTheme.MD3.Details" />
+            android:theme="@style/AppTheme.MD3" />
 
         <activity
             android:name=".ui.cast_crew.CastCrewDetailsActivity"

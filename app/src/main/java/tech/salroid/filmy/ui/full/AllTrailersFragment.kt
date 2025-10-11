@@ -123,7 +123,7 @@ class AllTrailersFragment : Fragment() {
         binding.allTrailerRecyclerView.adapter = trailers?.let {
             MovieTrailersAdapter(it) { trailerData ->
                 trailerData.url?.let { id ->
-                    playTrailerOnYoutube(id, trailerTitle)
+                    playTrailerOnYoutube(id, trailerData.title)
                 }
             }
         }

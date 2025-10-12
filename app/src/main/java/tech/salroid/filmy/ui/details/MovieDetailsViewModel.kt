@@ -6,8 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.RatingResponse
+import tech.salroid.filmy.data.local.model.UpdateResult
 import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.FAVOURITES
 import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.WATCHLIST
 import tech.salroid.filmy.ui.home.MoviesRepository
@@ -21,14 +24,13 @@ class MovieDetailsViewModel @Inject constructor(
     private val _uiStateMovieDetails = MutableStateFlow<MovieDetails?>(null)
     private val _uiStateRatings = MutableStateFlow<RatingResponse?>(null)
     private val _uiStateAddToCollection = MutableStateFlow<Pair<Boolean, String?>>(Pair(false, ""))
-    private val _uiStateUpdateCollection = MutableStateFlow(Triple(-1, "", false))
-
+    private val _updateResult = MutableSharedFlow<UpdateResult>()
     val uiStateMovieDetails: StateFlow<MovieDetails?> = _uiStateMovieDetails.asStateFlow()
     val uiStateRatingResponse: StateFlow<RatingResponse?> = _uiStateRatings.asStateFlow()
     val uiStateAddToCollection: StateFlow<Pair<Boolean, String?>> =
         _uiStateAddToCollection.asStateFlow()
-    val uiStateUpdateCollection: StateFlow<Triple<Int, String, Boolean>> =
-        _uiStateUpdateCollection.asStateFlow()
+    val updateResult: SharedFlow<UpdateResult> = _updateResult.asSharedFlow()
+    private val movieUpdateMutex = Mutex()
 
     fun getMovieDetails(movieId: String?, movieType: Int, addToLocal: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -84,20 +86,41 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateMovieDetailsInDb(
-        movieDetails: MovieDetails,
-        message: String,
-        remove: Boolean
+    fun updateMovieStatus(
+        isTogglingFavorite: Boolean = false,
+        isTogglingWatchlist: Boolean = false
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val updatedID = moviesRepository.updateMovieDetails(movieDetails)
-            _uiStateUpdateCollection.emit(
-                Triple(
-                    updatedID,
-                    message,
-                    remove
+            val movieToUpdate = uiStateMovieDetails.value ?: return@launch
+
+            movieUpdateMutex.withLock {
+                val rowsAffected = moviesRepository.updateMovieDetails(
+                    movieToUpdate.apply {
+                        if (isTogglingFavorite) {
+                            favorite = !favorite
+                        }
+                        if (isTogglingWatchlist) {
+                            watchlist = !watchlist
+                        }
+                    }
                 )
-            )
+
+                if (rowsAffected == 0) {
+                    if (isTogglingFavorite) movieToUpdate.favorite = true
+                    if (isTogglingWatchlist) movieToUpdate.watchlist = true
+
+                    moviesRepository.addMovieDetailsToLocal(movieToUpdate)
+                }
+
+                _updateResult.emit(
+                    UpdateResult(
+                        updatedFavoriteState = movieToUpdate.favorite,
+                        updatedWatchlistState = movieToUpdate.watchlist,
+                        actionFavorite = isTogglingFavorite,
+                        actionWatchlist = isTogglingWatchlist
+                    )
+                )
+            }
         }
     }
 
@@ -107,11 +130,20 @@ class MovieDetailsViewModel @Inject constructor(
                 moviesRepository.getRatings(it)
                     .flowOn(Dispatchers.IO)
                     .catch {
-                        // error
+                        // no -op
                     }.collect { ratingResponse ->
                         _uiStateRatings.emit(ratingResponse)
                     }
             }
         }
+    }
+
+    /**
+     * Helper function on MovieDetails to apply changes.
+     * This is just a suggestion for cleaner code inside the withLock block.
+     */
+    private fun MovieDetails.apply(block: MovieDetails.() -> Unit): MovieDetails {
+        block(this)
+        return this
     }
 }

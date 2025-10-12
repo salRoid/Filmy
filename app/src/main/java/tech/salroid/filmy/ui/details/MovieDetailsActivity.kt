@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
@@ -118,6 +119,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         updateToolBar()
         themeSystemBars(!darkMode)
+        addBackPressListener()
         updateToolBarScrims()
         setupListeners()
         getDataFromIntent(intent)
@@ -169,32 +171,34 @@ class MovieDetailsActivity : AppCompatActivity() {
             }
         }
         lifecycleScope.launch {
-            viewModel.uiStateUpdateCollection.collect { (updatedID, message, remove) ->
-                if (updatedID > 0) {
-                    if (remove) {
-                        if (message == WATCHLIST) isWatchlist = false
-                        if (message == FAVOURITES) isFavourite = false
-
-                        binding.backdrop.showSnackBar(
-                            "Movie removed from $message",
-                            positive = false
-                        )
+            viewModel.updateResult.collect { result ->
+                if (result.actionFavorite) {
+                    val message = if (result.updatedFavoriteState) {
+                        "Movie added to favorites."
                     } else {
-                        if (message == WATCHLIST) isWatchlist = true
-                        if (message == FAVOURITES) isFavourite = true
-                        binding.backdrop.showSnackBar("Movie added to $message")
+                        "Movie removed from favorites."
                     }
-
-                    invalidateOptionsMenu()
-                } else if (updatedID != -1) {
-                    // Movie is not in db but as it's going to be in watchlist/fav
-                    // we should save the all movie details
-                    viewModel.saveMovieDetailsInDb(
-                        movieDetails,
-                        addedToCollection = true,
-                        message = message
+                    binding.backdrop.showSnackBar(
+                        message,
+                        positive = result.updatedFavoriteState
                     )
                 }
+
+                if (result.actionWatchlist) {
+                    val message = if (result.updatedWatchlistState) {
+                        "Movie added to watchlist."
+                    } else {
+                        "Movie removed from watchlist."
+                    }
+                    binding.backdrop.showSnackBar(
+                        message,
+                        positive = result.updatedWatchlistState
+                    )
+                }
+
+                isFavourite = result.updatedFavoriteState
+                isWatchlist = result.updatedWatchlistState
+                invalidateOptionsMenu()
             }
         }
 
@@ -507,8 +511,8 @@ class MovieDetailsActivity : AppCompatActivity() {
             }
 
             R.id.action_share -> shareMovie()
-            R.id.action_fav -> if (isFavourite) removeFavorite() else addFavorite()
-            R.id.action_watch -> if (isWatchlist) removeWatchlist() else addWatchlist()
+            R.id.action_fav -> updateMovieStatus(isTogglingFavorite = true)
+            R.id.action_watch -> updateMovieStatus(isTogglingWatchlist = true)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -632,32 +636,14 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun addWatchlist() {
-        movieDetails.watchlist = true
-        movieDetails.type = type
-        viewModel.updateMovieDetailsInDb(movieDetails, WATCHLIST, false)
-    }
-
-    private fun addFavorite() {
-        movieDetails.favorite = true
-        movieDetails.type = type
-        viewModel.updateMovieDetailsInDb(movieDetails, FAVOURITES, false)
-    }
-
-    private fun removeWatchlist() {
-        movieDetails.watchlist = false
-        movieDetails.type = type
-        viewModel.updateMovieDetailsInDb(movieDetails, WATCHLIST, true)
-    }
-
-    private fun removeFavorite() {
-        movieDetails.favorite = false
-        movieDetails.type = type
-        viewModel.updateMovieDetailsInDb(movieDetails, FAVOURITES, true)
-    }
-
-    fun setRatingGone() {
-        binding.viewRatings.ratingBar.visibility = View.GONE
+    private fun updateMovieStatus(
+        isTogglingFavorite: Boolean = false,
+        isTogglingWatchlist: Boolean = false
+    ) {
+        viewModel.updateMovieStatus(
+            isTogglingFavorite = isTogglingFavorite,
+            isTogglingWatchlist = isTogglingWatchlist
+        )
     }
 
     private fun openCustomTabIntent(url: String, color: Int) {
@@ -667,11 +653,14 @@ class MovieDetailsActivity : AppCompatActivity() {
         customTabsIntent.launchUrl(this, Uri.parse(url))
     }
 
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            super.onBackPressed()
-        } else {
-            supportFragmentManager.popBackStack()
+    private fun addBackPressListener() {
+        onBackPressedDispatcher.addCallback(this) {
+            if (supportFragmentManager.backStackEntryCount > 0) {
+                supportFragmentManager.popBackStack()
+            } else {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+            }
         }
     }
 

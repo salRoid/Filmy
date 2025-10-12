@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -13,13 +14,13 @@ import android.view.View
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.palette.graphics.Palette
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -58,6 +59,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import com.bumptech.glide.request.target.CustomTarget
 import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.VIDEO_ID
 import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.VIDEO_TITLE
 
@@ -314,7 +316,8 @@ class MovieDetailsActivity : AppCompatActivity() {
             networkApplicable = it.getBooleanExtra(NETWORK_APPLICABLE, false)
             databaseApplicable = it.getBooleanExtra(DATABASE_APPLICABLE, false)
             savedDatabaseApplicable = it.getBooleanExtra(SAVED_DATABASE_APPLICABLE, false)
-            val movieType = it.getSerializableExtra(MOVIE_TYPE) as? MoviesFragment.MovieType
+            val movieType =
+                it.getSerializableExtra(MOVIE_TYPE, MoviesFragment.MovieType::class.java)
             type = movieType?.ordinal ?: 0
             movieId = it.getStringExtra(MOVIE_ID)
             movieTitle = it.getStringExtra(MOVIE_TITLE)
@@ -442,7 +445,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             Glide.with(this)
                 .asBitmap()
                 .load(bannerTop)
-                .into(object : SimpleTarget<Bitmap?>() {
+                .into(object : CustomTarget<Bitmap?>() {
                     override fun onResourceReady(
                         resource: Bitmap,
                         transition: Transition<in Bitmap?>?
@@ -469,22 +472,30 @@ class MovieDetailsActivity : AppCompatActivity() {
                             }
                         }
                     }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        // no - op
+                    }
                 })
         } catch (e: Exception) {
-            //Log.d(LOG_TAG, e.getMessage());
+            e.printStackTrace()
         }
 
         try {
             Glide.with(this)
                 .asBitmap()
                 .load(trailerThumbnailUrl)
-                .into(object : SimpleTarget<Bitmap?>() {
+                .into(object : CustomTarget<Bitmap?>() {
                     override fun onResourceReady(
                         resource: Bitmap,
                         transition: Transition<in Bitmap?>?
                     ) {
                         binding.detailYoutube.setImageBitmap(resource)
                         if (trailerFinal != null) binding.playButton.visibility = View.VISIBLE
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        // no-op
                     }
                 })
         } catch (e: Exception) {
@@ -506,7 +517,7 @@ class MovieDetailsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                onBackPressedDispatcher.onBackPressed()
                 if (type == -1) startActivity(Intent(this, MainActivity::class.java))
             }
 
@@ -648,7 +659,10 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun openCustomTabIntent(url: String, color: Int) {
         val builder = CustomTabsIntent.Builder()
-        builder.setToolbarColor(ContextCompat.getColor(this@MovieDetailsActivity, color))
+        val params = CustomTabColorSchemeParams.Builder()
+            .setToolbarColor(ContextCompat.getColor(this, color))
+            .build()
+        builder.setDefaultColorSchemeParams(params)
         val customTabsIntent = builder.build()
         customTabsIntent.launchUrl(this, Uri.parse(url))
     }

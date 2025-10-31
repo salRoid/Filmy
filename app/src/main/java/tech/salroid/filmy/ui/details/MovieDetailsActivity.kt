@@ -60,8 +60,10 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import com.bumptech.glide.request.target.CustomTarget
+import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.IS_SHORT
 import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.VIDEO_ID
 import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.VIDEO_TITLE
+import tech.salroid.filmy.utility.isYoutubeShortVideo
 
 @AndroidEntryPoint
 class MovieDetailsActivity : AppCompatActivity() {
@@ -267,13 +269,17 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         binding.trailerView.setOnClickListener {
             trailerFinal?.let {
-                Intent(
-                    this@MovieDetailsActivity,
-                    YoutubePlayerActivity::class.java
-                ).run {
-                    putExtra(VIDEO_ID, trailerFinal)
-                    putExtra(VIDEO_TITLE, trailerTitle)
-                    startActivity(this)
+                lifecycleScope.launch {
+                    val isShort = isYoutubeShortVideo(it)
+                    Intent(
+                        this@MovieDetailsActivity,
+                        YoutubePlayerActivity::class.java
+                    ).run {
+                        putExtra(VIDEO_ID, trailerFinal)
+                        putExtra(VIDEO_TITLE, trailerTitle)
+                        putExtra(IS_SHORT, isShort)
+                        startActivity(this)
+                    }
                 }
             }
         }

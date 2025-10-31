@@ -7,11 +7,15 @@ import android.view.*
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.launch
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.TrailerData
 import tech.salroid.filmy.databinding.AllTrailerLayoutBinding
 import tech.salroid.filmy.ui.adapters.MovieTrailersAdapter
+import tech.salroid.filmy.ui.full.YoutubePlayerActivity.Companion.IS_SHORT
+import tech.salroid.filmy.utility.isYoutubeShortVideo
 import tech.salroid.filmy.utility.themeSystemBars
 import kotlin.math.hypot
 import androidx.core.graphics.toColorInt
@@ -130,10 +134,14 @@ class AllTrailersFragment : Fragment() {
     }
 
     private fun playTrailerOnYoutube(trailerId: String, trailerTitle: String?) {
-        Intent(activity, YoutubePlayerActivity::class.java).run {
-            putExtra(YoutubePlayerActivity.VIDEO_ID, trailerId)
-            putExtra(YoutubePlayerActivity.VIDEO_TITLE, trailerTitle)
-            startActivity(this)
+        lifecycleScope.launch {
+            val isShort = isYoutubeShortVideo(trailerId)
+            Intent(activity, YoutubePlayerActivity::class.java).run {
+                putExtra(YoutubePlayerActivity.VIDEO_ID, trailerId)
+                putExtra(YoutubePlayerActivity.VIDEO_TITLE, trailerTitle)
+                putExtra(IS_SHORT, isShort)
+                startActivity(this)
+            }
         }
     }
 

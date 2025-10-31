@@ -25,10 +25,10 @@ fun getYouTubeIframeHTML(youtubeVideoId: String): String {
                                 'controls': 1, 
                                 'fs': 1,
                                 'rel': 0,
-                                'modestbranding': 1,
                                 'iv_load_policy': 3, 
-                                'showinfo': 0,      
-                                'playsinline': 1
+                                'playsinline': 1,
+                                'origin': 'https://app.filmy.tech',
+                                'enablejsapi': 1
                             },
                             events: {
                                 'onReady': function(event) { event.target.playVideo(); }

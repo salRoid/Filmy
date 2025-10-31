@@ -31,9 +31,10 @@ class YoutubePlayerActivity : AppCompatActivity() {
     companion object {
         const val VIDEO_ID = "video_id"
         const val VIDEO_TITLE = "video_title"
-        private const val YT_BASE_URL = "https://www.youtube.com"
+        private const val APP_BASE_URL = "https://app.filmy.tech"
         private const val MIME_TYPE = "text/html"
         private const val ENCODING = "utf-8"
+        private const val DESKTOP_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +64,12 @@ class YoutubePlayerActivity : AppCompatActivity() {
                 setBackgroundColor(Color.TRANSPARENT)
                 settings.apply {
                     javaScriptEnabled = true
+                    domStorageEnabled = true
                     mediaPlaybackRequiresUserGesture = false
                     setSupportZoom(false)
                     builtInZoomControls = false
                     displayZoomControls = false
+                    userAgentString = DESKTOP_USER_AGENT
                 }
 
                 webViewClient = YTWebViewClient()
@@ -74,7 +77,7 @@ class YoutubePlayerActivity : AppCompatActivity() {
 
                 // Load the YouTube video iframe HTML
                 loadDataWithBaseURL(
-                    YT_BASE_URL,
+                    APP_BASE_URL,
                     getYouTubeIframeHTML(id),
                     MIME_TYPE,
                     ENCODING,
@@ -89,17 +92,22 @@ class YoutubePlayerActivity : AppCompatActivity() {
             view: WebView?,
             request: WebResourceRequest?
         ): Boolean {
-            try {
-                view?.context?.startActivity(
-                    android.content.Intent(
-                        android.content.Intent.ACTION_VIEW,
-                        request?.url
+            val url = request?.url.toString()
+            return if (url.startsWith("https://www.youtube.com")) {
+                false
+            } else {
+                try {
+                    view?.context?.startActivity(
+                        android.content.Intent(
+                            android.content.Intent.ACTION_VIEW,
+                            request?.url
+                        )
                     )
-                )
-            } catch (e: Exception) {
-                e.printStackTrace()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                true
             }
-            return true
         }
     }
 

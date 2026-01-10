@@ -10,6 +10,9 @@ import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 
 interface MoviesApiHelper {
     fun getMovies(type: String, isTrending: Boolean): Flow<PagingData<Movie>>
+
+    fun getMoviesFlow(type: String, isTrending: Boolean): Flow<MoviesResponse>
+
     fun getTvShows(type: String, isTrending: Boolean): Flow<PagingData<TvShow>>
     fun getMovieDetails(id: String): Flow<MovieDetails>
     fun getTvShowDetails(id: String): Flow<TvDetails>

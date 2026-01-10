@@ -18,6 +18,9 @@ class MoviesRepository @Inject constructor(
     fun getMovies(type: String, isTrending: Boolean): Flow<PagingData<Movie>> =
         moviesApiHelper.getMovies(type, isTrending)
 
+    fun getMoviesFlow(type: String, isTrending: Boolean): Flow<MoviesResponse> =
+        moviesApiHelper.getMoviesFlow(type, isTrending)
+
     fun getTvShows(type: String, isTrending: Boolean): Flow<PagingData<TvShow>> =
         moviesApiHelper.getTvShows(type, isTrending)
 

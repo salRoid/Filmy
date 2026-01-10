@@ -31,6 +31,13 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
         }
     ).flow
 
+    override fun getMoviesFlow(
+        type: String,
+        isTrending: Boolean
+    ): Flow<MoviesResponse> = flow {
+        emit(apiService.getTrendingMovies("day", 1))
+    }
+
     override fun getTvShows(type: String, isTrending: Boolean): Flow<PagingData<TvShow>> = Pager(
         config = PagingConfig(
             pageSize = 20,

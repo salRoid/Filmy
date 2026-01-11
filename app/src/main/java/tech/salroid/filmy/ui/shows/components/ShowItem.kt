@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.composables
+package tech.salroid.filmy.ui.shows.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,19 +23,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import tech.salroid.filmy.data.model.MoviePreview
-import tech.salroid.filmy.ui.movies.dummyMoviePreview
+import tech.salroid.filmy.data.model.TvShowPreview
+import tech.salroid.filmy.ui.movies.dummyShowPreview
 
 @Composable
-fun MovieItem(
-    modifier: Modifier,
-    movie: MoviePreview,
-    onMovieClick: (Int) -> Unit
+fun ShowItem(
+    modifier: Modifier = Modifier,
+    show: TvShowPreview,
+    onShowClick: (Int) -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(corner = CornerSize(4.dp)),
         colors = CardDefaults.cardColors(containerColor = Transparent),
-        onClick = { onMovieClick(movie.id) }
+        onClick = { onShowClick(show.id) }
     ) {
         Column(
             modifier = modifier,
@@ -47,8 +47,8 @@ fun MovieItem(
                     .height(170.dp)
                     .clip(RoundedCornerShape(corner = CornerSize(4.dp))),
                 contentScale = ContentScale.Crop,
-                model = movie.posterUrl,
-                contentDescription = "${movie.title} movie poster"
+                model = show.posterUrl,
+                contentDescription = "${show.title} show poster"
             )
 
             Text(
@@ -59,26 +59,29 @@ fun MovieItem(
                     fontWeight = FontWeight.Medium,
                     lineHeight = 18.sp
                 ),
-                text = movie.title
+                text = show.title
             )
             Text(
                 modifier = Modifier.padding(top = 4.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
-                text = movie.readableReleaseDate
+                text = show.firstAirReadableDate
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    name = "Show Item - Preview",
+    showBackground = true
+)
 @Composable
 fun MovieItemPreview() {
-    MovieItem(
+    ShowItem(
         modifier = Modifier
             .width(140.dp)
             .padding(16.dp),
-        movie = dummyMoviePreview,
-        onMovieClick = { }
+        show = dummyShowPreview,
+        onShowClick = { }
     )
 }

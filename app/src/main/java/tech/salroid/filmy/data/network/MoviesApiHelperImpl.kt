@@ -52,6 +52,13 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
         }
     ).flow
 
+    override fun getTvShowsFlow(
+        type: String,
+        isTrending: Boolean
+    ): Flow<TvShowResponse> = flow {
+        emit(apiService.getTrendingTvShows("day", 1))
+    }
+
     override fun getMovieDetails(id: String): Flow<MovieDetails> = flow {
         emit(apiService.getMovieDetails(id))
     }

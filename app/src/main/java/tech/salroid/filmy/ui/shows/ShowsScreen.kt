@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.movies
+package tech.salroid.filmy.ui.shows
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
@@ -8,28 +8,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.window.core.layout.WindowSizeClass
 import kotlinx.collections.immutable.persistentListOf
-import tech.salroid.filmy.data.model.MoviePreview
+import tech.salroid.filmy.data.model.TvShowPreview
 import tech.salroid.filmy.ui.LocalWindowSizeClass
 import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.common.components.LoadingWidget
-import tech.salroid.filmy.ui.movies.components.MoviesList
+import tech.salroid.filmy.ui.shows.components.ShowsList
 
 @Composable
-fun MoviesScreen(
+fun ShowsScreen(
     modifier: Modifier = Modifier,
-    state: MoviesScreenState,
-    onMovieClick: (Int) -> Unit,
+    state: ShowsScreenState,
+    onShowClick: (Int) -> Unit,
     onRetry: () -> Unit
 ) {
     when (state) {
-        is MoviesScreenState.Loading -> LoadingWidget(modifier = modifier)
-        is MoviesScreenState.Success -> MoviesList(
+        is ShowsScreenState.Loading -> LoadingWidget(modifier = modifier)
+        is ShowsScreenState.Success -> ShowsList(
             modifier = modifier,
-            movies = state.moviesList,
-            onMovieClick = onMovieClick
+            shows = state.shows,
+            onShowClick = onShowClick
         )
 
-        is MoviesScreenState.Error -> ErrorWidget(
+        is ShowsScreenState.Error -> ErrorWidget(
             modifier = modifier,
             message = state.errorMessage,
             onRetryClick = onRetry
@@ -38,43 +38,43 @@ fun MoviesScreen(
 }
 
 // <---------------------- PREVIEWS --------------------------->
-private val previewMovies = persistentListOf(
-    MoviePreview(
+private val previewShows = persistentListOf(
+    TvShowPreview(
         id = 1,
-        title = "Inception",
+        title = "Show 1",
         "",
-        readableReleaseDate = "06 Jan 2026"
+        firstAirReadableDate = "06 Jan 2026"
     ),
-    MoviePreview(
+    TvShowPreview(
         id = 2,
-        title = "Interstellar",
+        title = "Show 2",
         "",
-        readableReleaseDate = "06 Jan 2026"
+        firstAirReadableDate = "06 Jan 2026"
     ),
-    MoviePreview(
+    TvShowPreview(
         id = 3,
-        title = "Dune",
+        title = "Show 3",
         "",
-        readableReleaseDate = "06 Jan 2026"
+        firstAirReadableDate = "06 Jan 2026"
     )
 )
 
 @Preview(
-    name = "MoviesScreen – Loading",
+    name = "ShowsScreen – Loading",
     showBackground = true
 )
 @Composable
 fun MoviesScreenLoadingPreview() {
-    MoviesScreen(
+    ShowsScreen(
         modifier = Modifier.fillMaxSize(),
-        state = MoviesScreenState.Loading,
-        onMovieClick = {},
+        state = ShowsScreenState.Loading,
+        onShowClick = {},
         onRetry = {}
     )
 }
 
 @Preview(
-    name = "MoviesScreen – Success",
+    name = "ShowsScreen – Success",
     showBackground = true
 )
 @Composable
@@ -84,29 +84,29 @@ fun MoviesScreenSuccessPreview() {
     ).windowSizeClass
 
     CompositionLocalProvider(LocalWindowSizeClass provides windowSizeClass) {
-        MoviesScreen(
+        ShowsScreen(
             modifier = Modifier.fillMaxSize(),
-            state = MoviesScreenState.Success(
-                moviesList = previewMovies
+            state = ShowsScreenState.Success(
+                shows = previewShows
             ),
-            onMovieClick = {},
+            onShowClick = {},
             onRetry = {}
         )
     }
 }
 
 @Preview(
-    name = "MoviesScreen – Error",
+    name = "ShowsScreen – Error",
     showBackground = true
 )
 @Composable
 fun MoviesScreenErrorPreview() {
-    MoviesScreen(
+    ShowsScreen(
         modifier = Modifier.fillMaxSize(),
-        state = MoviesScreenState.Error(
+        state = ShowsScreenState.Error(
             errorMessage = "Something went wrong. Please try again."
         ),
-        onMovieClick = {},
+        onShowClick = {},
         onRetry = {}
     )
 }

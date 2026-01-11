@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.navigation
+package tech.salroid.filmy.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,8 +9,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import tech.salroid.filmy.ui.movies.MovieDetails
-import tech.salroid.filmy.ui.movies.MoviesScreen
+import tech.salroid.filmy.ui.movies.MoviesRoute
+import tech.salroid.filmy.ui.movies.details.MovieDetailsScreen
+import tech.salroid.filmy.ui.shows.ShowsRoute
+import tech.salroid.filmy.ui.shows.details.ShowDetailsScreen
 
 @Composable
 fun AppNavHost(
@@ -23,7 +25,7 @@ fun AppNavHost(
         startDestination = AppRoute.MoviesGraph.route,
     ) {
         moviesGraph(navController)
-        showsGraph()
+        showsGraph(navController)
         collectionGraph()
         accountGraph()
     }
@@ -35,7 +37,7 @@ private fun NavGraphBuilder.moviesGraph(navController: NavHostController) {
         route = AppRoute.MoviesGraph.route
     ) {
         composable(AppRoute.Movies.route) {
-            MoviesScreen { id ->
+            MoviesRoute { id ->
                 navController.navigate(AppRoute.MovieDetails.create(id))
             }
         }
@@ -45,36 +47,50 @@ private fun NavGraphBuilder.moviesGraph(navController: NavHostController) {
                 type = NavType.IntType
             })
         ) {
-            MovieDetails(movieId = it.arguments?.getInt("movieId") ?: 1234) {
+            MovieDetailsScreen(movieId = it.arguments?.getInt("movieId") ?: 0) {
                 navController.popBackStack()
             }
         }
     }
 }
 
-private fun NavGraphBuilder.showsGraph() {
+private fun NavGraphBuilder.showsGraph(navController: NavHostController) {
     navigation(
         route = AppRoute.ShowsGraph.route,
-        startDestination = "shows"
+        startDestination = AppRoute.Shows.route
     ) {
-        composable("shows") { MoviesScreen { } }
+        composable(AppRoute.Shows.route) {
+            ShowsRoute { id ->
+                navController.navigate(AppRoute.ShowDetails.create(id))
+            }
+        }
+        composable(
+            route = AppRoute.ShowDetails.route,
+            arguments = listOf(navArgument("showId") {
+                type = NavType.IntType
+            })
+        ) {
+            ShowDetailsScreen(showId = it.arguments?.getInt("showId") ?: 0) {
+                navController.popBackStack()
+            }
+        }
     }
 }
 
 private fun NavGraphBuilder.collectionGraph() {
     navigation(
         route = AppRoute.CollectionGraph.route,
-        startDestination = "collection"
+        startDestination = AppRoute.Collection.route
     ) {
-        composable("collection") { MoviesScreen { } }
+        composable(AppRoute.Collection.route) { MoviesRoute { } }
     }
 }
 
 private fun NavGraphBuilder.accountGraph() {
     navigation(
         route = AppRoute.AccountGraph.route,
-        startDestination = "account"
+        startDestination = AppRoute.Account.route
     ) {
-        composable("account") { MoviesScreen { } }
+        composable(AppRoute.Account.route) { MoviesRoute { } }
     }
 }

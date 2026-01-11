@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.navigation
+package tech.salroid.filmy.core.navigation.components
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -13,6 +13,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import tech.salroid.filmy.core.navigation.TopLevelDestinations
 
 @Composable
 fun AppNavigationBar(navController: NavHostController) {

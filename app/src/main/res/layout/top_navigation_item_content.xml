@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/filmy44dp"
-    tools:parentTag="tech.salroid.filmy.ui.component.FilmyTopNavigationBarItem">
+    tools:parentTag="tech.salroid.filmy.ui.components.FilmyTopNavigationBarItem">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/navigationItemPrimaryTitle"

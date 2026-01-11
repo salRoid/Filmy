@@ -2,6 +2,9 @@ package tech.salroid.filmy.ui.home
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import tech.salroid.filmy.data.local.db.FilmyDatabase
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
@@ -18,11 +21,25 @@ class MoviesRepository @Inject constructor(
     fun getMovies(type: String, isTrending: Boolean): Flow<PagingData<Movie>> =
         moviesApiHelper.getMovies(type, isTrending)
 
-    fun getMoviesFlow(type: String, isTrending: Boolean): Flow<MoviesResponse> =
+    fun getMoviesFlow(type: String, isTrending: Boolean): Flow<Result<MoviesResponse>> =
         moviesApiHelper.getMoviesFlow(type, isTrending)
+            .map { response ->
+                Result.success(response)
+            }
+            .catch { throwable ->
+                emit(Result.failure(throwable))
+            }
 
     fun getTvShows(type: String, isTrending: Boolean): Flow<PagingData<TvShow>> =
         moviesApiHelper.getTvShows(type, isTrending)
+
+    fun getTvShowsFlow(type: String, isTrending: Boolean): Flow<Result<TvShowResponse>> =
+        moviesApiHelper.getTvShowsFlow(type, isTrending)
+            .map { response ->
+                Result.success(response)
+            }.catch { throwable ->
+                emit(Result.failure(throwable))
+            }
 
     fun getMovieDetailsFromLocal(id: Int, type: Int): MovieDetails? {
         return filmyDatabase.movieDetailsDao().getDetailsOfType(id, type)

@@ -17,12 +17,13 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowSizeClass
-import tech.salroid.filmy.ui.navigation.AppNavHost
-import tech.salroid.filmy.ui.navigation.AppNavigationBar
-import tech.salroid.filmy.ui.navigation.TopLevelDestinations
+import tech.salroid.filmy.core.navigation.AppNavHost
+import tech.salroid.filmy.core.navigation.components.AppNavigationBar
+import tech.salroid.filmy.core.navigation.TopLevelDestinations
 
 @Composable
 fun FilmyApp(

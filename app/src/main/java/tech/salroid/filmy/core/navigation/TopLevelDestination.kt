@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.navigation
+package tech.salroid.filmy.core.navigation
 
 import tech.salroid.filmy.R
 

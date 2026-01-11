@@ -175,4 +175,8 @@ dependencies {
     androidTestImplementation "androidx.test:runner:1.7.0"
     androidTestImplementation "androidx.test:rules:1.7.0"
     androidTestImplementation 'androidx.test:core-ktx:1.7.0'
+
+    // Compose
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
+    testImplementation("app.cash.turbine:turbine")
 }

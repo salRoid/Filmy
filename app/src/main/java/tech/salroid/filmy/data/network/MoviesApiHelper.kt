@@ -14,6 +14,9 @@ interface MoviesApiHelper {
     fun getMoviesFlow(type: String, isTrending: Boolean): Flow<MoviesResponse>
 
     fun getTvShows(type: String, isTrending: Boolean): Flow<PagingData<TvShow>>
+
+    fun getTvShowsFlow(type: String, isTrending: Boolean): Flow<TvShowResponse>
+
     fun getMovieDetails(id: String): Flow<MovieDetails>
     fun getTvShowDetails(id: String): Flow<TvDetails>
     fun getOMDBRatings(id: String): Flow<RatingResponse>

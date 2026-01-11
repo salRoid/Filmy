@@ -1,6 +1,7 @@
 package tech.salroid.filmy.theme
 
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
@@ -40,10 +41,12 @@ private val LightColorScheme = lightColorScheme(
     outlineVariant = OutlineVariant,
 )
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FilmyTheme(content: @Composable () -> Unit) {
     val colorScheme = LightColorScheme
-    MaterialTheme(
+
+    MaterialExpressiveTheme(
         colorScheme = colorScheme
     ) {
         content()

@@ -34,9 +34,9 @@
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">?android:attr/colorBackground</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_background</item>
-        <item name="android:statusBarColor">?colorSurfaceVariant</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
     </style>
 
     <style name="Theme.AppWidget.AppWidgetContainerParent" parent="Theme.Material3.DynamicColors.DayNight">

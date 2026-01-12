@@ -29,7 +29,7 @@ import tech.salroid.filmy.data.local.model.MoviesUiState
 import tech.salroid.filmy.databinding.FragmentMoviesBinding
 import tech.salroid.filmy.ui.adapters.MoviesAdapter
 import tech.salroid.filmy.ui.details.MovieDetailsActivity
-import tech.salroid.filmy.ui.search.SearchViewModel
+import tech.salroid.filmy.ui.search.SearchViewModelLegacy
 import tech.salroid.filmy.utility.FilmyUtility.getGridLayoutManager
 import tech.salroid.filmy.utility.isDarkThemeActivated
 import tech.salroid.filmy.utility.showSnackBar
@@ -38,7 +38,7 @@ import tech.salroid.filmy.utility.showSnackBar
 class MoviesFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private val viewModelSearch: SearchViewModel by activityViewModels()
+    private val viewModelSearch: SearchViewModelLegacy by activityViewModels()
     private var adapter: MoviesAdapter? = null
     private var _binding: FragmentMoviesBinding? = null
     private val binding get() = _binding!!

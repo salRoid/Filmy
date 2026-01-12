@@ -27,7 +27,7 @@ import tech.salroid.filmy.utility.themeSystemBars
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 
-    private lateinit var viewModel: SearchViewModel
+    private lateinit var viewModel: SearchViewModelLegacy
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
@@ -47,7 +47,7 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[SearchViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[SearchViewModelLegacy::class.java]
 
         val spanCount = when (activity?.resources?.configuration?.orientation) {
             Configuration.ORIENTATION_PORTRAIT -> 3

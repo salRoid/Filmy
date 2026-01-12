@@ -20,21 +20,21 @@ val TopLevelDestinations = listOf(
     ),
     TopLevelDestination(
         graphRoute = AppRoute.ShowsGraph.route,
-        startDestinationRoute = "shows",
+        startDestinationRoute = AppRoute.Shows.route,
         label = "Shows",
         iconRes = R.drawable.ic_tv,
-        "Shows"
+        contentDescription = "Shows"
     ),
     TopLevelDestination(
         graphRoute = AppRoute.CollectionGraph.route,
-        startDestinationRoute = "collection",
+        startDestinationRoute = AppRoute.Collection.route,
         label = "Collection",
         iconRes = R.drawable.ic_collections_bookmark_24dp,
         contentDescription = "Collection"
     ),
     TopLevelDestination(
         graphRoute = AppRoute.AccountGraph.route,
-        startDestinationRoute = "account",
+        startDestinationRoute = AppRoute.Account.route,
         label = "Account",
         iconRes = R.drawable.ic_face,
         contentDescription = "Account"

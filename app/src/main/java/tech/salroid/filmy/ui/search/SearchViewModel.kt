@@ -3,77 +3,73 @@ package tech.salroid.filmy.ui.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import tech.salroid.filmy.data.local.model.SearchResult
 import tech.salroid.filmy.ui.home.MoviesRepository
-import tech.salroid.filmy.ui.home.SearchViewUiState
 import javax.inject.Inject
+import kotlin.collections.map
 
 @HiltViewModel
+@OptIn(
+    FlowPreview::class,
+    ExperimentalCoroutinesApi::class
+)
 class SearchViewModel @Inject constructor(
-    private val moviesRepository: MoviesRepository
+    private val moviesRepository: MoviesRepository,
+    private val searchPreviewMapper: SearchPreviewMapper
 ) : ViewModel() {
 
-    val isSearchOpen = MutableStateFlow(false)
-    val query = MutableStateFlow("")
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
 
-    private val _uiStateCloseSearchView = MutableStateFlow(false)
-    private val _uiStateSearchView = MutableStateFlow<SearchViewUiState>(SearchViewUiState.Hidden)
-    private val _uiStateSearchResult = MutableStateFlow<ArrayList<SearchResult>?>(null)
-    val uiStateSearchResults: StateFlow<ArrayList<SearchResult>?> =
-        _uiStateSearchResult.asStateFlow()
-    val uiStateSearchView: StateFlow<SearchViewUiState?> = _uiStateSearchView.asStateFlow()
-    val uiStateCloseSearch: StateFlow<Boolean> = _uiStateCloseSearchView.asStateFlow()
-
-    init {
-        searchMovies()
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-    private fun searchMovies() {
-        viewModelScope.launch(Dispatchers.IO) {
-            query.debounce(300)
-                .filter { query ->
-                    return@filter query.isNotEmpty()
-                }.distinctUntilChanged().flatMapLatest { query ->
-                    moviesRepository.searchMovies(query)
-                }.flowOn(Dispatchers.Main).collect { result ->
-                    viewModelScope.launch(Dispatchers.Main) {
-                        result.results
-                            .let {
-                                _uiStateSearchResult.emit(it)
-                            }
+    val uiState = _searchQuery
+        .debounce(300)
+        .distinctUntilChanged()
+        .flatMapLatest { query ->
+            if (query.isBlank()) {
+                flowOf(SearchScreenState.Idle)
+            } else {
+                moviesRepository
+                    .searchMoviesFlow(query)
+                    .map { searchResultResponse ->
+                        searchResultResponse.fold(onSuccess = { response ->
+                            runCatching {
+                                response.results
+                                    .map(searchPreviewMapper::map)
+                                    .toImmutableList()
+                            }.fold(onSuccess = { previews ->
+                                SearchScreenState.Success(previews)
+                            }, onFailure = { exception ->
+                                SearchScreenState.Error(exception.message ?: "Mapping Error")
+                            })
+                        }, onFailure = { exception ->
+                            SearchScreenState.Error(exception.message ?: "Something went wrong.")
+                        })
+                    }.onStart {
+                        emit(SearchScreenState.Loading)
                     }
-                }
-        }
-    }
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = SearchScreenState.Idle
+        )
 
-    fun searchViewVisible() {
+    fun onSearchQueryChange(query: String) {
         viewModelScope.launch {
-            _uiStateSearchView.emit(SearchViewUiState.Visible)
-        }
-    }
-
-    fun searchViewHidden() {
-        viewModelScope.launch {
-            _uiStateSearchView.emit(SearchViewUiState.Hidden)
-            isSearchOpen.emit(false)
-        }
-    }
-
-    fun closeSearch() {
-        viewModelScope.launch {
-            _uiStateCloseSearchView.emit(true)
-        }
-    }
-
-    fun closeSearchDone() {
-        viewModelScope.launch {
-            _uiStateCloseSearchView.emit(false)
+            _searchQuery.value = query
         }
     }
 }

@@ -3,7 +3,6 @@ package tech.salroid.filmy.ui.home
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import tech.salroid.filmy.data.local.db.FilmyDatabase
 import tech.salroid.filmy.data.local.db.entity.Movie
@@ -81,6 +80,13 @@ class MoviesRepository @Inject constructor(
 
     fun searchMovies(query: String): Flow<SearchResultResponse> =
         moviesApiHelper.searchMovies(query)
+
+    fun searchMoviesFlow(query: String): Flow<Result<SearchResultResponse>> =
+        moviesApiHelper.searchMovies(query).map {
+            Result.success(it)
+        }.catch {
+            emit(Result.failure(it))
+        }
 
     fun addMovieDetailsToLocal(movieDetails: MovieDetails) {
         return filmyDatabase.movieDetailsDao().insert(movieDetails)

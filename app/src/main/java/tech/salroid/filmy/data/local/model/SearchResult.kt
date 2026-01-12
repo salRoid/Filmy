@@ -14,7 +14,7 @@ data class SearchResult(
     var genreIds: ArrayList<Int> = arrayListOf(),
 
     @SerializedName("id")
-    var id: Int? = null,
+    var id: Int,
 
     @SerializedName("original_language")
     var originalLanguage: String? = null,

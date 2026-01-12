@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import tech.salroid.filmy.R
 import tech.salroid.filmy.databinding.ActivityMainBinding
 import tech.salroid.filmy.ui.intro.FilmyIntroActivity
-import tech.salroid.filmy.ui.search.SearchViewModel
+import tech.salroid.filmy.ui.search.SearchViewModelLegacy
 import tech.salroid.filmy.utility.PreferenceHelper.isColdStart
 import tech.salroid.filmy.utility.PreferenceHelper.setColdStartDone
 import tech.salroid.filmy.utility.themeSystemBars
@@ -24,7 +24,7 @@ import tech.salroid.filmy.utility.themeSystemBars
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
-    private val viewModelSearch: SearchViewModel by viewModels()
+    private val viewModelSearch: SearchViewModelLegacy by viewModels()
     private var throughShortcut: Boolean? = null
     private lateinit var binding: ActivityMainBinding
 

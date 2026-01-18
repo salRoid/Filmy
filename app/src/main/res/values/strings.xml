@@ -313,4 +313,11 @@ limitations under the License.
     <string name="close_video">Close Video</string>
     <string name="video_player">Video Player</string>
 
+    <string name="popular_title">Popular</string>
+    <string name="now_playing_title">Now Playing</string>
+    <string name="upcoming_title">Upcoming</string>
+    <string name="more_plus">+ More</string>
+    <string name="trending_widget_title">TRENDING</string>
+    <string name="empty_space">" "</string>
+
 </resources>

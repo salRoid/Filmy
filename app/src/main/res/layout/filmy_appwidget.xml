@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:text="TRENDING"
+                    android:text="@string/trending_widget_title"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:fontFamily="@font/circularstd_book"
@@ -58,7 +58,7 @@
                         android:padding="16dp"
                         android:textStyle="bold"
                         android:textColor="@color/white"
-                        android:text=" "
+                        android:text="@string/empty_space"
                         android:fontFamily="@font/circularstd_book"
 
                         />

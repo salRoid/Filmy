@@ -23,6 +23,7 @@
     <color name="grey3">#CCCCCC</color>
 
     <color name="dark">#616161</color>
+    <color name="textColorDark">#434343</color>
     <color name="lightColorOnSurface">#323232</color>
     <color name="surfaceColorDark">#1C1B20</color>
     <color name="surfaceColorLight">#FFFBFF</color>

@@ -181,7 +181,7 @@ class MoviesFragment : Fragment() {
     }
 
     private fun lightThemeLogic() {
-        binding.logo.setTextColor(ContextCompat.getColor(requireActivity(), R.color.dark))
+        binding.logo.setTextColor(ContextCompat.getColor(requireActivity(), R.color.textColorDark))
         binding.ivLogo.imageTintList =
             ContextCompat.getColorStateList(requireActivity(), R.color.colorMore)
         binding.searchIcon.background =

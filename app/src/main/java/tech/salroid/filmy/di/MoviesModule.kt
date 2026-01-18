@@ -57,6 +57,6 @@ object MoviesModule {
             appContext,
             FilmyDatabase::class.java,
             "filmy"
-        ).build()
+        ).fallbackToDestructiveMigration(true).build()
     }
 }

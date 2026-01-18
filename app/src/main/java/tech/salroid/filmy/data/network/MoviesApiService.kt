@@ -11,7 +11,7 @@ interface MoviesApiService {
 
     companion object{
         var BASE_URL = "https://api.themoviedb.org/3/"
-        var BASE_URL_OMDB = "http://www.omdbapi.com/"
+        var BASE_URL_OMDB = "https://www.omdbapi.com/"
     }
 
     @GET("movie/popular")

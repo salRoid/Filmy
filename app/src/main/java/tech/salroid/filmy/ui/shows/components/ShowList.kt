@@ -27,7 +27,7 @@ fun ShowsList(
         },
         content = { index ->
             ShowItem(show = shows[index], onShowClick = {
-                onShowClick(index)
+                onShowClick(shows[index].id)
             })
         }
     )

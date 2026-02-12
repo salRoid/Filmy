@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="breather" type="id"/>
+    <item name="preference_fragment_container" type="id"/>
 </resources>

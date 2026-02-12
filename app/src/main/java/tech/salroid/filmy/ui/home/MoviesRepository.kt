@@ -12,6 +12,8 @@ import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.data.network.MoviesApiHelper
 import javax.inject.Inject
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.Dispatchers
 
 class MoviesRepository @Inject constructor(
     private val filmyDatabase: FilmyDatabase,
@@ -92,9 +94,9 @@ class MoviesRepository @Inject constructor(
         return filmyDatabase.movieDetailsDao().insert(movieDetails)
     }
 
-    fun getFavorites(): List<MovieDetails> = filmyDatabase.movieDetailsDao().getAllFavorites()
+    fun getFavorites(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllFavorites()
 
-    fun getWatchlist(): List<MovieDetails> = filmyDatabase.movieDetailsDao().getAllWatchlist()
+    fun getWatchlist(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllWatchlist()
 
     fun updateMovieDetails(movieDetails: MovieDetails): Int =
         filmyDatabase.movieDetailsDao().updateDetails(movieDetails)

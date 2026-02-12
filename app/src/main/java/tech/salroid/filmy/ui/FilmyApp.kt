@@ -3,11 +3,14 @@ package tech.salroid.filmy.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.Scaffold
@@ -18,11 +21,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -35,6 +40,7 @@ import tech.salroid.filmy.core.navigation.AppNavHost
 import tech.salroid.filmy.core.navigation.AppRoute
 import tech.salroid.filmy.core.navigation.components.AppNavigationBar
 import tech.salroid.filmy.core.navigation.TopLevelDestinations
+import tech.salroid.filmy.ui.component.AppBranding
 import tech.salroid.filmy.ui.search.SearchScreenState
 import tech.salroid.filmy.ui.search.SearchViewModel
 import tech.salroid.filmy.ui.search.component.AppSearchBar
@@ -53,6 +59,8 @@ fun FilmyApp(
     val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()
     val searchUiState by searchViewModel.uiState.collectAsStateWithLifecycle()
 
+    var isSearchExpanded by rememberSaveable { mutableStateOf(false) }
+
     // VM - UI
     LaunchedEffect(searchQuery) {
         if (textFieldState.text.toString() != searchQuery) {
@@ -68,32 +76,44 @@ fun FilmyApp(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             AnimatedVisibility(
                 visible = shouldShowSearchBar(navController),
                 enter = fadeIn(animationSpec = ChromeMotionSpec),
                 exit = fadeOut(animationSpec = ChromeMotionSpec)
             ) {
-                AppSearchBar(
-                    textFieldState = textFieldState,
-                    onSearch = { searchViewModel.onSearchQueryChange(it) },
-                    searchResults = when (searchUiState) {
-                        is SearchScreenState.Success ->
-                            (searchUiState as SearchScreenState.Success).previews
-                        else -> persistentListOf()
+                Column(modifier = Modifier.statusBarsPadding()) {
+                    AnimatedVisibility(
+                        visible = !isSearchExpanded,
+                        enter = fadeIn() + expandVertically(),
+                        exit = fadeOut() + shrinkVertically()
+                    ) {
+                        AppBranding()
                     }
-                )
+
+                    AppSearchBar(
+                        textFieldState = textFieldState,
+                        onSearch = { searchViewModel.onSearchQueryChange(it) },
+                        searchResults = when (searchUiState) {
+                            is SearchScreenState.Success ->
+                                (searchUiState as SearchScreenState.Success).previews
+
+                            else -> persistentListOf()
+                        },
+                        expanded = isSearchExpanded,
+                        onExpandedChange = { isSearchExpanded = it }
+                    )
+                }
             }
         },
         bottomBar = {
-            Box(modifier = Modifier.height(90.dp)) { // proper fix needed
-                AnimatedVisibility(
-                    visible = shouldShowNavigationBar(navController),
-                    enter = fadeIn(animationSpec = ChromeMotionSpec),
-                    exit = fadeOut(animationSpec = ChromeMotionSpec)
-                ) {
-                    AppNavigationBar(navController)
-                }
+            AnimatedVisibility(
+                visible = shouldShowNavigationBar(navController),
+                enter = fadeIn(animationSpec = ChromeMotionSpec),
+                exit = fadeOut(animationSpec = ChromeMotionSpec)
+            ) {
+                AppNavigationBar(navController)
             }
         },
         snackbarHost = { SnackbarHost(snackBarHostState) }
@@ -103,7 +123,6 @@ fun FilmyApp(
         ) {
             AppNavHost(
                 navController = navController,
-                snackBarHostState = snackBarHostState,
                 modifier = Modifier.padding(paddingValues)
             )
         }

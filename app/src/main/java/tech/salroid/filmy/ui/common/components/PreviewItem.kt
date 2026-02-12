@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
@@ -21,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import tech.salroid.filmy.ui.movies.dummyShowPreview
 
@@ -35,9 +35,9 @@ fun PreviewItem(
     onItemClick: () -> Unit
 ) {
     Card(
-        shape = RoundedCornerShape(corner = CornerSize(4.dp)),
+        shape = RoundedCornerShape(corner = CornerSize(8.dp)),
         colors = CardDefaults.cardColors(containerColor = Transparent),
-        onClick = { onItemClick() }
+        onClick = onItemClick
     ) {
         Column(
             modifier = modifier,
@@ -47,24 +47,23 @@ fun PreviewItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(170.dp)
-                    .clip(RoundedCornerShape(corner = CornerSize(4.dp))),
+                    .clip(RoundedCornerShape(corner = CornerSize(8.dp))),
                 contentScale = ContentScale.Crop,
                 model = posterUrl,
                 contentDescription = contentDescription
             )
-
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleSmall.copy(
-                    letterSpacing = 0.0.sp,
-                    fontWeight = FontWeight.Medium,
-                    lineHeight = 18.sp
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Medium
                 ),
                 text = title
             )
             Text(
-                modifier = Modifier.padding(top = 4.dp),
+                modifier = Modifier
+                    .padding(top = 4.dp)
+                    .alpha(0.8f),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
                 text = readableDate

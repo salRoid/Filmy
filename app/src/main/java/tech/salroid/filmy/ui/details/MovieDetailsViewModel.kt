@@ -57,6 +57,7 @@ class MovieDetailsViewModel @Inject constructor(
                             val updatedDetails = details.copy()
                             updatedDetails.watchlist = isWatchList
                             updatedDetails.favorite = isFavourite
+                            updatedDetails.type = movieType
                             _uiStateMovieDetails.emit(updatedDetails)
 
                             if (addToLocal) {
@@ -70,11 +71,9 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun getTvDetails(showId: String?, movieType: Int, addToLocal: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
-            showId?.toInt()?.let {
-                // val movieDetails = moviesRepository.getMovieDetailsFromLocal(it, movieType)
-                // val isWatchList = movieDetails?.watchlist ?: false
-                // val isFavourite = movieDetails?.favorite ?: false
-                //_uiStateMovieDetails.emit(movieDetails)
+            showId?.toInt()?.let { id ->
+                val movieDetails = moviesRepository.getMovieDetailsFromLocal(id, movieType)
+                _uiStateMovieDetails.emit(movieDetails)
 
                 showId.let {
                     moviesRepository.getTvShowDetailsFromNetwork(it)
@@ -83,13 +82,7 @@ class MovieDetailsViewModel @Inject constructor(
                             throwable.printStackTrace()
                         }.collect { details ->
                             val updatedDetails = details.copy()
-                            // updatedDetails.watchlist = isWatchList
-                            // updatedDetails.favorite = isFavourite
                             _uiStateTvDetails.emit(updatedDetails)
-
-                           // if (addToLocal) {
-                                // saveMovieDetailsInDb(updatedDetails)
-                           // }
                         }
                 }
             }
@@ -105,8 +98,8 @@ class MovieDetailsViewModel @Inject constructor(
         message: String? = null
     ) {
         val movieDetails = details.copy()
-        details.watchlist = isWatchlist
-        details.favorite = isFavourite
+        movieDetails.watchlist = isWatchlist
+        movieDetails.favorite = isFavourite
 
         if (addedToCollection) {
             if (message == WATCHLIST) movieDetails.watchlist = true
@@ -116,10 +109,59 @@ class MovieDetailsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             movieDetails.type = type
             moviesRepository.addMovieDetailsToLocal(movieDetails)
+            _uiStateMovieDetails.emit(movieDetails)
             if (addedToCollection) {
                 _uiStateAddToCollection.emit(Pair(true, message))
             }
         }
+    }
+
+    fun toggleFavorite(movieDetails: MovieDetails) {
+        val newFavorite = !movieDetails.favorite
+        val updatedMovie = movieDetails.copy(favorite = newFavorite)
+        updateMovieDetailsInDb(updatedMovie, FAVOURITES, !newFavorite)
+    }
+
+    fun toggleWatchlist(movieDetails: MovieDetails) {
+        val newWatchlist = !movieDetails.watchlist
+        val updatedMovie = movieDetails.copy(watchlist = newWatchlist)
+        updateMovieDetailsInDb(updatedMovie, WATCHLIST, !newWatchlist)
+    }
+
+    fun toggleFavoriteTv(showDetails: TvDetails, currentMovieDetails: MovieDetails?) {
+        val movieDetails = currentMovieDetails ?: MovieDetails(
+            id = showDetails.id ?: 0,
+            title = showDetails.name,
+            overview = showDetails.overview,
+            tagline = showDetails.tagline,
+            backdropPath = showDetails.backdropPath,
+            posterPath = showDetails.posterPath,
+            voteAverage = showDetails.voteAverage,
+            voteCount = showDetails.voteCount?.toLong(),
+            originalLanguage = showDetails.originalLanguage,
+            type = 1
+        )
+        val newFavorite = !movieDetails.favorite
+        val updatedMovie = movieDetails.copy(favorite = newFavorite)
+        updateMovieDetailsInDb(updatedMovie, FAVOURITES, !newFavorite)
+    }
+
+    fun toggleWatchlistTv(showDetails: TvDetails, currentMovieDetails: MovieDetails?) {
+        val movieDetails = currentMovieDetails ?: MovieDetails(
+            id = showDetails.id ?: 0,
+            title = showDetails.name,
+            overview = showDetails.overview,
+            tagline = showDetails.tagline,
+            backdropPath = showDetails.backdropPath,
+            posterPath = showDetails.posterPath,
+            voteAverage = showDetails.voteAverage,
+            voteCount = showDetails.voteCount?.toLong(),
+            originalLanguage = showDetails.originalLanguage,
+            type = 1
+        )
+        val newWatchlist = !movieDetails.watchlist
+        val updatedMovie = movieDetails.copy(watchlist = newWatchlist)
+        updateMovieDetailsInDb(updatedMovie, WATCHLIST, !newWatchlist)
     }
 
     fun updateMovieDetailsInDb(
@@ -129,13 +171,20 @@ class MovieDetailsViewModel @Inject constructor(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val updatedID = moviesRepository.updateMovieDetails(movieDetails)
-            _uiStateUpdateCollection.emit(
-                Triple(
-                    updatedID,
-                    message,
-                    remove
+            if (updatedID > 0) {
+                _uiStateMovieDetails.emit(movieDetails)
+                _uiStateUpdateCollection.emit(Triple(updatedID, message, remove))
+            } else {
+                // If update failed (movie not in DB), save it
+                saveMovieDetailsInDb(
+                    details = movieDetails,
+                    type = movieDetails.type,
+                    isWatchlist = movieDetails.watchlist,
+                    isFavourite = movieDetails.favorite,
+                    addedToCollection = true,
+                    message = message
                 )
-            )
+            }
         }
     }
 

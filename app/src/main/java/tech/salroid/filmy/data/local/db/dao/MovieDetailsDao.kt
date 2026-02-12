@@ -1,6 +1,7 @@
 package tech.salroid.filmy.data.local.db.dao
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 
 @Dao
@@ -16,10 +17,10 @@ interface MovieDetailsDao {
     fun getAllDetails(): List<MovieDetails>
 
     @Query("SELECT * FROM movie_details WHERE favorite = 1")
-    fun getAllFavorites(): List<MovieDetails>
+    fun getAllFavorites(): Flow<List<MovieDetails>>
 
     @Query("SELECT * FROM movie_details WHERE watchlist = 1")
-    fun getAllWatchlist(): List<MovieDetails>
+    fun getAllWatchlist(): Flow<List<MovieDetails>>
 
     @Query("SELECT * FROM movie_details WHERE id = :id AND type = :type")
     fun getDetailsOfType(id: Int, type: Int = 0): MovieDetails?

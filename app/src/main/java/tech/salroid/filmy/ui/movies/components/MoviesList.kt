@@ -29,7 +29,7 @@ fun MoviesList(
             MovieItem(
                 movie = movies[index],
                 onMovieClick = {
-                    onMovieClick(index)
+                    onMovieClick(movies[index].id)
                 }
             )
         }

@@ -15,28 +15,30 @@ class CollectionsViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
-    private val _uiStateFavorite = MutableStateFlow<List<MovieDetails>?>(null)
-    private val _uiStateWatchlist = MutableStateFlow<List<MovieDetails>?>(null)
+    val favorites: StateFlow<List<MovieDetails>> = moviesRepository.getFavorites()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
 
-    val uiStateFavorites: StateFlow<List<MovieDetails>?> = _uiStateFavorite.asStateFlow()
-    val uiStateWatchlist: StateFlow<List<MovieDetails>?> = _uiStateWatchlist.asStateFlow()
+    val watchlist: StateFlow<List<MovieDetails>> = moviesRepository.getWatchlist()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    // Legacy support for Fragments
+    val uiStateFavorites: StateFlow<List<MovieDetails>> = favorites
+    val uiStateWatchlist: StateFlow<List<MovieDetails>> = watchlist
 
     fun getFavorites() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val movies = moviesRepository.getFavorites()
-            if (movies.isNotEmpty()) {
-                _uiStateFavorite.emit(movies)
-            }
-        }
+        // No-op, now reactive via favorites StateFlow
     }
 
     fun getWatchLists() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val movies = moviesRepository.getWatchlist()
-            if (movies.isNotEmpty()) {
-                _uiStateWatchlist.emit(movies)
-            }
-        }
+        // No-op, now reactive via watchlist StateFlow
     }
 
     fun updateMovieDetailsInDb(
@@ -46,19 +48,6 @@ class CollectionsViewModel @Inject constructor(
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             moviesRepository.updateMovieDetails(movie)
-
-            when (currentCollectionType) {
-                CollectionTypeFragment.CollectionType.FAVORITE -> {
-                    val currentList = uiStateFavorites.value?.toMutableList() ?: mutableListOf()
-                    currentList.removeAt(position)
-                    _uiStateFavorite.emit(currentList)
-                }
-                CollectionTypeFragment.CollectionType.WATCHLIST -> {
-                    val currentList = uiStateWatchlist.value?.toMutableList() ?: mutableListOf()
-                    currentList.removeAt(position)
-                    _uiStateWatchlist.emit(currentList)
-                }
-            }
         }
     }
 }

@@ -3,8 +3,6 @@ package tech.salroid.filmy.ui.search.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -24,10 +22,12 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import tech.salroid.filmy.data.model.SearchPreview
+import tech.salroid.filmy.ui.theme.AppTheme
 
 @Composable
 fun SearchItem(
@@ -58,7 +58,7 @@ fun SearchItem(
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
                     textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.titleMedium.copy(
+                    style = MaterialTheme.typography.bodyLarge.copy(
                         letterSpacing = 0.0.sp,
                         fontWeight = FontWeight.Medium,
                         lineHeight = 18.sp
@@ -76,6 +76,22 @@ fun SearchItem(
         HorizontalDivider(
             modifier = Modifier.padding(top = 16.dp),
             color = Color.LightGray
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchItemPreview() {
+    AppTheme {
+        SearchItem(
+            searchPreview = SearchPreview(
+                id = 1,
+                title = "Inception",
+                posterUrl = "",
+                readableReleaseDate = "2010"
+            ),
+            onItemClick = {}
         )
     }
 }

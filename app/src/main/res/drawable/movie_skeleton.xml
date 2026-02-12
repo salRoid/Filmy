@@ -1,5 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/skeletonColor" />
-    <corners android:radius="10dp" />
-</shape>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="170dp"
+    android:viewportWidth="120"
+    android:viewportHeight="170">
+    <path
+        android:fillColor="@color/skeletonColor"
+        android:pathData="M10,0 L110,0 A10,10 0 0 1 120,10 L120,160 A10,10 0 0 1 110,170 L10,170 A10,10 0 0 1 0,160 L0,10 A10,10 0 0 1 10,0 Z" />
+</vector>

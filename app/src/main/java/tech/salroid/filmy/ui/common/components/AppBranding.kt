@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.component
+package tech.salroid.filmy.ui.common.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

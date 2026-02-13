@@ -25,8 +25,18 @@ import tech.salroid.filmy.data.local.model.ReviewResponse
 import tech.salroid.filmy.data.local.model.SimilarMoviesResponse
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.ui.cast_crew.CastCrewViewModel
-import tech.salroid.filmy.ui.component.*
+import tech.salroid.filmy.ui.common.components.LoadingWidget
+import tech.salroid.filmy.ui.common.components.PaletteColors
 import tech.salroid.filmy.ui.details.MovieDetailsViewModel
+import tech.salroid.filmy.ui.details.components.AllTrailersSheet
+import tech.salroid.filmy.ui.details.components.CastSection
+import tech.salroid.filmy.ui.details.components.CrewSection
+import tech.salroid.filmy.ui.details.components.MediaSuggestionsSection
+import tech.salroid.filmy.ui.details.components.MovieDetailsHeader
+import tech.salroid.filmy.ui.details.components.RatingsSection
+import tech.salroid.filmy.ui.details.components.ReviewsSection
+import tech.salroid.filmy.ui.details.components.TrailersSection
+import tech.salroid.filmy.ui.details.components.WatchProvidersSection
 import tech.salroid.filmy.ui.similar_recommendation.SimilarRecommendationViewModel
 import tech.salroid.filmy.ui.theme.AppTheme
 import tech.salroid.filmy.utility.themeSystemBars
@@ -273,21 +283,19 @@ fun MovieDetailsContent(
                         showFullRead = true
                     }
                     MediaSuggestionsSection(
-                        title = "Similar Movies",
+                        title = "Similar",
                         response = similarMovies,
                         onMediaClick = onMovieClick
                     )
                     MediaSuggestionsSection(
-                        title = "Recommendations",
+                        title = "Recommended",
                         response = recommendations,
                         onMediaClick = onMovieClick
                     )
                 }
             }
         } ?: run {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
+            LoadingWidget(modifier = Modifier)
         }
     }
 }

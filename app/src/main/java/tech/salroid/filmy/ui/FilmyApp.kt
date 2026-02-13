@@ -37,10 +37,10 @@ import androidx.window.core.layout.WindowSizeClass
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.distinctUntilChanged
 import tech.salroid.filmy.core.navigation.AppNavHost
+import tech.salroid.filmy.core.navigation.AppNavigationBar
 import tech.salroid.filmy.core.navigation.AppRoute
-import tech.salroid.filmy.core.navigation.components.AppNavigationBar
 import tech.salroid.filmy.core.navigation.TopLevelDestinations
-import tech.salroid.filmy.ui.component.AppBranding
+import tech.salroid.filmy.ui.common.components.AppBranding
 import tech.salroid.filmy.ui.search.SearchScreenState
 import tech.salroid.filmy.ui.search.SearchViewModel
 import tech.salroid.filmy.ui.search.component.AppSearchBar

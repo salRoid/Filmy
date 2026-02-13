@@ -1,6 +1,7 @@
-package tech.salroid.filmy.ui.component
+package tech.salroid.filmy.ui.details.components
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import androidx.compose.foundation.clickable
@@ -30,6 +31,7 @@ import com.google.android.youtube.player.YouTubeStandalonePlayer
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.Youtube
+import tech.salroid.filmy.ui.common.components.PaletteColors
 import tech.salroid.filmy.ui.theme.AppTheme
 
 @SuppressLint("QueryPermissionsNeeded")
@@ -172,7 +174,7 @@ fun AllTrailersSheet(
                     TrailerItem(trailer) {
                         trailer.source?.let { source ->
                             val intent = YouTubeStandalonePlayer.createVideoIntent(
-                                context as? android.app.Activity,
+                                context as? Activity,
                                 BuildConfig.YOUTUBE_API_KEY,
                                 source,
                                 0,
@@ -195,7 +197,7 @@ fun TrailerItem(trailer: Youtube, onClick: () -> Unit) {
             .fillMaxWidth()
             .clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column {
             Box(

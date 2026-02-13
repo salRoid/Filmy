@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.component
+package tech.salroid.filmy.ui.details.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -86,12 +86,12 @@ fun SeeAllItem(onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 16.dp),
+                .padding(horizontal = 8.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .size(42.dp)
+                    .size(32.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center

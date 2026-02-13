@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.component
+package tech.salroid.filmy.ui.details.components
 
 import android.graphics.drawable.BitmapDrawable
 import androidx.compose.foundation.*
@@ -27,6 +27,7 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.Genre
 import tech.salroid.filmy.data.local.model.tv.TvDetails
+import tech.salroid.filmy.ui.common.components.PaletteColors
 import tech.salroid.filmy.ui.theme.AppTheme
 import tech.salroid.filmy.utility.toReadableDate
 
@@ -93,7 +94,7 @@ fun MovieDetailsHeader(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        paletteColors?.darkVibrantRgb?.let { Color(it).copy(alpha = 0.7f) }
+                        paletteColors?.darkVibrantRgb?.let { Color(it).copy(alpha = 0.5f) }
                             ?: Color.Black.copy(alpha = 0.5f)
                     )
             )

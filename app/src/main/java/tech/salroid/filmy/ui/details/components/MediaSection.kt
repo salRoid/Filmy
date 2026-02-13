@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.component
+package tech.salroid.filmy.ui.details.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -41,7 +41,11 @@ fun MediaSuggestionsSection(
 }
 
 @Composable
-fun SuggestionItem(title: String?, posterPath: String?, onClick: () -> Unit = {}) {
+fun SuggestionItem(
+    title: String?,
+    posterPath: String?,
+    onClick: () -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .width(100.dp)
@@ -70,11 +74,23 @@ fun SuggestionItem(title: String?, posterPath: String?, onClick: () -> Unit = {}
 fun MediaSuggestionsSectionPreview() {
     val sampleMovies = SimilarMoviesResponse(
         results = arrayListOf(
-            SimilarMovie(id = 1, title = "Inception", posterPath = "/edv5bs1pS9v796LpT2M0sYhC76B.jpg"),
-            SimilarMovie(id = 2, title = "Interstellar", posterPath = "/edv5bs1pS9v796LpT2M0sYhC76B.jpg")
+            SimilarMovie(
+                id = 1,
+                title = "Inception",
+                posterPath = "/edv5bs1pS9v796LpT2M0sYhC76B.jpg"
+            ),
+            SimilarMovie(
+                id = 2,
+                title = "Interstellar",
+                posterPath = "/edv5bs1pS9v796LpT2M0sYhC76B.jpg"
+            )
         )
     )
     AppTheme {
-        MediaSuggestionsSection(title = "Similar Movies", response = sampleMovies, onMediaClick = {})
+        MediaSuggestionsSection(
+            title = "Similar",
+            response = sampleMovies,
+            onMediaClick = {}
+        )
     }
 }

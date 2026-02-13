@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.component
+package tech.salroid.filmy.ui.common.components
 
 data class PaletteColors(
     val vibrantRgb: Int? = null,

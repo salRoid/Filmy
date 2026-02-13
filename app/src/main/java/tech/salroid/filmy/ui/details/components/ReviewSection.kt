@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.component
+package tech.salroid.filmy.ui.details.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -23,7 +22,10 @@ import tech.salroid.filmy.ui.theme.AppTheme
 import tech.salroid.filmy.utility.toReadableDate
 
 @Composable
-fun ReviewsSection(reviews: ReviewResponse?, onReviewClick: (String, String) -> Unit) {
+fun ReviewsSection(
+    reviews: ReviewResponse?,
+    onReviewClick: (String, String) -> Unit
+) {
     if (reviews?.results?.isNotEmpty() == true) {
         DetailsSection(title = "Reviews") {
             reviews.results.take(2).forEach { review ->
@@ -37,11 +39,19 @@ fun ReviewsSection(reviews: ReviewResponse?, onReviewClick: (String, String) -> 
 }
 
 @Composable
-fun ReviewItem(review: Review, onClick: () -> Unit = {}) {
-    ElevatedCard(
+fun ReviewItem(
+    review: Review,
+    onClick: () -> Unit
+) {
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(
+                alpha = 0.3f
+            )
+        )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -49,7 +59,7 @@ fun ReviewItem(review: Review, onClick: () -> Unit = {}) {
                     model = review.authorDetails?.getAvatarUrl(LocalContext.current),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(30.dp)
                         .clip(CircleShape),
                     placeholder = painterResource(R.drawable.default_avatar),
                     error = painterResource(R.drawable.default_avatar)
@@ -85,6 +95,8 @@ fun ReviewsSectionPreview() {
         )
     )
     AppTheme {
-        ReviewsSection(reviews = sampleReviews, onReviewClick = { _, _ -> })
+        ReviewsSection(
+            reviews = sampleReviews,
+            onReviewClick = { _, _ -> })
     }
 }

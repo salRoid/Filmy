@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.component
+package tech.salroid.filmy.ui.details.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image

@@ -5,6 +5,7 @@ import tech.salroid.filmy.data.local.model.Genre
 import tech.salroid.filmy.data.local.model.ProductionCompanies
 import tech.salroid.filmy.data.local.model.ProductionCountries
 import tech.salroid.filmy.data.local.model.SpokenLanguages
+import tech.salroid.filmy.data.local.model.Trailers
 
 data class TvDetails(
 
@@ -99,5 +100,8 @@ data class TvDetails(
     var voteAverage: Double? = null,
 
     @SerializedName("vote_count")
-    var voteCount: Int? = null
+    var voteCount: Int? = null,
+
+    @SerializedName("trailers")
+    var trailers: Trailers? = Trailers()
 )

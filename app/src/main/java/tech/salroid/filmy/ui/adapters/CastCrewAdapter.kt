@@ -44,6 +44,7 @@ class CastCrewAdapter(
                     castCrew.cast.profilePath
 
                 }
+
                 is CastCrew.CrewData -> {
                     binding.memberName.text = castCrew.crew.name
                     binding.memberDescription.text = castCrew.crew.job

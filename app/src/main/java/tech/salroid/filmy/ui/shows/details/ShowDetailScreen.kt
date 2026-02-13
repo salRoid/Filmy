@@ -111,6 +111,7 @@ fun ShowDetailsContent(
 
     var paletteColors by remember(showDetails?.id) { mutableStateOf<PaletteColors?>(null) }
     var showFullRead by remember { mutableStateOf(false) }
+    var showAllTrailers by remember { mutableStateOf(false) }
     var fullReadContent by remember { mutableStateOf(Pair("", "")) }
 
     val iconColor =
@@ -149,6 +150,14 @@ fun ShowDetailsContent(
                 )
             }
         }
+    }
+
+    if (showAllTrailers) {
+        AllTrailersSheet(
+            title = showDetails?.name,
+            trailers = showDetails?.trailers?.youtube ?: emptyList(),
+            onDismiss = { showAllTrailers = false }
+        )
     }
 
     Scaffold(
@@ -241,17 +250,11 @@ fun ShowDetailsContent(
 
                     RatingsSection(show.voteAverage, show.voteCount?.toLong())
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        val runtime = show.episodeRunTime.firstOrNull() ?: 0
-                        DetailsInfoItem(label = "Runtime", value = "${runtime}m")
-                        DetailsInfoItem(label = "First Air", value = show.firstAirDate?.toReadableDate() ?: "N/A")
-                        DetailsInfoItem(label = "Language", value = show.originalLanguage?.uppercase() ?: "N/A")
-                    }
+                    TrailersSection(
+                        youtubeTrailers = show.trailers?.youtube,
+                        paletteColors = paletteColors,
+                        onPlusMoreClick = { showAllTrailers = true }
+                    )
 
                     CastSection(
                         castAndCrew?.cast,

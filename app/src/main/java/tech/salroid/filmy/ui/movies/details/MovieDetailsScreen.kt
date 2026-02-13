@@ -107,6 +107,7 @@ fun MovieDetailsContent(
 
     var paletteColors by remember(movieDetails?.id) { mutableStateOf<PaletteColors?>(null) }
     var showFullRead by remember { mutableStateOf(false) }
+    var showAllTrailers by remember { mutableStateOf(false) }
     var fullReadContent by remember { mutableStateOf(Pair("", "")) }
 
     val iconColor =
@@ -135,16 +136,24 @@ fun MovieDetailsContent(
             ) {
                 Text(
                     text = fullReadContent.first,
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 Text(
                     text = fullReadContent.second,
-                    style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 24.sp),
+                    style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 24.sp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
+    }
+
+    if (showAllTrailers) {
+        AllTrailersSheet(
+            title = movieDetails?.title,
+            trailers = movieDetails?.trailers?.youtube ?: emptyList(),
+            onDismiss = { showAllTrailers = false }
+        )
     }
 
     Scaffold(
@@ -223,7 +232,6 @@ fun MovieDetailsContent(
                     onPaletteGenerated = { paletteColors = it },
                     onHeaderClick = {
                         fullReadContent = Pair(movie.title ?: "", movie.overview ?: "")
-                        showFullRead = true
                     }
                 )
 
@@ -238,7 +246,11 @@ fun MovieDetailsContent(
 
                     RatingsSection(movie.voteAverage, movie.voteCount)
 
-                    TrailersSection(movie.trailers?.youtube, paletteColors)
+                    TrailersSection(
+                        youtubeTrailers = movie.trailers?.youtube,
+                        paletteColors = paletteColors,
+                        onPlusMoreClick = { showAllTrailers = true }
+                    )
 
                     CastSection(
                         castAndCrew?.cast,

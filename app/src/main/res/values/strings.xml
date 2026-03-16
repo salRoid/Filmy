@@ -370,4 +370,11 @@ limitations under the License.
     <string name="tv_label_on_tv">On TV</string>
     <string name="tv_label_top_rated">Top Rated</string>
     <string name="label_top_rated">Top Rated</string>
+    <string name="label_latest">Latest</string>
+
+    <string name="remove_from_collection">Remove from collection</string>
+    <string name="remove_fav_message">Are you sure you want to remove this movie from your favorites?</string>
+    <string name="remove_watchlist_message">Are you sure you want to remove this movie from your watchlist?</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

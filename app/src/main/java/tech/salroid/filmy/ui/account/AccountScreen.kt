@@ -80,6 +80,7 @@ import tech.salroid.filmy.ui.theme.AppTheme
 fun AccountScreen(
     onAboutClick: () -> Unit,
     onLicenseClick: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -147,6 +148,7 @@ fun AccountScreen(
         },
         onAboutClick = onAboutClick,
         onLicenseClick = onLicenseClick,
+        modifier = modifier,
         onRootSizeChanged = { rootSize = it },
         onCardSizeChanged = { cardSize = it }
     )

@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.details.components
+package tech.salroid.filmy.ui.movies.details.components
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -31,7 +31,7 @@ import com.google.android.youtube.player.YouTubeStandalonePlayer
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.Youtube
-import tech.salroid.filmy.ui.common.components.PaletteColors
+import tech.salroid.filmy.ui.common.model.PaletteColors
 import tech.salroid.filmy.ui.theme.AppTheme
 
 @SuppressLint("QueryPermissionsNeeded")

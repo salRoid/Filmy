@@ -1,4 +1,4 @@
-package tech.salroid.filmy.ui.details.components
+package tech.salroid.filmy.ui.movies.details.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -102,7 +102,7 @@ fun SeeAllItem(onClick: () -> Unit) {
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            Spacer(modifier = Modifier.width(20.dp))
+            Spacer(modifier = Modifier.width(28.dp))
             Text(
                 text = stringResource(R.string.view_all),
                 style = MaterialTheme.typography.bodyLarge,

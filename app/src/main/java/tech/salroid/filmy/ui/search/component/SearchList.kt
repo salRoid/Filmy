@@ -8,15 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.theme.AppTheme
 
 @Composable
 fun SearchList(
     modifier: Modifier = Modifier,
-    searchPreviews: ImmutableList<SearchPreview>,
+    searchPreviews: List<SearchPreview>,
     onSearchItemClick: (Int) -> Unit
 ) {
     LazyColumn(
@@ -38,7 +36,7 @@ fun SearchList(
 private fun SearchListPreview() {
     AppTheme {
         SearchList(
-            searchPreviews = persistentListOf(
+            searchPreviews = listOf(
                 SearchPreview(
                     1,
                     "Inception",

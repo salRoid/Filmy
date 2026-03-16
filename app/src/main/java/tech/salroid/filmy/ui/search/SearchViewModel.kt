@@ -3,7 +3,6 @@ package tech.salroid.filmy.ui.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,7 +47,6 @@ class SearchViewModel @Inject constructor(
                             runCatching {
                                 response.results
                                     .map(searchPreviewMapper::map)
-                                    .toImmutableList()
                             }.fold(onSuccess = { previews ->
                                 SearchScreenState.Success(previews)
                             }, onFailure = { exception ->

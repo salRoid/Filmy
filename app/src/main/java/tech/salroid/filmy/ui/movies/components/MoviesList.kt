@@ -6,8 +6,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.window.core.layout.WindowSizeClass
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import tech.salroid.filmy.data.model.MoviePreview
 import tech.salroid.filmy.ui.LocalWindowSizeClass
 import tech.salroid.filmy.ui.common.components.PreviewList
@@ -16,7 +14,7 @@ import tech.salroid.filmy.ui.movies.dummyMoviePreview
 @Composable
 fun MoviesList(
     modifier: Modifier = Modifier,
-    movies: ImmutableList<MoviePreview>,
+    movies: List<MoviePreview>,
     onMovieClick: (Int) -> Unit
 ) {
     PreviewList(
@@ -48,7 +46,7 @@ fun MoviesListPreview() {
             modifier = Modifier,
             movies = (1..10).map { id ->
                 dummyMoviePreview.copy(id = id)
-            }.toImmutableList(),
+            },
             onMovieClick = { }
         )
     }

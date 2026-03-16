@@ -3,7 +3,6 @@ package tech.salroid.filmy.ui.shows
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,7 +38,6 @@ class ShowsViewModel @Inject constructor(
                     runCatching {
                         response.results
                             .map(mapper::map)
-                            .toImmutableList()
                     }.fold(
                         onSuccess = { ShowsScreenState.Success(it) },
                         onFailure = { ShowsScreenState.Error("Mapping Error!") }

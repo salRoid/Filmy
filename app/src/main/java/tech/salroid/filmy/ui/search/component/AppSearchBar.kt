@@ -20,8 +20,6 @@ import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.theme.AppTheme
 
@@ -30,7 +28,7 @@ import tech.salroid.filmy.ui.theme.AppTheme
 fun AppSearchBar(
     textFieldState: TextFieldState,
     onSearch: (String) -> Unit,
-    searchResults: ImmutableList<SearchPreview>,
+    searchResults: List<SearchPreview>,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
@@ -91,7 +89,7 @@ private fun AppSearchBarPreview() {
         AppSearchBar(
             textFieldState = rememberTextFieldState(),
             onSearch = {},
-            searchResults = persistentListOf(),
+            searchResults = emptyList(),
             expanded = false,
             onExpandedChange = {}
         )
@@ -105,7 +103,7 @@ private fun AppSearchBarExpandedPreview() {
         AppSearchBar(
             textFieldState = rememberTextFieldState("Inception"),
             onSearch = {},
-            searchResults = persistentListOf(
+            searchResults = listOf(
                 SearchPreview(
                     1,
                     "Inception",

@@ -1,5 +1,7 @@
 package tech.salroid.filmy.ui.collections.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,10 +33,12 @@ import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import androidx.compose.ui.tooling.preview.Preview
 import tech.salroid.filmy.ui.theme.AppTheme
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CollectionItem(
     movie: MovieDetails,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onLongClick: () -> Unit = {}
 ) {
     ElevatedCard(
         modifier = Modifier
@@ -49,11 +53,15 @@ fun CollectionItem(
                     alpha = 0.06f,
                     color = MaterialTheme.colorScheme.scrim
                 )
+            )
+            .clip(RoundedCornerShape(12.dp))
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
             ),
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
-        onClick = onClick,
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(

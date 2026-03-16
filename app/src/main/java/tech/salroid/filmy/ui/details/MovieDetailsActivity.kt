@@ -413,7 +413,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 binding.main.visibility = View.INVISIBLE
                 binding.breathingProgress.visibility = View.VISIBLE
             }
-            viewModel.getMovieDetails(movieId, type)
+           // viewModel.getMovieDetails(movieId, type)
         }
     }
 
@@ -663,10 +663,10 @@ class MovieDetailsActivity : AppCompatActivity() {
         viewModel.getRatings(movieImdbId)
 
         // Get Reviews
-        viewModel.getReviews(movieId)
+        //viewModel.getReviews(movieId)
 
         // Get Watch Providers
-        viewModel.getWatchProviders(movieId)
+        //viewModel.getWatchProviders(movieId)
 
         // Get Cast, Crew and Similar Movies
         movieIdFinal?.let {

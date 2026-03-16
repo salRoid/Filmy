@@ -46,6 +46,9 @@ class MoviesRepository @Inject constructor(
         return filmyDatabase.movieDetailsDao().getDetailsOfType(id, type)
     }
 
+    fun getMovieDetailsFlow(id: Int, type: Int): Flow<MovieDetails?> =
+        filmyDatabase.movieDetailsDao().getDetailsFlow(id, type)
+
     fun getRatings(id: String): Flow<RatingResponse> = moviesApiHelper.getOMDBRatings(id)
 
     fun getMovieDetailsFromNetwork(id: String): Flow<MovieDetails> {

@@ -18,14 +18,14 @@ class CollectionsViewModel @Inject constructor(
     val favorites: StateFlow<List<MovieDetails>> = moviesRepository.getFavorites()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
 
     val watchlist: StateFlow<List<MovieDetails>> = moviesRepository.getWatchlist()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Eagerly,
             initialValue = emptyList()
         )
 
@@ -39,6 +39,18 @@ class CollectionsViewModel @Inject constructor(
 
     fun getWatchLists() {
         // No-op, now reactive via watchlist StateFlow
+    }
+
+    fun removeFavorite(movie: MovieDetails) {
+        viewModelScope.launch(Dispatchers.IO) {
+            moviesRepository.updateMovieDetails(movie.copy(favorite = false))
+        }
+    }
+
+    fun removeWatchlist(movie: MovieDetails) {
+        viewModelScope.launch(Dispatchers.IO) {
+            moviesRepository.updateMovieDetails(movie.copy(watchlist = false))
+        }
     }
 
     fun updateMovieDetailsInDb(

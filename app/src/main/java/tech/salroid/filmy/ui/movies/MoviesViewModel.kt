@@ -3,7 +3,6 @@ package tech.salroid.filmy.ui.movies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,7 +38,6 @@ class MoviesViewModel @Inject constructor(
                     runCatching {
                         response.results
                             .map(moviePreviewMapper::map)
-                            .toImmutableList()
                     }.fold(
                         onSuccess = { MoviesScreenState.Success(it) },
                         onFailure = { MoviesScreenState.Error("Mapping error") }
@@ -80,7 +78,6 @@ class MoviesViewModel @Inject constructor(
                     runCatching {
                         response.results
                             .map(moviePreviewMapper::map)
-                            .toImmutableList()
                     }.fold(
                         onSuccess = { MoviesScreenState.Success(it) },
                         onFailure = { MoviesScreenState.Error("Mapping error") })
@@ -102,4 +99,3 @@ class MoviesViewModel @Inject constructor(
         _retryTrigger.tryEmit(Unit)
     }*/
 }
-

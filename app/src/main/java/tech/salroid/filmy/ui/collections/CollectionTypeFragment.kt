@@ -71,8 +71,8 @@ class CollectionTypeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        viewModel.getFavorites()
-        viewModel.getWatchLists()
+        //viewModel.getFavorites()
+        //viewModel.getWatchLists()
     }
 
     private fun collectUiStates() {
@@ -80,20 +80,12 @@ class CollectionTypeFragment : Fragment() {
             when (currentCollectionType) {
                 CollectionType.FAVORITE -> {
                     viewModel.uiStateFavorites.collect {
-                        it?.let {
-                            showMovies(it)
-                        } ?: run {
-                            binding.emptyContainer.isVisible = true
-                        }
+                        showMovies(it)
                     }
                 }
                 CollectionType.WATCHLIST -> {
                     viewModel.uiStateWatchlist.collect {
-                        it?.let {
-                            showMovies(it)
-                        } ?: run {
-                            binding.emptyContainerWatch.isVisible = true
-                        }
+                        showMovies(it)
                     }
                 }
             }

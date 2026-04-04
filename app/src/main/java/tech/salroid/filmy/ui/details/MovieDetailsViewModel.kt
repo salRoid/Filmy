@@ -13,7 +13,7 @@ import tech.salroid.filmy.data.local.model.CastAndCrewResponse
 import tech.salroid.filmy.data.local.model.SimilarMoviesResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
-import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.FAVOURITES
+import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.WATCHED
 import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.WATCHLIST
 import tech.salroid.filmy.ui.home.MoviesRepository
 import tech.salroid.filmy.ui.common.model.MediaDetailsUiState
@@ -56,7 +56,8 @@ class MovieDetailsViewModel @Inject constructor(
         _uiStateWatchProviders,
         _uiStateCastAndCrew,
         _uiStateSimilar,
-        _uiStateRecommendation
+        _uiStateRecommendation,
+        _uiStateRatings
     ) { args ->
         val movie = args[0] as MovieDetails?
         val tv = args[1] as TvDetails?
@@ -65,6 +66,7 @@ class MovieDetailsViewModel @Inject constructor(
         val cast = args[4] as CastAndCrewResponse?
         val similar = args[5] as SimilarMoviesResponse?
         val recommendations = args[6] as SimilarMoviesResponse?
+        val ratings = args[7] as RatingResponse?
 
         mediaDetailsMapper.map(
             movie = movie,
@@ -73,7 +75,8 @@ class MovieDetailsViewModel @Inject constructor(
             watchProviders = watchProviders,
             cast = cast,
             similar = similar,
-            recommendations = recommendations
+            recommendations = recommendations,
+            ratings = ratings
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
@@ -133,6 +136,9 @@ class MovieDetailsViewModel @Inject constructor(
                 moviesRepository.getMovieDetailsFlow(id, movieType)
                     .collect { details ->
                         _uiStateMovieDetails.emit(details)
+                        if (details?.imdbId != null) {
+                            getRatings(details.imdbId)
+                        }
                     }
             }
 
@@ -142,7 +148,7 @@ class MovieDetailsViewModel @Inject constructor(
                     .collect { details ->
                         val local = moviesRepository.getMovieDetailsFromLocal(id, movieType)
                         val updated = details.copy(
-                            favorite = local?.favorite ?: false,
+                            watched = local?.watched ?: false,
                             watchlist = local?.watchlist ?: false,
                             type = movieType
                         )
@@ -150,6 +156,10 @@ class MovieDetailsViewModel @Inject constructor(
                             moviesRepository.addMovieDetailsToLocal(updated)
                         } else {
                             _uiStateMovieDetails.emit(updated)
+                        }
+                        
+                        if (updated.imdbId != null) {
+                            getRatings(updated.imdbId)
                         }
                     }
             }
@@ -179,20 +189,20 @@ class MovieDetailsViewModel @Inject constructor(
         details: MovieDetails,
         type: Int = 0,
         isWatchlist: Boolean = false,
-        isFavourite: Boolean = false,
+        isWatched: Boolean = false,
         addedToCollection: Boolean = false,
         message: String? = null
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             val movieDetails = details.copy(
                 watchlist = isWatchlist,
-                favorite = isFavourite,
+                watched = isWatched,
                 type = type
             )
 
             if (addedToCollection) {
                 if (message == WATCHLIST) movieDetails.watchlist = true
-                if (message == FAVOURITES) movieDetails.favorite = true
+                if (message == WATCHED) movieDetails.watched = true
             }
 
             moviesRepository.addMovieDetailsToLocal(movieDetails)
@@ -202,9 +212,9 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    fun toggleFavorite(movieDetails: MovieDetails) {
-        val updatedMovie = movieDetails.copy(favorite = !movieDetails.favorite)
-        updateMovieDetailsInDb(updatedMovie, FAVOURITES, !updatedMovie.favorite)
+    fun toggleWatched(movieDetails: MovieDetails) {
+        val updatedMovie = movieDetails.copy(watched = !movieDetails.watched)
+        updateMovieDetailsInDb(updatedMovie, WATCHED, !updatedMovie.watched)
     }
 
     fun toggleWatchlist(movieDetails: MovieDetails) {
@@ -212,7 +222,7 @@ class MovieDetailsViewModel @Inject constructor(
         updateMovieDetailsInDb(updatedMovie, WATCHLIST, !updatedMovie.watchlist)
     }
 
-    fun toggleFavoriteTv(showDetails: TvDetails, currentMovieDetails: MovieDetails?) {
+    fun toggleWatchedTv(showDetails: TvDetails, currentMovieDetails: MovieDetails?) {
         val movieDetails = currentMovieDetails ?: MovieDetails(
             id = showDetails.id ?: 0,
             title = showDetails.name,
@@ -225,8 +235,8 @@ class MovieDetailsViewModel @Inject constructor(
             originalLanguage = showDetails.originalLanguage,
             type = 1
         )
-        val updatedMovie = movieDetails.copy(favorite = !movieDetails.favorite)
-        updateMovieDetailsInDb(updatedMovie, FAVOURITES, !updatedMovie.favorite)
+        val updatedMovie = movieDetails.copy(watched = !movieDetails.watched)
+        updateMovieDetailsInDb(updatedMovie, WATCHED, !updatedMovie.watched)
     }
 
     fun toggleWatchlistTv(showDetails: TvDetails, currentMovieDetails: MovieDetails?) {

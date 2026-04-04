@@ -272,7 +272,7 @@ limitations under the License.
     <string name="crew">Crew</string>
     <string name="similar">Similar</string>
     <string name="home">Home</string>
-    <string name="favorite">Favorites</string>
+    <string name="favorite">Watched</string>
     <string name="watchlist" translatable="false">Watch List</string>
     <string name="account">Account</string>
     <string name="user_holder">Not Logged in</string>
@@ -281,8 +281,8 @@ limitations under the License.
     <string name="login">TMDB LOGIN</string>
     <string name="login_normal">Login</string>
     <string name="trailers">Trailers</string>
-    <string name="favourite">Favourite</string>
-    <string name="your_fav_movies_appear_here">Your favourite movies appear here.</string>
+    <string name="favourite">Watched</string>
+    <string name="your_fav_movies_appear_here">Your watched movies appear here.</string>
     <string name="your_watchlist_movies_appear_here">Your watchlist appears here.</string>
     <string name="you_dont_hav_fav">No movies in the list.</string>
 
@@ -364,6 +364,11 @@ limitations under the License.
     <string name="tv_shows">Shows</string>
     <string name="add">Add</string>
 
+    <string name="watched">Watched</string>
+    <string name="watched_question">Watched?</string>
+    <string name="add_to_watchlist">Add to watchlist</string>
+    <string name="watchlisted">Watchlisted</string>
+
     <string name="tv_label_trending">Trending</string>
     <string name="tv_label_popular">Popular</string>
     <string name="tv_label_arriving_today">Airing Today</string>
@@ -373,8 +378,10 @@ limitations under the License.
     <string name="label_latest">Latest</string>
 
     <string name="remove_from_collection">Remove from collection</string>
-    <string name="remove_fav_message">Are you sure you want to remove this movie from your favorites?</string>
+    <string name="remove_fav_message">Are you sure you want to remove this movie from your watched list?</string>
     <string name="remove_watchlist_message">Are you sure you want to remove this movie from your watchlist?</string>
     <string name="cancel">Cancel</string>
+
+    <string name="where_to_watch">Where to Watch</string>
 
 </resources>

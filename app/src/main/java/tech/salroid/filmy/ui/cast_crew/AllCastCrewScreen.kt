@@ -21,9 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import tech.salroid.filmy.R
+import tech.salroid.filmy.data.local.model.Cast
+import tech.salroid.filmy.data.local.model.CastAndCrewResponse
+import tech.salroid.filmy.data.local.model.Crew
 import tech.salroid.filmy.ui.theme.AppTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllCastCrewScreen(
     id: Int,
@@ -43,6 +45,25 @@ fun AllCastCrewScreen(
         }
     }
 
+    AllCastCrewScreenContent(
+        title = title,
+        castAndCrew = castAndCrew,
+        onMemberClick = onMemberClick,
+        onBackClick = onBackClick
+    )
+}
+
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3ExpressiveApi::class
+)
+@Composable
+fun AllCastCrewScreenContent(
+    title: String,
+    castAndCrew: CastAndCrewResponse?,
+    onMemberClick: (Int) -> Unit,
+    onBackClick: () -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -56,11 +77,30 @@ fun AllCastCrewScreen(
         }
     ) { paddingValues ->
         castAndCrew?.let { data ->
-            val allMembers = data.cast.map { Member(it.id ?: 0, it.name ?: "", it.character ?: "", it.profilePath) } +
-                             data.crew.map { Member(it.id ?: 0, it.name ?: "", it.job ?: "", it.profilePath) }
+            val allMembers = data.cast.map {
+                Member(
+                    it.id ?: 0,
+                    it.name ?: "",
+                    it.character ?: "",
+                    it.profilePath
+                )
+            } +
+                    data.crew.map {
+                        Member(
+                            it.id ?: 0,
+                            it.name ?: "",
+                            it.job ?: "",
+                            it.profilePath
+                        )
+                    }
 
             if (allMembers.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
                     Text("No cast or crew found.")
                 }
             } else {
@@ -77,8 +117,13 @@ fun AllCastCrewScreen(
                 }
             }
         } ?: run {
-            Box(modifier = Modifier.fillMaxSize().padding(paddingValues), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                contentAlignment = Alignment.Center
+            ) {
+                LoadingIndicator()
             }
         }
     }
@@ -98,7 +143,7 @@ fun MemberItem(member: Member, onClick: () -> Unit) {
             model = "http://image.tmdb.org/t/p/w185${member.profilePath}",
             contentDescription = null,
             modifier = Modifier
-                .size(80.dp)
+                .size(70.dp)
                 .clip(CircleShape),
             contentScale = ContentScale.Crop,
             placeholder = painterResource(R.drawable.default_avatar),
@@ -126,7 +171,23 @@ fun MemberItem(member: Member, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun AllCastCrewScreenPreview() {
+    val sampleCast = arrayListOf(
+        Cast(id = 1, name = "Dave Bautista", character = "Eric", profilePath = null),
+        Cast(id = 2, name = "John Cena", character = "Peacemaker", profilePath = null),
+        Cast(id = 3, name = "The Rock", character = "Black Adam", profilePath = null)
+    )
+    val sampleCrew = arrayListOf(
+        Crew(id = 4, name = "Christopher Nolan", job = "Director", profilePath = null),
+        Crew(id = 5, name = "Hans Zimmer", job = "Composer", profilePath = null)
+    )
+    val sampleData = CastAndCrewResponse(id = 1, cast = sampleCast, crew = sampleCrew)
+
     AppTheme {
-        // Mocking behavior
+        AllCastCrewScreenContent(
+            title = "Inception",
+            castAndCrew = sampleData,
+            onMemberClick = {},
+            onBackClick = {}
+        )
     }
 }

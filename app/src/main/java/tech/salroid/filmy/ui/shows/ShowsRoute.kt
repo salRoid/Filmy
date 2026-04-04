@@ -2,10 +2,9 @@ package tech.salroid.filmy.ui.shows
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import tech.salroid.filmy.ui.search.SearchScreenState
 
 @Composable
@@ -19,17 +18,16 @@ fun ShowsRoute(
     onSearch: (String) -> Unit,
     onShowClick: (Int) -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val shows = viewModel.showsPagingData.collectAsLazyPagingItems()
 
     ShowsScreen(
         modifier = modifier,
-        state = state,
+        shows = shows,
         textFieldState = textFieldState,
         searchUiState = searchUiState,
         isSearchExpanded = isSearchExpanded,
         onSearchExpandedChange = onSearchExpandedChange,
         onSearch = onSearch,
-        onShowClick = onShowClick,
-        onRetry = viewModel::retry
+        onShowClick = onShowClick
     )
 }

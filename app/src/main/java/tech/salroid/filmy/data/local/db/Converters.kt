@@ -104,4 +104,15 @@ class Converters {
     fun fromAvatar(avatar: Avatar?): String? {
         return Gson().toJson(avatar)
     }
+
+    @TypeConverter
+    fun fromStringOfVideos(value: String?): Videos? {
+        val listType: Type = object : TypeToken<Videos?>() {}.type
+        return Gson().fromJson(value, listType)
+    }
+
+    @TypeConverter
+    fun fromVideos(videos: Videos?): String? {
+        return Gson().toJson(videos)
+    }
 }

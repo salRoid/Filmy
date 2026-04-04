@@ -5,10 +5,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,7 +30,7 @@ fun CollectionScreen(
     viewModel: CollectionsViewModel = hiltViewModel(),
     onMovieClick: (Int, Int) -> Unit,
 ) {
-    val favorites by viewModel.favorites.collectAsStateWithLifecycle()
+    val watched by viewModel.watched.collectAsStateWithLifecycle()
     val watchlist by viewModel.watchlist.collectAsStateWithLifecycle()
 
     var showDialog by remember { mutableStateOf(false) }
@@ -52,7 +54,7 @@ fun CollectionScreen(
                     val movie = selectedMovie
                     if (movie != null) {
                         if (pagerState.currentPage == 0) {
-                            viewModel.removeFavorite(movie)
+                            viewModel.removeWatched(movie)
                         } else {
                             viewModel.removeWatchlist(movie)
                         }
@@ -72,7 +74,7 @@ fun CollectionScreen(
 
     CollectionScreenContent(
         modifier = modifier,
-        favorites = favorites,
+        watched = watched,
         watchlist = watchlist,
         pagerState = pagerState,
         onMovieClick = onMovieClick,
@@ -86,7 +88,7 @@ fun CollectionScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CollectionScreenContent(
-    favorites: List<MovieDetails>,
+    watched: List<MovieDetails>,
     watchlist: List<MovieDetails>,
     pagerState: androidx.compose.foundation.pager.PagerState,
     onMovieClick: (Int, Int) -> Unit,
@@ -101,7 +103,19 @@ fun CollectionScreenContent(
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        SecondaryTabRow(selectedTabIndex = pagerState.currentPage) {
+        PrimaryTabRow(
+            selectedTabIndex = pagerState.currentPage,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary,
+            indicator = {
+                TabRowDefaults.PrimaryIndicator(
+                    modifier = Modifier.tabIndicatorOffset(pagerState.currentPage),
+                    width = 48.dp,
+                    shape = RoundedCornerShape(topStart = 3.dp, topEnd = 3.dp)
+                )
+            },
+            divider = {}
+        ) {
             tabs.forEachIndexed { index, title ->
                 Tab(
                     selected = pagerState.currentPage == index,
@@ -120,7 +134,15 @@ fun CollectionScreenContent(
                                 FontWeight.Medium
                             }
                         )
-                    }
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(if (index == 0) R.drawable.ic_check else R.drawable.ic_round_bookmark_added_24),
+                            contentDescription = title
+                        )
+                    },
+                    selectedContentColor = MaterialTheme.colorScheme.primary,
+                    unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -131,9 +153,9 @@ fun CollectionScreenContent(
                 .fillMaxWidth()
                 .weight(1f)
         ) { page ->
-            val listToDisplay = if (page == 0) favorites else watchlist
+            val listToDisplay = if (page == 0) watched else watchlist
             val currentList = remember(listToDisplay) { listToDisplay.reversed() }
-            
+
             val emptyMessage = if (page == 0)
                 stringResource(R.string.your_fav_movies_appear_here)
             else
@@ -172,7 +194,7 @@ fun CollectionScreenPreview() {
     val pagerState = rememberPagerState(pageCount = { 2 })
     AppTheme {
         CollectionScreenContent(
-            favorites = listOf(
+            watched = listOf(
                 MovieDetails(
                     id = 1,
                     title = "SpiderMan: India?",

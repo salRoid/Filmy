@@ -27,10 +27,7 @@ fun LicenseScreen(onBackClick: () -> Unit) {
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        modifier = Modifier.padding(top = 12.dp),
-                        text = stringResource(R.string.license)
-                    )
+                    Text(text = stringResource(R.string.license))
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {

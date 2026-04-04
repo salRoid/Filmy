@@ -84,7 +84,9 @@ object AppModule {
             appContext,
             FilmyDatabase::class.java,
             "filmy"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(true)
+            .build()
     }
 
     @Provides

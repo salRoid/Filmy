@@ -47,4 +47,12 @@ sealed class AppRoute(val route: String) {
             title: String
         ) = "all_movies/$memberId/$isTv/$title"
     }
+
+    object ReviewsList : AppRoute("reviews_list/{id}/{isTv}/{title}") {
+        fun create(
+            id: Int,
+            isTv: Boolean,
+            title: String
+        ) = "reviews_list/$id/$isTv/$title"
+    }
 }

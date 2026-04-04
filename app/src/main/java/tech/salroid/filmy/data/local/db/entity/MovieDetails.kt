@@ -86,9 +86,12 @@ data class MovieDetails(
     @SerializedName("trailers")
     var trailers: Trailers? = Trailers(),
 
+    @SerializedName("videos")
+    var videos: Videos? = Videos(),
+
     var type: Int = 0,
 
-    var favorite: Boolean = false,
+    var watched: Boolean = false,
 
     var watchlist: Boolean = false
 )

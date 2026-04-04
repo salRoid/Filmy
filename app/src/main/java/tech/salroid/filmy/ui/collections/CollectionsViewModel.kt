@@ -15,7 +15,7 @@ class CollectionsViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
 
-    val favorites: StateFlow<List<MovieDetails>> = moviesRepository.getFavorites()
+    val watched: StateFlow<List<MovieDetails>> = moviesRepository.getWatched()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
@@ -30,20 +30,20 @@ class CollectionsViewModel @Inject constructor(
         )
 
     // Legacy support for Fragments
-    val uiStateFavorites: StateFlow<List<MovieDetails>> = favorites
+    val uiStateFavorites: StateFlow<List<MovieDetails>> = watched
     val uiStateWatchlist: StateFlow<List<MovieDetails>> = watchlist
 
-    fun getFavorites() {
-        // No-op, now reactive via favorites StateFlow
+    fun getWatchedList() {
+        // No-op, now reactive via watched StateFlow
     }
 
     fun getWatchLists() {
         // No-op, now reactive via watchlist StateFlow
     }
 
-    fun removeFavorite(movie: MovieDetails) {
+    fun removeWatched(movie: MovieDetails) {
         viewModelScope.launch(Dispatchers.IO) {
-            moviesRepository.updateMovieDetails(movie.copy(favorite = false))
+            moviesRepository.updateMovieDetails(movie.copy(watched = false))
         }
     }
 

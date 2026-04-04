@@ -35,10 +35,7 @@ fun AboutScreen(onBackClick: () -> Unit) {
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        modifier = Modifier.padding(top = 12.dp),
-                        text = stringResource(R.string.about_screen_tittle)
-                    )
+                    Text(text = stringResource(R.string.about_screen_tittle))
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
@@ -129,9 +126,9 @@ fun DeveloperCard(
                     text = name,
                     style = MaterialTheme.typography.bodyLarge
                         .copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
+                        )
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
@@ -143,7 +140,7 @@ fun DeveloperCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TextButton(

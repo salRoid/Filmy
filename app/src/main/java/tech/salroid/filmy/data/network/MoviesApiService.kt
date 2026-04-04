@@ -41,10 +41,10 @@ interface MoviesApiService {
     ): TvShowResponse
 
 
-    @GET("movie/{movie_id}?append_to_response=trailers")
+    @GET("movie/{movie_id}?append_to_response=videos")
     suspend fun getMovieDetails(@Path("movie_id") movieId: String?): MovieDetails
 
-    @GET("tv/{show_id}?append_to_response=trailers")
+    @GET("tv/{show_id}?append_to_response=videos")
     suspend fun getTvShowDetails(@Path("show_id") showId: String?): TvDetails
 
     @GET

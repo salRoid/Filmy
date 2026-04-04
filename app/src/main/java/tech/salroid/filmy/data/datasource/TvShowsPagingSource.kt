@@ -21,14 +21,18 @@ class TvShowsPagingSource(
             }
 
             val results = response.results
+            val totalPages = response.totalPages ?: 0
 
             val prevKey =
                 if (currentLoadingPageKey == 1) null else currentLoadingPageKey - 1
 
+            val nextKey =
+                if (currentLoadingPageKey >= totalPages || results.isEmpty()) null else currentLoadingPageKey + 1
+
             LoadResult.Page(
                 data = results,
                 prevKey = prevKey,
-                nextKey = currentLoadingPageKey.plus(1)
+                nextKey = nextKey
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

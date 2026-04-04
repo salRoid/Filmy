@@ -6,6 +6,7 @@ import tech.salroid.filmy.data.local.model.ProductionCompanies
 import tech.salroid.filmy.data.local.model.ProductionCountries
 import tech.salroid.filmy.data.local.model.SpokenLanguages
 import tech.salroid.filmy.data.local.model.Trailers
+import tech.salroid.filmy.data.local.model.Videos
 
 data class TvDetails(
 
@@ -103,5 +104,8 @@ data class TvDetails(
     var voteCount: Int? = null,
 
     @SerializedName("trailers")
-    var trailers: Trailers? = Trailers()
+    var trailers: Trailers? = Trailers(),
+
+    @SerializedName("videos")
+    var videos: Videos? = Videos()
 )

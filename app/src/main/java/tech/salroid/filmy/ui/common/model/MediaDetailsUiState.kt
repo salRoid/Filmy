@@ -1,10 +1,8 @@
 package tech.salroid.filmy.ui.common.model
 
 import tech.salroid.filmy.data.local.model.CastAndCrewResponse
-import tech.salroid.filmy.data.local.model.ReviewResponse
 import tech.salroid.filmy.data.local.model.SimilarMoviesResponse
 import tech.salroid.filmy.data.local.model.Youtube
-import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 
 data class MediaDetailsUiState(
     val mediaId: Int,
@@ -16,16 +14,15 @@ data class MediaDetailsUiState(
     val genres: String,
     val runtimeText: String,
     val releaseDateText: String,
-    val voteAverage: Double?,
-    val voteCount: Long?,
     val youtubeTrailers: List<Youtube>?,
-    val isFavorite: Boolean,
+    val isWatched: Boolean,
     val isWatchlist: Boolean,
     val isTvShow: Boolean,
     val imdbId: String? = null,
-    val reviews: ReviewResponse? = null,
-    val watchProviders: WatchProviderResponse? = null,
+    val reviews: ReviewResponseUiModel? = null,
+    val watchProviders: WatchProvidersUiModel? = null,
     val castAndCrew: CastAndCrewResponse? = null,
     val similarMedia: SimilarMoviesResponse? = null,
-    val recommendations: SimilarMoviesResponse? = null
+    val recommendations: SimilarMoviesResponse? = null,
+    val ratings: RatingsUiModel? = null
 )

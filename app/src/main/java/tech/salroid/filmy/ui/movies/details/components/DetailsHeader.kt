@@ -1,11 +1,7 @@
 package tech.salroid.filmy.ui.movies.details.components
 
 import android.graphics.drawable.BitmapDrawable
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -39,9 +35,9 @@ import coil3.request.allowHardware
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.R
-import tech.salroid.filmy.ui.theme.AppTheme
 import tech.salroid.filmy.ui.common.model.MediaDetailsUiState
 import tech.salroid.filmy.ui.common.model.PaletteColors
+import tech.salroid.filmy.ui.theme.AppTheme
 
 @Composable
 fun DetailsHeader(
@@ -217,7 +213,7 @@ fun HeaderInfoCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 24.dp)
+                .padding(bottom = 16.dp)
         ) {
             // Title and basic info positioned to the right of the poster
             Column(
@@ -252,13 +248,15 @@ fun HeaderInfoCard(
                     modifier = Modifier.padding(top = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = state.runtimeText,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.alpha(if (paletteColors != null) 1f else 0.6f),
-                        color = paletteColors?.vibrantBodyTextColor?.let { Color(it) }
-                            ?: Color.Unspecified
-                    )
+                    if (state.runtimeText.isNotEmpty()) {
+                        Text(
+                            text = state.runtimeText,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.alpha(if (paletteColors != null) 1f else 0.6f),
+                            color = paletteColors?.vibrantBodyTextColor?.let { Color(it) }
+                                ?: Color.Unspecified
+                        )
+                    }
 
                     if (state.releaseDateText.isNotEmpty()) {
                         Text(
@@ -295,7 +293,7 @@ fun HeaderInfoCard(
                     text = state.overview,
                     style = MaterialTheme.typography.bodySmall,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 4,
+                    maxLines = 3,
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .padding(top = 8.dp)
@@ -385,10 +383,8 @@ fun DetailsHeaderPreview() {
                 genres = "Action / Sci-Fi",
                 runtimeText = "2h 28m",
                 releaseDateText = " • 16 Jul 2010",
-                voteAverage = 8.8,
-                voteCount = 30000,
                 youtubeTrailers = null,
-                isFavorite = false,
+                isWatched = false,
                 isWatchlist = false,
                 isTvShow = false
             )

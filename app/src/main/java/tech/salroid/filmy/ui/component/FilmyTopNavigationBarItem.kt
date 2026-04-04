@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textview.MaterialTextView
 import tech.salroid.filmy.R
-import tech.salroid.filmy.utility.getColorFromAttr
 
 class FilmyTopNavigationBarItem @JvmOverloads constructor(
     context: Context,
@@ -34,10 +32,10 @@ class FilmyTopNavigationBarItem @JvmOverloads constructor(
         //context.getColorFromAttr(R.attr.colorPrimaryContainer)
     }
     private val activeTextColor by lazy(LazyThreadSafetyMode.NONE) {
-       // context.getColorFromAttr(R.attr.colorPrimary)
+        // context.getColorFromAttr(R.attr.colorPrimary)
     }
     private val inActiveTextColor by lazy(LazyThreadSafetyMode.NONE) {
-       // context.getColorFromAttr(R.attr.colorOnSurface)
+        // context.getColorFromAttr(R.attr.colorOnSurface)
     }
 
     private var currentState: NavigationState = NavigationState.INACTIVE
@@ -98,14 +96,14 @@ class FilmyTopNavigationBarItem @JvmOverloads constructor(
     fun makeItemActive() {
         currentState = NavigationState.ACTIVE
         navigationItemTitle.setTextAppearance(R.style.TextAppearance_Filmy_LabelMedium_Bold)
-       // navigationItemTitle.setTextColor(activeTextColor)
+        // navigationItemTitle.setTextColor(activeTextColor)
         alpha = 1.0f
 
         drawable?.let {
             navigationItemTitle.setCompoundDrawables(drawable, null, null, null)
-           // navigationItemTitle.compoundDrawables.getOrNull(0)?.let {
-                //DrawableCompat.setTint(it, activeTextColor)
-           // }
+            // navigationItemTitle.compoundDrawables.getOrNull(0)?.let {
+            //DrawableCompat.setTint(it, activeTextColor)
+            // }
         }
 
         //background = activeBackground

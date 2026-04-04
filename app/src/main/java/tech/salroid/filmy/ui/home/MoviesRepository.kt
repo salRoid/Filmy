@@ -97,7 +97,7 @@ class MoviesRepository @Inject constructor(
         return filmyDatabase.movieDetailsDao().insert(movieDetails)
     }
 
-    fun getFavorites(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllFavorites()
+    fun getWatched(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllWatched()
 
     fun getWatchlist(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllWatchlist()
 

@@ -31,10 +31,10 @@ class CollectionTypeFragment : Fragment() {
     private var adapter: CollectionsAdapter? = null
     private var _binding: FragmentCollectionMoviesBinding? = null
     private val binding get() = _binding!!
-    private var currentCollectionType = CollectionType.FAVORITE
+    private var currentCollectionType = CollectionType.WATCHED
 
     enum class CollectionType {
-        FAVORITE,
+        WATCHED,
         WATCHLIST
     }
 
@@ -78,7 +78,7 @@ class CollectionTypeFragment : Fragment() {
     private fun collectUiStates() {
         lifecycleScope.launch {
             when (currentCollectionType) {
-                CollectionType.FAVORITE -> {
+                CollectionType.WATCHED -> {
                     viewModel.uiStateFavorites.collect {
                         showMovies(it)
                     }
@@ -96,7 +96,7 @@ class CollectionTypeFragment : Fragment() {
         adapter?.submitList(movies.reversed())
 
         when (currentCollectionType) {
-            CollectionType.FAVORITE -> binding.emptyContainer.isVisible = movies.isEmpty()
+            CollectionType.WATCHED -> binding.emptyContainer.isVisible = movies.isEmpty()
             CollectionType.WATCHLIST -> binding.emptyContainerWatch.isVisible = movies.isEmpty()
         }
     }
@@ -118,7 +118,7 @@ class CollectionTypeFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext()).run {
             setAdapter(adapter) { _: DialogInterface?, _: Int ->
                 when (currentCollectionType) {
-                    CollectionType.FAVORITE -> movie.favorite = false
+                    CollectionType.WATCHED -> movie.watched = false
                     CollectionType.WATCHLIST -> movie.watchlist = false
                 }
                 viewModel.updateMovieDetailsInDb(movie, position, currentCollectionType)

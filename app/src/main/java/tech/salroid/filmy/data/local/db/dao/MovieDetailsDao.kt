@@ -16,8 +16,8 @@ interface MovieDetailsDao {
     @Query("SELECT * FROM movie_details")
     fun getAllDetails(): List<MovieDetails>
 
-    @Query("SELECT * FROM movie_details WHERE favorite = 1")
-    fun getAllFavorites(): Flow<List<MovieDetails>>
+    @Query("SELECT * FROM movie_details WHERE watched = 1")
+    fun getAllWatched(): Flow<List<MovieDetails>>
 
     @Query("SELECT * FROM movie_details WHERE watchlist = 1")
     fun getAllWatchlist(): Flow<List<MovieDetails>>

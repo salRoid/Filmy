@@ -20,6 +20,7 @@ import tech.salroid.filmy.ui.collections.CollectionScreen
 import tech.salroid.filmy.ui.full.AllMoviesScreen
 import tech.salroid.filmy.ui.movies.MoviesRoute
 import tech.salroid.filmy.ui.movies.details.MovieDetailsScreen
+import tech.salroid.filmy.ui.reviews.ReviewsListScreen
 import tech.salroid.filmy.ui.search.SearchScreenState
 import tech.salroid.filmy.ui.settings.AboutScreen
 import tech.salroid.filmy.ui.settings.LicenseScreen
@@ -106,6 +107,9 @@ private fun NavGraphBuilder.moviesGraph(
                 onViewAllCastClick = { id, isTv, title ->
                     navController.navigate(AppRoute.AllCastCrew.create(id, isTv, title))
                 },
+                onViewAllReviewsClick = { id, isTv, title ->
+                    navController.navigate(AppRoute.ReviewsList.create(id, isTv, title))
+                },
                 onMemberClick = { memberId, isTv ->
                     navController.navigate(AppRoute.CastCrewDetails.create(memberId, isTv))
                 },
@@ -156,6 +160,9 @@ private fun NavGraphBuilder.showsGraph(
                 onBackNavigation = { navController.popBackStack() },
                 onViewAllCastClick = { id, isTv, title ->
                     navController.navigate(AppRoute.AllCastCrew.create(id, isTv, title))
+                },
+                onViewAllReviewsClick = { id, isTv, title ->
+                    navController.navigate(AppRoute.ReviewsList.create(id, isTv, title))
                 },
                 onMemberClick = { memberId, isTv ->
                     navController.navigate(AppRoute.CastCrewDetails.create(memberId, isTv))
@@ -283,6 +290,25 @@ private fun NavGraphBuilder.commonScreens(navController: NavHostController) {
                     navController.navigate(AppRoute.MovieDetails.create(id))
                 }
             },
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+
+    composable(
+        route = AppRoute.ReviewsList.route,
+        arguments = listOf(
+            navArgument("id") { type = NavType.IntType },
+            navArgument("isTv") { type = NavType.BoolType },
+            navArgument("title") { type = NavType.StringType }
+        )
+    ) { backStackEntry ->
+        val id = backStackEntry.arguments?.getInt("id") ?: 0
+        val isTv = backStackEntry.arguments?.getBoolean("isTv") ?: false
+        val title = backStackEntry.arguments?.getString("title") ?: ""
+        ReviewsListScreen(
+            id = id,
+            isTv = isTv,
+            title = title,
             onBackClick = { navController.popBackStack() }
         )
     }

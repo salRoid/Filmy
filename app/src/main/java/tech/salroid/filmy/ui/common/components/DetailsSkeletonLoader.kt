@@ -7,15 +7,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tech.salroid.filmy.R
+import android.app.Activity
 import tech.salroid.filmy.ui.theme.AppTheme
+import tech.salroid.filmy.utility.themeSystemBars
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +33,27 @@ fun DetailsSkeletonLoader(
         label = "alpha"
     )
     val shimmerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = alpha)
+
+    val context = LocalContext.current
+    val activity = context as? Activity
+
+    LaunchedEffect(Unit) {
+        activity?.themeSystemBars(
+            lightStatusBar = false,
+            isFullScreen = true,
+            transparentStatus = true
+        )
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            activity?.themeSystemBars(
+                lightStatusBar = true,
+                isFullScreen = false,
+                transparentStatus = false
+            )
+        }
+    }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,

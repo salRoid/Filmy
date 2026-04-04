@@ -98,7 +98,7 @@ class TvDetailsActivity : AppCompatActivity() {
     companion object {
         const val IMAGE_QUALITY_DEFAULT = "original"
         const val WATCHLIST = "watchlist"
-        const val FAVOURITES = "favorites"
+        const val WATCHED = "watched"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -157,7 +157,7 @@ class TvDetailsActivity : AppCompatActivity() {
             viewModel.uiStateAddToCollection.collect { (addedToCollection, message) ->
                 if (addedToCollection) {
                     if (message == WATCHLIST) isWatchlist = true
-                    if (message == FAVOURITES) isFavourite = true
+                    if (message == WATCHED) isFavourite = true
                     binding.backdrop.showSnackBar("Movie added to $message")
                     updateOptionsMenu()
                 }
@@ -168,7 +168,7 @@ class TvDetailsActivity : AppCompatActivity() {
                 if (updatedID > 0) {
                     if (remove) {
                         if (message == WATCHLIST) isWatchlist = false
-                        if (message == FAVOURITES) isFavourite = false
+                        if (message == WATCHED) isFavourite = false
 
                         binding.backdrop.showSnackBar(
                             "Movie removed from $message",
@@ -176,7 +176,7 @@ class TvDetailsActivity : AppCompatActivity() {
                         )
                     } else {
                         if (message == WATCHLIST) isWatchlist = true
-                        if (message == FAVOURITES) isFavourite = true
+                        if (message == WATCHED) isFavourite = true
                         binding.backdrop.showSnackBar("Movie added to $message")
                     }
 

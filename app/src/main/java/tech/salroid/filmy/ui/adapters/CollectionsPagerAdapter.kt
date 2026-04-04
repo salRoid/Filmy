@@ -9,7 +9,7 @@ class CollectionsPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragmen
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment = CollectionTypeFragment.newInstance(
-        if (position == 0) CollectionTypeFragment.CollectionType.FAVORITE else
+        if (position == 0) CollectionTypeFragment.CollectionType.WATCHED else
             CollectionTypeFragment.CollectionType.WATCHLIST
     )
 }

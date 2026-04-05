@@ -158,6 +158,7 @@ fun AccountScreen(
 fun AccountScreenContent(
     profile: Profile?,
     isLoading: Boolean,
+    showLoginCard: Boolean = false,
     onLoginClick: () -> Unit,
     onLogoutClick: () -> Unit,
     onAboutClick: () -> Unit,
@@ -174,13 +175,15 @@ fun AccountScreenContent(
             .verticalScroll(rememberScrollState())
             .onGloballyPositioned { onRootSizeChanged(it.size) }
     ) {
-        LoginCard(
-            profile = profile,
-            onLoginClick = onLoginClick,
-            onLogoutClick = onLogoutClick,
-            isLoading = isLoading,
-            modifier = Modifier.onGloballyPositioned { onCardSizeChanged(it.size) }
-        )
+        if (showLoginCard) {
+            LoginCard(
+                profile = profile,
+                onLoginClick = onLoginClick,
+                onLogoutClick = onLogoutClick,
+                isLoading = isLoading,
+                modifier = Modifier.onGloballyPositioned { onCardSizeChanged(it.size) }
+            )
+        }
 
         PreferencesSection(
             context = context,
@@ -306,7 +309,12 @@ fun ThemeSelectionDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(R.string.theme)) },
+        title = {
+            Text(
+                text = stringResource(R.string.theme),
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
         text = {
             Column(Modifier.selectableGroup()) {
                 entries.forEachIndexed { index, item ->

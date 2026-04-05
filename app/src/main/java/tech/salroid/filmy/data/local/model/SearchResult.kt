@@ -44,5 +44,14 @@ data class SearchResult(
     var voteAverage: Double? = null,
 
     @SerializedName("vote_count")
-    var voteCount: Int? = null
+    var voteCount: Int? = null,
+
+    @SerializedName("media_type")
+    var mediaType: String? = null,
+
+    @SerializedName("name")
+    var name: String? = null,
+
+    @SerializedName("first_air_date")
+    var firstAirDate: String? = null
 )

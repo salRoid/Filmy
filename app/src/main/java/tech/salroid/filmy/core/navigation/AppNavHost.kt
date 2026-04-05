@@ -21,6 +21,7 @@ import tech.salroid.filmy.ui.full.AllMoviesScreen
 import tech.salroid.filmy.ui.movies.MoviesRoute
 import tech.salroid.filmy.ui.movies.details.MovieDetailsScreen
 import tech.salroid.filmy.ui.reviews.ReviewsListScreen
+import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.search.SearchScreenState
 import tech.salroid.filmy.ui.settings.AboutScreen
 import tech.salroid.filmy.ui.settings.LicenseScreen
@@ -92,6 +93,13 @@ private fun NavGraphBuilder.moviesGraph(
                 onSearch = onSearch,
                 onMovieClick = { id ->
                     navController.navigate(AppRoute.MovieDetails.create(id))
+                },
+                onSearchResultClick = { item: SearchPreview ->
+                    if (item.mediaType == "tv") {
+                        navController.navigate(AppRoute.ShowDetails.create(item.id))
+                    } else {
+                        navController.navigate(AppRoute.MovieDetails.create(item.id))
+                    }
                 }
             )
         }
@@ -146,6 +154,13 @@ private fun NavGraphBuilder.showsGraph(
                 onSearch = onSearch,
                 onShowClick = { id ->
                     navController.navigate(AppRoute.ShowDetails.create(id))
+                },
+                onSearchResultClick = { item: SearchPreview ->
+                    if (item.mediaType == "tv") {
+                        navController.navigate(AppRoute.ShowDetails.create(item.id))
+                    } else {
+                        navController.navigate(AppRoute.MovieDetails.create(item.id))
+                    }
                 }
             )
         }

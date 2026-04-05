@@ -11,14 +11,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.ui.home.MoviesRepository
 import javax.inject.Inject
-import kotlin.collections.map
 
 @HiltViewModel
 @OptIn(
@@ -40,24 +38,26 @@ class SearchViewModel @Inject constructor(
             if (query.isBlank()) {
                 flowOf(SearchScreenState.Idle)
             } else {
-                moviesRepository
-                    .searchMoviesFlow(query)
-                    .map { searchResultResponse ->
-                        searchResultResponse.fold(onSuccess = { response ->
-                            runCatching {
-                                response.results
-                                    .map(searchPreviewMapper::map)
-                            }.fold(onSuccess = { previews ->
-                                SearchScreenState.Success(previews)
+                flow<SearchScreenState> {
+                    emit(SearchScreenState.Loading)
+                    
+                    moviesRepository
+                        .searchMultiFlow(query)
+                        .collect { searchResultResponse ->
+                            searchResultResponse.fold(onSuccess = { response ->
+                                runCatching {
+                                    response.results
+                                        .map(searchPreviewMapper::map)
+                                }.fold(onSuccess = { previews ->
+                                    emit(SearchScreenState.Success(previews))
+                                }, onFailure = { exception ->
+                                    emit(SearchScreenState.Error(exception.message ?: "Mapping Error"))
+                                })
                             }, onFailure = { exception ->
-                                SearchScreenState.Error(exception.message ?: "Mapping Error")
+                                emit(SearchScreenState.Error(exception.message ?: "Something went wrong."))
                             })
-                        }, onFailure = { exception ->
-                            SearchScreenState.Error(exception.message ?: "Something went wrong.")
-                        })
-                    }.onStart {
-                        emit(SearchScreenState.Loading)
-                    }
+                        }
+                }
             }
         }.stateIn(
             scope = viewModelScope,

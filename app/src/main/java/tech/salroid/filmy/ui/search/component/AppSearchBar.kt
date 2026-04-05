@@ -1,17 +1,27 @@
 package tech.salroid.filmy.ui.search.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.isTraversalGroup
@@ -20,7 +30,9 @@ import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import tech.salroid.filmy.data.model.SearchPreview
+import tech.salroid.filmy.ui.search.SearchScreenState
 import tech.salroid.filmy.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,9 +40,10 @@ import tech.salroid.filmy.ui.theme.AppTheme
 fun AppSearchBar(
     textFieldState: TextFieldState,
     onSearch: (String) -> Unit,
-    searchResults: List<SearchPreview>,
+    searchUiState: SearchScreenState,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
+    onSearchResultClick: (SearchPreview) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -74,9 +87,34 @@ fun AppSearchBar(
             expanded = expanded,
             onExpandedChange = onExpandedChange,
         ) {
-            SearchList(searchPreviews = searchResults) {
-                textFieldState.edit { replace(0, length, searchResults[it].title) }
+            var showLoading by remember { mutableStateOf(false) }
+            LaunchedEffect(searchUiState) {
+                if (searchUiState is SearchScreenState.Loading) {
+                    delay(400) // Show loading only if it takes more than 400ms
+                    showLoading = true
+                } else {
+                    showLoading = false
+                }
+            }
+
+            AnimatedVisibility(
+                visible = showLoading,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(2.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            }
+
+            val searchResults = (searchUiState as? SearchScreenState.Success)?.previews ?: emptyList()
+            SearchList(searchPreviews = searchResults) { item ->
                 onExpandedChange(false)
+                onSearchResultClick(item)
             }
         }
     }
@@ -89,9 +127,10 @@ private fun AppSearchBarPreview() {
         AppSearchBar(
             textFieldState = rememberTextFieldState(),
             onSearch = {},
-            searchResults = emptyList(),
+            searchUiState = SearchScreenState.Idle,
             expanded = false,
-            onExpandedChange = {}
+            onExpandedChange = {},
+            onSearchResultClick = {}
         )
     }
 }
@@ -103,7 +142,7 @@ private fun AppSearchBarExpandedPreview() {
         AppSearchBar(
             textFieldState = rememberTextFieldState("Inception"),
             onSearch = {},
-            searchResults = listOf(
+            searchUiState = SearchScreenState.Success(listOf(
                 SearchPreview(
                     1,
                     "Inception",
@@ -116,9 +155,10 @@ private fun AppSearchBarExpandedPreview() {
                     "",
                     "2014"
                 )
-            ),
+            )),
             expanded = true,
-            onExpandedChange = {}
+            onExpandedChange = {},
+            onSearchResultClick = {}
         )
     }
 }

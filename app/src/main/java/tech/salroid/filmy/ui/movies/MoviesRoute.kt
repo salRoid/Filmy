@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.search.SearchScreenState
 
 @Composable
@@ -17,6 +18,7 @@ fun MoviesRoute(
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
+    onSearchResultClick: (SearchPreview) -> Unit
 ) {
     val movies = viewModel.moviesPagingData.collectAsLazyPagingItems()
 
@@ -28,6 +30,7 @@ fun MoviesRoute(
         isSearchExpanded = isSearchExpanded,
         onSearchExpandedChange = onSearchExpandedChange,
         onSearch = onSearch,
-        onMovieClick = onMovieClick
+        onMovieClick = onMovieClick,
+        onSearchResultClick = onSearchResultClick
     )
 }

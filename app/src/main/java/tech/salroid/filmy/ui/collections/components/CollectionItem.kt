@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,7 +20,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -84,14 +87,34 @@ fun CollectionItem(
                     .padding(start = 16.dp)
                     .fillMaxWidth()
             ) {
-                Text(
-                    modifier = Modifier.padding(top = 4.dp),
-                    text = movie.title ?: "",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(top = 4.dp)
+                ) {
+                    Text(
+                        modifier = Modifier.weight(1f, fill = false),
+                        text = movie.title ?: "",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    if (movie.type == 1) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Surface(
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            shape = RoundedCornerShape(4.dp)
+                        ) {
+                            Text(
+                                text = "SHOW",
+                                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            )
+                        }
+                    }
+                }
                 Text(
                     text = movie.releaseDate?.toReadableDate() ?: "",
                     style = MaterialTheme.typography.bodySmall,
@@ -122,6 +145,24 @@ fun CollectionItemPreview() {
                 posterPath = "",
                 releaseDate = "2023-01-22",
                 overview = "A small, wealthy family in New York City gets progressively torn apart by secrets, lies, and the theft that orchestrates all of it."
+            ),
+            onClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CollectionItemTvPreview() {
+    AppTheme {
+        CollectionItem(
+            movie = MovieDetails(
+                id = 1,
+                title = "Breaking Bad",
+                posterPath = "",
+                releaseDate = "2008-01-20",
+                overview = "High school chemistry teacher Walter White is diagnosed with inoperable lung cancer. He turns to manufacturing and selling methamphetamine in order to secure his family's financial future.",
+                type = 1
             ),
             onClick = {}
         )

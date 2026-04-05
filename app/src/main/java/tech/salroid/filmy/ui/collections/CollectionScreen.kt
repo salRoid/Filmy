@@ -40,7 +40,12 @@ fun CollectionScreen(
     if (showDialog && selectedMovie != null) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
-            title = { Text(stringResource(R.string.remove_from_collection)) },
+            title = {
+                Text(
+                    stringResource(R.string.remove_from_collection),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            },
             text = {
                 Text(
                     stringResource(
@@ -110,7 +115,7 @@ fun CollectionScreenContent(
             indicator = {
                 TabRowDefaults.PrimaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(pagerState.currentPage),
-                    width = 48.dp,
+                    width = 120.dp,
                     shape = RoundedCornerShape(topStart = 3.dp, topEnd = 3.dp)
                 )
             },

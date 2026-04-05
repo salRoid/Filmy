@@ -18,14 +18,14 @@ class CollectionsViewModel @Inject constructor(
     val watched: StateFlow<List<MovieDetails>> = moviesRepository.getWatched()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = emptyList()
         )
 
     val watchlist: StateFlow<List<MovieDetails>> = moviesRepository.getWatchlist()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Eagerly,
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = emptyList()
         )
 

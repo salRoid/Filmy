@@ -86,6 +86,9 @@ interface MoviesApiService {
     @GET("search/movie")
     suspend fun searchMovies(@Query("query") query: String): SearchResultResponse
 
+    @GET("search/multi")
+    suspend fun searchMulti(@Query("query") query: String): SearchResultResponse
+
     @GET("movie/{movie_id}/reviews")
     suspend fun getReviews(@Path("movie_id") movieId: String): ReviewResponse
 

@@ -113,6 +113,10 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
         emit(apiService.searchMovies(query))
     }
 
+    override fun searchMulti(query: String): Flow<SearchResultResponse> = flow {
+        emit(apiService.searchMulti(query))
+    }
+
     override fun getReviews(id: String): Flow<ReviewResponse> = flow {
         emit(apiService.getReviews(id))
     }

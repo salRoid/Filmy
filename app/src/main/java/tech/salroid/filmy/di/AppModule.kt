@@ -10,6 +10,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -79,6 +80,7 @@ object AppModule {
     }
 
     @Provides
+    @Singleton
     fun provideMoviesDatabase(@ApplicationContext appContext: Context): FilmyDatabase {
         return Room.databaseBuilder(
             appContext,

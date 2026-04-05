@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.search.SearchScreenState
 import tech.salroid.filmy.ui.search.component.AppSearchBar
 
@@ -19,7 +20,8 @@ fun HomeTopBar(
     searchUiState: SearchScreenState,
     isSearchExpanded: Boolean,
     onSearchExpandedChange: (Boolean) -> Unit,
-    onSearch: (String) -> Unit
+    onSearch: (String) -> Unit,
+    onSearchResultClick: (SearchPreview) -> Unit
 ) {
     Column(modifier = Modifier.statusBarsPadding()) {
         AnimatedVisibility(
@@ -33,12 +35,10 @@ fun HomeTopBar(
         AppSearchBar(
             textFieldState = textFieldState,
             onSearch = onSearch,
-            searchResults = when (searchUiState) {
-                is SearchScreenState.Success -> searchUiState.previews
-                else -> emptyList()
-            },
+            searchUiState = searchUiState,
             expanded = isSearchExpanded,
-            onExpandedChange = onSearchExpandedChange
+            onExpandedChange = onSearchExpandedChange,
+            onSearchResultClick = onSearchResultClick
         )
     }
 }

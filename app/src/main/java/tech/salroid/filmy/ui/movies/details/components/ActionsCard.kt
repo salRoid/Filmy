@@ -2,6 +2,7 @@ package tech.salroid.filmy.ui.movies.details.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -28,8 +29,17 @@ fun ActionsCard(
     paletteColors: PaletteColors?,
     modifier: Modifier = Modifier
 ) {
-    val tint = paletteColors?.vibrantRgb?.let { Color(it) }
-        ?: MaterialTheme.colorScheme.primary
+    val isDark = isSystemInDarkTheme()
+    val tint = remember(paletteColors, isDark) {
+        val color = if (isDark) {
+            paletteColors?.lightVibrantRgb ?: paletteColors?.vibrantRgb
+        } else {
+            paletteColors?.vibrantRgb ?: paletteColors?.darkVibrantRgb
+        }
+        color?.let { Color(it) }
+    } ?: MaterialTheme.colorScheme.primary
+
+    val unselectedColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
 
     Row(
         modifier = modifier
@@ -38,7 +48,6 @@ fun ActionsCard(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val unselectedColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
 
         // Watched Toggle
         ActionItem(

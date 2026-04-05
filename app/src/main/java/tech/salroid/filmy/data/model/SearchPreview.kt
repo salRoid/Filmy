@@ -7,5 +7,6 @@ data class SearchPreview(
     val id: Int,
     val title: String,
     val posterUrl: String,
-    val readableReleaseDate: String
+    val readableReleaseDate: String,
+    val mediaType: String? = null
 )

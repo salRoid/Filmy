@@ -178,8 +178,25 @@ class MovieDetailsViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 moviesRepository.getTvShowDetailsFromNetwork(showId)
                     .catch { it.printStackTrace() }
-                    .collect { details ->
-                        _uiStateTvDetails.emit(details)
+                    .collect { showDetails ->
+                        _uiStateTvDetails.emit(showDetails)
+                        
+                        // Also update local DB if it's already in the collection
+                        val local = moviesRepository.getMovieDetailsFromLocal(id, movieType)
+                        if (local != null) {
+                            val updated = local.copy(
+                                title = showDetails.name,
+                                overview = showDetails.overview,
+                                tagline = showDetails.tagline,
+                                backdropPath = showDetails.backdropPath,
+                                posterPath = showDetails.posterPath,
+                                voteAverage = showDetails.voteAverage,
+                                voteCount = showDetails.voteCount?.toLong(),
+                                originalLanguage = showDetails.originalLanguage,
+                                releaseDate = showDetails.firstAirDate
+                            )
+                            moviesRepository.addMovieDetailsToLocal(updated)
+                        }
                     }
             }
         }
@@ -223,8 +240,10 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     fun toggleWatchedTv(showDetails: TvDetails, currentMovieDetails: MovieDetails?) {
-        val movieDetails = currentMovieDetails ?: MovieDetails(
+        val movieDetails = (currentMovieDetails ?: MovieDetails(
             id = showDetails.id ?: 0,
+            type = 1
+        )).copy(
             title = showDetails.name,
             overview = showDetails.overview,
             tagline = showDetails.tagline,
@@ -233,15 +252,19 @@ class MovieDetailsViewModel @Inject constructor(
             voteAverage = showDetails.voteAverage,
             voteCount = showDetails.voteCount?.toLong(),
             originalLanguage = showDetails.originalLanguage,
-            type = 1
-        )
-        val updatedMovie = movieDetails.copy(watched = !movieDetails.watched)
-        updateMovieDetailsInDb(updatedMovie, WATCHED, !updatedMovie.watched)
+            releaseDate = showDetails.firstAirDate
+        ).apply { 
+            watched = !(currentMovieDetails?.watched ?: false)
+            watchlist = currentMovieDetails?.watchlist ?: false
+        }
+        updateMovieDetailsInDb(movieDetails, WATCHED, !movieDetails.watched)
     }
 
     fun toggleWatchlistTv(showDetails: TvDetails, currentMovieDetails: MovieDetails?) {
-        val movieDetails = currentMovieDetails ?: MovieDetails(
+        val movieDetails = (currentMovieDetails ?: MovieDetails(
             id = showDetails.id ?: 0,
+            type = 1
+        )).copy(
             title = showDetails.name,
             overview = showDetails.overview,
             tagline = showDetails.tagline,
@@ -250,10 +273,12 @@ class MovieDetailsViewModel @Inject constructor(
             voteAverage = showDetails.voteAverage,
             voteCount = showDetails.voteCount?.toLong(),
             originalLanguage = showDetails.originalLanguage,
-            type = 1
-        )
-        val updatedMovie = movieDetails.copy(watchlist = !movieDetails.watchlist)
-        updateMovieDetailsInDb(updatedMovie, WATCHLIST, !updatedMovie.watchlist)
+            releaseDate = showDetails.firstAirDate
+        ).apply {
+            watchlist = !(currentMovieDetails?.watchlist ?: false)
+            watched = currentMovieDetails?.watched ?: false
+        }
+        updateMovieDetailsInDb(movieDetails, WATCHLIST, !movieDetails.watchlist)
     }
 
     fun updateMovieDetailsInDb(

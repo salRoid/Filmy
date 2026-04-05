@@ -14,10 +14,11 @@ class SearchPreviewMapper @Inject constructor() {
     fun map(searchResult: SearchResult): SearchPreview =
         SearchPreview(
             id = searchResult.id,
-            title = searchResult.title.orEmpty(),
+            title = (searchResult.title ?: searchResult.name).orEmpty(),
             posterUrl = posterBaseUrl + searchResult.posterPath.orEmpty(),
-            readableReleaseDate = searchResult.releaseDate
+            readableReleaseDate = (searchResult.releaseDate ?: searchResult.firstAirDate)
                 ?.let(::formateReleaseDate)
-                .orEmpty()
+                .orEmpty(),
+            mediaType = searchResult.mediaType
         )
 }

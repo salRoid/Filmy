@@ -12,9 +12,11 @@ import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.data.network.MoviesApiHelper
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.Dispatchers
 
+@Singleton
 class MoviesRepository @Inject constructor(
     private val filmyDatabase: FilmyDatabase,
     private val moviesApiHelper: MoviesApiHelper
@@ -88,6 +90,13 @@ class MoviesRepository @Inject constructor(
 
     fun searchMoviesFlow(query: String): Flow<Result<SearchResultResponse>> =
         moviesApiHelper.searchMovies(query).map {
+            Result.success(it)
+        }.catch {
+            emit(Result.failure(it))
+        }
+
+    fun searchMultiFlow(query: String): Flow<Result<SearchResultResponse>> =
+        moviesApiHelper.searchMulti(query).map {
             Result.success(it)
         }.catch {
             emit(Result.failure(it))

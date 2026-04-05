@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import tech.salroid.filmy.data.model.MoviePreview
+import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.common.components.HomeTopBar
 import tech.salroid.filmy.ui.common.components.LoadingWidget
@@ -23,7 +24,8 @@ fun MoviesScreen(
     isSearchExpanded: Boolean,
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
-    onMovieClick: (Int) -> Unit
+    onMovieClick: (Int) -> Unit,
+    onSearchResultClick: (SearchPreview) -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         HomeTopBar(
@@ -31,7 +33,8 @@ fun MoviesScreen(
             searchUiState = searchUiState,
             isSearchExpanded = isSearchExpanded,
             onSearchExpandedChange = onSearchExpandedChange,
-            onSearch = onSearch
+            onSearch = onSearch,
+            onSearchResultClick = onSearchResultClick
         )
 
         when (val state = movies.loadState.refresh) {

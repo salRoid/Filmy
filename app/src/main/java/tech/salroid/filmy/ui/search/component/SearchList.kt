@@ -15,7 +15,7 @@ import tech.salroid.filmy.ui.theme.AppTheme
 fun SearchList(
     modifier: Modifier = Modifier,
     searchPreviews: List<SearchPreview>,
-    onSearchItemClick: (Int) -> Unit
+    onSearchItemClick: (SearchPreview) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -25,7 +25,7 @@ fun SearchList(
         items(searchPreviews, key = { it.id }) { item ->
             SearchItem(
                 searchPreview = item,
-                onItemClick = { onSearchItemClick(item.id) }
+                onItemClick = { onSearchItemClick(item) }
             )
         }
     }

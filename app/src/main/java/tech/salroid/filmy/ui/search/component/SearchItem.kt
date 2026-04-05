@@ -12,6 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -55,16 +56,35 @@ fun SearchItem(
             Spacer(modifier = Modifier.padding(start = 16.dp))
 
             Column(horizontalAlignment = Alignment.Start) {
-                Text(
-                    modifier = Modifier.padding(top = 8.dp),
-                    textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        letterSpacing = 0.0.sp,
-                        fontWeight = FontWeight.Medium,
-                        lineHeight = 18.sp
-                    ),
-                    text = searchPreview.title
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        modifier = Modifier.padding(top = 8.dp),
+                        textAlign = TextAlign.Start,
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            letterSpacing = 0.0.sp,
+                            fontWeight = FontWeight.Medium,
+                            lineHeight = 18.sp
+                        ),
+                        text = searchPreview.title
+                    )
+
+                    if (searchPreview.mediaType == "tv") {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Surface(
+                            color = MaterialTheme.colorScheme.secondaryContainer,
+                            shape = RoundedCornerShape(4.dp),
+                            modifier = Modifier.padding(top = 8.dp)
+                        ) {
+                            Text(
+                                text = "SHOW",
+                                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            )
+                        }
+                    }
+                }
+
                 Text(
                     modifier = Modifier.padding(top = 4.dp),
                     textAlign = TextAlign.Start,
@@ -90,6 +110,23 @@ private fun SearchItemPreview() {
                 title = "Inception",
                 posterUrl = "",
                 readableReleaseDate = "2010"
+            ),
+            onItemClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SearchItemTvPreview() {
+    AppTheme {
+        SearchItem(
+            searchPreview = SearchPreview(
+                id = 1,
+                title = "Breaking Bad",
+                posterUrl = "",
+                readableReleaseDate = "2008",
+                mediaType = "tv"
             ),
             onItemClick = {}
         )

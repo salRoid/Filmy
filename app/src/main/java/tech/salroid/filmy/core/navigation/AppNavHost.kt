@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import tech.salroid.filmy.ui.account.AccountScreen
 import tech.salroid.filmy.ui.cast_crew.AllCastCrewScreen
 import tech.salroid.filmy.ui.cast_crew.CastCrewDetailsScreen
@@ -27,6 +28,8 @@ import tech.salroid.filmy.ui.settings.AboutScreen
 import tech.salroid.filmy.ui.settings.LicenseScreen
 import tech.salroid.filmy.ui.shows.ShowsRoute
 import tech.salroid.filmy.ui.shows.details.ShowDetailsScreen
+
+private const val DEEP_LINK_URI = "http://tech.salroid.com"
 
 @Composable
 fun AppNavHost(
@@ -107,6 +110,9 @@ private fun NavGraphBuilder.moviesGraph(
             route = AppRoute.MovieDetails.route,
             arguments = listOf(navArgument("movieId") {
                 type = NavType.IntType
+            }),
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "$DEEP_LINK_URI/movies/{movieId}"
             })
         ) {
             MovieDetailsScreen(
@@ -168,6 +174,9 @@ private fun NavGraphBuilder.showsGraph(
             route = AppRoute.ShowDetails.route,
             arguments = listOf(navArgument("showId") {
                 type = NavType.IntType
+            }),
+            deepLinks = listOf(navDeepLink {
+                uriPattern = "$DEEP_LINK_URI/shows/{showId}"
             })
         ) {
             ShowDetailsScreen(

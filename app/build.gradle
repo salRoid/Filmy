@@ -170,6 +170,10 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     releaseUnminifiedImplementation 'androidx.compose.ui:ui-tooling'
 
+    // Glance
+    implementation "androidx.glance:glance-appwidget:1.1.1"
+    implementation "androidx.glance:glance-material3:1.1.1"
+
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
     testImplementation 'junit:junit:4.13.2'

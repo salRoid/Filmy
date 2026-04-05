@@ -62,8 +62,8 @@
         <activity android:name=".ui.intro.FilmyIntroActivity" />
 
         <receiver
-            android:name=".ui.widget.FilmyWidgetProvider"
-            android:exported="false">
+            android:name=".ui.widget.WatchlistWidgetReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

@@ -35,51 +35,51 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromStringOfArrayListOfGenres(value: String?): ArrayList<Genres?>? {
-        val listType: Type = object : TypeToken<ArrayList<Genres?>?>() {}.type
-        return Gson().fromJson(value, listType)
+    fun fromStringOfArrayListOfGenres(value: String?): ArrayList<Genres> {
+        if (value.isNullOrEmpty()) return arrayListOf()
+        val listType: Type = object : TypeToken<ArrayList<Genres>>() {}.type
+        return Gson().fromJson(value, listType) ?: arrayListOf()
     }
 
     @TypeConverter
-    fun fromArrayListOfGenres(genres: ArrayList<Genres?>?): String? {
-        val gson = Gson()
-        return gson.toJson(genres)
+    fun fromArrayListOfGenres(genres: ArrayList<Genres>): String {
+        return Gson().toJson(genres)
     }
 
     @TypeConverter
-    fun fromStringOfArrayListOfProductionCompanies(value: String?): ArrayList<ProductionCompanies?>? {
-        val listType: Type = object : TypeToken<ArrayList<ProductionCompanies?>?>() {}.type
-        return Gson().fromJson(value, listType)
+    fun fromStringOfArrayListOfProductionCompanies(value: String?): ArrayList<ProductionCompanies> {
+        if (value.isNullOrEmpty()) return arrayListOf()
+        val listType: Type = object : TypeToken<ArrayList<ProductionCompanies>>() {}.type
+        return Gson().fromJson(value, listType) ?: arrayListOf()
     }
 
     @TypeConverter
-    fun fromArrayListOfProductionCompanies(genres: ArrayList<ProductionCompanies?>?): String? {
-        val gson = Gson()
-        return gson.toJson(genres)
+    fun fromArrayListOfProductionCompanies(genres: ArrayList<ProductionCompanies>): String {
+        return Gson().toJson(genres)
     }
 
     @TypeConverter
-    fun fromStringOfArrayListOfProductionCountries(value: String?): ArrayList<ProductionCountries?>? {
-        val listType: Type = object : TypeToken<ArrayList<ProductionCountries?>?>() {}.type
-        return Gson().fromJson(value, listType)
+    fun fromStringOfArrayListOfProductionCountries(value: String?): ArrayList<ProductionCountries> {
+        if (value.isNullOrEmpty()) return arrayListOf()
+        val listType: Type = object : TypeToken<ArrayList<ProductionCountries>>() {}.type
+        return Gson().fromJson(value, listType) ?: arrayListOf()
     }
 
     @TypeConverter
-    fun fromArrayListOfProductionCountries(genres: ArrayList<ProductionCountries?>?): String? {
-        val gson = Gson()
-        return gson.toJson(genres)
+    fun fromArrayListOfProductionCountries(genres: ArrayList<ProductionCountries>): String {
+        return Gson().toJson(genres)
     }
 
     @TypeConverter
-    fun fromStringOfArrayListOfSpokenLanguages(value: String?): ArrayList<SpokenLanguages?>? {
-        val listType: Type = object : TypeToken<ArrayList<SpokenLanguages?>?>() {}.type
-        return Gson().fromJson(value, listType)
+    fun fromStringOfArrayListOfSpokenLanguages(value: String?): ArrayList<SpokenLanguages> {
+        if (value.isNullOrEmpty()) return arrayListOf()
+        val listType: Type = object : TypeToken<ArrayList<SpokenLanguages>>() {}.type
+        return Gson().fromJson(value, listType) ?: arrayListOf()
     }
 
     @TypeConverter
-    fun fromArrayListOfSpokenLanguages(genres: ArrayList<SpokenLanguages?>?): String? {
-        val gson = Gson()
-        return gson.toJson(genres)
+    fun fromArrayListOfSpokenLanguages(genres: ArrayList<SpokenLanguages>): String {
+        return Gson().toJson(genres)
     }
 
     @TypeConverter

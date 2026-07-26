@@ -141,7 +141,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="8dp"
                             android:fontFamily="@font/circularstd_book"
-                            android:text="+ More"
+                            android:text="@string/more_plus"
                             android:textAllCaps="true" />
 
                     </LinearLayout>

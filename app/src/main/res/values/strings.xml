@@ -3,15 +3,15 @@
     <string name="trakt_base_url" translatable="false">https://api.trakt.tv/people/</string>
     <string name="trakt_cast_suffix" translatable="false">/people?extended=images</string>
 
-    <string name="tmdb_movie_base_url" translatable="false">http://api.themoviedb.org/3/movie/</string>
+    <string name="tmdb_movie_base_url" translatable="false">https://api.themoviedb.org/3/movie/</string>
 
     <string name="person_details_suffix" translatable="false">extended=full,images</string>
     <string name="person_movies_details" translatable="false">/movies?extended=images,full</string>
-    <string name="imdb_link_prefix" translatable="false">http://www.imdb.com/title/</string>
-    <string name="trailer_img_url" formatted="false" translatable="false">http://img.youtube.com/vi/%1$s/0.jpg</string>
-    <string name="poster_prefix_185" translatable="false">http://image.tmdb.org/t/p/w342</string>
-    <string name="poster_prefix_500" translatable="false">http://image.tmdb.org/t/p/w1280</string>
-    <string name="poster_prefix_add_quality" translatable="false">http://image.tmdb.org/t/p/</string>
+    <string name="imdb_link_prefix" translatable="false">https://www.imdb.com/title/</string>
+    <string name="trailer_img_url" formatted="false" translatable="false">https://img.youtube.com/vi/%1$s/0.jpg</string>
+    <string name="poster_prefix_185" translatable="false">https://image.tmdb.org/t/p/w342</string>
+    <string name="poster_prefix_500" translatable="false">https://image.tmdb.org/t/p/w1280</string>
+    <string name="poster_prefix_add_quality" translatable="false">https://image.tmdb.org/t/p/</string>
     <string name="trailer_link_prefix" translatable="false">https://www.youtube.com/watch?v=</string>
 
     <string name="collection_short_label" translatable="false">Collections</string>
@@ -306,11 +306,18 @@ limitations under the License.
     <string name="github">GitHub</string>
 
     <!-- New: TODO Finalise position -->
-    <string name="movie_poster_url" formatted="false" translatable="false">http://image.tmdb.org/t/p/w500%1$s</string>
-    <string name="member_profile_url" formatted="false" translatable="false">http://image.tmdb.org/t/p/w185%1$s</string>
-    <string name="member_profile_url_2" formatted="false" translatable="false">http://image.tmdb.org/t/p/w185%1$s</string>
+    <string name="movie_poster_url" formatted="false" translatable="false">https://image.tmdb.org/t/p/w500%1$s</string>
+    <string name="member_profile_url" formatted="false" translatable="false">https://image.tmdb.org/t/p/w185%1$s</string>
+    <string name="member_profile_url_2" formatted="false" translatable="false">https://image.tmdb.org/t/p/w185%1$s</string>
     <string name="remove" translatable="false">Remove</string>
     <string name="close_video">Close Video</string>
     <string name="video_player">Video Player</string>
+
+    <string name="popular_title">Popular</string>
+    <string name="now_playing_title">Now Playing</string>
+    <string name="upcoming_title">Upcoming</string>
+    <string name="more_plus">+ More</string>
+    <string name="trending_widget_title">TRENDING</string>
+    <string name="empty_space">" "</string>
 
 </resources>

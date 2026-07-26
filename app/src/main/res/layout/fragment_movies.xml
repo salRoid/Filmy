@@ -37,11 +37,11 @@
                 android:id="@+id/logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/pacifico_regular"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/host_grotesk_bold"
                 android:text="@string/app_name"
-                android:textColor="@color/black"
                 android:textSize="22sp"
-                android:textStyle="bold"
+                app:fontFamily="@font/host_grotesk_bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/ivLogo"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,6 +51,7 @@
                 android:layout_width="46dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/bg_search_icon"
                 android:clickable="true"
@@ -107,7 +108,7 @@
                 android:fontFamily="@font/circularstd_book"
                 android:gravity="center_vertical"
                 android:letterSpacing="0.1"
-                android:text="Popular"
+                android:text="@string/popular_title"
                 android:textAllCaps="false"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -135,7 +136,7 @@
                 android:fontFamily="@font/circularstd_book"
                 android:gravity="center_vertical"
                 android:letterSpacing="0.1"
-                android:text="Now Playing"
+                android:text="@string/now_playing_title"
                 android:textAllCaps="false"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -163,7 +164,7 @@
                 android:fontFamily="@font/circularstd_book"
                 android:gravity="center_vertical"
                 android:letterSpacing="0.1"
-                android:text="Upcoming"
+                android:text="@string/upcoming_title"
                 android:textAllCaps="false"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -208,4 +209,3 @@
         app:layout_constraintTop_toBottomOf="@id/appbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

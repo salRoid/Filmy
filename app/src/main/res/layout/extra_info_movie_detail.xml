@@ -32,7 +32,6 @@
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/runtime_holder"
             android:fontFamily="@font/circularstd_book"
-            android:text=""
             android:textSize="14sp" />
 
         <TextView
@@ -58,7 +57,6 @@
             android:ellipsize="end"
             android:fontFamily="@font/circularstd_book"
             android:maxLines="1"
-            android:text=""
             android:textSize="14sp" />
 
         <TextView
@@ -82,7 +80,6 @@
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/language_holder"
             android:fontFamily="@font/circularstd_book"
-            android:text=""
             android:textSize="14sp" />
 
         <TextView
@@ -106,7 +103,6 @@
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@id/release_holder"
             android:fontFamily="@font/circularstd_book"
-            android:text=""
             android:textSize="14sp" />
 
     </RelativeLayout>

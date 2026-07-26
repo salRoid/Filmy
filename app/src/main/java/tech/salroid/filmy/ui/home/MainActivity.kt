@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -64,6 +65,20 @@ class MainActivity : AppCompatActivity() {
         introLogic()
         setupNavigation()
         observerUiStates()
+        addBackPressListener()
+    }
+
+    private fun addBackPressListener() {
+        onBackPressedDispatcher.addCallback(this) {
+            lifecycleScope.launch {
+                if (viewModelSearch.isSearchOpen.value) {
+                    viewModelSearch.closeSearch()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
     }
 
     private fun isDarkMode(): Boolean {
@@ -153,16 +168,6 @@ class MainActivity : AppCompatActivity() {
         //binding.viewpager.visibility = View.VISIBLE
         //binding.mainErrorView.visibility = View.GONE
         //trendingFragment?.retryLoading()
-    }
-
-    override fun onBackPressed() {
-        lifecycleScope.launch {
-            if (viewModelSearch.isSearchOpen.value) {
-                viewModelSearch.closeSearch()
-            } else {
-                super.onBackPressed()
-            }
-        }
     }
 
     override fun onResume() {

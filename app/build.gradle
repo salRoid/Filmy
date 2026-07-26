@@ -19,7 +19,7 @@ android {
     defaultConfig {
         applicationId "tech.salroid.filmy"
         minSdkVersion 24
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode 23
         versionName "3.0.0"
         multiDexEnabled true

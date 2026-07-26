@@ -20,8 +20,8 @@ android {
         applicationId "tech.salroid.filmy"
         minSdkVersion 24
         targetSdkVersion 36
-        versionCode 23
-        versionName "3.0.0"
+        versionCode 24
+        versionName "3.1.0"
         multiDexEnabled true
         resourceConfigurations += ['en', 'de', 'es-rES', 'hi-rIN', 'nl-rNL']
     }

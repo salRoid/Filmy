@@ -1,12 +1,11 @@
 plugins {
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'com.google.dagger.hilt.android'
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 
 repositories {
@@ -20,9 +19,9 @@ android {
     defaultConfig {
         applicationId "tech.salroid.filmy"
         minSdkVersion 24
-        targetSdkVersion 35
-        versionCode 23
-        versionName "3.0.0"
+        targetSdkVersion 36
+        versionCode 24
+        versionName "3.1.0"
         multiDexEnabled true
         resourceConfigurations += ['en', 'de', 'es-rES', 'hi-rIN', 'nl-rNL']
     }
@@ -49,19 +48,11 @@ android {
         targetCompatibility JavaVersion.VERSION_21
     }
 
-    kotlinOptions {
-        jvmTarget = '21'
-    }
-
     buildFeatures {
         viewBinding = true
         buildConfig = true
     }
     namespace 'tech.salroid.filmy'
-}
-
-kapt {
-    correctErrorTypes true
 }
 
 static def getTMDBApiKey() {
@@ -109,11 +100,11 @@ dependencies {
 
     def roomVersion = "2.8.1"
     implementation "androidx.room:room-runtime:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
+    ksp "androidx.room:room-compiler:$roomVersion"
 
     // Dagger Hilt
-    implementation "com.google.dagger:hilt-android:2.57.2"
-    kapt "com.google.dagger:hilt-compiler:2.57.2"
+    implementation "com.google.dagger:hilt-android:2.60.1"
+    ksp "com.google.dagger:hilt-compiler:2.60.1"
 
     // Navigation
     def nav_version = "2.9.5"

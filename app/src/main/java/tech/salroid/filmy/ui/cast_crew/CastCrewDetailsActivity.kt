@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.Html
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -82,6 +83,20 @@ class CastCrewDetailsActivity : AppCompatActivity() {
         characterId?.let {
             viewModel.getCastCrewDetails(it)
             viewModel.getCastCrewMovies(it)
+        }
+
+        addBackPressListener()
+    }
+
+    private fun addBackPressListener() {
+        onBackPressedDispatcher.addCallback(this) {
+            val fragment = supportFragmentManager.findFragmentByTag(DESCRIPTION) as FullReadFragment?
+            if (fragment != null && fragment.isVisible) {
+                fragment.dismiss()
+            } else {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+            }
         }
     }
 
@@ -177,12 +192,4 @@ class CastCrewDetailsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentByTag(DESCRIPTION) as FullReadFragment?
-        if (fragment != null && fragment.isVisible) {
-            fragment.dismiss()
-        } else {
-            super.onBackPressed()
-        }
-    }
 }

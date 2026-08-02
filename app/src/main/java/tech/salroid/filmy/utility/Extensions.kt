@@ -88,7 +88,7 @@ fun Context.openYoutubeTrailer(source: String?) {
             startActivity(
                 Intent(
                     ACTION_VIEW,
-                    "http://www.youtube.com/watch?v=$it".toUri()
+                    "https://www.youtube.com/watch?v=$it".toUri()
                 )
             )
         } else {

@@ -97,7 +97,7 @@ fun AllMoviesContent(
                     val movie = data.castMovies[index]
                     PreviewItem(
                         title = movie.title ?: movie.name ?: "",
-                        posterUrl = "http://image.tmdb.org/t/p/w342${movie.posterPath}",
+                        posterUrl = "https://image.tmdb.org/t/p/w342${movie.posterPath}",
                         readableDate = movie.releaseDate?.toReadableDate() ?: "",
                         onItemClick = { onMovieClick(movie.id ?: 0, movie.title ?: "") }
                     )

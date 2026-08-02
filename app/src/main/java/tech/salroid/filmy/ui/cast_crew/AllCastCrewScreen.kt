@@ -140,7 +140,7 @@ fun MemberItem(member: Member, onClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
-            model = "http://image.tmdb.org/t/p/w185${member.profilePath}",
+            model = "https://image.tmdb.org/t/p/w185${member.profilePath}",
             contentDescription = null,
             modifier = Modifier
                 .size(70.dp)

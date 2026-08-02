@@ -79,7 +79,7 @@ class WatchlistWidget : GlanceAppWidget() {
                 repository.getWatchlist().collect { list ->
                     val topItems = list.reversed().take(5)
                     val itemsWithBitmaps = topItems.map { item ->
-                        val posterUrl = "http://image.tmdb.org/t/p/w185${item.posterPath}"
+                        val posterUrl = "https://image.tmdb.org/t/p/w185${item.posterPath}"
                         val bitmap = loadBitmap(context, posterUrl)
                         WatchlistItemData(item, bitmap)
                     }

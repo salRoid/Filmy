@@ -21,7 +21,8 @@ fun HomeTopBar(
     isSearchExpanded: Boolean,
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
-    onSearchResultClick: (SearchPreview) -> Unit
+    onSearchResultClick: (SearchPreview) -> Unit,
+    trailingContent: @Composable () -> Unit = {}
 ) {
     Column(modifier = Modifier.statusBarsPadding()) {
         AnimatedVisibility(
@@ -29,7 +30,7 @@ fun HomeTopBar(
             enter = fadeIn() + expandVertically(),
             exit = fadeOut() + shrinkVertically()
         ) {
-            AppBranding()
+            AppBranding(trailingContent = trailingContent)
         }
 
         AppSearchBar(

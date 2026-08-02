@@ -125,7 +125,7 @@ fun CastCrewDetailsBody(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
-                model = "http://image.tmdb.org/t/p/w500${member.profilePath}",
+                model = "https://image.tmdb.org/t/p/w500${member.profilePath}",
                 contentDescription = null,
                 modifier = Modifier
                     .size(120.dp)
@@ -253,7 +253,7 @@ fun MemberMovieItem(movie: CastMovie, modifier: Modifier = Modifier, onClick: ()
     Box(modifier = modifier) {
         PreviewItem(
             title = movie.title ?: movie.name ?: "",
-            posterUrl = "http://image.tmdb.org/t/p/w342${movie.posterPath}",
+            posterUrl = "https://image.tmdb.org/t/p/w342${movie.posterPath}",
             readableDate = movie.releaseDate?.toReadableDate() ?: "",
             onItemClick = onClick
         )

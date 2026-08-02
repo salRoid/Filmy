@@ -778,7 +778,7 @@ class MovieDetailsActivity : AppCompatActivity() {
          else {
              var smallTitle = movieTitleHyphen?.lowercase()
              smallTitle = smallTitle?.replace("[^\\d-a-z]".toRegex(), "")
-             val url = "http://www.metacritic.com/movie/$smallTitle"
+             val url = "https://www.metacritic.com/movie/$smallTitle"
 
              if (metaScoreRating != null) {
                  when {

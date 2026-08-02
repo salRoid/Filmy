@@ -133,7 +133,7 @@ class MediaDetailsMapper @Inject constructor() {
                         val title = movie?.title ?: tv?.name
                         val smallTitle = title?.replace(' ', '-')?.lowercase()
                             ?.replace("[^\\d-a-z]".toRegex(), "")
-                        "http://www.metacritic.com/movie/$smallTitle"
+                        "https://www.metacritic.com/movie/$smallTitle"
                     }
                     else -> null
                 }
@@ -182,7 +182,7 @@ class MediaDetailsMapper @Inject constructor() {
         
         val mappedResults = reviews.results.map { review ->
             val avatarPath = review.authorDetails?.avatarPath
-            var finalAvatarUrl = if (avatarPath != null) "http://image.tmdb.org/t/p/w500$avatarPath" else null
+            var finalAvatarUrl = if (avatarPath != null) "https://image.tmdb.org/t/p/w500$avatarPath" else null
             
             avatarPath?.let {
                 if (it.contains("www.gravatar.com")) {

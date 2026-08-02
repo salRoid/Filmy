@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detailsRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollingContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backdrop"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:clickable="true"
+                android:contentDescription="@string/banner_image"
+                android:focusable="true"
+                android:foreground="?android:selectableItemBackground"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/backdropScrim"
+                android:layout_width="0dp"
+                android:layout_height="280dp"
+                android:alpha="0.7"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="@id/backdrop"
+                app:layout_constraintEnd_toEndOf="@id/backdrop"
+                app:layout_constraintStart_toStartOf="@id/backdrop"
+                app:layout_constraintTop_toTopOf="@id/backdrop" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/headerContainer"
+                style="@style/Widget.Material3.CardView.Filled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/filmy8dp"
+                android:layout_marginTop="220dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/backdrop">
+
+                <LinearLayout
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/detail_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="132dp"
+                        android:layout_marginTop="@dimen/filmy12dp"
+                        android:paddingHorizontal="@dimen/filmy16dp"
+                        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                        android:textSize="22sp" />
+
+                    <include
+                        android:id="@+id/viewExtraInfo"
+                        layout="@layout/extra_info_movie_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/detail_tagline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.7"
+                        android:paddingHorizontal="@dimen/filmy16dp"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/detail_overview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/filmy8dp"
+                        android:layout_marginBottom="@dimen/filmy16dp"
+                        android:alpha="0.8"
+                        android:ellipsize="end"
+                        android:gravity="bottom"
+                        android:maxLines="4"
+                        android:paddingHorizontal="@dimen/filmy16dp"
+                        android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/posterContainer"
+                style="@style/Widget.Material3.CardView.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/filmy24dp"
+                android:layout_marginTop="@dimen/filmy80dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/poster"
+                    android:layout_width="@dimen/filmy120dp"
+                    android:layout_height="@dimen/filmy170dp"
+                    android:layout_gravity="center_vertical"
+                    android:scaleType="centerCrop" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/watchProviderContainer"
+                style="@style/Widget.Material3.CardView.Filled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/filmy8dp"
+                android:layout_marginTop="@dimen/filmy8dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="?colorSurface"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/headerContainer"
+                app:strokeColor="?colorSurfaceVariant"
+                app:strokeWidth="1dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/filmy16dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/watchProviderLogo"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearance="@style/ShapeAppearance.App.LargeComponent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/watchTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/filmy16dp"
+                        android:text="@string/now_streaming"
+                        app:layout_constraintBottom_toTopOf="@id/watchAction"
+                        app:layout_constraintStart_toEndOf="@id/watchProviderLogo"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/watchAction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/watch_now"
+                        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/watchTitle"
+                        app:layout_constraintTop_toBottomOf="@id/watchTitle"
+                        app:layout_goneMarginTop="@dimen/filmy2dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/ratingLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/filmy16dp"
+                android:layout_marginVertical="@dimen/filmy22dp"
+                android:gravity="center_vertical"
+                android:text="@string/ratings"
+                android:textAppearance="@style/TextAppearance.Filmy.LabelLarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/watchProviderContainer" />
+
+            <include
+                android:id="@+id/viewRatings"
+                layout="@layout/ratings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/filmy8dp"
+                android:layout_marginTop="@dimen/filmy4dp"
+                android:layout_marginEnd="@dimen/filmy8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingLabel" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/trailerContainer"
+                style="@style/Widget.Material3.CardView.Filled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/filmy8dp"
+                android:layout_marginTop="@dimen/filmy22dp"
+                android:layout_marginBottom="@dimen/filmy8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewRatings">
+
+                <LinearLayout
+                    android:id="@+id/trailerBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:weightSum="10">
+
+                    <FrameLayout
+                        android:id="@+id/trailorView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:selectableItemBackground">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/detail_youtube"
+                            android:layout_width="match_parent"
+                            android:layout_height="158dp"
+                            android:layout_margin="@dimen/filmy10dp"
+                            android:contentDescription="@string/trailer"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearance="@style/roundedImageViewInsideCard" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/play_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:alpha="0.8"
+                            android:background="@drawable/ic_play_circle_filled_white_48dp"
+                            android:contentDescription="@string/play"
+                            android:visibility="invisible" />
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:id="@+id/youtube_icon_container"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingEnd="@dimen/filmy12dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/youtube_icon"
+                            android:layout_width="@dimen/filmy28dp"
+                            android:layout_height="@dimen/filmy28dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/twotone_video_library_24" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/moreTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/plus_more"
+                            android:textAllCaps="true" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/dividerRatings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmy16dp"
+                android:visibility="gone"
+                app:dividerThickness="0.5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/trailerContainer" />
+
+            <Space
+                android:id="@+id/dividerCast"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/filmy12dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dividerRatings" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/castContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmy6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dividerCast" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/dividerCrew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmy8dp"
+                android:visibility="gone"
+                app:dividerThickness="0.5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/castContainer" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/crewContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmy4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dividerCrew" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/dividerSimilar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmy8dp"
+                android:visibility="gone"
+                app:dividerThickness="0.5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/crewContainer" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/reviewsLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/filmy16dp"
+                android:layout_marginTop="@dimen/filmy16dp"
+                android:gravity="start"
+                android:text="@string/reviews"
+                android:textAppearance="@style/TextAppearance.Filmy.LabelLarge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dividerSimilar" />
+
+            <include
+                android:id="@+id/viewReviews1"
+                layout="@layout/review_item_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/filmy12dp"
+                android:layout_marginTop="@dimen/filmy16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reviewsLabel" />
+
+            <include
+                android:id="@+id/viewReviews2"
+                layout="@layout/review_item_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/filmy12dp"
+                android:layout_marginTop="@dimen/filmy8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewReviews1" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/similarContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/filmy4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewReviews2" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/dividerRecommendation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:dividerThickness="0.5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/similarContainer" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/recommendationContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dividerRecommendation" />
+
+            <Space
+                android:id="@+id/navSpace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recommendationContainer" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/toolBarScrimStart"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:alpha="1.0"
+        android:background="@drawable/toolbar_gradient_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/scrollingContent" />
+
+    <View
+        android:id="@+id/toolBarScrimEnd"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:alpha="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolBarScrimStart" />
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolBarScrimEnd">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:menu="@menu/movie_detail_menu"
+            app:navigationIcon="@drawable/ic_arrow_back" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <tech.salroid.filmy.ui.custom.BreathingProgress
+        android:id="@+id/breathingProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

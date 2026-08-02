@@ -1,7 +1,5 @@
 package tech.salroid.filmy.ui.collections
 
-import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
@@ -9,22 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import tech.salroid.filmy.R
-import tech.salroid.filmy.databinding.FragmentCollectionsBinding
 import tech.salroid.filmy.ui.adapters.CollectionsPagerAdapter
-import tech.salroid.filmy.ui.home.MainViewModel
+import tech.salroid.filmy.databinding.FragmentCollectionsBinding
 
 @AndroidEntryPoint
 class CollectionsFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
-    private var darkMode: Boolean = false
     private lateinit var binding: FragmentCollectionsBinding
 
     override fun onCreateView(
@@ -33,72 +26,8 @@ class CollectionsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCollectionsBinding.inflate(inflater, container, false)
-        setupClickListener()
         setupViewPager()
         return binding.root
-    }
-
-    private fun setupClickListener() {
-        binding.favContainer.setOnClickListener {
-            startActivity(
-                Intent(
-                    requireContext(),
-                    CollectionTypeFragment::class.java
-                )
-            )
-        }
-
-        binding.watchlistContainer.setOnClickListener {
-            startActivity(
-                Intent(
-                    requireContext(),
-                    CollectionTypeFragment::class.java
-                )
-            )
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
-        darkMode = isDarkMode()
-        if (darkMode) darkThemeLogic() else lightModeLogic()
-    }
-
-    private fun isDarkMode(): Boolean {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val themeValue = preferences.getString("theme", "system")
-
-        return when (themeValue) {
-            "light" -> false
-            "dark" -> true
-            else -> { // system
-                (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-            }
-        }
-    }
-
-    private fun lightModeLogic() {
-        binding.tabLayout.backgroundTintList = null
-        val selectedColor = ContextCompat.getColor(requireActivity(), R.color.colorMore)
-        val unSelectedColor = ContextCompat.getColor(requireActivity(), R.color.dark)
-        binding.tabLayout.setSelectedTabIndicatorColor(selectedColor)
-        binding.tabLayout.setTabTextColors(unSelectedColor, selectedColor)
-        binding.tabLayout.tabIconTint =
-            ContextCompat.getColorStateList(requireActivity(), R.color.tab_icon_tint)
-    }
-
-    private fun darkThemeLogic() {
-        binding.tabLayout.backgroundTintList = ContextCompat.getColorStateList(
-            requireActivity(),
-            R.color.fullBlack
-        )
-        val selectedColor = ContextCompat.getColor(requireActivity(), R.color.colorMore)
-        val unSelectedColor = ContextCompat.getColor(requireActivity(), R.color.grey3)
-        binding.tabLayout.setSelectedTabIndicatorColor(selectedColor)
-        binding.tabLayout.setTabTextColors(unSelectedColor, selectedColor)
-        binding.tabLayout.tabIconTint =
-            ContextCompat.getColorStateList(requireActivity(), R.color.tab_icon_tint_dark)
     }
 
     private fun setupViewPager() {
@@ -110,14 +39,12 @@ class CollectionsFragment : Fragment() {
                     tab.icon =
                         ContextCompat.getDrawable(requireContext(), R.drawable.ic_round_favorite_24)
                 }
-
                 1 -> {
                     tab.text = getString(R.string.watchlist)
-                    tab.icon =
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.ic_round_bookmark_added_24
-                        )
+                    tab.icon = ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_round_bookmark_added_24
+                    )
                 }
             }
         }.attach()

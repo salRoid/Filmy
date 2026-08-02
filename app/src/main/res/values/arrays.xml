@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="theme_entries">
+    <string-array name="themeEntries">
         <item>Light</item>
         <item>Dark</item>
-        <item>System</item>
+        <item>System Default</item>
     </string-array>
-
-    <string-array name="theme_values">
-        <item>light</item>
-        <item>dark</item>
-        <item>system</item>
+    <string-array name="themeValues">
+        <item>@string/mode_night_no</item>
+        <item>@string/mode_night_yes</item>
+        <item>@string/mode_night_follow_system</item>
     </string-array>
 </resources>

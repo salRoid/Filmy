@@ -6,11 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.RatingResponse
-import tech.salroid.filmy.data.local.model.UpdateResult
+import tech.salroid.filmy.data.local.model.ReviewResponse
+import tech.salroid.filmy.data.local.model.tv.TvDetails
+import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.FAVOURITES
 import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.WATCHLIST
 import tech.salroid.filmy.ui.home.MoviesRepository
@@ -22,15 +22,23 @@ class MovieDetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiStateMovieDetails = MutableStateFlow<MovieDetails?>(null)
+    private val _uiStateTvDetails = MutableStateFlow<TvDetails?>(null)
     private val _uiStateRatings = MutableStateFlow<RatingResponse?>(null)
+    private val _uiStateReviews = MutableStateFlow<ReviewResponse?>(null)
+    private val _uiStateWatchProviders = MutableStateFlow<WatchProviderResponse?>(null)
     private val _uiStateAddToCollection = MutableStateFlow<Pair<Boolean, String?>>(Pair(false, ""))
-    private val _updateResult = MutableSharedFlow<UpdateResult>()
+    private val _uiStateUpdateCollection = MutableStateFlow(Triple(-1, "", false))
+
     val uiStateMovieDetails: StateFlow<MovieDetails?> = _uiStateMovieDetails.asStateFlow()
+    val uiStateTvDetails: StateFlow<TvDetails?> = _uiStateTvDetails.asStateFlow()
     val uiStateRatingResponse: StateFlow<RatingResponse?> = _uiStateRatings.asStateFlow()
+    val uiStateReviewResponse: StateFlow<ReviewResponse?> = _uiStateReviews.asStateFlow()
+    val uiStateWatchProvidersResponse: StateFlow<WatchProviderResponse?> =
+        _uiStateWatchProviders.asStateFlow()
     val uiStateAddToCollection: StateFlow<Pair<Boolean, String?>> =
         _uiStateAddToCollection.asStateFlow()
-    val updateResult: SharedFlow<UpdateResult> = _updateResult.asSharedFlow()
-    private val movieUpdateMutex = Mutex()
+    val uiStateUpdateCollection: StateFlow<Triple<Int, String, Boolean>> =
+        _uiStateUpdateCollection.asStateFlow()
 
     fun getMovieDetails(movieId: String?, movieType: Int, addToLocal: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -54,6 +62,34 @@ class MovieDetailsViewModel @Inject constructor(
                             if (addToLocal) {
                                 saveMovieDetailsInDb(updatedDetails)
                             }
+                        }
+                }
+            }
+        }
+    }
+
+    fun getTvDetails(showId: String?, movieType: Int, addToLocal: Boolean = false) {
+        viewModelScope.launch(Dispatchers.IO) {
+            showId?.toInt()?.let {
+                // val movieDetails = moviesRepository.getMovieDetailsFromLocal(it, movieType)
+                // val isWatchList = movieDetails?.watchlist ?: false
+                // val isFavourite = movieDetails?.favorite ?: false
+                //_uiStateMovieDetails.emit(movieDetails)
+
+                showId.let {
+                    moviesRepository.getTvShowDetailsFromNetwork(it)
+                        .flowOn(Dispatchers.IO)
+                        .catch { throwable ->
+                            throwable.printStackTrace()
+                        }.collect { details ->
+                            val updatedDetails = details.copy()
+                            // updatedDetails.watchlist = isWatchList
+                            // updatedDetails.favorite = isFavourite
+                            _uiStateTvDetails.emit(updatedDetails)
+
+                           // if (addToLocal) {
+                                // saveMovieDetailsInDb(updatedDetails)
+                           // }
                         }
                 }
             }
@@ -86,41 +122,20 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateMovieStatus(
-        isTogglingFavorite: Boolean = false,
-        isTogglingWatchlist: Boolean = false
+    fun updateMovieDetailsInDb(
+        movieDetails: MovieDetails,
+        message: String,
+        remove: Boolean
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            val movieToUpdate = uiStateMovieDetails.value ?: return@launch
-
-            movieUpdateMutex.withLock {
-                val rowsAffected = moviesRepository.updateMovieDetails(
-                    movieToUpdate.apply {
-                        if (isTogglingFavorite) {
-                            favorite = !favorite
-                        }
-                        if (isTogglingWatchlist) {
-                            watchlist = !watchlist
-                        }
-                    }
+            val updatedID = moviesRepository.updateMovieDetails(movieDetails)
+            _uiStateUpdateCollection.emit(
+                Triple(
+                    updatedID,
+                    message,
+                    remove
                 )
-
-                if (rowsAffected == 0) {
-                    if (isTogglingFavorite) movieToUpdate.favorite = true
-                    if (isTogglingWatchlist) movieToUpdate.watchlist = true
-
-                    moviesRepository.addMovieDetailsToLocal(movieToUpdate)
-                }
-
-                _updateResult.emit(
-                    UpdateResult(
-                        updatedFavoriteState = movieToUpdate.favorite,
-                        updatedWatchlistState = movieToUpdate.watchlist,
-                        actionFavorite = isTogglingFavorite,
-                        actionWatchlist = isTogglingWatchlist
-                    )
-                )
-            }
+            )
         }
     }
 
@@ -130,7 +145,7 @@ class MovieDetailsViewModel @Inject constructor(
                 moviesRepository.getRatings(it)
                     .flowOn(Dispatchers.IO)
                     .catch {
-                        // no -op
+                        // error
                     }.collect { ratingResponse ->
                         _uiStateRatings.emit(ratingResponse)
                     }
@@ -138,12 +153,59 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Helper function on MovieDetails to apply changes.
-     * This is just a suggestion for cleaner code inside the withLock block.
-     */
-    private fun MovieDetails.apply(block: MovieDetails.() -> Unit): MovieDetails {
-        block(this)
-        return this
+    fun getReviews(movieId: String?) {
+        viewModelScope.launch {
+            movieId?.let {
+                moviesRepository.getReviews(it)
+                    .flowOn(Dispatchers.IO)
+                    .catch {
+                        // error
+                    }.collect { reviewResponse ->
+                        _uiStateReviews.emit(reviewResponse)
+                    }
+            }
+        }
+    }
+
+    fun getTvReviews(movieId: String?) {
+        viewModelScope.launch {
+            movieId?.let {
+                moviesRepository.getTvReviews(it)
+                    .flowOn(Dispatchers.IO)
+                    .catch {
+                        // error
+                    }.collect { reviewResponse ->
+                        _uiStateReviews.emit(reviewResponse)
+                    }
+            }
+        }
+    }
+
+    fun getWatchProviders(movieId: String?) {
+        viewModelScope.launch {
+            movieId?.let {
+                moviesRepository.getWatchProviders(it)
+                    .flowOn(Dispatchers.IO)
+                    .catch {
+                        // error
+                    }.collect { watchProvidersResponse ->
+                        _uiStateWatchProviders.emit(watchProvidersResponse)
+                    }
+            }
+        }
+    }
+
+    fun getWatchProvidersTv(tvId: String?) {
+        viewModelScope.launch {
+            tvId?.let {
+                moviesRepository.getWatchProvidersTv(it)
+                    .flowOn(Dispatchers.IO)
+                    .catch {
+                        // error
+                    }.collect { watchProvidersResponse ->
+                        _uiStateWatchProviders.emit(watchProvidersResponse)
+                    }
+            }
+        }
     }
 }

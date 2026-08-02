@@ -8,7 +8,7 @@ data class SimilarMoviesResponse(
     var page: Int? = null,
 
     @SerializedName("results")
-    var similars: ArrayList<SimilarMovie> = arrayListOf(),
+    var results: ArrayList<SimilarMovie> = arrayListOf(),
 
     @SerializedName("total_pages")
     var totalPages: Int? = null,

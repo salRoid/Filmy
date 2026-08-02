@@ -31,7 +31,19 @@ class CastCrewViewModel @Inject constructor(
             moviesRepository.getCastAndCrew(movieId)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                  it.printStackTrace()
+                    it.printStackTrace()
+                }.collect { castAndCrew ->
+                    _uiStateCastAndCrew.emit(castAndCrew)
+                }
+        }
+    }
+
+    fun getCastAndCrewTv(tvId: String) {
+        viewModelScope.launch {
+            moviesRepository.getCastAndCrewTv(tvId)
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    it.printStackTrace()
                 }.collect { castAndCrew ->
                     _uiStateCastAndCrew.emit(castAndCrew)
                 }
@@ -53,6 +65,18 @@ class CastCrewViewModel @Inject constructor(
     fun getCastCrewMovies(memberId: String) {
         viewModelScope.launch {
             moviesRepository.getCastCrewMovies(memberId)
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    it.printStackTrace()
+                }.collect { castCrewMovies ->
+                    _uiStateCastCrewMovies.emit(castCrewMovies)
+                }
+        }
+    }
+
+    fun getCastCrewTvShows(memberId: String) {
+        viewModelScope.launch {
+            moviesRepository.getCastCrewTvShows(memberId)
                 .flowOn(Dispatchers.IO)
                 .catch {
                     it.printStackTrace()

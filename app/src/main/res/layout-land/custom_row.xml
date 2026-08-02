@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="@dimen/filmy8dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/poster"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/filmy150dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitXY"
+        app:shapeAppearanceOverlay="@style/roundedImageView" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/movie_name"
+        style="@style/TextAppearance.Filmy.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/filmy8dp"
+        android:gravity="center_horizontal"
+        tools:text="SpiderMan: India?" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/movie_year"
+        style="@style/TextAppearance.Filmy.SubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/filmy4dp"
+        android:gravity="center_horizontal"
+        tools:text="22 Jan 2023" />
+
+</LinearLayout>

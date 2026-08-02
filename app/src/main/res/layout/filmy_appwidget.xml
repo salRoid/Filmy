@@ -1,74 +1,41 @@
-<FrameLayout android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    style="@style/Widget.AppWidget.AppWidget.Container"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/widget_margin"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    android:orientation="vertical"
+    android:theme="@style/Theme.AppWidget.AppWidgetContainer">
 
-    <FrameLayout
-        android:id="@+id/activity_opener"
-        android:background="#88000000"
+    <ImageView
+        android:id="@+id/widget_movie_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="70dp"
+        android:scaleType="centerCrop" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:weightSum="2"
-            >
+    <TextView
+        android:id="@+id/widget_movie_name"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@drawable/app_widget_inner_view_background"
+        android:ellipsize="end"
+        android:fontFamily="@font/circularstd_book"
+        android:gravity="center"
+        android:maxLines="2"
+        android:padding="8dp"
+        android:textColor="?android:attr/textColorSecondary" />
 
-            <ImageView
-                android:id="@+id/widget_movie_image"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:scaleType="centerCrop"
-                />
-
-            <RelativeLayout
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:background="@color/colorAccent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/title"
-                    android:gravity="center_horizontal"
-                    android:background="@color/colorAccentDark"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="@string/trending_widget_title"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/circularstd_book"
-                    />
-
-
-                <LinearLayout
-                    android:layout_below="@id/title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
-                    <TextView
-                        android:id="@+id/widget_movie_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:text="@string/empty_space"
-                        android:fontFamily="@font/circularstd_book"
-
-                        />
-
-                </LinearLayout>
-            </RelativeLayout>
-        </LinearLayout>
-
-
-
-    </FrameLayout>
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.7"
+        android:background="?android:attr/textColorPrimary"
+        android:gravity="start"
+        android:padding="@dimen/filmy8dp"
+        android:text="@string/widget_title"
+        android:textColor="?android:attr/colorBackground"
+        android:visibility="visible" />
 
 </FrameLayout>

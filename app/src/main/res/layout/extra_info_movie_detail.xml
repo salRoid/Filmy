@@ -1,110 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/extraDetails"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    android:padding="16dp">
+    android:layout_marginEnd="@dimen/filmy8dp"
+    android:paddingHorizontal="@dimen/filmy8dp">
 
-    <RelativeLayout
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/genres"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="@dimen/filmy4dp"
+        android:alpha="0.7"
+        android:gravity="start"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Filmy.SubTitle"
+        android:textColor="?colorOnSurfaceVariant"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Thriller, Crime, Drama, Thriller, Crime, Drama, Thriller, Crime, Drama " />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginStart="@dimen/filmy8dp"
+        android:alpha="0.8"
+        android:textAppearance="@style/TextAppearance.Filmy.LabelMedium"
+        android:textColor="?colorOnSurfaceVariant"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/runtime"
+        app:layout_constraintTop_toTopOf="@id/runtime"
+        tools:text="English, French, German" />
 
-        <TextView
-            android:id="@+id/runtime_holder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/widget_margin"
-            android:fontFamily="@font/circularstd_book"
-            android:text="@string/runtime"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/twotone_access_time_24" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/released"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.7"
+        android:textAppearance="@style/TextAppearance.Filmy.SubTitle"
+        android:textColor="?colorOnSurfaceVariant"
+        app:layout_constraintBottom_toBottomOf="@id/runtime"
+        app:layout_constraintStart_toEndOf="@id/runtime"
+        app:layout_constraintTop_toTopOf="@id/runtime"
+        tools:text="10 Feb 2023" />
 
-        <TextView
-            android:id="@+id/detail_runtime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/runtime_holder"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@id/runtime_holder"
-            android:fontFamily="@font/circularstd_book"
-            android:textSize="14sp" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/runtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/filmy6dp"
+        android:layout_marginBottom="@dimen/filmy16dp"
+        android:alpha="0.7"
+        android:textAppearance="@style/TextAppearance.Filmy.SubTitle"
+        android:textColor="?colorOnSurfaceVariant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/genres"
+        app:layout_constraintTop_toBottomOf="@id/genres"
+        tools:text="1h 23 min" />
 
-        <TextView
-            android:id="@+id/certification_holder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/runtime_holder"
-            android:layout_marginTop="@dimen/widget_margin_half"
-            android:drawablePadding="@dimen/widget_margin"
-            android:fontFamily="@font/circularstd_book"
-            android:text="@string/genre"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/twotone_movie_24" />
-
-        <TextView
-            android:id="@+id/detail_certification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/detail_runtime"
-            android:layout_alignBaseline="@id/certification_holder"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@id/certification_holder"
-            android:ellipsize="end"
-            android:fontFamily="@font/circularstd_book"
-            android:maxLines="1"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/language_holder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/detail_certification"
-            android:layout_marginTop="@dimen/widget_margin_half"
-            android:drawablePadding="@dimen/widget_margin"
-            android:fontFamily="@font/circularstd_book"
-            android:text="@string/language"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/twotone_language_24" />
-
-        <TextView
-            android:id="@+id/detail_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/detail_certification"
-            android:layout_alignBaseline="@id/language_holder"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@id/language_holder"
-            android:fontFamily="@font/circularstd_book"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/release_holder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/language_holder"
-            android:layout_marginTop="@dimen/widget_margin_half"
-            android:drawablePadding="@dimen/widget_margin"
-            android:fontFamily="@font/circularstd_book"
-            android:text="@string/release_date"
-            android:textSize="16sp"
-            app:drawableStartCompat="@drawable/twotone_calendar_today_24" />
-
-        <TextView
-            android:id="@+id/detail_released"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/detail_language"
-            android:layout_alignBaseline="@id/release_holder"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@id/release_holder"
-            android:fontFamily="@font/circularstd_book"
-            android:textSize="14sp" />
-
-    </RelativeLayout>
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

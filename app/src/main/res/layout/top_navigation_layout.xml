@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical">
+
+    <!--
+     <tech.salroid.filmy.ui.component.FilmyTopNavigationBarItem
+         android:id="@+id/trendingLabel"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_margin="@dimen/filmy2dp"
+         android:drawableStart="@drawable/ic_trending_up"
+         android:drawablePadding="@dimen/filmy8dp"
+         android:gravity="center_vertical"
+         app:showNavigationToggle="false"
+         app:navigationItemText="@string/label_trending"
+         app:drawableTint="?colorPrimary" />
+    -->
+
+</LinearLayout>
+

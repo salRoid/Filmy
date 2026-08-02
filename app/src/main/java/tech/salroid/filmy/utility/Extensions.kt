@@ -1,15 +1,30 @@
 package tech.salroid.filmy.utility
 
 import android.app.Activity
+import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
-import android.os.Build
+import android.util.TypedValue
 import android.view.View
-import android.view.WindowManager
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.snackbar.Snackbar
 import tech.salroid.filmy.R
 import java.text.SimpleDateFormat
 import java.util.*
+
+@ColorInt
+fun Context.getColorFromAttr(
+    @AttrRes attrColor: Int,
+    typedValue: TypedValue = TypedValue(),
+    resolveRefs: Boolean = true
+): Int {
+    theme.resolveAttribute(attrColor, typedValue, resolveRefs)
+    return typedValue.data
+}
 
 fun View.showSnackBar(message: String, positive: Boolean = true) {
     Snackbar.make(this, message, Snackbar.LENGTH_SHORT).run {
@@ -22,41 +37,45 @@ fun View.showSnackBar(message: String, positive: Boolean = true) {
     }
 }
 
-fun View.visible() {
-    this.visibility = View.VISIBLE
-}
-
-fun View.gone() {
-    this.visibility = View.GONE
-}
-
 fun String.toReadableDate(): String {
-    if (this.isEmpty()) {
-        return this
-    }
+    if (this.isEmpty()) return this
+
     val fromDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val toDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    return toDateFormat.format(fromDateFormat.parse(this))
+    val date = fromDateFormat.parse(this)
+    return date?.let { toDateFormat.format(it) } ?: this
 }
 
-fun Activity.themeSystemBars(lightTheme: Boolean = false, lightStatusBar: Boolean = false) {
+fun Activity.themeSystemBars(
+    lightStatusBar: Boolean = false,
+    navigationColorAsStatus: Boolean = true,
+    isFullScreen: Boolean = false,
+    transparentStatus: Boolean = false,
+    surfaceStatus: Boolean = false
+) {
+    val lightTheme = !isDarkThemeActivated()
+
     window.apply {
-        clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        statusBarColor = Color.TRANSPARENT
+        val colorStatus = SurfaceColors.SURFACE_0.getColor(this@themeSystemBars)
+        val colorNavigation = SurfaceColors.SURFACE_2.getColor(this@themeSystemBars)
+        val colorStatusSurface = SurfaceColors.SURFACE_3.getColor(this@themeSystemBars)
+
+        window.statusBarColor =
+            if (transparentStatus) Color.TRANSPARENT else if (surfaceStatus) colorStatusSurface else colorStatus
+        window.navigationBarColor = if (navigationColorAsStatus) colorStatus else colorNavigation
+
+        if (isFullScreen) WindowCompat.setDecorFitsSystemWindows(window, false)
+        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
 
         if (lightTheme) {
-            navigationBarColor =
-                ContextCompat.getColor(this@themeSystemBars, R.color.surfaceColorLight)
-            var flags = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                flags = flags or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            }
-            if (lightStatusBar) {
-                flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            }
-            decorView.systemUiVisibility = flags
+            windowInsetsController.isAppearanceLightNavigationBars = true
+            windowInsetsController.isAppearanceLightStatusBars = lightStatusBar
+        } else {
+            windowInsetsController.isAppearanceLightNavigationBars = false
+            windowInsetsController.isAppearanceLightStatusBars = false
         }
     }
 }
+
+fun Context.isDarkThemeActivated(): Boolean =
+    (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES

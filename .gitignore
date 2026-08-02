@@ -50,14 +50,6 @@ proguard/
 /*.iml
 *.iml
 
-.idea/*.xml
-.idea/caches/build_file_checksums.ser
-
-# Keep only shared code style (optional)
-!.idea/codeStyles/
-!.idea/codeStyles/Project.xml
-!.idea/codeStyles/codeStyleConfig.xml
-
 # Android Studio extras
 .navigation/
 captures/
@@ -79,3 +71,8 @@ lint/tmp/
 # OS cruft
 .DS_Store
 Thumbs.db
+
+# Freeline
+freeline.py
+freeline/
+freeline_project_description.json

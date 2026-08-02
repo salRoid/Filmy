@@ -5,46 +5,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:theme="@style/ThemeOverlay.AppCompat">
+        android:fitsSystemWindows="true">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:fontFamily="@font/barlow_black"
-            android:text="@string/madefor"
-            android:textColor="@color/dark"
-            android:textSize="20sp" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/about_screen_tittle" />
 
-    </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_webianks"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
-                app:cardBackgroundColor="?containerColor"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
                 app:cardPreventCornerOverlap="false"
-                app:strokeColor="@color/grey"
-                app:strokeWidth="0dp">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -54,7 +48,6 @@
                         android:id="@+id/banner_webianks"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:background="#dddddd"
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_banner_min" />
 
@@ -69,7 +62,7 @@
                         android:padding="4dp"
                         android:scaleType="centerCrop"
                         app:shapeAppearanceOverlay="@style/circleImageView"
-                        app:strokeColor="@color/white"
+                        app:strokeColor="?attr/colorSurface"
                         app:strokeWidth="4dp" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -79,7 +72,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="95dp"
                         android:layout_toEndOf="@id/profile_webianks"
-                        android:fontFamily="@font/circularstd_book"
                         android:paddingLeft="16dp"
                         android:paddingTop="16dp"
                         android:paddingRight="16dp"
@@ -111,10 +103,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/circularstd_book"
                             android:onClick="sendEmail"
                             android:text="@string/email"
-                            android:textColor="@color/colorMore"
                             android:textStyle="bold" />
 
                         <com.google.android.material.button.MaterialButton
@@ -123,10 +113,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/circularstd_book"
                             android:onClick="redirectGithub"
                             android:text="@string/github"
-                            android:textColor="@color/colorMore"
                             android:textStyle="bold" />
 
                         <com.google.android.material.button.MaterialButton
@@ -135,10 +123,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/circularstd_book"
                             android:onClick="redirectWebsite"
                             android:text="@string/website"
-                            android:textColor="@color/colorMore"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -149,6 +135,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_salroid"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_webianks"
@@ -156,12 +143,11 @@
                 android:layout_marginTop="14dp"
                 android:layout_marginEnd="2dp"
                 android:layout_marginBottom="2dp"
-                app:cardBackgroundColor="?containerColor"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp"
                 app:cardPreventCornerOverlap="false"
-                app:strokeColor="@color/grey"
-                app:strokeWidth="0dp">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_webianks">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -171,7 +157,6 @@
                         android:id="@+id/banner_salroid"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:background="#dddddd"
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_banner_min" />
 
@@ -186,7 +171,7 @@
                         android:padding="4dp"
                         android:scaleType="centerCrop"
                         app:shapeAppearanceOverlay="@style/circleImageView"
-                        app:strokeColor="@color/white"
+                        app:strokeColor="?attr/colorSurface"
                         app:strokeWidth="4dp" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -196,7 +181,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="95dp"
                         android:layout_toEndOf="@id/profile_salroid"
-                        android:fontFamily="@font/circularstd_book"
                         android:paddingLeft="16dp"
                         android:paddingTop="16dp"
                         android:paddingRight="16dp"
@@ -228,10 +212,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/circularstd_book"
                             android:onClick="sendEmail"
                             android:text="@string/email"
-                            android:textColor="@color/colorMore"
                             android:textStyle="bold" />
 
                         <com.google.android.material.button.MaterialButton
@@ -240,10 +222,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/circularstd_book"
                             android:onClick="redirectGithub"
                             android:text="@string/github"
-                            android:textColor="@color/colorMore"
                             android:textStyle="bold" />
 
                         <com.google.android.material.button.MaterialButton
@@ -252,10 +232,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/circularstd_book"
                             android:onClick="redirectWebsite"
                             android:text="@string/website"
-                            android:textColor="@color/colorMore"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -264,7 +242,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

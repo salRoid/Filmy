@@ -1,58 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_fragment_views_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="?containerColor"
-    app:cardCornerRadius="0dp"
-    app:strokeColor="@color/grey"
-    app:strokeWidth="0dp">
+    android:minHeight="150dp">
 
-    <RelativeLayout
-        android:id="@+id/detail_fragment_views_layout"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/memberTypeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/filmy16dp"
+        android:gravity="center_vertical"
+        android:padding="@dimen/filmy16dp"
+        android:textAppearance="@style/TextAppearance.Filmy.LabelLarge"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/cast" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memberTypeLabel"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_member" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/more"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="200dp">
+        android:layout_below="@id/recyclerView"
+        android:layout_marginHorizontal="@dimen/filmy8dp"
+        android:gravity="start|center_vertical"
+        android:text="@string/view_all"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:cornerRadius="@dimen/filmy4dp"
+        app:icon="@drawable/ic_chevron_right"
+        app:iconGravity="end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerView" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/memberTypeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/circularstd_book"
-            android:padding="16dp"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textStyle="bold"
-            tools:text="@string/cast" />
-
-        <TextView
-            android:id="@+id/more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:background="?android:selectableItemBackground"
-            android:fontFamily="@font/circularstd_book"
-            android:padding="16dp"
-            android:text="@string/more"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/colorMore"
-            android:textStyle="bold"
-            android:visibility="invisible" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/memberTypeLabel"
-            android:layout_alignParentStart="true" />
-
-        <tech.salroid.filmy.ui.custom.BreathingProgress
-            android:id="@+id/breathingProgressFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-
-    </RelativeLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

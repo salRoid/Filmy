@@ -6,60 +6,80 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.Preference.OnPreferenceChangeListener
+import androidx.preference.Preference.OnPreferenceClickListener
 import tech.salroid.filmy.R
+import tech.salroid.filmy.utility.FilmyUtility.startSharingIntent
 
 class PreferenceFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference, rootKey)
-        val myPreference = PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
 
-        val imagePref = findPreference<SwitchPreferenceCompat>("imagequality")
-        imagePref?.setOnPreferenceChangeListener { preference, o ->
-            val quality: String
-            val switchPreference = preference as SwitchPreferenceCompat
-            quality = if (!switchPreference.isChecked) "original" else "w1280"
-            myPreference.putString("image_quality", quality)
-            myPreference.apply()
-            true
-        }
+        setupThemePreference()
 
-        val themePreference = findPreference<ListPreference>("theme")
-        themePreference?.setOnPreferenceChangeListener { _, newValue ->
-            when (newValue) {
-                "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                "system" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        val licenseKey: String = requireActivity().getString(R.string.license_key)
+        val shareKey: String = requireActivity().getString(R.string.share_key)
+        val aboutKey: String = requireActivity().getString(R.string.about_key)
+
+        (findPreference(licenseKey) as? Preference)?.onPreferenceClickListener =
+            OnPreferenceClickListener {
+                startActivity(Intent(requireContext(), LicenseActivity::class.java))
+                true
             }
-            activity?.recreate()
-            true
-        }
 
-        val license = findPreference<Preference>("license")
-        license?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            startActivity(Intent(activity, LicenseActivity::class.java))
-            true
-        }
+        (findPreference(shareKey) as? Preference)?.onPreferenceClickListener =
+            OnPreferenceClickListener {
+                startSharingIntent(requireContext())
+                true
+            }
 
-        val share = findPreference<Preference>("Share")
-        share?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val appShareDetails = resources.getString(R.string.app_share_link)
-            val myIntent = Intent(Intent.ACTION_SEND)
-            myIntent.type = "text/plain"
-            myIntent.putExtra(
-                Intent.EXTRA_TEXT,
-                "Check out this awesome movie app.\n*filmy*\n$appShareDetails"
-            )
-            startActivity(Intent.createChooser(myIntent, "Share with"))
-            true
-        }
+        (findPreference(aboutKey) as? Preference)?.onPreferenceClickListener =
+            OnPreferenceClickListener {
+                startActivity(Intent(requireContext(), AboutActivity::class.java))
+                true
+            }
+    }
 
-        val about = findPreference<Preference>("About")
-        about?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            startActivity(Intent(activity, AboutActivity::class.java))
-            true
+    private fun setupThemePreference() {
+        val themeKey: String = requireActivity().getString(R.string.theme_key)
+
+        // Theme Values
+        val modeNightNo: String = requireActivity().getString(R.string.mode_night_no)
+        val modeNightYes: String = requireActivity().getString(R.string.mode_night_yes)
+
+        // Summary Text For Theme
+        val light = requireActivity().getString(R.string.summary_light)
+        val dark = requireActivity().getString(R.string.summary_dark)
+        val systemDefault = requireActivity().getString(R.string.summary_system_default)
+
+        // Theme Changing Preference
+        (findPreference(themeKey) as? ListPreference)?.run {
+            val selectedMode = when (AppCompatDelegate.getDefaultNightMode()) {
+                AppCompatDelegate.MODE_NIGHT_NO -> light
+                AppCompatDelegate.MODE_NIGHT_YES -> dark
+                else -> systemDefault
+            }
+            summary = selectedMode
+
+            onPreferenceChangeListener = OnPreferenceChangeListener { _, value ->
+                val nightMode = when (value) {
+                    modeNightNo -> {
+                        summary = light
+                        AppCompatDelegate.MODE_NIGHT_NO
+                    }
+                    modeNightYes -> {
+                        summary = dark
+                        AppCompatDelegate.MODE_NIGHT_YES
+                    }
+                    else -> {
+                        summary = systemDefault
+                        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                    }
+                }
+                AppCompatDelegate.setDefaultNightMode(nightMode)
+                true
+            }
         }
     }
 }

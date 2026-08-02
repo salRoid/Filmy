@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/filmy44dp"
+    tools:parentTag="tech.salroid.filmy.ui.component.FilmyTopNavigationBarItem">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/navigationItemPrimaryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/filmy10dp"
+        android:layout_marginEnd="@dimen/filmy10dp"
+        android:drawablePadding="@dimen/filmy8dp"
+        android:gravity="center_vertical"
+        android:textColor="?colorOnSurface"
+        tools:text="Trending" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/navigationItemToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/filmy16dp"
+        android:visibility="gone"
+        app:checkedButton="@id/day"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNavigation"
+        app:selectionRequired="true"
+        app:singleSelection="true"
+        tools:visibility="gone">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/day"
+            android:layout_width="@dimen/filmy60dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/segmented_control_group_bg_tint"
+            android:clickable="true"
+            android:focusable="true"
+            android:minHeight="42dp"
+            android:paddingHorizontal="@dimen/filmy2dp"
+            android:text="@string/day"
+            android:textColor="@color/segmented_control_group_text_tint"
+            android:textSize="13sp"
+            app:cornerRadius="@dimen/filmy10dp"
+            app:elevation="@dimen/filmy0dp"
+            app:iconTint="?colorOnPrimaryContainer"
+            app:strokeColor="?colorOnSurfaceVariant"
+            app:strokeWidth="0.5dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/segmented_control_group_bg_tint"
+            android:clickable="true"
+            android:focusable="true"
+            android:minHeight="42dp"
+            android:paddingHorizontal="@dimen/filmy10dp"
+            android:text="@string/week"
+            android:textColor="@color/segmented_control_group_text_tint"
+            android:textSize="13sp"
+            app:cornerRadius="@dimen/filmy10dp"
+            app:elevation="@dimen/filmy0dp"
+            app:iconTint="?colorOnPrimaryContainer"
+            app:strokeColor="?colorOnSurface"
+            app:strokeWidth="0.5dp" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+</LinearLayout>

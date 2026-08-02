@@ -1,81 +1,125 @@
-/*
 package tech.salroid.filmy.ui.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.AppWidgetTarget
+import kotlinx.coroutines.*
 import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.details.MovieDetailsActivity
-import tech.salroid.filmy.data.local.database.FilmContract
+import tech.salroid.filmy.ui.home.MoviesFragment.Companion.DATABASE_APPLICABLE
+import tech.salroid.filmy.ui.home.MoviesFragment.Companion.FROM_ACTIVITY
+import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_ID
+import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_TITLE
+import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_TYPE
+import tech.salroid.filmy.ui.home.MoviesFragment.Companion.NETWORK_APPLICABLE
+import tech.salroid.filmy.ui.home.MoviesRepository
 
+//@AndroidEntryPoint
 class FilmyWidgetProvider : AppWidgetProvider() {
 
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
-        var movieId = " "
-        var movieTitle = " "
-        var moviePoster = " "
+    private val job = SupervisorJob()
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
 
-        for (element in appWidgetIds) {
+    //@Inject
+    lateinit var moviesRepository: MoviesRepository
 
-            val appWidgetId = element
-            val moviesForTheUri = FilmContract.MoviesEntry.CONTENT_URI
-            val selection: String? = null
-            val selectionArgs: Array<String>? = null
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
 
-            val cursor = context.contentResolver.query(
-                moviesForTheUri,
-                MovieProjection.MOVIE_COLUMNS,
-                selection,
-                selectionArgs,
-                null
-            )
+        coroutineScope.launch {
+            //val movies = moviesRepository.getTrendingFromLocal()
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            val appWidget = AppWidgetManager.getInstance(context)
+            val appWidgetIds =
+                appWidget.getAppWidgetIds(ComponentName(context, FilmyWidgetProvider::class.java))
 
-            if (cursor != null && cursor.count > 0) {
-                cursor.moveToFirst()
-                val idIndex = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_ID)
-                val titleIndex = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_TITLE)
-                val posterIndex = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_POSTER_LINK)
-                val yearIndex = cursor.getColumnIndex(FilmContract.MoviesEntry.MOVIE_YEAR)
-                movieId = cursor.getString(idIndex)
-                movieTitle = cursor.getString(titleIndex)
-                moviePoster = cursor.getString(posterIndex)
-                //String imdb_id = cursor.getString(id_index);
-                //int movie_year = cursor.getInt(year_index);
-            }
-            cursor?.close()
-
-            val remoteViews = RemoteViews(context.packageName, R.layout.filmy_appwidget)
-            remoteViews.setTextViewText(R.id.widget_movie_name, movieTitle)
-            val appWidgetTarget =
-                AppWidgetTarget(context, R.id.widget_movie_image, remoteViews, *appWidgetIds)
-
-            Glide.with(context)
-                .asBitmap()
-                .load(moviePoster)
-                .into(appWidgetTarget)
-
-            val intent = Intent(context, MovieDetailsActivity::class.java)
-            intent.putExtra("title", movieTitle)
-            intent.putExtra("activity", true)
-            intent.putExtra("type", -1)
-            intent.putExtra("database_applicable", false)
-            intent.putExtra("network_applicable", true)
-            intent.putExtra("id", movieId)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-
-            val pendingIntent =
-                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-            remoteViews.setOnClickPendingIntent(R.id.activity_opener, pendingIntent)
-            appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
+           /* if (movies.isNotEmpty() && appWidgetIds.isNotEmpty()) {
+                val movie = movies.first()
+                updateAppWidget(
+                    context,
+                    appWidgetManager,
+                    appWidgetIds,
+                    movie.id,
+                    movie.title,
+                    movie.backdropPath
+                )
+            }*/
         }
     }
-}*/
+
+    override fun onUpdate(
+        context: Context?,
+        appWidgetManager: AppWidgetManager?,
+        appWidgetIds: IntArray?
+    ) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds)
+    }
+
+    private fun updateAppWidget(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetIds: IntArray,
+        movieId: Int,
+        movieTitle: String?,
+        moviePoster: String?
+    ) {
+
+        //val radius = context.resources.getDimensionPixelSize(R.dimen.filmy8dp)
+        val remoteViews = RemoteViews(context.packageName, R.layout.filmy_appwidget).apply {
+            setTextViewText(R.id.widget_movie_name, movieTitle)
+        }
+
+        val appWidgetTarget = AppWidgetTarget(
+            context.applicationContext,
+            R.id.widget_movie_image,
+            remoteViews,
+            *appWidgetIds
+        )
+
+        Glide.with(context.applicationContext)
+            .asBitmap()
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            //.transform(RoundedCorners(radius))
+            .load("https://image.tmdb.org/t/p/w1280$moviePoster")
+            .into(appWidgetTarget)
+
+        remoteViews.setOnClickPendingIntent(
+            android.R.id.background,
+            getPendingIntentActivity(context, movieId, movieTitle)
+        )
+        appWidgetManager.updateAppWidget(appWidgetIds, remoteViews)
+    }
+
+    private fun getPendingIntentActivity(
+        context: Context,
+        movieId: Int,
+        movieTitle: String?
+    ): PendingIntent? {
+        val intent = Intent(context, MovieDetailsActivity::class.java).apply {
+            putExtra(MOVIE_ID, movieId.toString())
+            putExtra(MOVIE_TITLE, movieTitle)
+            putExtra(FROM_ACTIVITY, true)
+            putExtra(MOVIE_TYPE, -1)
+            putExtra(DATABASE_APPLICABLE, false)
+            putExtra(NETWORK_APPLICABLE, true)
+        }
+        return PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+    override fun onDisabled(context: Context?) {
+        super.onDisabled(context)
+        job.cancel()
+    }
+}

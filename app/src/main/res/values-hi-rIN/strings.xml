@@ -44,7 +44,7 @@
     <string name="license">लाइसेंस</string>
     <string name="version">संस्करण</string>
     <string name="about">के बारे में</string>
-    <string name="madefor">फिल्म प्रेमियों के लिए  खास बनाया  गया ।</string>
+    <string name="about_screen_tittle">फिल्म प्रेमियों के लिए  खास बनाया  गया ।</string>
     <string name="error_details">फिल्मों को लाने में असमर्थ। \n इंटरनेट कनेक्शन हो तो फिर कोशिश करें |</string>
     <string name="trending">लोकप्रिय</string>
     <string name="theatres">सिनेमा घरों में</string>

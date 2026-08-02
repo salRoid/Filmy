@@ -2,7 +2,6 @@ package tech.salroid.filmy.ui.collections
 
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -25,7 +23,6 @@ import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_ID
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.MOVIE_TITLE
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.NETWORK_APPLICABLE
 import tech.salroid.filmy.ui.home.MoviesFragment.Companion.SAVED_DATABASE_APPLICABLE
-import tech.salroid.filmy.utility.visible
 
 @AndroidEntryPoint
 class CollectionTypeFragment : Fragment() {
@@ -43,6 +40,7 @@ class CollectionTypeFragment : Fragment() {
 
     companion object {
         const val COLLECTION_TYPE = "COLLECTION_TYPE"
+
         fun newInstance(collectionType: CollectionType): CollectionTypeFragment {
             val args = Bundle()
             args.putSerializable(COLLECTION_TYPE, collectionType)
@@ -60,18 +58,13 @@ class CollectionTypeFragment : Fragment() {
         val view = binding.root
 
         currentCollectionType = arguments?.getSerializable(COLLECTION_TYPE) as CollectionType
-        val spanCount = when (resources.configuration.orientation) {
-            Configuration.ORIENTATION_PORTRAIT -> 3
-            else -> 5
-        }
-        binding.mySavedRecycler.layoutManager = GridLayoutManager(context, spanCount)
         adapter = CollectionsAdapter(clickListener = { movieId, title ->
             itemClicked(movieId, title)
         }) { dataCursor, position ->
             itemLongClicked(dataCursor, position)
         }
         binding.mySavedRecycler.adapter = adapter
-        observeUiStates()
+        collectUiStates()
         return view
     }
 
@@ -82,14 +75,13 @@ class CollectionTypeFragment : Fragment() {
         viewModel.getWatchLists()
     }
 
-    private fun observeUiStates() {
+    private fun collectUiStates() {
         lifecycleScope.launch {
             when (currentCollectionType) {
                 CollectionType.FAVORITE -> {
                     viewModel.uiStateFavorites.collect {
                         it?.let {
                             showMovies(it)
-                            binding.emptyContainer.isVisible = false
                         } ?: run {
                             binding.emptyContainer.isVisible = true
                         }
@@ -99,28 +91,8 @@ class CollectionTypeFragment : Fragment() {
                     viewModel.uiStateWatchlist.collect {
                         it?.let {
                             showMovies(it)
-                            binding.emptyContainerWatch.isVisible = false
                         } ?: run {
                             binding.emptyContainerWatch.isVisible = true
-                        }
-                    }
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.uiStateRemoved.collect {
-                it?.let {
-                    adapter?.removeItemAt(it)
-                    if(adapter?.itemCount == 0){
-                        when (currentCollectionType) {
-                            CollectionType.FAVORITE -> binding.emptyContainer.isVisible = true
-                            CollectionType.WATCHLIST -> binding.emptyContainerWatch.isVisible = true
-                        }
-                    } else {
-                        when (currentCollectionType) {
-                            CollectionType.FAVORITE -> binding.emptyContainer.isVisible = false
-                            CollectionType.WATCHLIST -> binding.emptyContainerWatch.isVisible = false
                         }
                     }
                 }
@@ -129,7 +101,12 @@ class CollectionTypeFragment : Fragment() {
     }
 
     private fun showMovies(movies: List<MovieDetails>) {
-        adapter?.swapData(ArrayList(movies))
+        adapter?.submitList(movies.reversed())
+
+        when (currentCollectionType) {
+            CollectionType.FAVORITE -> binding.emptyContainer.isVisible = movies.isEmpty()
+            CollectionType.WATCHLIST -> binding.emptyContainerWatch.isVisible = movies.isEmpty()
+        }
     }
 
     private fun itemClicked(movieId: String, title: String?) {
@@ -152,7 +129,7 @@ class CollectionTypeFragment : Fragment() {
                     CollectionType.FAVORITE -> movie.favorite = false
                     CollectionType.WATCHLIST -> movie.watchlist = false
                 }
-                viewModel.updateMovieDetailsInDb(movie, position)
+                viewModel.updateMovieDetailsInDb(movie, position, currentCollectionType)
             }
             show()
         }

@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     app:behavior_peekHeight="400dp"
     app:cardCornerRadius="0dp"
     app:cardElevation="0dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    android:layout_height="wrap_content">
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <androidx.core.widget.NestedScrollView
         style="?attr/bottomSheetStyle"
@@ -60,12 +60,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/header"
-                android:fontFamily="@font/barlow_regular"
-                android:paddingStart="8dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="48dp"
-                android:textSize="17sp"
+                android:paddingStart="@dimen/filmy8dp"
+                android:paddingTop="@dimen/filmy16dp"
+                android:paddingEnd="@dimen/filmy8dp"
+                android:paddingBottom="28dp"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 tools:text="@tools:sample/lorem/random" />
 
         </RelativeLayout>

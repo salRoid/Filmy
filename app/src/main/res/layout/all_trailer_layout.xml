@@ -1,62 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorSurface"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="vertical">
+    android:paddingHorizontal="@dimen/filmy16dp"
+    android:paddingTop="@dimen/filmy32dp">
 
-    <RelativeLayout
-        android:id="@+id/fragment_all_trailer"
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/cross"
+        android:layout_width="@dimen/filmy32dp"
+        android:layout_height="@dimen/filmy32dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/filmy16dp"
+        android:background="@drawable/main_background"
+        android:clickable="true"
+        android:contentDescription="@string/close_description"
+        android:focusable="true"
+        android:src="@drawable/ic_round_close_24"
+        app:layout_constraintBottom_toBottomOf="@id/textViewTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/textViewTitle" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginRight="16dp">
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/filmy16dp"
+        android:layout_marginTop="@dimen/filmy16dp"
+        android:layout_marginEnd="@dimen/filmy16dp"
+        android:layout_toEndOf="@+id/cross"
+        android:ellipsize="end"
+        android:gravity="start"
+        android:maxLines="3"
+        android:textAppearance="@style/TextAppearance.Filmy.Headline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cross"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Fancy Movie Title Goes Here, Into many lines " />
 
-        <RelativeLayout
-            android:id="@+id/header"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingTop="@dimen/filmy16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/cross"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/main_background"
-                android:clickable="true"
-                android:contentDescription="@string/close_description"
-                android:focusable="true"
-                android:src="@drawable/ic_round_close_24" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/all_trailer_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <TextView
-                android:id="@+id/textViewTitle"
-                android:layout_width="wrap_content"
+            <Space
+                android:id="@+id/navSpace"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:layout_toEndOf="@+id/cross"
-                android:fontFamily="@font/circularstd_book"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/similarContainer" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/all_trailer_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/header"
-            android:layout_alignParentStart="true"
-            android:paddingTop="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </androidx.core.widget.NestedScrollView>
 
-    </RelativeLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

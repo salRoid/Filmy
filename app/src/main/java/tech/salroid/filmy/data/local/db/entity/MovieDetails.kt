@@ -21,10 +21,10 @@ data class MovieDetails(
     var belongsToCollection: Collection? = null,
 
     @SerializedName("budget")
-    var budget: Int? = null,
+    var budget: Long? = null,
 
     @SerializedName("genres")
-    var genres: ArrayList<Genres> = arrayListOf(),
+    var genres: ArrayList<Genre> = arrayListOf(),
 
     @SerializedName("homepage")
     var homepage: String? = null,
@@ -57,7 +57,7 @@ data class MovieDetails(
     var releaseDate: String? = null,
 
     @SerializedName("revenue")
-    var revenue: Int? = null,
+    var revenue: Long? = null,
 
     @SerializedName("runtime")
     var runtime: Int? = null,
@@ -81,7 +81,7 @@ data class MovieDetails(
     var voteAverage: Double? = null,
 
     @SerializedName("vote_count")
-    var voteCount: Int? = null,
+    var voteCount: Long? = null,
 
     @SerializedName("trailers")
     var trailers: Trailers? = Trailers(),

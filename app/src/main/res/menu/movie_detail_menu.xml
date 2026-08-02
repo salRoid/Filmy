@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/action_fav"
         android:icon="@drawable/ic_round_favorite_border_24"
-        android:orderInCategory="100"
         android:title="@string/favorite"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 
     <item
         android:id="@+id/action_watch"
         android:icon="@drawable/ic_round_bookmark_add_24"
-        android:orderInCategory="100"
         android:title="@string/watchlist"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/action_share"
-        android:icon="@drawable/ic_share_white_24dp"
-        android:orderInCategory="100"
-        android:title="share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share"
         app:showAsAction="always" />
+
 </menu>

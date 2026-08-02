@@ -44,7 +44,7 @@
     <string name="license">licencia</string>
     <string name="version">versión</string>
     <string name="about">acerca de</string>
-    <string name="madefor">Hecho para cinéfilos</string>
+    <string name="about_screen_tittle">Hecho para cinéfilos</string>
     <string name="error_details">No es posible obtener películas . \n Compruebe conexión a Internet y vuelva a intentarlo .</string>
     <string name="trending">popular</string>
     <string name="theatres">en los cines</string>

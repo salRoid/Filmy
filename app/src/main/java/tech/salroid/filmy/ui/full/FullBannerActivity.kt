@@ -10,6 +10,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import com.bumptech.glide.request.transition.Transition
 import tech.salroid.filmy.databinding.ActivityFullScreenImageBinding
+import tech.salroid.filmy.utility.themeSystemBars
 
 class FullBannerActivity : AppCompatActivity() {
 
@@ -22,6 +23,8 @@ class FullBannerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        themeSystemBars(lightStatusBar = true)
+
         binding = ActivityFullScreenImageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

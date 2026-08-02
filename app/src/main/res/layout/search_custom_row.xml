@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:padding="12dp">
+    android:padding="@dimen/filmy8dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/movie_poster"
-        android:layout_width="120dp"
-        android:layout_height="170dp"
+        android:layout_width="@dimen/filmy120dp"
+        android:layout_height="@dimen/filmy170dp"
         android:layout_gravity="center_vertical"
         android:scaleType="fitXY"
         app:shapeAppearanceOverlay="@style/roundedImageView" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/movie_name"
+        style="@style/TextAppearance.Filmy.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/movie_poster"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/barlow_black"
-        android:textSize="16sp" />
+        android:layout_marginTop="@dimen/filmy12dp"
+        tools:text="SpiderMan: India?" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/movie_year"
+        style="@style/TextAppearance.Filmy.SubTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_name"
-        android:layout_marginTop="2dp"
-        android:fontFamily="@font/barlow_regular"
-        android:textSize="14sp" />
+        android:layout_marginTop="@dimen/filmy2dp"
+        tools:text="22 Jan 2023" />
 
 </RelativeLayout>

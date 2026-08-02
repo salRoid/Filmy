@@ -1,187 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ratingBar"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.CardView.Outlined"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="32dp"
-    android:paddingTop="16dp"
-    android:paddingRight="32dp">
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/headerContainer"
+    app:strokeWidth="@dimen/filmy0dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
+        android:layout_marginTop="@dimen/filmy16dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/filmy16dp">
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/tmdbRatingBar"
+            android:layout_width="@dimen/filmy24dp"
+            android:layout_height="@dimen/filmy24dp"
+            android:layout_marginTop="@dimen/filmy4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackColor="?colorSurfaceVariant"
+            app:trackCornerRadius="@dimen/filmy8dp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tmdbIcon"
+            android:layout_width="@dimen/filmy42dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/filmy16dp"
+            android:layout_marginTop="@dimen/filmy4dp"
+            app:layout_constraintStart_toEndOf="@id/tmdbRatingBar"
+            app:layout_constraintTop_toTopOf="@id/tmdbRatingBar"
+            app:srcCompat="@drawable/tmdb_logo" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tmdbRatingScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/grey2"
-            app:strokeWidth="0dp">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/filmy4dp"
+            android:textColor="?colorOnSurface"
+            app:layout_constraintStart_toStartOf="@id/tmdbIcon"
+            app:layout_constraintTop_toBottomOf="@id/tmdbIcon"
+            tools:text="95% User Score" />
 
-            <LinearLayout
-                android:id="@+id/layout_imdb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:src="@drawable/imdb" />
-
-                <TextView
-                    android:id="@+id/imdbRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="8dp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tmdbRatingBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/grey2"
-            app:strokeWidth="0dp">
+            android:layout_gravity="center_horizontal"
+            android:alpha="0.6"
+            app:layout_constraintBottom_toBottomOf="@id/tmdbRatingScore"
+            app:layout_constraintStart_toEndOf="@id/tmdbRatingScore"
+            tools:text="by 5 Users" />
 
-            <LinearLayout
-                android:id="@+id/layout_tomato"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/imdb"
+            android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/tomatoRating_image"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:src="@drawable/certified" />
-
-                <TextView
-                    android:id="@+id/tomatoRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="8dp" />
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/imdbRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/grey2"
-            app:strokeWidth="0dp">
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:visibility="gone" />
 
-            <LinearLayout
-                android:id="@+id/layout_flixi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tomatoRating_image"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/certified"
+            android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/flixterRating_image"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:src="@drawable/popcorn" />
-
-                <TextView
-                    android:id="@+id/flixterRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="8dp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tomatoRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/grey2"
-            app:strokeWidth="0dp">
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:visibility="gone" />
 
-            <LinearLayout
-                android:id="@+id/layout_meta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/flixterRating_image"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/popcorn"
+            android:visibility="gone" />
 
-                <RelativeLayout
-                    android:id="@+id/metaRating_background"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="#66cc33">
-
-                    <TextView
-                        android:id="@+id/metaRatingView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/metaRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="8dp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/flixterRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/grey2"
-            app:strokeWidth="0dp">
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:visibility="gone" />
 
-            <LinearLayout
-                android:id="@+id/layout_tmdb"
+        <FrameLayout
+            android:id="@+id/metaRating_background"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:background="#66cc33"
+            android:visibility="gone">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/metaRatingView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:orientation="vertical">
+                android:layout_centerInParent="true"
+                android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:src="@drawable/tmdb_rating" />
+        </FrameLayout>
 
-                <TextView
-                    android:id="@+id/tmdbRating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="8dp" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/metaRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:visibility="gone" />
 
-            </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

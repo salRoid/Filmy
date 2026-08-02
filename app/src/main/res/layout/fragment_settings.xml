@@ -1,14 +1,129 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/preferenceFragment"
-        android:name="tech.salroid.filmy.ui.settings.PreferenceFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp" />
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/loginCardContainer"
+            style="@style/Widget.Material3.CardView.Elevated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/filmy16dp"
+            android:layout_marginTop="@dimen/filmy32dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/filmy16dp"
+                    android:paddingVertical="@dimen/filmy20dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/avatarImage"
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:padding="@dimen/filmy4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearance="@style/circleImageView"
+                        app:srcCompat="@drawable/default_avatar"
+                        app:strokeColor="?colorSurface"
+                        app:strokeWidth="@dimen/filmy2dp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/loginTitle"
+                        style="@style/TextAppearance.Filmy.LabelLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/filmy16dp"
+                        android:alpha="0.9"
+                        android:gravity="start"
+                        android:text="@string/login_message"
+                        android:textColor="?colorOnSecondaryContainer"
+                        app:layout_constraintBottom_toTopOf="@id/loginSubTitle"
+                        app:layout_constraintEnd_toStartOf="@id/btLogout"
+                        app:layout_constraintStart_toEndOf="@id/avatarImage"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/loginSubTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/filmy16dp"
+                        android:layout_marginTop="@dimen/filmy2dp"
+                        android:alpha="0.6"
+                        android:text="@string/login_message_benefit"
+                        android:textColor="?colorOnSecondaryContainer"
+                        app:layout_constraintBottom_toTopOf="@id/btLogin"
+                        app:layout_constraintEnd_toStartOf="@id/btLogout"
+                        app:layout_constraintStart_toEndOf="@id/avatarImage"
+                        app:layout_constraintTop_toBottomOf="@id/loginTitle"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btLogin"
+                        android:layout_width="@dimen/filmy100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/filmy12dp"
+                        android:layout_marginTop="@dimen/filmy8dp"
+                        android:paddingHorizontal="@dimen/filmy8dp"
+                        android:text="@string/login_now"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/avatarImage"
+                        app:layout_constraintTop_toBottomOf="@id/loginSubTitle"
+                        app:layout_constraintVertical_chainStyle="packed" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/btLogout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:actionBarItemBackground"
+                        android:padding="@dimen/filmy8dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_logout" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/preferenceFragment"
+            android:name="tech.salroid.filmy.ui.settings.PreferenceFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
+            android:padding="@dimen/filmy8dp" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

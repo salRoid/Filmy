@@ -2,8 +2,10 @@ package tech.salroid.filmy.ui.movies
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.search.SearchScreenState
@@ -21,10 +23,13 @@ fun MoviesRoute(
     onSearchResultClick: (SearchPreview) -> Unit
 ) {
     val movies = viewModel.moviesPagingData.collectAsLazyPagingItems()
+    val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
 
     MoviesScreen(
         modifier = modifier,
         movies = movies,
+        selectedCategory = selectedCategory,
+        onCategorySelected = viewModel::onCategorySelected,
         textFieldState = textFieldState,
         searchUiState = searchUiState,
         isSearchExpanded = isSearchExpanded,

@@ -160,6 +160,7 @@ dependencies {
     implementation composeBom
     androidTestImplementation composeBom
     implementation("androidx.compose.material3:material3:1.5.0-alpha16")
+    implementation("androidx.compose.material:material-icons-core")
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose'
     implementation 'androidx.activity:activity-compose'
     implementation 'androidx.compose.material3.adaptive:adaptive-android'

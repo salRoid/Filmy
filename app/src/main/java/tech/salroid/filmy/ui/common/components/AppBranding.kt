@@ -1,5 +1,6 @@
 package tech.salroid.filmy.ui.common.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,29 +21,36 @@ import androidx.compose.ui.unit.sp
 import tech.salroid.filmy.R
 
 @Composable
-fun AppBranding(modifier: Modifier = Modifier) {
+fun AppBranding(
+    modifier: Modifier = Modifier,
+    trailingContent: @Composable () -> Unit = {}
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(start = 16.dp, end = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_movie_filter_24dp),
-            contentDescription = null,
-            modifier = Modifier.size(28.dp),
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            modifier = Modifier.padding(top = 16.dp),
-            text = "Filmy",
-            style = MaterialTheme.typography.headlineSmall.copy(
-                fontSize = 21.sp,
-                fontWeight = FontWeight.Bold,
-            ),
-            color = MaterialTheme.colorScheme.onSurface
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_movie_filter_24dp),
+                contentDescription = null,
+                modifier = Modifier.size(28.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                modifier = Modifier.padding(top = 16.dp),
+                text = "Filmy",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontSize = 21.sp,
+                    fontWeight = FontWeight.Bold,
+                ),
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+        trailingContent()
     }
 }
 

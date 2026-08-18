@@ -29,6 +29,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,8 +41,10 @@ import androidx.window.core.layout.WindowSizeClass
 import kotlinx.coroutines.flow.distinctUntilChanged
 import tech.salroid.filmy.core.navigation.AppNavHost
 import tech.salroid.filmy.core.navigation.AppNavigationBar
+import tech.salroid.filmy.core.navigation.AppRoute
 import tech.salroid.filmy.core.navigation.TopLevelDestinations
 import tech.salroid.filmy.ui.search.SearchViewModel
+import tech.salroid.filmy.utility.PreferenceHelper
 
 @Composable
 fun FilmyApp(
@@ -53,6 +56,10 @@ fun FilmyApp(
     val navController = rememberNavController()
     val snackBarHostState = remember { SnackbarHostState() }
     val textFieldState = remember { TextFieldState() }
+    val context = LocalContext.current
+    val startDestination = remember {
+        if (PreferenceHelper.isColdStart(context)) AppRoute.Onboarding.route else AppRoute.MoviesGraph.route
+    }
 
     val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()
     val searchUiState by searchViewModel.uiState.collectAsStateWithLifecycle()
@@ -92,7 +99,8 @@ fun FilmyApp(
                     onSearchExpandedChange = { isSearchExpanded = it },
                     onSearch = { searchViewModel.onSearchQueryChange(it) },
                     bottomPadding = 80.dp, // Height of NavigationBar
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    startDestination = startDestination
                 )
 
                 AnimatedVisibility(

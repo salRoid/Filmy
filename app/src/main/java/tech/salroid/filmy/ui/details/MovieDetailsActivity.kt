@@ -823,9 +823,9 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun setWatchProviderInfo(watchProviderResponse: WatchProviderResponse) {
-        val watchProviderStream = watchProviderResponse.results?.IN?.flatrate?.firstOrNull()
-        val watchProviderBuy = watchProviderResponse.results?.IN?.buy?.firstOrNull()
-        val watchProviderRent = watchProviderResponse.results?.IN?.rent?.firstOrNull()
+        val watchProviderStream = watchProviderResponse.results["IN"]?.flatrate?.firstOrNull()
+        val watchProviderBuy = watchProviderResponse.results["IN"]?.buy?.firstOrNull()
+        val watchProviderRent = watchProviderResponse.results["IN"]?.rent?.firstOrNull()
 
         binding.watchProviderContainer.isVisible =
             watchProviderStream != null || watchProviderBuy != null || watchProviderRent != null

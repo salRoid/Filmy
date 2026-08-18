@@ -20,7 +20,9 @@ fun MoviesRoute(
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
-    onSearchResultClick: (SearchPreview) -> Unit
+    onSearchResultClick: (SearchPreview) -> Unit,
+    onFilterClick: () -> Unit = {},
+    onPeopleClick: () -> Unit = {}
 ) {
     val movies = viewModel.moviesPagingData.collectAsLazyPagingItems()
     val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
@@ -36,6 +38,8 @@ fun MoviesRoute(
         onSearchExpandedChange = onSearchExpandedChange,
         onSearch = onSearch,
         onMovieClick = onMovieClick,
-        onSearchResultClick = onSearchResultClick
+        onSearchResultClick = onSearchResultClick,
+        onFilterClick = onFilterClick,
+        onPeopleClick = onPeopleClick
     )
 }

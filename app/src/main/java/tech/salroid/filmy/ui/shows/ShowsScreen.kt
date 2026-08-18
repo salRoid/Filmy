@@ -1,11 +1,19 @@
 package tech.salroid.filmy.ui.shows
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import tech.salroid.filmy.R
@@ -39,7 +47,8 @@ fun ShowsScreen(
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
     onShowClick: (Int) -> Unit,
-    onSearchResultClick: (SearchPreview) -> Unit
+    onSearchResultClick: (SearchPreview) -> Unit,
+    onFilterClick: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         HomeTopBar(
@@ -50,12 +59,20 @@ fun ShowsScreen(
             onSearch = onSearch,
             onSearchResultClick = onSearchResultClick,
             trailingContent = {
-                CategorySelector(
-                    categories = TvShow.ShowType.entries,
-                    selected = selectedCategory,
-                    label = { stringResource(labelFor(it)) },
-                    onSelected = onCategorySelected
-                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CategorySelector(
+                        categories = TvShow.ShowType.entries,
+                        selected = selectedCategory,
+                        label = { stringResource(labelFor(it)) },
+                        onSelected = onCategorySelected
+                    )
+                    IconButton(onClick = onFilterClick) {
+                        Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.discover_filters))
+                    }
+                }
             }
         )
 

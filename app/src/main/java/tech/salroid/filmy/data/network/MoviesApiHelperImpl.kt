@@ -6,11 +6,16 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import tech.salroid.filmy.BuildConfig.OMDB_API_KEY
+import tech.salroid.filmy.data.datasource.DiscoverMoviesPagingSource
+import tech.salroid.filmy.data.datasource.DiscoverTvPagingSource
 import tech.salroid.filmy.data.datasource.MoviesPagingSource
+import tech.salroid.filmy.data.datasource.PeoplePagingSource
 import tech.salroid.filmy.data.datasource.TvShowsPagingSource
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.discover.DiscoverFilters
+import tech.salroid.filmy.data.local.model.discover.GenreResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.data.network.MoviesApiService.Companion.BASE_URL_OMDB
@@ -60,7 +65,7 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
     }
 
     override fun getMovieDetails(id: String): Flow<MovieDetails> = flow {
-        emit(apiService.getMovieDetails(id))
+        emit(apiService.getMovieDetails(movieId = id))
     }
 
     override fun getTvShowDetails(id: String): Flow<TvDetails> = flow {
@@ -132,4 +137,42 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
     override fun getWatchProvidersTv(id: String): Flow<WatchProviderResponse> = flow {
         emit(apiService.getWatchProvidersTv(id))
     }
+
+    override fun discoverMovies(filters: DiscoverFilters): Flow<PagingData<Movie>> = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            DiscoverMoviesPagingSource(apiService = apiService, filters = filters)
+        }
+    ).flow
+
+    override fun discoverTv(filters: DiscoverFilters): Flow<PagingData<TvShow>> = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            DiscoverTvPagingSource(apiService = apiService, filters = filters)
+        }
+    ).flow
+
+    override fun getMovieGenres(): Flow<GenreResponse> = flow {
+        emit(apiService.getMovieGenres())
+    }
+
+    override fun getTvGenres(): Flow<GenreResponse> = flow {
+        emit(apiService.getTvGenres())
+    }
+
+    override fun getPeople(): Flow<PagingData<Person>> = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            PeoplePagingSource(apiService = apiService)
+        }
+    ).flow
 }

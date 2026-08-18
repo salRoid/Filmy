@@ -2,25 +2,29 @@ package tech.salroid.filmy.ui.movies.details.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tech.salroid.filmy.R
+import tech.salroid.filmy.ui.common.model.PaletteColors
 import tech.salroid.filmy.ui.theme.AppTheme
 
 @Composable
-fun DetailsInfoItem(label: String, value: String) {
-    Column {
+fun DetailsInfoItem(label: String, value: String, modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
@@ -28,9 +32,22 @@ fun DetailsInfoItem(label: String, value: String) {
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium
+            style = MaterialTheme.typography.bodyMedium
         )
+    }
+}
+
+/** Same dynamic-palette background derivation used by [RatingCard]/[CollectionTeaserRow]. */
+@Composable
+fun rememberPaletteCardColor(paletteColors: PaletteColors?, fallback: Color): Color {
+    val isDark = isSystemInDarkTheme()
+    return remember(paletteColors, isDark, fallback) {
+        val colorInt = if (isDark) {
+            paletteColors?.darkMutedRgb ?: paletteColors?.darkVibrantRgb
+        } else {
+            paletteColors?.lightMutedRgb ?: paletteColors?.lightVibrantRgb
+        }
+        colorInt?.let { Color(it).copy(alpha = 0.15f) } ?: fallback
     }
 }
 

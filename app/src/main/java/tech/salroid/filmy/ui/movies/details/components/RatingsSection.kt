@@ -4,7 +4,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -12,11 +11,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -45,7 +42,12 @@ fun RatingsSection(
 
     val ratingList = ratings.ratings
 
-    Column {
+    Column(
+        modifier = Modifier.padding(
+            top = 4.dp,
+            bottom = 4.dp
+        )
+    ) {
         Text(
             text = "Ratings",
             style = MaterialTheme.typography.titleMedium,
@@ -59,8 +61,7 @@ fun RatingsSection(
                 RatingCard(
                     rating = ratingList[0],
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 4.dp),
+                        .fillMaxWidth(),
                     paletteColors = paletteColors,
                     onClick = { ratingList[0].url?.let { openUrl(it) } }
                 )
@@ -70,8 +71,7 @@ fun RatingsSection(
                 // Two ratings: Half width each
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 4.dp),
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     RatingCard(
@@ -121,17 +121,10 @@ fun RatingCard(
     paletteColors: PaletteColors? = null,
     onClick: () -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
-    val defaultCardColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-    val backgroundColor = remember(paletteColors, isDark, defaultCardColor) {
-        val colorInt = if (isDark) {
-            paletteColors?.darkMutedRgb ?: paletteColors?.darkVibrantRgb
-        } else {
-            paletteColors?.lightMutedRgb ?: paletteColors?.lightVibrantRgb
-        }
-        colorInt?.let { Color(it).copy(alpha = 0.15f) }
-            ?: defaultCardColor
-    }
+    val backgroundColor = rememberPaletteCardColor(
+        paletteColors = paletteColors,
+        fallback = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+    )
 
     Surface(
         modifier = modifier
@@ -153,6 +146,7 @@ fun RatingCard(
                 RatingSource.IMDB -> R.drawable.imdb
                 RatingSource.ROTTEN_TOMATOES -> R.drawable.rotten
                 RatingSource.TMDB -> R.drawable.tmdb_logo
+                RatingSource.USER -> R.drawable.ic_stars
                 else -> R.drawable.ic_stars
             }
 
@@ -185,6 +179,7 @@ fun RatingCard(
                         RatingSource.ROTTEN_TOMATOES -> "Rotten Tomatoes"
                         RatingSource.TMDB -> "TMDB"
                         RatingSource.METACRITIC -> "Metacritic"
+                        RatingSource.USER -> "You"
                         else -> "Rating"
                     },
                     style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),

@@ -68,5 +68,18 @@ sealed class AppRoute(val route: String) {
         }
     }
 
+    object Franchise : AppRoute("franchise/{id}/{name}") {
+        fun create(id: Int, name: String) = "franchise/$id/$name"
+    }
+
+    object SeasonDetails : AppRoute("season_details/{tvId}/{seasonNumber}/{showTitle}") {
+        fun create(tvId: Int, seasonNumber: Int, showTitle: String) =
+            "season_details/$tvId/$seasonNumber/$showTitle"
+    }
+
+    object Gallery : AppRoute("gallery/{id}/{isTv}") {
+        fun create(id: Int, isTv: Boolean) = "gallery/$id/$isTv"
+    }
+
     object Onboarding : AppRoute("onboarding")
 }

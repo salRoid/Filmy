@@ -9,8 +9,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tech.salroid.filmy.ui.common.components.DetailsContent
 import tech.salroid.filmy.ui.common.components.DetailsSkeletonLoader
+import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.details.MovieDetailsViewModel
 import tech.salroid.filmy.ui.common.model.DetailsActions
+import tech.salroid.filmy.ui.movies.details.components.AddToListSheet
+import tech.salroid.filmy.ui.movies.details.components.RateMediaSheet
+import tech.salroid.filmy.utility.openUrl
 import tech.salroid.filmy.utility.openYoutubeTrailer
 import tech.salroid.filmy.utility.shareMedia
 
@@ -23,11 +27,20 @@ fun MovieDetailsScreen(
     onViewAllReviewsClick: (Int, Boolean, String) -> Unit,
     onMemberClick: (Int, Boolean) -> Unit,
     onMovieClick: (Int) -> Unit,
-    onBackNavigation: () -> Unit
+    onBackNavigation: () -> Unit,
+    onCollectionClick: (Int, String) -> Unit = { _, _ -> },
+    onGalleryClick: (Int, Boolean) -> Unit = { _, _ -> },
+    onKeywordClick: (Int, String) -> Unit = { _, _ -> }
 ) {
     val state by viewModel.mediaDetailsUiState.collectAsStateWithLifecycle()
     val movieDetails by viewModel.uiStateMovieDetails.collectAsStateWithLifecycle()
+    val isError by viewModel.uiStateError.collectAsStateWithLifecycle()
+    val userLists by viewModel.userLists.collectAsStateWithLifecycle()
+    val listMembership by viewModel.listMembership.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    var showAddToListSheet by remember { mutableStateOf(false) }
+    var showRateSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(movieId) {
         viewModel.fetchAllMovieDetails(movieId.toString(), 0)
@@ -58,7 +71,16 @@ fun MovieDetailsScreen(
                             isTvShow = currentState.isTvShow
                         )
                     },
-                    onBackNavigation = onBackNavigation
+                    onBackNavigation = onBackNavigation,
+                    onAddToListClick = {
+                        viewModel.loadUserLists(movieId)
+                        showAddToListSheet = true
+                    },
+                    onCollectionClick = onCollectionClick,
+                    onRateClick = { showRateSheet = true },
+                    onGalleryClick = onGalleryClick,
+                    onKeywordClick = onKeywordClick,
+                    onLinkClick = { context.openUrl(it) }
                 )
 
                 DetailsContent(
@@ -66,7 +88,40 @@ fun MovieDetailsScreen(
                     actions = actions,
                     modifier = modifier
                 )
+
+                if (showAddToListSheet) {
+                    AddToListSheet(
+                        lists = userLists,
+                        membership = listMembership,
+                        onToggle = { listId, currentlyIn ->
+                            viewModel.toggleListMembership(listId, movieId, currentlyIn)
+                        },
+                        onCreateList = { name -> viewModel.createList(name) },
+                        onDismiss = { showAddToListSheet = false }
+                    )
+                }
+
+                if (showRateSheet) {
+                    RateMediaSheet(
+                        currentRating = currentState.userRating,
+                        onSubmit = { rating ->
+                            viewModel.rateMovie(currentMovieDetails, rating)
+                            showRateSheet = false
+                        },
+                        onRemove = {
+                            viewModel.rateMovie(currentMovieDetails, null)
+                            showRateSheet = false
+                        },
+                        onDismiss = { showRateSheet = false }
+                    )
+                }
             }
+        } else if (isError) {
+            ErrorWidget(
+                modifier = modifier,
+                message = "Couldn't load details. Check your connection.",
+                onRetryClick = { viewModel.fetchAllMovieDetails(movieId.toString(), 0) }
+            )
         } else {
             DetailsSkeletonLoader(
                 modifier = modifier,

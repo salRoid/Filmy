@@ -1,5 +1,6 @@
 package tech.salroid.filmy.ui.movies.details.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -96,6 +98,19 @@ fun TrailerItem(trailer: Youtube, onClick: () -> Unit) {
                         .align(Alignment.Center)
                         .size(48.dp)
                 )
+                trailer.type?.let { type ->
+                    Text(
+                        text = type,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White,
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(8.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(Color.Black.copy(alpha = 0.6f))
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
             }
             Text(
                 text = trailer.name ?: "",

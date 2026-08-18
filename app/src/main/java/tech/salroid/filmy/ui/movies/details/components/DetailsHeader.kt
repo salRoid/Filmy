@@ -1,6 +1,7 @@
 package tech.salroid.filmy.ui.movies.details.components
 
 import android.graphics.drawable.BitmapDrawable
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -91,20 +92,24 @@ fun DetailsHeader(
         }
     }
 
-    val bannerUrl = remember(state.backdropPath, state.posterPath) {
-        val path = if (state.backdropPath != null && state.backdropPath != "null") {
+    val mainBackdropPath = remember(state.backdropPath, state.posterPath) {
+        if (state.backdropPath != null && state.backdropPath != "null") {
             state.backdropPath
         } else {
             state.posterPath
         }
-        "$backdropPrefix$path"
+    }
+
+    val bannerUrls = remember(mainBackdropPath, state.backdropImages) {
+        val extra = state.backdropImages.orEmpty().filter { it != mainBackdropPath }
+        (listOfNotNull(mainBackdropPath) + extra).distinct().map { "$backdropPrefix$it" }
     }
 
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
         HeaderBackdrop(
-            bannerUrl = bannerUrl,
+            bannerUrls = bannerUrls,
             paletteColors = paletteColors,
             onPaletteGenerated = onPaletteGenerated
         )
@@ -129,56 +134,83 @@ fun DetailsHeader(
     }
 }
 
+private const val BACKDROP_ROTATION_INTERVAL_MS = 6000L
+private const val BACKDROP_CROSSFADE_DURATION_MS = 1200
+
 @Composable
 fun HeaderBackdrop(
-    bannerUrl: String,
+    bannerUrls: List<String>,
     paletteColors: PaletteColors?,
     onPaletteGenerated: (PaletteColors) -> Unit
 ) {
     val context = LocalContext.current
+    var currentIndex by remember { mutableIntStateOf(0) }
+    var hasGeneratedPalette by remember { mutableStateOf(false) }
+
+    // Cycle through the fetched backdrops once there's more than one to show.
+    LaunchedEffect(bannerUrls) {
+        if (bannerUrls.size <= 1) return@LaunchedEffect
+        while (true) {
+            delay(BACKDROP_ROTATION_INTERVAL_MS)
+            currentIndex = (currentIndex + 1) % bannerUrls.size
+        }
+    }
+
+    val currentUrl = bannerUrls.getOrNull(currentIndex) ?: bannerUrls.firstOrNull()
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(280.dp)
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(bannerUrl)
-                .allowHardware(false)
-                .build(),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop,
-            onSuccess = { imageState ->
-                val drawable = imageState.result.image.asDrawable(context.resources)
-                if (drawable is BitmapDrawable) {
-                    val bitmap = drawable.bitmap
-                    Palette.from(bitmap).generate { palette ->
-                        val vibrant = palette?.vibrantSwatch ?: palette?.dominantSwatch
-                        val darkVibrant = palette?.darkVibrantSwatch ?: palette?.vibrantSwatch
-                        ?: palette?.dominantSwatch
-                        val lightVibrant = palette?.lightVibrantSwatch
-                        val lightMuted = palette?.lightMutedSwatch
-                        val darkMuted = palette?.darkMutedSwatch
-                        val muted = palette?.mutedSwatch
+        Crossfade(
+            targetState = currentUrl,
+            animationSpec = tween(BACKDROP_CROSSFADE_DURATION_MS),
+            label = "backdrop_crossfade"
+        ) { url ->
+            AsyncImage(
+                model = ImageRequest.Builder(context)
+                    .data(url)
+                    .allowHardware(false)
+                    .build(),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+                onSuccess = { imageState ->
+                    // Only the very first backdrop drives the screen's color theme —
+                    // later rotations shouldn't shift the rest of the UI's colors.
+                    if (hasGeneratedPalette) return@AsyncImage
+                    val drawable = imageState.result.image.asDrawable(context.resources)
+                    if (drawable is BitmapDrawable) {
+                        hasGeneratedPalette = true
+                        val bitmap = drawable.bitmap
+                        Palette.from(bitmap).generate { palette ->
+                            val vibrant = palette?.vibrantSwatch ?: palette?.dominantSwatch
+                            val darkVibrant = palette?.darkVibrantSwatch ?: palette?.vibrantSwatch
+                            ?: palette?.dominantSwatch
+                            val lightVibrant = palette?.lightVibrantSwatch
+                            val lightMuted = palette?.lightMutedSwatch
+                            val darkMuted = palette?.darkMutedSwatch
+                            val muted = palette?.mutedSwatch
 
-                        onPaletteGenerated(
-                            PaletteColors(
-                                vibrantRgb = vibrant?.rgb,
-                                vibrantTitleTextColor = vibrant?.titleTextColor,
-                                vibrantBodyTextColor = vibrant?.bodyTextColor,
-                                darkVibrantRgb = darkVibrant?.rgb,
-                                darkVibrantBodyTextColor = darkVibrant?.bodyTextColor,
-                                lightVibrantRgb = lightVibrant?.rgb,
-                                lightMutedRgb = lightMuted?.rgb,
-                                darkMutedRgb = darkMuted?.rgb,
-                                mutedRgb = muted?.rgb
+                            onPaletteGenerated(
+                                PaletteColors(
+                                    vibrantRgb = vibrant?.rgb,
+                                    vibrantTitleTextColor = vibrant?.titleTextColor,
+                                    vibrantBodyTextColor = vibrant?.bodyTextColor,
+                                    darkVibrantRgb = darkVibrant?.rgb,
+                                    darkVibrantBodyTextColor = darkVibrant?.bodyTextColor,
+                                    lightVibrantRgb = lightVibrant?.rgb,
+                                    lightMutedRgb = lightMuted?.rgb,
+                                    darkMutedRgb = darkMuted?.rgb,
+                                    mutedRgb = muted?.rgb
+                                )
                             )
-                        )
+                        }
                     }
                 }
-            }
-        )
+            )
+        }
         // Backdrop Scrim
         Box(
             modifier = Modifier
@@ -248,6 +280,23 @@ fun HeaderInfoCard(
                     modifier = Modifier.padding(top = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    if (!state.certification.isNullOrEmpty()) {
+                        val badgeContentColor = paletteColors?.vibrantBodyTextColor?.let { Color(it) }
+                            ?: MaterialTheme.colorScheme.onSecondaryContainer
+                        Surface(
+                            color = badgeContentColor.copy(alpha = 0.15f),
+                            shape = RoundedCornerShape(4.dp),
+                            modifier = Modifier.padding(end = 6.dp)
+                        ) {
+                            Text(
+                                text = state.certification,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = badgeContentColor,
+                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                            )
+                        }
+                    }
+
                     if (state.runtimeText.isNotEmpty()) {
                         Text(
                             text = state.runtimeText,

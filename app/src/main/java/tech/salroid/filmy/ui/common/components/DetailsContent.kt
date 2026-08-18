@@ -4,6 +4,9 @@ import android.app.Activity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -151,7 +154,8 @@ fun DetailsScaffold(
             DetailsToolbar(
                 actions = actions,
                 iconColor = iconColor,
-                containerColor = containerColor
+                containerColor = containerColor,
+                onGalleryClick = { actions.onGalleryClick(state.mediaId, state.isTvShow) }
             )
         }
     ) { paddingValues ->
@@ -175,7 +179,8 @@ fun DetailsScaffold(
 fun DetailsToolbar(
     actions: DetailsActions,
     iconColor: Color,
-    containerColor: Color
+    containerColor: Color,
+    onGalleryClick: () -> Unit
 ) {
     val isTransparent = containerColor.alpha < 0.5f
     val buttonBackgroundColor =
@@ -187,27 +192,45 @@ fun DetailsToolbar(
             IconButton(
                 onClick = actions.onBackNavigation,
                 modifier = Modifier
-                    .padding(start = 8.dp)
+                    .padding(start = 16.dp)
+                    .size(32.dp)
                     .background(buttonBackgroundColor, CircleShape)
             ) {
                 Icon(
                     painterResource(R.drawable.ic_arrow_back),
                     contentDescription = "Back",
-                    tint = iconColor
+                    tint = iconColor,
+                    modifier = Modifier.size(24.dp)
                 )
             }
         },
         actions = {
             IconButton(
+                onClick = onGalleryClick,
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(32.dp)
+                    .background(buttonBackgroundColor, CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.PhotoLibrary,
+                    contentDescription = "Photos",
+                    tint = iconColor,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+            IconButton(
                 onClick = actions.onShareClick,
                 modifier = Modifier
-                    .padding(end = 8.dp)
+                    .padding(horizontal = 16.dp)
+                    .size(32.dp)
                     .background(buttonBackgroundColor, CircleShape)
             ) {
                 Icon(
                     painterResource(R.drawable.twotone_share_24),
                     contentDescription = "Share",
-                    tint = iconColor
+                    tint = iconColor,
+                    modifier = Modifier.size(24.dp)
                 )
             }
         },
@@ -252,6 +275,12 @@ fun DetailsMainContent(
                 WatchProvidersSection(it, paletteColors)
             }
 
+            ActionsCard(
+                state = state,
+                actions = actions,
+                paletteColors = paletteColors
+            )
+
             TrailersSection(
                 youtubeTrailers = state.youtubeTrailers,
                 paletteColors = paletteColors,
@@ -259,14 +288,61 @@ fun DetailsMainContent(
                 onPlusMoreClick = onAllTrailersClick
             )
 
-            ActionsCard(
-                state = state,
-                actions = actions,
-                paletteColors = paletteColors
-            )
+            if (state.collectionId != null && state.collectionName != null) {
+                CollectionTeaserRow(
+                    name = state.collectionName,
+                    onClick = {
+                        actions.onCollectionClick(
+                            state.collectionId,
+                            state.collectionName
+                        )
+                    },
+                    paletteColors = paletteColors
+                )
+            }
 
             if (state.ratings != null) {
                 RatingsSection(state.ratings, paletteColors)
+            }
+
+            if (!state.awards.isNullOrBlank() || state.budget != null || state.revenue != null) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = rememberPaletteCardColor(
+                            paletteColors = paletteColors,
+                            fallback = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                        )
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        if (!state.awards.isNullOrBlank()) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                AwardsSection(state.awards)
+                            }
+                        }
+                        if (state.budget != null || state.revenue != null) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                BoxOfficeSection(state.budget, state.revenue)
+                            }
+                        }
+                    }
+                }
+            }
+
+            KeywordsSection(state.keywords, actions.onKeywordClick)
+
+            if (state.isTvShow && !state.seasons.isNullOrEmpty()) {
+                SeasonsSection(state.seasons) { seasonNumber ->
+                    actions.onSeasonClick(state.mediaId, seasonNumber, state.title)
+                }
             }
 
             CastSection(
@@ -301,6 +377,15 @@ fun DetailsMainContent(
                 title = if (state.isTvShow) "Recommendations" else "Recommended",
                 response = state.recommendations,
                 onMediaClick = actions.onMediaClick
+            )
+
+            ExternalLinksSection(
+                homepage = state.homepage,
+                imdbId = state.imdbId,
+                facebookId = state.facebookId,
+                instagramId = state.instagramId,
+                twitterId = state.twitterId,
+                onLinkClick = actions.onLinkClick
             )
         }
     }

@@ -381,8 +381,13 @@ limitations under the License.
 
     <string name="watched">Watched</string>
     <string name="watched_question">Watched?</string>
-    <string name="add_to_watchlist">Add to watchlist</string>
+    <string name="add_to_watchlist">Watchlist</string>
     <string name="watchlisted">Watchlisted</string>
+    <string name="add_to_list">Add to List</string>
+    <string name="rate">Rate</string>
+    <string name="remove_rating">Remove Rating</string>
+    <string name="your_rating">Your Rating</string>
+    <string name="list_empty">This list is empty.</string>
 
     <string name="tv_label_trending">Trending</string>
     <string name="tv_label_popular">Popular</string>

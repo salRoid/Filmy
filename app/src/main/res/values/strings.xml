@@ -285,6 +285,7 @@ limitations under the License.
     <string name="your_fav_movies_appear_here">Your watched movies appear here.</string>
     <string name="your_watchlist_movies_appear_here">Your watchlist appears here.</string>
     <string name="you_dont_hav_fav">No movies in the list.</string>
+    <string name="syncing_tmdb_account">Syncing with your TMDB account…</string>
 
     <string name="error_string" translatable="false">There was an error initializing the YouTube Player</string>
     <string name="collections" translatable="false">Collections</string>
@@ -387,7 +388,12 @@ limitations under the License.
     <string name="rate">Rate</string>
     <string name="remove_rating">Remove Rating</string>
     <string name="your_rating">Your Rating</string>
+    <string name="my_lists">My Lists</string>
+    <string name="create_new_list">Create new list</string>
+    <string name="list_name_hint">List name</string>
+    <string name="no_lists_yet">You haven\'t created any lists yet.</string>
     <string name="list_empty">This list is empty.</string>
+    <string name="delete_list_confirmation">Delete this list?</string>
 
     <string name="tv_label_trending">Trending</string>
     <string name="tv_label_popular">Popular</string>

@@ -22,6 +22,8 @@ import tech.salroid.filmy.ui.discover.DiscoverRoute
 import tech.salroid.filmy.ui.franchise.FranchiseScreen
 import tech.salroid.filmy.ui.full.AllMoviesScreen
 import tech.salroid.filmy.ui.gallery.GalleryScreen
+import tech.salroid.filmy.ui.lists.ListDetailsScreen
+import tech.salroid.filmy.ui.lists.MyListsScreen
 import tech.salroid.filmy.ui.movies.MoviesRoute
 import tech.salroid.filmy.ui.movies.details.MovieDetailsScreen
 import tech.salroid.filmy.ui.onboarding.OnboardingScreen
@@ -274,7 +276,8 @@ private fun NavGraphBuilder.accountGraph(navController: NavHostController, botto
                     .navigationBarsPadding()
                     .padding(bottom = bottomPadding),
                 onAboutClick = { navController.navigate(AppRoute.About.route) },
-                onLicenseClick = { navController.navigate(AppRoute.License.route) }
+                onLicenseClick = { navController.navigate(AppRoute.License.route) },
+                onMyListsClick = { navController.navigate(AppRoute.MyLists.route) }
             )
         }
         composable(AppRoute.About.route) {
@@ -282,6 +285,14 @@ private fun NavGraphBuilder.accountGraph(navController: NavHostController, botto
         }
         composable(AppRoute.License.route) {
             LicenseScreen { navController.popBackStack() }
+        }
+        composable(AppRoute.MyLists.route) {
+            MyListsScreen(
+                onListClick = { listId, listName ->
+                    navController.navigate(AppRoute.ListDetails.create(listId, listName))
+                },
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }
@@ -416,6 +427,25 @@ private fun NavGraphBuilder.commonScreens(navController: NavHostController) {
         PeopleScreen(
             onPersonClick = { id ->
                 navController.navigate(AppRoute.CastCrewDetails.create(id, isTv = false))
+            },
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+
+    composable(
+        route = AppRoute.ListDetails.route,
+        arguments = listOf(
+            navArgument("listId") { type = NavType.IntType },
+            navArgument("listName") { type = NavType.StringType }
+        )
+    ) { backStackEntry ->
+        val listId = backStackEntry.arguments?.getInt("listId") ?: 0
+        val listName = backStackEntry.arguments?.getString("listName") ?: ""
+        ListDetailsScreen(
+            listId = listId,
+            title = listName,
+            onMovieClick = { id ->
+                navController.navigate(AppRoute.MovieDetails.create(id))
             },
             onBackClick = { navController.popBackStack() }
         )

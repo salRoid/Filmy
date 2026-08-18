@@ -1,5 +1,8 @@
 package tech.salroid.filmy.ui.collections
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -32,6 +35,11 @@ fun CollectionScreen(
 ) {
     val watched by viewModel.watched.collectAsStateWithLifecycle()
     val watchlist by viewModel.watchlist.collectAsStateWithLifecycle()
+    val isSyncing by viewModel.isSyncing.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.trySync()
+    }
 
     var showDialog by remember { mutableStateOf(false) }
     var selectedMovie by remember { mutableStateOf<MovieDetails?>(null) }
@@ -81,6 +89,7 @@ fun CollectionScreen(
         modifier = modifier,
         watched = watched,
         watchlist = watchlist,
+        isSyncing = isSyncing,
         pagerState = pagerState,
         onMovieClick = onMovieClick,
         onMovieLongClick = { movie ->
@@ -98,6 +107,7 @@ fun CollectionScreenContent(
     pagerState: androidx.compose.foundation.pager.PagerState,
     onMovieClick: (Int, Int) -> Unit,
     modifier: Modifier = Modifier,
+    isSyncing: Boolean = false,
     onMovieLongClick: (MovieDetails) -> Unit = {}
 ) {
     val tabs = listOf(stringResource(R.string.favourite), stringResource(R.string.watchlist))
@@ -148,6 +158,26 @@ fun CollectionScreenContent(
                     },
                     selectedContentColor = MaterialTheme.colorScheme.primary,
                     unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        AnimatedVisibility(visible = isSyncing, enter = fadeIn(), exit = fadeOut()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 22.dp, vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(16.dp),
+                    strokeWidth = 2.dp
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = stringResource(R.string.syncing_tmdb_account),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                 )
             }
         }

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -65,10 +66,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import coil3.compose.AsyncImage
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.db.entity.Profile
+import tech.salroid.filmy.ui.common.components.CountrySelectionList
 import tech.salroid.filmy.ui.home.LoginViewModel
 import tech.salroid.filmy.utility.FilmyUtility
 import tech.salroid.filmy.utility.PreferenceHelper
@@ -80,6 +81,7 @@ import tech.salroid.filmy.ui.theme.AppTheme
 fun AccountScreen(
     onAboutClick: () -> Unit,
     onLicenseClick: () -> Unit,
+    onMyListsClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -87,10 +89,12 @@ fun AccountScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val uiStateProfile by viewModel.uiStateProfile.collectAsState()
     val uiStateToken by viewModel.uiStateToken.collectAsState()
+    val isLoggingOut by viewModel.isLoggingOut.collectAsState()
 
     var isLoading by remember { mutableStateOf(false) }
     var rootSize by remember { mutableStateOf(IntSize.Zero) }
     var cardSize by remember { mutableStateOf(IntSize.Zero) }
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     val customTabLauncher = rememberLauncherForActivityResult(
         contract = object : ActivityResultContract<String, Int>() {
@@ -135,23 +139,42 @@ fun AccountScreen(
 
     AccountScreenContent(
         profile = uiStateProfile,
-        isLoading = isLoading,
+        isLoading = isLoading || isLoggingOut,
+        showLoginCard = true,
         onLoginClick = {
             isLoading = true
             viewModel.getRequestToken()
         },
-        onLogoutClick = {
-            showLogoutConfirmation(context) {
-                isLoading = true
-                viewModel.logout()
-            }
-        },
+        onLogoutClick = { showLogoutDialog = true },
         onAboutClick = onAboutClick,
         onLicenseClick = onLicenseClick,
+        onMyListsClick = onMyListsClick,
         modifier = modifier,
         onRootSizeChanged = { rootSize = it },
         onCardSizeChanged = { cardSize = it }
     )
+
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            text = { Text(stringResource(R.string.logout_confirmation)) },
+            confirmButton = {
+                Button(onClick = { showLogoutDialog = false }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showLogoutDialog = false
+                        viewModel.logout()
+                    }
+                ) {
+                    Text(stringResource(R.string.yes))
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -163,6 +186,7 @@ fun AccountScreenContent(
     onLogoutClick: () -> Unit,
     onAboutClick: () -> Unit,
     onLicenseClick: () -> Unit,
+    onMyListsClick: () -> Unit = {},
     modifier: Modifier = Modifier,
     onRootSizeChanged: (IntSize) -> Unit = {},
     onCardSizeChanged: (IntSize) -> Unit = {}
@@ -188,7 +212,8 @@ fun AccountScreenContent(
         PreferencesSection(
             context = context,
             onAboutClick = onAboutClick,
-            onLicenseClick = onLicenseClick
+            onLicenseClick = onLicenseClick,
+            onMyListsClick = onMyListsClick
         )
     }
 }
@@ -197,9 +222,11 @@ fun AccountScreenContent(
 fun PreferencesSection(
     context: Context,
     onAboutClick: () -> Unit,
-    onLicenseClick: () -> Unit
+    onLicenseClick: () -> Unit,
+    onMyListsClick: () -> Unit = {}
 ) {
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showRegionDialog by remember { mutableStateOf(false) }
 
     val modeNightNo = stringResource(R.string.mode_night_no)
     val modeNightYes = stringResource(R.string.mode_night_yes)
@@ -211,12 +238,28 @@ fun PreferencesSection(
         else -> stringResource(R.string.summary_system_default)
     }
 
+    var selectedCountry by remember { mutableStateOf(PreferenceHelper.getSelectedCountry(context)) }
+    val currentRegionSummary = remember(selectedCountry) {
+        java.util.Locale("", selectedCountry).displayCountry
+    }
+
     Column(modifier = Modifier.padding(8.dp)) {
         PreferenceItem(
             title = stringResource(R.string.theme),
             summary = currentThemeSummary,
             icon = painterResource(R.drawable.dark_mode),
             onClick = { showThemeDialog = true }
+        )
+        PreferenceItem(
+            title = "Region",
+            summary = currentRegionSummary,
+            icon = painterResource(R.drawable.ic_language_24dp),
+            onClick = { showRegionDialog = true }
+        )
+        PreferenceItem(
+            title = stringResource(R.string.my_lists),
+            icon = painterResource(R.drawable.ic_collections_bookmark_24dp),
+            onClick = onMyListsClick
         )
         PreferenceItem(
             title = stringResource(R.string.license),
@@ -257,6 +300,47 @@ fun PreferencesSection(
             }
         )
     }
+
+    if (showRegionDialog) {
+        RegionSelectionDialog(
+            selectedCountry = selectedCountry,
+            onDismiss = { showRegionDialog = false },
+            onCountrySelected = { code ->
+                PreferenceHelper.setSelectedCountry(context, code)
+                selectedCountry = code
+                showRegionDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+fun RegionSelectionDialog(
+    selectedCountry: String,
+    onDismiss: () -> Unit,
+    onCountrySelected: (String) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "Region",
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
+        text = {
+            CountrySelectionList(
+                selected = selectedCountry,
+                onSelect = { onCountrySelected(it.code) },
+                modifier = Modifier.heightIn(max = 400.dp)
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
 }
 
 @Composable
@@ -456,17 +540,6 @@ fun LoginCard(
     }
 }
 
-private fun showLogoutConfirmation(context: Context, onConfirm: () -> Unit) {
-    MaterialAlertDialogBuilder(context)
-        .setMessage(context.getString(R.string.logout_confirmation))
-        .setNegativeButton(R.string.yes) { _, _ ->
-            onConfirm()
-        }
-        .setPositiveButton(android.R.string.cancel) { dialog, _ ->
-            dialog.dismiss()
-        }.show()
-}
-
 @Preview(showBackground = true)
 @Composable
 fun AccountScreenPreview() {
@@ -477,6 +550,7 @@ fun AccountScreenPreview() {
                 username = "johndoe123"
             ),
             isLoading = false,
+            showLoginCard = true,
             onLoginClick = {},
             onLogoutClick = {},
             onAboutClick = {},
@@ -492,6 +566,7 @@ fun AccountScreenLoadingPreview() {
         AccountScreenContent(
             profile = null,
             isLoading = true,
+            showLoginCard = true,
             onLoginClick = {},
             onLogoutClick = {},
             onAboutClick = {},
@@ -507,6 +582,7 @@ fun AccountScreenLoggedOutPreview() {
         AccountScreenContent(
             profile = null,
             isLoading = false,
+            showLoginCard = true,
             onLoginClick = {},
             onLogoutClick = {},
             onAboutClick = {},

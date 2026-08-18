@@ -68,6 +68,12 @@ sealed class AppRoute(val route: String) {
         }
     }
 
+    object MyLists : AppRoute("my_lists")
+
+    object ListDetails : AppRoute("list_details/{listId}/{listName}") {
+        fun create(listId: Int, listName: String) = "list_details/$listId/$listName"
+    }
+
     object Franchise : AppRoute("franchise/{id}/{name}") {
         fun create(id: Int, name: String) = "franchise/$id/$name"
     }

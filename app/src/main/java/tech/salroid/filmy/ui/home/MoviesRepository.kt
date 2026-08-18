@@ -1,6 +1,7 @@
 package tech.salroid.filmy.ui.home
 
 import androidx.paging.PagingData
+import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -128,6 +129,19 @@ class MoviesRepository @Inject constructor(
      */
     fun addMovieDetailsToLocal(movieDetails: MovieDetails) {
         upsertMovieDetails(movieDetails)
+        refreshWidget()
+    }
+
+    /**
+     * Same upsert as [addMovieDetailsToLocal], but for many items at once inside a
+     * single DB transaction — Room's Flow observers (getWatched/getWatchlist) only
+     * get notified once, after everything commits, instead of once per item.
+     */
+    suspend fun saveMovieDetailsBatch(items: List<MovieDetails>) {
+        if (items.isEmpty()) return
+        filmyDatabase.withTransaction {
+            items.forEach { upsertMovieDetails(it) }
+        }
         refreshWidget()
     }
 

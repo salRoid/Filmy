@@ -20,7 +20,8 @@ fun ShowsRoute(
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
     onShowClick: (Int) -> Unit,
-    onSearchResultClick: (SearchPreview) -> Unit
+    onSearchResultClick: (SearchPreview) -> Unit,
+    onFilterClick: () -> Unit = {}
 ) {
     val shows = viewModel.showsPagingData.collectAsLazyPagingItems()
     val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
@@ -36,6 +37,7 @@ fun ShowsRoute(
         onSearchExpandedChange = onSearchExpandedChange,
         onSearch = onSearch,
         onShowClick = onShowClick,
-        onSearchResultClick = onSearchResultClick
+        onSearchResultClick = onSearchResultClick,
+        onFilterClick = onFilterClick
     )
 }

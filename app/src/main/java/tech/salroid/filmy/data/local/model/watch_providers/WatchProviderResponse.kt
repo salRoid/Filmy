@@ -8,5 +8,5 @@ data class WatchProviderResponse(
     var id: Int? = null,
 
     @SerializedName("results")
-    var results: WatchProviderResults? = WatchProviderResults()
+    var results: Map<String, WatchProviderCountry> = emptyMap()
 )

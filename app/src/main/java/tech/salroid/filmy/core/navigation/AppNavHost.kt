@@ -18,9 +18,12 @@ import tech.salroid.filmy.ui.account.AccountScreen
 import tech.salroid.filmy.ui.cast_crew.AllCastCrewScreen
 import tech.salroid.filmy.ui.cast_crew.CastCrewDetailsScreen
 import tech.salroid.filmy.ui.collections.CollectionScreen
+import tech.salroid.filmy.ui.discover.DiscoverRoute
 import tech.salroid.filmy.ui.full.AllMoviesScreen
 import tech.salroid.filmy.ui.movies.MoviesRoute
 import tech.salroid.filmy.ui.movies.details.MovieDetailsScreen
+import tech.salroid.filmy.ui.onboarding.OnboardingScreen
+import tech.salroid.filmy.ui.people.PeopleScreen
 import tech.salroid.filmy.ui.reviews.ReviewsListScreen
 import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.search.SearchScreenState
@@ -40,13 +43,23 @@ fun AppNavHost(
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
     bottomPadding: Dp,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    startDestination: String = AppRoute.MoviesGraph.route
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = AppRoute.MoviesGraph.route,
+        startDestination = startDestination,
     ) {
+        composable(AppRoute.Onboarding.route) {
+            OnboardingScreen(
+                onDone = {
+                    navController.navigate(AppRoute.MoviesGraph.route) {
+                        popUpTo(AppRoute.Onboarding.route) { inclusive = true }
+                    }
+                }
+            )
+        }
         moviesGraph(
             navController,
             textFieldState,
@@ -103,6 +116,12 @@ private fun NavGraphBuilder.moviesGraph(
                     } else {
                         navController.navigate(AppRoute.MovieDetails.create(item.id))
                     }
+                },
+                onFilterClick = {
+                    navController.navigate(AppRoute.Discover.create(isTv = false))
+                },
+                onPeopleClick = {
+                    navController.navigate(AppRoute.People.route)
                 }
             )
         }
@@ -167,6 +186,9 @@ private fun NavGraphBuilder.showsGraph(
                     } else {
                         navController.navigate(AppRoute.MovieDetails.create(item.id))
                     }
+                },
+                onFilterClick = {
+                    navController.navigate(AppRoute.Discover.create(isTv = true))
                 }
             )
         }
@@ -333,6 +355,47 @@ private fun NavGraphBuilder.commonScreens(navController: NavHostController) {
             id = id,
             isTv = isTv,
             title = title,
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+
+    composable(
+        route = AppRoute.Discover.route,
+        arguments = listOf(
+            navArgument("isTv") { type = NavType.BoolType },
+            navArgument("keywordId") {
+                type = NavType.IntType
+                defaultValue = -1
+            },
+            navArgument("keywordName") {
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            }
+        )
+    ) { backStackEntry ->
+        val isTv = backStackEntry.arguments?.getBoolean("isTv") ?: false
+        val keywordId = backStackEntry.arguments?.getInt("keywordId")?.takeIf { it != -1 }
+        val keywordName = backStackEntry.arguments?.getString("keywordName")
+        DiscoverRoute(
+            isTv = isTv,
+            keywordId = keywordId,
+            keywordName = keywordName,
+            onBackClick = { navController.popBackStack() },
+            onMovieClick = { id ->
+                navController.navigate(AppRoute.MovieDetails.create(id))
+            },
+            onShowClick = { id ->
+                navController.navigate(AppRoute.ShowDetails.create(id))
+            }
+        )
+    }
+
+    composable(AppRoute.People.route) {
+        PeopleScreen(
+            onPersonClick = { id ->
+                navController.navigate(AppRoute.CastCrewDetails.create(id, isTv = false))
+            },
             onBackClick = { navController.popBackStack() }
         )
     }

@@ -1,5 +1,6 @@
 package tech.salroid.filmy.ui.movies
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -10,24 +11,30 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.model.MoviePreview
 import tech.salroid.filmy.ui.home.MoviesRepository
+import tech.salroid.filmy.utility.PreferenceHelper.selectedCountryFlow
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository,
-    private val moviePreviewMapper: MoviePreviewMapper
+    private val moviePreviewMapper: MoviePreviewMapper,
+    sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     private val _selectedCategory = MutableStateFlow(Movie.MovieType.TRENDING)
     val selectedCategory: StateFlow<Movie.MovieType> = _selectedCategory
 
-    val moviesPagingData: Flow<PagingData<MoviePreview>> = _selectedCategory
+    val moviesPagingData: Flow<PagingData<MoviePreview>> = combine(
+        _selectedCategory,
+        sharedPreferences.selectedCountryFlow()
+    ) { category, _ -> category }
         .flatMapLatest { category ->
             moviesRepository.getMovies(
                 type = category.toApiTypeString(),

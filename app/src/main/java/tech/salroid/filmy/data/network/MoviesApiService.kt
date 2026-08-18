@@ -6,6 +6,7 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.discover.GenreResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 
@@ -100,4 +101,33 @@ interface MoviesApiService {
 
     @GET("tv/{tv_id}/watch/providers")
     suspend fun getWatchProvidersTv(@Path("tv_id") movieId: String): WatchProviderResponse
+
+    @GET("genre/movie/list")
+    suspend fun getMovieGenres(): GenreResponse
+
+    @GET("genre/tv/list")
+    suspend fun getTvGenres(): GenreResponse
+
+    @GET("discover/movie")
+    suspend fun discoverMovies(
+        @Query("with_genres") withGenres: String?,
+        @Query("primary_release_year") year: Int?,
+        @Query("vote_average.gte") minRating: Float?,
+        @Query("with_keywords") withKeywords: String?,
+        @Query("sort_by") sortBy: String,
+        @Query("page") page: Int
+    ): MoviesResponse
+
+    @GET("discover/tv")
+    suspend fun discoverTv(
+        @Query("with_genres") withGenres: String?,
+        @Query("first_air_date_year") year: Int?,
+        @Query("vote_average.gte") minRating: Float?,
+        @Query("with_keywords") withKeywords: String?,
+        @Query("sort_by") sortBy: String,
+        @Query("page") page: Int
+    ): TvShowResponse
+
+    @GET("person/popular")
+    suspend fun getPopularPeople(@Query("page") page: Int): PeopleResponse
 }

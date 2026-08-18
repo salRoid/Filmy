@@ -8,6 +8,8 @@ import tech.salroid.filmy.data.local.db.FilmyDatabase
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.discover.DiscoverFilters
+import tech.salroid.filmy.data.local.model.discover.GenreResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.data.network.MoviesApiHelper
@@ -143,4 +145,16 @@ class MoviesRepository @Inject constructor(
 
     fun getWatchProvidersTv(id: String): Flow<WatchProviderResponse> =
         moviesApiHelper.getWatchProvidersTv(id)
+
+    fun discoverMovies(filters: DiscoverFilters): Flow<PagingData<Movie>> =
+        moviesApiHelper.discoverMovies(filters)
+
+    fun discoverTv(filters: DiscoverFilters): Flow<PagingData<TvShow>> =
+        moviesApiHelper.discoverTv(filters)
+
+    fun getMovieGenres(): Flow<GenreResponse> = moviesApiHelper.getMovieGenres()
+
+    fun getTvGenres(): Flow<GenreResponse> = moviesApiHelper.getTvGenres()
+
+    fun getPeople(): Flow<PagingData<Person>> = moviesApiHelper.getPeople()
 }

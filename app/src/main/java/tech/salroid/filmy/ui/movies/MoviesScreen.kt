@@ -1,11 +1,26 @@
 package tech.salroid.filmy.ui.movies
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import tech.salroid.filmy.R
@@ -16,6 +31,7 @@ import tech.salroid.filmy.ui.common.components.CategorySelector
 import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.common.components.HomeTopBar
 import tech.salroid.filmy.ui.common.components.LoadingWidget
+import tech.salroid.filmy.ui.common.icons.MoreUp
 import tech.salroid.filmy.ui.movies.components.MoviesList
 import tech.salroid.filmy.ui.search.SearchScreenState
 
@@ -39,8 +55,12 @@ fun MoviesScreen(
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
-    onSearchResultClick: (SearchPreview) -> Unit
+    onSearchResultClick: (SearchPreview) -> Unit,
+    onFilterClick: () -> Unit = {},
+    onPeopleClick: () -> Unit = {}
 ) {
+    var showMoreMenu by remember { mutableStateOf(false) }
+
     Column(modifier = modifier.fillMaxSize()) {
         HomeTopBar(
             textFieldState = textFieldState,
@@ -50,12 +70,45 @@ fun MoviesScreen(
             onSearch = onSearch,
             onSearchResultClick = onSearchResultClick,
             trailingContent = {
-                CategorySelector(
-                    categories = Movie.MovieType.entries,
-                    selected = selectedCategory,
-                    label = { stringResource(labelFor(it)) },
-                    onSelected = onCategorySelected
-                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CategorySelector(
+                        categories = Movie.MovieType.entries,
+                        selected = selectedCategory,
+                        label = { stringResource(labelFor(it)) },
+                        onSelected = onCategorySelected
+                    )
+                    Box {
+                        IconButton(onClick = { showMoreMenu = true }) {
+                            Icon(
+                                MoreUp,
+                                contentDescription = "More options",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = showMoreMenu,
+                            onDismissRequest = { showMoreMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Discover Movies") },
+                                onClick = {
+                                    showMoreMenu = false
+                                    onFilterClick()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Popular Persons") },
+                                onClick = {
+                                    showMoreMenu = false
+                                    onPeopleClick()
+                                }
+                            )
+                        }
+                    }
+                }
             }
         )
 

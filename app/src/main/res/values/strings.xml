@@ -314,6 +314,21 @@ limitations under the License.
     <string name="member_profile_url_2" formatted="false" translatable="false">https://image.tmdb.org/t/p/w185%1$s</string>
     <string name="remove" translatable="false">Remove</string>
     <string name="plus_more">+ More</string>
+    <string name="discover_movies_title">Discover Movies</string>
+    <string name="discover_shows_title">Discover Shows</string>
+    <string name="discover_filters">Filters</string>
+    <string name="discover_genre_label">Genre</string>
+    <string name="discover_year_label">Year</string>
+    <string name="discover_any_year">Any Year</string>
+    <string name="discover_sort_label">Sort By</string>
+    <string name="discover_min_rating_label">Minimum Rating</string>
+    <string name="discover_reset">Reset</string>
+    <string name="discover_apply">Apply</string>
+    <string name="discover_no_results">No results found</string>
+    <string name="discover_sort_popularity">Most Popular</string>
+    <string name="discover_sort_rating">Top Rated</string>
+    <string name="discover_sort_newest">Newest</string>
+    <string name="discover_sort_oldest">Oldest</string>
     <string name="label_pouplar">Popular</string>
     <string name="label_now_playing">Now Playing</string>
     <string name="label_upcoming">Upcoming</string>

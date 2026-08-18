@@ -21,6 +21,7 @@ sealed class AppRoute(val route: String) {
     }
 
     object Collection : AppRoute("collection")
+    object People : AppRoute("people")
     object Account : AppRoute("account")
     object About : AppRoute("about")
     object License : AppRoute("license")
@@ -55,4 +56,17 @@ sealed class AppRoute(val route: String) {
             title: String
         ) = "reviews_list/$id/$isTv/$title"
     }
+
+    object Discover : AppRoute("discover/{isTv}?keywordId={keywordId}&keywordName={keywordName}") {
+        fun create(isTv: Boolean, keywordId: Int? = null, keywordName: String? = null): String {
+            val base = "discover/$isTv"
+            return if (keywordId != null && keywordName != null) {
+                "$base?keywordId=$keywordId&keywordName=$keywordName"
+            } else {
+                base
+            }
+        }
+    }
+
+    object Onboarding : AppRoute("onboarding")
 }

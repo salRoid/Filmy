@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.discover.DiscoverFilters
+import tech.salroid.filmy.data.local.model.discover.GenreResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 
@@ -16,6 +18,11 @@ interface MoviesApiHelper {
     fun getTvShows(type: String, isTrending: Boolean): Flow<PagingData<TvShow>>
 
     fun getTvShowsFlow(type: String, isTrending: Boolean): Flow<TvShowResponse>
+
+    fun discoverMovies(filters: DiscoverFilters): Flow<PagingData<Movie>>
+    fun discoverTv(filters: DiscoverFilters): Flow<PagingData<TvShow>>
+    fun getMovieGenres(): Flow<GenreResponse>
+    fun getTvGenres(): Flow<GenreResponse>
 
     fun getMovieDetails(id: String): Flow<MovieDetails>
     fun getTvShowDetails(id: String): Flow<TvDetails>
@@ -35,4 +42,5 @@ interface MoviesApiHelper {
     fun getTvReviews(id: String): Flow<ReviewResponse>
     fun getWatchProviders(id: String): Flow<WatchProviderResponse>
     fun getWatchProvidersTv(id: String): Flow<WatchProviderResponse>
+    fun getPeople(): Flow<PagingData<Person>>
 }

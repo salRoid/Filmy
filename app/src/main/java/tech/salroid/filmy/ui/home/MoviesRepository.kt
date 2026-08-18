@@ -8,8 +8,10 @@ import tech.salroid.filmy.data.local.db.FilmyDatabase
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.collection.CollectionDetailsResponse
 import tech.salroid.filmy.data.local.model.discover.DiscoverFilters
 import tech.salroid.filmy.data.local.model.discover.GenreResponse
+import tech.salroid.filmy.data.local.model.tv.SeasonDetailsResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.data.network.MoviesApiHelper
@@ -118,14 +120,36 @@ class MoviesRepository @Inject constructor(
             emit(Result.failure(it))
         }
 
+    /**
+     * Upserts [movieDetails]: updates the existing row in place if one exists for
+     * this id+type, otherwise inserts a new one. Using a real UPDATE (rather than
+     * INSERT-with-REPLACE) for existing rows preserves their SQLite rowid, so
+     * re-saving an already-known item doesn't silently reshuffle list order.
+     */
     fun addMovieDetailsToLocal(movieDetails: MovieDetails) {
-        filmyDatabase.movieDetailsDao().insert(movieDetails)
+        upsertMovieDetails(movieDetails)
+        refreshWidget()
+    }
+
+    private fun upsertMovieDetails(movieDetails: MovieDetails) {
+        val dao = filmyDatabase.movieDetailsDao()
+        if (dao.getDetailsOfType(movieDetails.id, movieDetails.type) != null) {
+            dao.updateDetails(movieDetails)
+        } else {
+            dao.insert(movieDetails)
+        }
+    }
+
+    fun deleteMovieDetailsFromLocal(movieDetails: MovieDetails) {
+        filmyDatabase.movieDetailsDao().delete(movieDetails)
         refreshWidget()
     }
 
     fun getWatched(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllWatched()
 
     fun getWatchlist(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllWatchlist()
+
+    fun getRated(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllRated()
 
     fun updateMovieDetails(movieDetails: MovieDetails): Int {
         val result = filmyDatabase.movieDetailsDao().updateDetails(movieDetails)
@@ -157,4 +181,34 @@ class MoviesRepository @Inject constructor(
     fun getTvGenres(): Flow<GenreResponse> = moviesApiHelper.getTvGenres()
 
     fun getPeople(): Flow<PagingData<Person>> = moviesApiHelper.getPeople()
+
+    fun getMovieCertification(id: String): Flow<ReleaseDatesResponse> =
+        moviesApiHelper.getMovieCertification(id)
+
+    fun getTvCertification(id: String): Flow<ContentRatingsResponse> =
+        moviesApiHelper.getTvCertification(id)
+
+    fun getCollectionDetails(id: Int): Flow<CollectionDetailsResponse> =
+        moviesApiHelper.getCollectionDetails(id)
+
+    fun getSeasonDetails(tvId: String, seasonNumber: Int): Flow<SeasonDetailsResponse> =
+        moviesApiHelper.getSeasonDetails(tvId, seasonNumber)
+
+    fun getTvExternalIds(tvId: String): Flow<ExternalIdsResponse> =
+        moviesApiHelper.getTvExternalIds(tvId)
+
+    fun getMovieExternalIds(movieId: String): Flow<ExternalIdsResponse> =
+        moviesApiHelper.getMovieExternalIds(movieId)
+
+    fun getMovieImages(id: String): Flow<ImagesResponse> =
+        moviesApiHelper.getMovieImages(id)
+
+    fun getTvImages(id: String): Flow<ImagesResponse> =
+        moviesApiHelper.getTvImages(id)
+
+    fun getMovieKeywords(id: String): Flow<List<Keyword>> =
+        moviesApiHelper.getMovieKeywords(id)
+
+    fun getTvKeywords(id: String): Flow<List<Keyword>> =
+        moviesApiHelper.getTvKeywords(id)
 }

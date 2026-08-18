@@ -19,7 +19,9 @@ import tech.salroid.filmy.ui.cast_crew.AllCastCrewScreen
 import tech.salroid.filmy.ui.cast_crew.CastCrewDetailsScreen
 import tech.salroid.filmy.ui.collections.CollectionScreen
 import tech.salroid.filmy.ui.discover.DiscoverRoute
+import tech.salroid.filmy.ui.franchise.FranchiseScreen
 import tech.salroid.filmy.ui.full.AllMoviesScreen
+import tech.salroid.filmy.ui.gallery.GalleryScreen
 import tech.salroid.filmy.ui.movies.MoviesRoute
 import tech.salroid.filmy.ui.movies.details.MovieDetailsScreen
 import tech.salroid.filmy.ui.onboarding.OnboardingScreen
@@ -27,6 +29,7 @@ import tech.salroid.filmy.ui.people.PeopleScreen
 import tech.salroid.filmy.ui.reviews.ReviewsListScreen
 import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.search.SearchScreenState
+import tech.salroid.filmy.ui.season.SeasonScreen
 import tech.salroid.filmy.ui.settings.AboutScreen
 import tech.salroid.filmy.ui.settings.LicenseScreen
 import tech.salroid.filmy.ui.shows.ShowsRoute
@@ -148,6 +151,15 @@ private fun NavGraphBuilder.moviesGraph(
                 },
                 onMovieClick = { id ->
                     navController.navigate(AppRoute.MovieDetails.create(id))
+                },
+                onCollectionClick = { id, name ->
+                    navController.navigate(AppRoute.Franchise.create(id, name))
+                },
+                onGalleryClick = { id, isTv ->
+                    navController.navigate(AppRoute.Gallery.create(id, isTv))
+                },
+                onKeywordClick = { id, name ->
+                    navController.navigate(AppRoute.Discover.create(isTv = false, keywordId = id, keywordName = name))
                 }
             )
         }
@@ -215,6 +227,15 @@ private fun NavGraphBuilder.showsGraph(
                 },
                 onShowClick = { id ->
                     navController.navigate(AppRoute.ShowDetails.create(id))
+                },
+                onSeasonClick = { tvId, seasonNumber, showTitle ->
+                    navController.navigate(AppRoute.SeasonDetails.create(tvId, seasonNumber, showTitle))
+                },
+                onGalleryClick = { id, isTv ->
+                    navController.navigate(AppRoute.Gallery.create(id, isTv))
+                },
+                onKeywordClick = { id, name ->
+                    navController.navigate(AppRoute.Discover.create(isTv = true, keywordId = id, keywordName = name))
                 }
             )
         }
@@ -396,6 +417,60 @@ private fun NavGraphBuilder.commonScreens(navController: NavHostController) {
             onPersonClick = { id ->
                 navController.navigate(AppRoute.CastCrewDetails.create(id, isTv = false))
             },
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+
+    composable(
+        route = AppRoute.Franchise.route,
+        arguments = listOf(
+            navArgument("id") { type = NavType.IntType },
+            navArgument("name") { type = NavType.StringType }
+        )
+    ) { backStackEntry ->
+        val id = backStackEntry.arguments?.getInt("id") ?: 0
+        val name = backStackEntry.arguments?.getString("name") ?: ""
+        FranchiseScreen(
+            collectionId = id,
+            title = name,
+            onMovieClick = { movieId ->
+                navController.navigate(AppRoute.MovieDetails.create(movieId))
+            },
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+
+    composable(
+        route = AppRoute.SeasonDetails.route,
+        arguments = listOf(
+            navArgument("tvId") { type = NavType.IntType },
+            navArgument("seasonNumber") { type = NavType.IntType },
+            navArgument("showTitle") { type = NavType.StringType }
+        )
+    ) { backStackEntry ->
+        val tvId = backStackEntry.arguments?.getInt("tvId") ?: 0
+        val seasonNumber = backStackEntry.arguments?.getInt("seasonNumber") ?: 0
+        val showTitle = backStackEntry.arguments?.getString("showTitle") ?: ""
+        SeasonScreen(
+            tvId = tvId,
+            seasonNumber = seasonNumber,
+            showTitle = showTitle,
+            onBackClick = { navController.popBackStack() }
+        )
+    }
+
+    composable(
+        route = AppRoute.Gallery.route,
+        arguments = listOf(
+            navArgument("id") { type = NavType.IntType },
+            navArgument("isTv") { type = NavType.BoolType }
+        )
+    ) { backStackEntry ->
+        val id = backStackEntry.arguments?.getInt("id") ?: 0
+        val isTv = backStackEntry.arguments?.getBoolean("isTv") ?: false
+        GalleryScreen(
+            mediaId = id,
+            isTv = isTv,
             onBackClick = { navController.popBackStack() }
         )
     }

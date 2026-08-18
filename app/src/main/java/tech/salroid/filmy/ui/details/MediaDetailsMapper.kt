@@ -1,21 +1,33 @@
 package tech.salroid.filmy.ui.details
 
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.CastAndCrewResponse
+import tech.salroid.filmy.data.local.model.ContentRatingsResponse
+import tech.salroid.filmy.data.local.model.ExternalIdsResponse
+import tech.salroid.filmy.data.local.model.ImagesResponse
+import tech.salroid.filmy.data.local.model.Keyword
+import tech.salroid.filmy.data.local.model.ProductionCompanies
 import tech.salroid.filmy.data.local.model.RatingResponse
+import tech.salroid.filmy.data.local.model.ReleaseDatesResponse
 import tech.salroid.filmy.data.local.model.ReviewResponse
 import tech.salroid.filmy.data.local.model.SimilarMoviesResponse
+import tech.salroid.filmy.data.local.model.tv.Networks
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.data.local.model.Videos
 import tech.salroid.filmy.data.local.model.Youtube
 import tech.salroid.filmy.ui.common.model.*
+import tech.salroid.filmy.utility.PreferenceHelper
 import tech.salroid.filmy.utility.parseHtml
 import tech.salroid.filmy.utility.toReadableDate
 import java.util.Locale
 import javax.inject.Inject
 
-class MediaDetailsMapper @Inject constructor() {
+class MediaDetailsMapper @Inject constructor(
+    @param:ApplicationContext private val context: Context
+) {
 
     fun map(
         movie: MovieDetails?,
@@ -25,11 +37,19 @@ class MediaDetailsMapper @Inject constructor() {
         cast: CastAndCrewResponse?,
         similar: SimilarMoviesResponse?,
         recommendations: SimilarMoviesResponse?,
-        ratings: RatingResponse?
+        ratings: RatingResponse?,
+        releaseDates: ReleaseDatesResponse? = null,
+        contentRatings: ContentRatingsResponse? = null,
+        keywords: List<Keyword>? = null,
+        images: ImagesResponse? = null,
+        externalIds: ExternalIdsResponse? = null
     ): MediaDetailsUiState? {
         val providersUiModel = mapWatchProviders(watchProviders)
         val reviewsUiModel = mapReviews(reviews)
         val ratingsUiModel = mapRatings(movie, tv, ratings)
+        val certification = mapCertification(releaseDates, contentRatings)
+        val awards = ratings?.awards?.takeIf { it.isNotBlank() && it != "N/A" }
+        val backdropImages = images?.backdrops?.mapNotNull { it.filePath }?.take(8)?.ifEmpty { null }
 
         if (movie != null && tv == null) {
             val hours = movie.runtime?.div(60) ?: 0
@@ -52,13 +72,27 @@ class MediaDetailsMapper @Inject constructor() {
                 isWatched = movie.watched,
                 isWatchlist = movie.watchlist,
                 isTvShow = false,
-                imdbId = movie.imdbId,
+                imdbId = movie.imdbId ?: externalIds?.imdbId,
                 reviews = reviewsUiModel,
                 watchProviders = providersUiModel,
                 castAndCrew = cast,
                 similarMedia = similar,
                 recommendations = recommendations,
-                ratings = ratingsUiModel
+                ratings = ratingsUiModel,
+                certification = certification,
+                collectionId = movie.belongsToCollection?.id,
+                collectionName = movie.belongsToCollection?.name,
+                userRating = movie.userRating,
+                awards = awards,
+                budget = movie.budget?.takeIf { it > 0 },
+                revenue = movie.revenue?.takeIf { it > 0 },
+                studios = mapStudios(movie.productionCompanies),
+                keywords = keywords,
+                backdropImages = backdropImages,
+                homepage = movie.homepage?.takeIf { it.isNotBlank() },
+                facebookId = externalIds?.facebookId,
+                instagramId = externalIds?.instagramId,
+                twitterId = externalIds?.twitterId
             )
         } else if (tv != null) {
             val runtime = tv.episodeRunTime.firstOrNull() ?: 0
@@ -80,15 +114,81 @@ class MediaDetailsMapper @Inject constructor() {
                 isWatched = movie?.watched ?: false,
                 isWatchlist = movie?.watchlist ?: false,
                 isTvShow = true,
-                imdbId = null,
+                imdbId = externalIds?.imdbId,
                 reviews = reviewsUiModel,
                 watchProviders = providersUiModel,
                 castAndCrew = cast,
                 similarMedia = similar,
                 recommendations = recommendations,
-                ratings = ratingsUiModel
+                ratings = ratingsUiModel,
+                certification = certification,
+                seasons = mapSeasons(tv),
+                userRating = movie?.userRating,
+                awards = awards,
+                studios = mapNetworksAsStudios(tv.networks),
+                keywords = keywords,
+                backdropImages = backdropImages,
+                homepage = tv.homepage?.takeIf { it.isNotBlank() },
+                facebookId = externalIds?.facebookId,
+                instagramId = externalIds?.instagramId,
+                twitterId = externalIds?.twitterId
             )
         }
+        return null
+    }
+
+    private fun mapSeasons(tv: TvDetails): List<SeasonUiModel>? {
+        val seasons = tv.seasons.mapNotNull { season ->
+            val id = season.id ?: return@mapNotNull null
+            val seasonNumber = season.seasonNumber ?: return@mapNotNull null
+            SeasonUiModel(
+                id = id,
+                seasonNumber = seasonNumber,
+                name = season.name ?: "Season $seasonNumber",
+                episodeCount = season.episodeCount ?: 0,
+                posterPath = season.posterPath,
+                airDate = season.airDate
+            )
+        }
+        return seasons.ifEmpty { null }
+    }
+
+    private fun mapStudios(productionCompanies: List<ProductionCompanies>): List<StudioUiModel>? {
+        val studios = productionCompanies.mapNotNull { company ->
+            val id = company.id ?: return@mapNotNull null
+            StudioUiModel(id = id, name = company.name ?: return@mapNotNull null, logoPath = company.logoPath)
+        }
+        return studios.ifEmpty { null }
+    }
+
+    private fun mapNetworksAsStudios(networks: List<Networks>): List<StudioUiModel>? {
+        val studios = networks.mapNotNull { network ->
+            val id = network.id ?: return@mapNotNull null
+            StudioUiModel(id = id, name = network.name ?: return@mapNotNull null, logoPath = network.logoPath)
+        }
+        return studios.ifEmpty { null }
+    }
+
+    private fun mapCertification(
+        releaseDates: ReleaseDatesResponse?,
+        contentRatings: ContentRatingsResponse?
+    ): String? {
+        // Priority to the user's selected region, falling back to 'US'.
+        val preferred = PreferenceHelper.getSelectedCountry(context)
+
+        releaseDates?.results?.let { results ->
+            val country = results.find { it.iso31661 == preferred } ?: results.find { it.iso31661 == "US" }
+            val certification = country?.releaseDates
+                ?.firstOrNull { !it.certification.isNullOrBlank() }
+                ?.certification
+            if (!certification.isNullOrBlank()) return certification
+        }
+
+        contentRatings?.results?.let { results ->
+            val rating = (results.find { it.iso31661 == preferred } ?: results.find { it.iso31661 == "US" })?.rating
+            if (!rating.isNullOrBlank()) return rating
+        }
+
         return null
     }
 
@@ -98,6 +198,16 @@ class MediaDetailsMapper @Inject constructor() {
         omdbRatings: RatingResponse?
     ): RatingsUiModel? {
         val ratingsList = mutableListOf<RatingSourceUiModel>()
+
+        // Your Rating
+        movie?.userRating?.let { rating ->
+            ratingsList.add(
+                RatingSourceUiModel(
+                    source = RatingSource.USER,
+                    value = "$rating/10"
+                )
+            )
+        }
 
         // TMDB Rating
         val tmdbVoteAverage = movie?.voteAverage ?: tv?.voteAverage
@@ -174,7 +284,19 @@ class MediaDetailsMapper @Inject constructor() {
             }
         }
 
-        return youtubeList.ifEmpty { null }
+        // Lead with an actual Trailer (falling back through Teaser/Clip/etc.)
+        // so the featured thumbnail and top of "all videos" aren't a Blooper/Clip.
+        return youtubeList.sortedBy { videoTypePriority(it.type) }.ifEmpty { null }
+    }
+
+    private fun videoTypePriority(type: String?): Int = when (type) {
+        "Trailer" -> 0
+        "Teaser" -> 1
+        "Clip" -> 2
+        "Featurette" -> 3
+        "Behind the Scenes" -> 4
+        "Bloopers" -> 5
+        else -> 6
     }
 
     private fun mapReviews(reviews: ReviewResponse?): ReviewResponseUiModel? {
@@ -205,9 +327,9 @@ class MediaDetailsMapper @Inject constructor() {
     private fun mapWatchProviders(watchProviders: WatchProviderResponse?): WatchProvidersUiModel? {
         val results = watchProviders?.results ?: return null
 
-        // Priority to 'US' or 'IN'. In a real app,
-        // this should match the user's region or device locale.
-        val countryData = results.US ?: results.IN ?: return null
+        // Priority to the user's selected region, falling back to 'US'.
+        val preferred = PreferenceHelper.getSelectedCountry(context)
+        val countryData = results[preferred] ?: results["US"] ?: return null
 
         val stream = countryData.flatrate
         val buy = countryData.buy
@@ -256,4 +378,23 @@ class MediaDetailsMapper @Inject constructor() {
             providers = distinctProviders
         )
     }
+}
+
+fun TvDetails.toMovieDetails(
+    existing: MovieDetails?,
+    watched: Boolean,
+    watchlist: Boolean
+): MovieDetails = (existing ?: MovieDetails(id = this.id ?: 0, type = 1)).copy(
+    title = this.name,
+    overview = this.overview,
+    tagline = this.tagline,
+    backdropPath = this.backdropPath,
+    posterPath = this.posterPath,
+    voteAverage = this.voteAverage,
+    voteCount = this.voteCount?.toLong(),
+    originalLanguage = this.originalLanguage,
+    releaseDate = this.firstAirDate
+).apply {
+    this.watched = watched
+    this.watchlist = watchlist
 }

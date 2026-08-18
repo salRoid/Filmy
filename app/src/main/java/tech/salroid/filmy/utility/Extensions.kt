@@ -38,6 +38,16 @@ fun String.toReadableDate(): String {
     return date?.let { toDateFormat.format(it) } ?: this
 }
 
+fun Long.toMoneyString(): String {
+    val value = this.toDouble()
+    return when {
+        value >= 1_000_000_000 -> String.format(Locale.getDefault(), "$%.1fB", value / 1_000_000_000)
+        value >= 1_000_000 -> String.format(Locale.getDefault(), "$%.1fM", value / 1_000_000)
+        value >= 1_000 -> String.format(Locale.getDefault(), "$%.1fK", value / 1_000)
+        else -> "$$value"
+    }
+}
+
 fun String.parseHtml(): String {
     return if (this.isEmpty()) this else {
         HtmlCompat.fromHtml(this, HtmlCompat.FROM_HTML_MODE_LEGACY).toString().trim()
@@ -101,12 +111,17 @@ fun Context.shareMedia(title: String, tagline: String?, imdbId: String?, isTvSho
     val imdbPrefix = getString(R.string.imdb_link_prefix)
     val shareIntent = Intent(Intent.ACTION_SEND).apply {
         type = "text/plain"
-        val prefix = if (!isTvShow) imdbPrefix else ""
-        val link = if (!isTvShow && imdbId != null) "\n$prefix$imdbId" else ""
+        // IMDb uses the same /title/{id}/ URL scheme for movies and TV, so the
+        // link applies equally once a TV show's imdbId is available.
+        val link = if (imdbId != null) "\n$imdbPrefix$imdbId" else ""
         putExtra(
             Intent.EXTRA_TEXT,
             "*$title*\n${tagline ?: ""}$link\n"
         )
     }
     startActivity(Intent.createChooser(shareIntent, "Share with"))
+}
+
+fun Context.openUrl(url: String) {
+    startActivity(Intent(ACTION_VIEW, url.toUri()))
 }

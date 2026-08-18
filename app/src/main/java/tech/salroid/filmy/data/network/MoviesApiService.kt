@@ -6,7 +6,9 @@ import retrofit2.http.Query
 import retrofit2.http.Url
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.collection.CollectionDetailsResponse
 import tech.salroid.filmy.data.local.model.discover.GenreResponse
+import tech.salroid.filmy.data.local.model.tv.SeasonDetailsResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 
@@ -43,10 +45,16 @@ interface MoviesApiService {
 
 
     @GET("movie/{movie_id}?append_to_response=videos")
-    suspend fun getMovieDetails(@Path("movie_id") movieId: String?): MovieDetails
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: String?,
+        @Query("include_video_language") includeVideoLanguage: String = "en,null"
+    ): MovieDetails
 
     @GET("tv/{show_id}?append_to_response=videos")
-    suspend fun getTvShowDetails(@Path("show_id") showId: String?): TvDetails
+    suspend fun getTvShowDetails(
+        @Path("show_id") showId: String?,
+        @Query("include_video_language") includeVideoLanguage: String = "en,null"
+    ): TvDetails
 
     @GET
     suspend fun getOMDBRatings(
@@ -130,4 +138,37 @@ interface MoviesApiService {
 
     @GET("person/popular")
     suspend fun getPopularPeople(@Query("page") page: Int): PeopleResponse
+
+    @GET("movie/{movie_id}/release_dates")
+    suspend fun getMovieReleaseDates(@Path("movie_id") movieId: String): ReleaseDatesResponse
+
+    @GET("tv/{tv_id}/content_ratings")
+    suspend fun getTvContentRatings(@Path("tv_id") tvId: String): ContentRatingsResponse
+
+    @GET("collection/{collection_id}")
+    suspend fun getCollectionDetails(@Path("collection_id") collectionId: Int): CollectionDetailsResponse
+
+    @GET("tv/{tv_id}/season/{season_number}")
+    suspend fun getSeasonDetails(
+        @Path("tv_id") tvId: String,
+        @Path("season_number") seasonNumber: Int
+    ): SeasonDetailsResponse
+
+    @GET("tv/{tv_id}/external_ids")
+    suspend fun getTvExternalIds(@Path("tv_id") tvId: String): ExternalIdsResponse
+
+    @GET("movie/{movie_id}/external_ids")
+    suspend fun getMovieExternalIds(@Path("movie_id") movieId: String): ExternalIdsResponse
+
+    @GET("movie/{movie_id}/images")
+    suspend fun getMovieImages(@Path("movie_id") movieId: String): ImagesResponse
+
+    @GET("tv/{tv_id}/images")
+    suspend fun getTvImages(@Path("tv_id") tvId: String): ImagesResponse
+
+    @GET("movie/{movie_id}/keywords")
+    suspend fun getMovieKeywords(@Path("movie_id") movieId: String): MovieKeywordsResponse
+
+    @GET("tv/{tv_id}/keywords")
+    suspend fun getTvKeywords(@Path("tv_id") tvId: String): TvKeywordsResponse
 }

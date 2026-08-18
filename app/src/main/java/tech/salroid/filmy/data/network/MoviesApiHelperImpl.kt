@@ -14,8 +14,10 @@ import tech.salroid.filmy.data.datasource.TvShowsPagingSource
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.collection.CollectionDetailsResponse
 import tech.salroid.filmy.data.local.model.discover.DiscoverFilters
 import tech.salroid.filmy.data.local.model.discover.GenreResponse
+import tech.salroid.filmy.data.local.model.tv.SeasonDetailsResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.data.network.MoviesApiService.Companion.BASE_URL_OMDB
@@ -175,4 +177,44 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
             PeoplePagingSource(apiService = apiService)
         }
     ).flow
+
+    override fun getMovieCertification(id: String): Flow<ReleaseDatesResponse> = flow {
+        emit(apiService.getMovieReleaseDates(id))
+    }
+
+    override fun getTvCertification(id: String): Flow<ContentRatingsResponse> = flow {
+        emit(apiService.getTvContentRatings(id))
+    }
+
+    override fun getCollectionDetails(id: Int): Flow<CollectionDetailsResponse> = flow {
+        emit(apiService.getCollectionDetails(id))
+    }
+
+    override fun getSeasonDetails(tvId: String, seasonNumber: Int): Flow<SeasonDetailsResponse> = flow {
+        emit(apiService.getSeasonDetails(tvId, seasonNumber))
+    }
+
+    override fun getTvExternalIds(tvId: String): Flow<ExternalIdsResponse> = flow {
+        emit(apiService.getTvExternalIds(tvId))
+    }
+
+    override fun getMovieExternalIds(movieId: String): Flow<ExternalIdsResponse> = flow {
+        emit(apiService.getMovieExternalIds(movieId))
+    }
+
+    override fun getMovieImages(movieId: String): Flow<ImagesResponse> = flow {
+        emit(apiService.getMovieImages(movieId))
+    }
+
+    override fun getTvImages(tvId: String): Flow<ImagesResponse> = flow {
+        emit(apiService.getTvImages(tvId))
+    }
+
+    override fun getMovieKeywords(movieId: String): Flow<List<Keyword>> = flow {
+        emit(apiService.getMovieKeywords(movieId).keywords)
+    }
+
+    override fun getTvKeywords(tvId: String): Flow<List<Keyword>> = flow {
+        emit(apiService.getTvKeywords(tvId).results)
+    }
 }

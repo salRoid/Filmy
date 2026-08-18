@@ -22,6 +22,9 @@ interface MovieDetailsDao {
     @Query("SELECT * FROM movie_details WHERE watchlist = 1")
     fun getAllWatchlist(): Flow<List<MovieDetails>>
 
+    @Query("SELECT * FROM movie_details WHERE userRating IS NOT NULL")
+    fun getAllRated(): Flow<List<MovieDetails>>
+
     @Query("SELECT * FROM movie_details WHERE id = :id AND type = :type")
     fun getDetailsOfType(id: Int, type: Int = 0): MovieDetails?
 

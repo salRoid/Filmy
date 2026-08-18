@@ -52,7 +52,7 @@ fun WatchProvidersSection(
         }
 
         Column(
-            modifier = Modifier.padding(bottom = 16.dp),
+            modifier = Modifier.padding(bottom = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
 

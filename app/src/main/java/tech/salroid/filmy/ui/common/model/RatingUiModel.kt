@@ -11,6 +11,7 @@ data class RatingSourceUiModel(
 )
 
 enum class RatingSource {
+    USER,
     TMDB,
     IMDB,
     ROTTEN_TOMATOES,

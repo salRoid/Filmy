@@ -12,7 +12,7 @@ import tech.salroid.filmy.data.local.db.entity.Profile
 
 @Database(
     entities = [Movie::class, MovieDetails::class, Profile::class],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

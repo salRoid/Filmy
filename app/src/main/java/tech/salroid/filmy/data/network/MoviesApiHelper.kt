@@ -5,8 +5,10 @@ import kotlinx.coroutines.flow.Flow
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.collection.CollectionDetailsResponse
 import tech.salroid.filmy.data.local.model.discover.DiscoverFilters
 import tech.salroid.filmy.data.local.model.discover.GenreResponse
+import tech.salroid.filmy.data.local.model.tv.SeasonDetailsResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 
@@ -43,4 +45,15 @@ interface MoviesApiHelper {
     fun getWatchProviders(id: String): Flow<WatchProviderResponse>
     fun getWatchProvidersTv(id: String): Flow<WatchProviderResponse>
     fun getPeople(): Flow<PagingData<Person>>
+
+    fun getMovieCertification(id: String): Flow<ReleaseDatesResponse>
+    fun getTvCertification(id: String): Flow<ContentRatingsResponse>
+    fun getCollectionDetails(id: Int): Flow<CollectionDetailsResponse>
+    fun getSeasonDetails(tvId: String, seasonNumber: Int): Flow<SeasonDetailsResponse>
+    fun getTvExternalIds(tvId: String): Flow<ExternalIdsResponse>
+    fun getMovieExternalIds(movieId: String): Flow<ExternalIdsResponse>
+    fun getMovieImages(movieId: String): Flow<ImagesResponse>
+    fun getTvImages(tvId: String): Flow<ImagesResponse>
+    fun getMovieKeywords(movieId: String): Flow<List<Keyword>>
+    fun getTvKeywords(tvId: String): Flow<List<Keyword>>
 }

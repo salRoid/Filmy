@@ -93,5 +93,7 @@ data class MovieDetails(
 
     var watched: Boolean = false,
 
-    var watchlist: Boolean = false
+    var watchlist: Boolean = false,
+
+    var userRating: Float? = null
 )

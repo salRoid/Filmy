@@ -10,8 +10,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tech.salroid.filmy.ui.common.components.DetailsContent
 import tech.salroid.filmy.ui.common.components.DetailsSkeletonLoader
+import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.details.MovieDetailsViewModel
 import tech.salroid.filmy.ui.common.model.DetailsActions
+import tech.salroid.filmy.ui.movies.details.components.RateMediaSheet
+import tech.salroid.filmy.utility.openUrl
 import tech.salroid.filmy.utility.openYoutubeTrailer
 import tech.salroid.filmy.utility.shareMedia
 
@@ -24,12 +27,18 @@ fun ShowDetailsScreen(
     onViewAllReviewsClick: (Int, Boolean, String) -> Unit,
     onMemberClick: (Int, Boolean) -> Unit,
     onShowClick: (Int) -> Unit,
-    onBackNavigation: () -> Unit
+    onBackNavigation: () -> Unit,
+    onSeasonClick: (Int, Int, String) -> Unit = { _, _, _ -> },
+    onGalleryClick: (Int, Boolean) -> Unit = { _, _ -> },
+    onKeywordClick: (Int, String) -> Unit = { _, _ -> }
 ) {
     val state by viewModel.mediaDetailsUiState.collectAsStateWithLifecycle()
     val showDetails by viewModel.uiStateTvDetails.collectAsStateWithLifecycle()
     val movieDetails by viewModel.uiStateMovieDetails.collectAsStateWithLifecycle()
+    val isError by viewModel.uiStateError.collectAsStateWithLifecycle()
     val context = LocalContext.current
+
+    var showRateSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(showId) {
         viewModel.fetchAllTvDetails(showId.toString(), 1)
@@ -62,7 +71,12 @@ fun ShowDetailsScreen(
                             isTvShow = currentState.isTvShow
                         )
                     },
-                    onBackNavigation = onBackNavigation
+                    onBackNavigation = onBackNavigation,
+                    onSeasonClick = onSeasonClick,
+                    onRateClick = { showRateSheet = true },
+                    onGalleryClick = onGalleryClick,
+                    onKeywordClick = onKeywordClick,
+                    onLinkClick = { context.openUrl(it) }
                 )
 
                 DetailsContent(
@@ -70,7 +84,28 @@ fun ShowDetailsScreen(
                     actions = actions,
                     modifier = modifier
                 )
+
+                if (showRateSheet) {
+                    RateMediaSheet(
+                        currentRating = currentState.userRating,
+                        onSubmit = { rating ->
+                            viewModel.rateTvShow(currentShowDetails, currentMovieDetails, rating)
+                            showRateSheet = false
+                        },
+                        onRemove = {
+                            viewModel.rateTvShow(currentShowDetails, currentMovieDetails, null)
+                            showRateSheet = false
+                        },
+                        onDismiss = { showRateSheet = false }
+                    )
+                }
             }
+        } else if (isError) {
+            ErrorWidget(
+                modifier = modifier,
+                message = "Couldn't load details. Check your connection.",
+                onRetryClick = { viewModel.fetchAllTvDetails(showId.toString(), 1) }
+            )
         } else {
             DetailsSkeletonLoader(
                 modifier = modifier,

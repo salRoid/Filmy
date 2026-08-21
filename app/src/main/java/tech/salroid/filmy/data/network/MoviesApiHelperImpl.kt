@@ -116,6 +116,14 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
         emit(apiService.getCastCrewTvShows(id))
     }
 
+    override fun getCombinedCredits(id: String): Flow<CombinedCreditsResponse> = flow {
+        emit(apiService.getCombinedCredits(id))
+    }
+
+    override fun getPersonExternalIds(id: String): Flow<ExternalIdsResponse> = flow {
+        emit(apiService.getPersonExternalIds(id))
+    }
+
     override fun searchMovies(query: String): Flow<SearchResultResponse> = flow {
         emit(apiService.searchMovies(query))
     }

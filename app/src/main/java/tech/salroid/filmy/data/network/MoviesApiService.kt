@@ -92,6 +92,12 @@ interface MoviesApiService {
     @GET("person/{person_id}/tv_credits")
     suspend fun getCastCrewTvShows(@Path("person_id") personId: String): CastCrewMoviesResponse
 
+    @GET("person/{person_id}/combined_credits")
+    suspend fun getCombinedCredits(@Path("person_id") personId: String): CombinedCreditsResponse
+
+    @GET("person/{person_id}/external_ids")
+    suspend fun getPersonExternalIds(@Path("person_id") personId: String): ExternalIdsResponse
+
     @GET("search/movie")
     suspend fun searchMovies(@Query("query") query: String): SearchResultResponse
 

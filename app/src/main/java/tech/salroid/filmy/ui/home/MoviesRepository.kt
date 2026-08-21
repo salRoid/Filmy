@@ -94,6 +94,12 @@ class MoviesRepository @Inject constructor(
     fun getCastCrewTvShows(id: String): Flow<CastCrewMoviesResponse> =
         moviesApiHelper.getCastCrewTvShows(id)
 
+    fun getCombinedCredits(id: String): Flow<CombinedCreditsResponse> =
+        moviesApiHelper.getCombinedCredits(id)
+
+    fun getPersonExternalIds(id: String): Flow<ExternalIdsResponse> =
+        moviesApiHelper.getPersonExternalIds(id)
+
     fun getSimilar(id: String): Flow<SimilarMoviesResponse> = moviesApiHelper.getSimilar(id)
 
     fun getSimilarTv(id: String): Flow<SimilarMoviesResponse> = moviesApiHelper.getSimilarTv(id)

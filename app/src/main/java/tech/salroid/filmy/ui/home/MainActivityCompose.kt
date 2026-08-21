@@ -22,6 +22,8 @@ class MainActivityCompose : AppCompatActivity() {
         installSplashScreen().setKeepOnScreenCondition { false }
         super.onCreate(savedInstanceState)
 
+        val throughShortcut = intent.getBooleanExtra("throughShortcut", false)
+
         setContent {
             val systemDark = isSystemInDarkTheme()
             val themeMode = PreferenceHelper.getCurrentThemeMode(this)
@@ -50,7 +52,7 @@ class MainActivityCompose : AppCompatActivity() {
                 ) { !darkTheme },
             )
             AppTheme(darkTheme = darkTheme) {
-                FilmyApp()
+                FilmyApp(throughShortcut = throughShortcut)
             }
         }
     }

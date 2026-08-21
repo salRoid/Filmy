@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -160,7 +161,9 @@ private fun FullScreenImagePager(
 
         IconButton(
             onClick = onDismiss,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier
+                .statusBarsPadding()
+                .padding(8.dp)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_arrow_back),
@@ -178,9 +181,17 @@ private fun ZoomableImage(imageUrl: String) {
     var offsetY by remember { mutableFloatStateOf(0f) }
 
     val transformableState = rememberTransformableState { zoomChange, panChange, _ ->
-        scale = (scale * zoomChange).coerceIn(1f, 5f)
-        offsetX += panChange.x
-        offsetY += panChange.y
+        val newScale = (scale * zoomChange).coerceIn(1f, 5f)
+        scale = newScale
+        if (newScale > 1f) {
+            offsetX += panChange.x
+            offsetY += panChange.y
+        } else {
+            // Snap back to centered once zoomed out, so the pager's own
+            // swipe isn't fighting a leftover pan offset next time in.
+            offsetX = 0f
+            offsetY = 0f
+        }
     }
 
     AsyncImage(
@@ -194,7 +205,13 @@ private fun ZoomableImage(imageUrl: String) {
                 translationX = offsetX,
                 translationY = offsetY
             )
-            .transformable(transformableState),
+            .transformable(
+                state = transformableState,
+                // Only claim the pan gesture once actually zoomed in -
+                // otherwise a plain horizontal drag at 1x is a page swipe,
+                // and this modifier must not steal it from HorizontalPager.
+                canPan = { scale > 1f }
+            ),
         contentScale = ContentScale.Fit
     )
 }

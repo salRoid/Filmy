@@ -51,14 +51,19 @@ fun FilmyApp(
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo(
         supportLargeAndXLargeWidth = true
     ).windowSizeClass,
-    searchViewModel: SearchViewModel = viewModel()
+    searchViewModel: SearchViewModel = viewModel(),
+    throughShortcut: Boolean = false
 ) {
     val navController = rememberNavController()
     val snackBarHostState = remember { SnackbarHostState() }
     val textFieldState = remember { TextFieldState() }
     val context = LocalContext.current
     val startDestination = remember {
-        if (PreferenceHelper.isColdStart(context)) AppRoute.Onboarding.route else AppRoute.MoviesGraph.route
+        when {
+            PreferenceHelper.isColdStart(context) -> AppRoute.Onboarding.route
+            throughShortcut -> AppRoute.CollectionGraph.route
+            else -> AppRoute.MoviesGraph.route
+        }
     }
 
     val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()

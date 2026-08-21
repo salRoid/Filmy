@@ -17,18 +17,26 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _uiStateToken = MutableStateFlow<RequestTokenResponse?>(null)
-    private val _uiStateProfile = MutableStateFlow<Profile?>(null)
     private val _isLoggingOut = MutableStateFlow(false)
     val uiStateToken: StateFlow<RequestTokenResponse?> = _uiStateToken.asStateFlow()
-    val uiStateProfile: StateFlow<Profile?> = _uiStateProfile.asStateFlow()
     val isLoggingOut: StateFlow<Boolean> = _isLoggingOut.asStateFlow()
+
+    /**
+     * Reactive to the local `profile` table via [AccountRepository.getProfileFlow]
+     * - every screen's own [LoginViewModel] instance (Account, MyLists, details
+     * screen, etc.) observes the same underlying row, so a login/logout
+     * completed from any one of them is reflected everywhere else too,
+     * without needing to navigate away and back.
+     */
+    val uiStateProfile: StateFlow<Profile?> = accountRepository.getProfileFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     var requestToken: String? = null
     var accessToken: String? = null
     var sessionId: String? = null
 
     init {
-        getProfileFromLocal()
+        repairStaleLocalProfile()
     }
 
     fun getRequestToken() {
@@ -83,27 +91,27 @@ class LoginViewModel @Inject constructor(
                 .catch {
                     it.printStackTrace()
                 }.collect { profile ->
-                    _uiStateProfile.emit(profile)
-                    // Save Profile in local
-                    viewModelScope.launch(Dispatchers.IO) {
+                    // Writing here is enough - uiStateProfile is reactive to
+                    // this same local table, so it (and every other screen's
+                    // LoginViewModel instance) picks this up automatically.
+                    withContext(Dispatchers.IO) {
                         accountRepository.saveProfileToLocal(profile)
                     }
                 }
         }
     }
 
-    private fun getProfileFromLocal() {
+    /**
+     * A cached profile with no matching session is stale (e.g. a prior
+     * logout's cleanup got interrupted) - don't show a "logged in" UI for a
+     * session that no longer exists. Just a repair write; uiStateProfile
+     * picks up the result reactively.
+     */
+    private fun repairStaleLocalProfile() {
         viewModelScope.launch(Dispatchers.IO) {
-            // A cached profile with no matching session is stale (e.g. a prior
-            // logout's cleanup got interrupted) - don't show a "logged in" UI
-            // for a session that no longer exists.
             if (!accountRepository.isLoggedIn()) {
                 accountRepository.clearProfile()
-                _uiStateProfile.emit(null)
-                return@launch
             }
-            val profile = accountRepository.getProfileFromLocal()
-            _uiStateProfile.emit(profile)
         }
     }
 
@@ -127,7 +135,6 @@ class LoginViewModel @Inject constructor(
                 accountRepository.clearProfile()
             }
             accountRepository.storeSessionId(null)
-            _uiStateProfile.emit(null)
             _isLoggingOut.value = false
         }
     }

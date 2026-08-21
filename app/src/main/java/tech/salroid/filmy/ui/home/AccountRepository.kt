@@ -2,6 +2,7 @@ package tech.salroid.filmy.ui.home
 
 import android.content.SharedPreferences
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import tech.salroid.filmy.data.local.db.FilmyDatabase
 import tech.salroid.filmy.data.local.db.entity.Profile
 import tech.salroid.filmy.data.local.model.MoviesResponse
@@ -52,6 +53,15 @@ class AccountRepository @Inject constructor(
     fun getSessionIdFromPref(): String? = appPref.getString(SESSION_ID, null)
 
     fun getProfileFromLocal(): Profile? = filmyDatabase.accountDao().getProfile().firstOrNull()
+
+    /**
+     * Reactive to the local `profile` table - unlike [getProfileFromLocal],
+     * this stays in sync regardless of which ViewModel instance (Account
+     * screen, MyLists, details screen, etc.) actually performed the
+     * login/logout that wrote to it.
+     */
+    fun getProfileFlow(): Flow<Profile?> =
+        filmyDatabase.accountDao().getProfileFlow().map { it.firstOrNull() }
 
     fun isLoggedIn(): Boolean = getSessionIdFromPref() != null
 

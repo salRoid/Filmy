@@ -2,15 +2,19 @@ package tech.salroid.filmy.ui.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -22,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,33 +36,54 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.account.TmdbList
 import tech.salroid.filmy.ui.common.components.LoadingWidget
+import tech.salroid.filmy.ui.home.LoginViewModel
+import tech.salroid.filmy.ui.home.rememberLoginLauncher
 
 @Composable
 fun MyListsScreen(
     viewModel: MyListsViewModel = hiltViewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
     onListClick: (Int, String) -> Unit,
     onBackClick: () -> Unit
 ) {
     val lists by viewModel.lists.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val profile by loginViewModel.uiStateProfile.collectAsStateWithLifecycle()
+    val startLogin = rememberLoginLauncher(loginViewModel)
 
     var showCreateDialog by remember { mutableStateOf(false) }
     var listToDelete by remember { mutableStateOf<TmdbList?>(null) }
 
-    MyListsContent(
-        lists = lists,
-        isLoading = isLoading,
-        onListClick = onListClick,
-        onCreateClick = { showCreateDialog = true },
-        onListLongClick = { listToDelete = it },
-        onBackClick = onBackClick
-    )
+    // Logging in here refreshes this same screen's lists immediately -
+    // no need to leave and come back.
+    LaunchedEffect(profile) {
+        if (profile != null) {
+            viewModel.loadLists()
+        }
+    }
+
+    if (profile == null) {
+        LoggedOutContent(
+            onLoginClick = startLogin,
+            onBackClick = onBackClick
+        )
+    } else {
+        MyListsContent(
+            lists = lists,
+            isLoading = isLoading,
+            onListClick = onListClick,
+            onCreateClick = { showCreateDialog = true },
+            onListLongClick = { listToDelete = it },
+            onBackClick = onBackClick
+        )
+    }
 
     if (showCreateDialog) {
         CreateListDialog(
@@ -72,7 +98,12 @@ fun MyListsScreen(
     listToDelete?.let { list ->
         AlertDialog(
             onDismissRequest = { listToDelete = null },
-            title = { Text(stringResource(R.string.delete_list_confirmation)) },
+            title = {
+                Text(
+                    stringResource(R.string.delete_list_confirmation),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            },
             text = { Text(list.name ?: "") },
             confirmButton = {
                 TextButton(onClick = {
@@ -114,9 +145,17 @@ fun MyListsContent(
         }
     ) { paddingValues ->
         if (isLoading) {
-            LoadingWidget(modifier = Modifier.padding(paddingValues).fillMaxSize())
+            LoadingWidget(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            )
         } else {
-            LazyColumn(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            ) {
                 item {
                     TextButton(
                         onClick = onCreateClick,
@@ -152,6 +191,46 @@ fun MyListsContent(
                         HorizontalDivider()
                     }
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun LoggedOutContent(
+    onLoginClick: () -> Unit,
+    onBackClick: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.my_lists)) },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Log in to your TMDB account to view\n and manage your lists",
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(onClick = onLoginClick) {
+                Text("Log In")
             }
         }
     }
@@ -194,7 +273,12 @@ private fun CreateListDialog(
     var name by remember { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.create_new_list)) },
+        title = {
+            Text(
+                stringResource(R.string.create_new_list),
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
         text = {
             OutlinedTextField(
                 value = name,

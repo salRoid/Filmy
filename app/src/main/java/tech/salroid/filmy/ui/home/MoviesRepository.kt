@@ -165,6 +165,8 @@ class MoviesRepository @Inject constructor(
 
     fun getRated(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllRated()
 
+    fun getWatchedUnrated(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getWatchedUnrated()
+
     fun updateMovieDetails(movieDetails: MovieDetails): Int {
         val result = filmyDatabase.movieDetailsDao().updateDetails(movieDetails)
         refreshWidget()

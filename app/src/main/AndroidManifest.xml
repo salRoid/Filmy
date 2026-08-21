@@ -71,5 +71,16 @@
                 android:resource="@xml/filmy_widget_info" />
         </receiver>
 
+        <receiver
+            android:name=".ui.widget.ToRateWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/filmy_to_rate_widget_info" />
+        </receiver>
+
     </application>
 </manifest>

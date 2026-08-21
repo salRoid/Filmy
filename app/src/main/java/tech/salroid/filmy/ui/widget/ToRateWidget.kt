@@ -18,13 +18,12 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
-import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.action.Action
-import androidx.glance.action.actionParametersOf
 import androidx.glance.action.clickable
-import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.action.actionStartActivity
+import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.lazy.items
 import androidx.glance.appwidget.provideContent
@@ -41,7 +40,6 @@ import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.layout.width
-import androidx.glance.appwidget.cornerRadius
 import androidx.glance.material3.ColorProviders
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
@@ -57,41 +55,41 @@ import dagger.hilt.components.SingletonComponent
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.ui.home.MoviesRepository
-import tech.salroid.filmy.ui.theme.*
+import tech.salroid.filmy.ui.theme.darkScheme
+import tech.salroid.filmy.ui.theme.lightScheme
 
-class WatchlistWidget : GlanceAppWidget() {
+class ToRateWidget : GlanceAppWidget() {
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)
-    interface WatchlistWidgetEntryPoint {
+    interface ToRateWidgetEntryPoint {
         fun moviesRepository(): MoviesRepository
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val entryPoint = EntryPointAccessors.fromApplication(
             context.applicationContext,
-            WatchlistWidgetEntryPoint::class.java
+            ToRateWidgetEntryPoint::class.java
         )
         val repository = entryPoint.moviesRepository()
 
         provideContent {
-            var watchlistWithBitmaps by remember { mutableStateOf<List<WatchlistItemData>>(emptyList()) }
+            var itemsWithBitmaps by remember { mutableStateOf<List<ToRateItemData>>(emptyList()) }
 
             LaunchedEffect(Unit) {
-                repository.getWatchlist().collect { list ->
+                repository.getWatchedUnrated().collect { list ->
                     val topItems = list.reversed().take(5)
-                    val itemsWithBitmaps = topItems.map { item ->
+                    itemsWithBitmaps = topItems.map { item ->
                         val posterUrl = "https://image.tmdb.org/t/p/w185${item.posterPath}"
                         val bitmap = loadBitmap(context, posterUrl)
-                        WatchlistItemData(item, bitmap)
+                        ToRateItemData(item, bitmap)
                     }
-                    watchlistWithBitmaps = itemsWithBitmaps
                 }
             }
 
-            GlanceTheme(colors = FilmyWidgetColorScheme) {
-                WatchlistWidgetContent(
-                    watchlist = watchlistWithBitmaps,
+            GlanceTheme(colors = ToRateWidgetColorScheme) {
+                ToRateWidgetContent(
+                    items = itemsWithBitmaps,
                     onItemClick = { data ->
                         val item = data.movie
                         val uri = if (item.type == 1) {
@@ -115,7 +113,7 @@ class WatchlistWidget : GlanceAppWidget() {
             val loader = context.imageLoader
             val request = ImageRequest.Builder(context)
                 .data(url)
-                .size(200, 300) // Small size for widget to save memory
+                .size(200, 300)
                 .build()
             val result = loader.execute(request)
             if (result is SuccessResult) {
@@ -129,12 +127,12 @@ class WatchlistWidget : GlanceAppWidget() {
     }
 }
 
-data class WatchlistItemData(val movie: MovieDetails, val bitmap: Bitmap?)
+data class ToRateItemData(val movie: MovieDetails, val bitmap: Bitmap?)
 
 @Composable
-fun WatchlistWidgetContent(
-    watchlist: List<WatchlistItemData>,
-    onItemClick: (WatchlistItemData) -> Action
+fun ToRateWidgetContent(
+    items: List<ToRateItemData>,
+    onItemClick: (ToRateItemData) -> Action
 ) {
     Column(
         modifier = GlanceModifier
@@ -154,7 +152,7 @@ fun WatchlistWidgetContent(
             )
             Spacer(modifier = GlanceModifier.width(8.dp))
             Text(
-                text = "Watchlist",
+                text = "To Rate",
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 16.sp,
@@ -165,13 +163,13 @@ fun WatchlistWidgetContent(
 
         Spacer(modifier = GlanceModifier.height(12.dp))
 
-        if (watchlist.isEmpty()) {
+        if (items.isEmpty()) {
             Box(
                 modifier = GlanceModifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "No items in watchlist",
+                    text = "You're all caught up",
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurfaceVariant,
                         fontSize = 14.sp
@@ -182,8 +180,8 @@ fun WatchlistWidgetContent(
             LazyColumn(
                 modifier = GlanceModifier.fillMaxWidth()
             ) {
-                items(watchlist) { item ->
-                    WatchlistItem(
+                items(items) { item ->
+                    ToRateItem(
                         data = item,
                         onClick = onItemClick(item)
                     )
@@ -194,8 +192,8 @@ fun WatchlistWidgetContent(
 }
 
 @Composable
-private fun WatchlistItem(
-    data: WatchlistItemData,
+private fun ToRateItem(
+    data: ToRateItemData,
     onClick: Action
 ) {
     val item = data.movie
@@ -209,7 +207,6 @@ private fun WatchlistItem(
             .clickable(onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Image(
             provider = if (bitmap != null) ImageProvider(bitmap) else ImageProvider(R.drawable.movie_skeleton),
             contentDescription = item.title,
@@ -240,30 +237,14 @@ private fun WatchlistItem(
                 )
             )
         }
-
-        Image(
-            provider = ImageProvider(R.drawable.ic_check),
-            contentDescription = "Mark watched",
-            modifier = GlanceModifier
-                .size(28.dp)
-                .padding(4.dp)
-                .clickable(
-                    actionRunCallback<MarkWatchedAction>(
-                        actionParametersOf(
-                            movieIdKey to item.id,
-                            movieTypeKey to item.type
-                        )
-                    )
-                )
-        )
     }
 }
 
-private val FilmyWidgetColorScheme = ColorProviders(
+private val ToRateWidgetColorScheme = ColorProviders(
     light = lightScheme,
     dark = darkScheme
 )
 
-class WatchlistWidgetReceiver : GlanceAppWidgetReceiver() {
-    override val glanceAppWidget: GlanceAppWidget = WatchlistWidget()
+class ToRateWidgetReceiver : GlanceAppWidgetReceiver() {
+    override val glanceAppWidget: GlanceAppWidget = ToRateWidget()
 }

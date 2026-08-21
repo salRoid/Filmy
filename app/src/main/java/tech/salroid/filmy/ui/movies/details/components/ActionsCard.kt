@@ -1,6 +1,9 @@
 package tech.salroid.filmy.ui.movies.details.components
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -12,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -160,6 +164,25 @@ private fun ActionItem(
         label = "color_anim"
     )
 
+    // Small celebratory bounce when the item actually becomes selected -
+    // guarded by hasComposedOnce so an already-selected item (e.g. reopening
+    // a watched title) doesn't bounce on first composition.
+    var hasComposedOnce by remember { mutableStateOf(false) }
+    val scale = remember { Animatable(1f) }
+    LaunchedEffect(isSelected) {
+        if (isSelected && hasComposedOnce) {
+            scale.animateTo(
+                1.35f,
+                spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessHigh)
+            )
+            scale.animateTo(
+                1f,
+                spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessLow)
+            )
+        }
+        hasComposedOnce = true
+    }
+
     Column(
         modifier = modifier
             .clickable(
@@ -175,7 +198,9 @@ private fun ActionItem(
             painter = if (isSelected) onIcon else offIcon,
             contentDescription = label,
             tint = color,
-            modifier = Modifier.size(22.dp)
+            modifier = Modifier
+                .size(22.dp)
+                .scale(scale.value)
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(

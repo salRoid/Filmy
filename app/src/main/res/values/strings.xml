@@ -182,16 +182,6 @@ that this copyright notice remain intact.
 </pre>
     ]]></string>
 
-    <string name="appintro" translatable="false"><![CDATA[
-    <b>App Intro
-    </b>
-     <br>
-     <pre>
-
-      App Intro by PaoloRotolo
-      https://github.com/PaoloRotolo/AppIntro
-</pre>]]></string>
-
     <string name="crashlytics" translatable="false"><![CDATA[
     <b>Crashlytics
     </b>

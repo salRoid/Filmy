@@ -8,13 +8,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tech.salroid.filmy.data.model.MoviePreview
 import tech.salroid.filmy.ui.common.components.PreviewItem
+import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.movies.dummyMoviePreview
 
 @Composable
 fun MovieItem(
     modifier: Modifier = Modifier,
     movie: MoviePreview,
-    onMovieClick: () -> Unit
+    onMovieClick: () -> Unit,
+    fetchQuickActionState: (suspend () -> QuickActionState)? = null,
+    onToggleWatchlist: (() -> Unit)? = null,
+    onToggleWatched: (() -> Unit)? = null
 ) {
     PreviewItem(
         modifier = modifier,
@@ -22,7 +26,10 @@ fun MovieItem(
         posterUrl = movie.posterUrl,
         readableDate = movie.readableReleaseDate,
         contentDescription = "${movie.title} - Movie Item",
-        onItemClick = onMovieClick
+        onItemClick = onMovieClick,
+        fetchQuickActionState = fetchQuickActionState,
+        onToggleWatchlist = onToggleWatchlist,
+        onToggleWatched = onToggleWatched
     )
 }
 

@@ -8,13 +8,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tech.salroid.filmy.data.model.TvShowPreview
 import tech.salroid.filmy.ui.common.components.PreviewItem
+import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.movies.dummyShowPreview
 
 @Composable
 fun ShowItem(
     modifier: Modifier = Modifier,
     show: TvShowPreview,
-    onShowClick: () -> Unit
+    onShowClick: () -> Unit,
+    fetchQuickActionState: (suspend () -> QuickActionState)? = null,
+    onToggleWatchlist: (() -> Unit)? = null,
+    onToggleWatched: (() -> Unit)? = null
 ) {
     PreviewItem(
         modifier = modifier,
@@ -22,7 +26,10 @@ fun ShowItem(
         posterUrl = show.posterUrl,
         readableDate = show.firstAirReadableDate,
         contentDescription = "${show.title} - Show Item",
-        onItemClick = onShowClick
+        onItemClick = onShowClick,
+        fetchQuickActionState = fetchQuickActionState,
+        onToggleWatchlist = onToggleWatchlist,
+        onToggleWatched = onToggleWatched
     )
 }
 

@@ -59,7 +59,6 @@ fun LicenseScreen(onBackClick: () -> Unit) {
             val textColor = MaterialTheme.colorScheme.onSurface
 
             HtmlText(stringResource(R.string.materialsearch), textColor = textColor)
-            HtmlText(stringResource(R.string.appintro), textColor = textColor)
             HtmlText(stringResource(R.string.crashlytics), textColor = textColor)
             HtmlText(stringResource(R.string.glide), textColor = textColor)
         }

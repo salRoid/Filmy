@@ -58,7 +58,6 @@
         <activity android:name=".ui.cast_crew.AllCastCrewActivity" />
         <activity android:name=".ui.settings.LicenseActivity" />
         <activity android:name=".ui.settings.AboutActivity" />
-        <activity android:name=".ui.intro.FilmyIntroActivity" />
 
         <receiver
             android:name=".ui.widget.WatchlistWidgetReceiver"

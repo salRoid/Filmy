@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -64,6 +65,7 @@ fun PreviewItem(
     title: String,
     posterUrl: String,
     readableDate: String,
+    subtitle: String? = null,
     contentDescription: String? = null,
     onItemClick: () -> Unit,
     fetchQuickActionState: (suspend () -> QuickActionState)? = null,
@@ -214,6 +216,18 @@ fun PreviewItem(
                 ),
                 text = title
             )
+            if (subtitle != null) {
+                Text(
+                    modifier = Modifier
+                        .padding(top = 2.dp)
+                        .alpha(0.7f),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.labelSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    text = subtitle
+                )
+            }
             Text(
                 modifier = Modifier
                     .padding(top = 4.dp)

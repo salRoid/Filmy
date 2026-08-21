@@ -332,8 +332,8 @@ private fun NavGraphBuilder.commonScreens(navController: NavHostController) {
         CastCrewDetailsScreen(
             memberId = memberId,
             isTv = isTv,
-            onMovieClick = { id, _ ->
-                if (isTv) {
+            onMovieClick = { id, creditIsTv, _ ->
+                if (creditIsTv) {
                     navController.navigate(AppRoute.ShowDetails.create(id))
                 } else {
                     navController.navigate(AppRoute.MovieDetails.create(id))

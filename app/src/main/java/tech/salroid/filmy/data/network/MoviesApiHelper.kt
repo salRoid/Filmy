@@ -38,6 +38,8 @@ interface MoviesApiHelper {
     fun getCastCrewDetails(id: String): Flow<CastCrewDetailsResponse>
     fun getCastCrewMovies(id: String): Flow<CastCrewMoviesResponse>
     fun getCastCrewTvShows(id: String): Flow<CastCrewMoviesResponse>
+    fun getCombinedCredits(id: String): Flow<CombinedCreditsResponse>
+    fun getPersonExternalIds(id: String): Flow<ExternalIdsResponse>
     fun searchMovies(query: String): Flow<SearchResultResponse>
     fun searchMulti(query: String): Flow<SearchResultResponse>
     fun getReviews(id: String): Flow<ReviewResponse>

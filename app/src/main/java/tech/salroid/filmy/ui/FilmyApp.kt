@@ -68,6 +68,7 @@ fun FilmyApp(
 
     val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()
     val searchUiState by searchViewModel.uiState.collectAsStateWithLifecycle()
+    val recentSearches by searchViewModel.recentSearches.collectAsStateWithLifecycle()
 
     var isSearchExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -102,7 +103,14 @@ fun FilmyApp(
                     searchUiState = searchUiState,
                     isSearchExpanded = isSearchExpanded,
                     onSearchExpandedChange = { isSearchExpanded = it },
-                    onSearch = { searchViewModel.onSearchQueryChange(it) },
+                    onSearch = {
+                        searchViewModel.onSearchQueryChange(it)
+                        searchViewModel.commitSearch(it)
+                    },
+                    recentSearches = recentSearches,
+                    onRecentSearchClick = { searchViewModel.onSearchQueryChange(it) },
+                    onRemoveRecentSearch = { searchViewModel.removeRecentSearch(it) },
+                    onClearRecentSearches = { searchViewModel.clearRecentSearches() },
                     bottomPadding = 80.dp, // Height of NavigationBar
                     modifier = Modifier.fillMaxSize(),
                     startDestination = startDestination

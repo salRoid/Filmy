@@ -16,6 +16,9 @@ object PreferenceHelper {
     private const val COLD_START = "coldStart"
     const val SESSION_ID = "sessionID"
     const val COUNTRY_KEY = "selectedCountry"
+    private const val RECENT_SEARCHES_KEY = "recentSearches"
+    private const val RECENT_SEARCHES_DELIMITER = ""
+    private const val RECENT_SEARCHES_LIMIT = 8
 
     fun getSelectedCountry(context: Context): String =
         PreferenceManager.getDefaultSharedPreferences(context).getString(COUNTRY_KEY, null)
@@ -56,6 +59,38 @@ object PreferenceHelper {
             .edit {
                 putBoolean(COLD_START, false)
             }
+    }
+
+    fun SharedPreferences.recentSearches(): List<String> =
+        getString(RECENT_SEARCHES_KEY, null)
+            ?.split(RECENT_SEARCHES_DELIMITER)
+            ?.filter { it.isNotBlank() }
+            ?: emptyList()
+
+    fun SharedPreferences.addRecentSearch(query: String) {
+        val trimmed = query.trim()
+        if (trimmed.isEmpty()) return
+        val updated = listOf(trimmed) + recentSearches().filterNot { it.equals(trimmed, ignoreCase = true) }
+        edit {
+            putString(
+                RECENT_SEARCHES_KEY,
+                updated.take(RECENT_SEARCHES_LIMIT).joinToString(RECENT_SEARCHES_DELIMITER)
+            )
+        }
+    }
+
+    fun SharedPreferences.removeRecentSearch(query: String) {
+        edit {
+            putString(
+                RECENT_SEARCHES_KEY,
+                recentSearches().filterNot { it.equals(query, ignoreCase = true) }
+                    .joinToString(RECENT_SEARCHES_DELIMITER)
+            )
+        }
+    }
+
+    fun SharedPreferences.clearRecentSearches() {
+        edit { remove(RECENT_SEARCHES_KEY) }
     }
 
     fun getCurrentThemeMode(context: Context): String? {

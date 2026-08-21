@@ -24,6 +24,7 @@ import tech.salroid.filmy.ui.common.components.CategorySelector
 import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.common.components.HomeTopBar
 import tech.salroid.filmy.ui.common.components.LoadingWidget
+import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.shows.components.ShowsList
 import tech.salroid.filmy.ui.search.SearchScreenState
 
@@ -48,7 +49,14 @@ fun ShowsScreen(
     onSearch: (String) -> Unit,
     onShowClick: (Int) -> Unit,
     onSearchResultClick: (SearchPreview) -> Unit,
-    onFilterClick: () -> Unit = {}
+    recentSearches: List<String> = emptyList(),
+    onRecentSearchClick: (String) -> Unit = {},
+    onRemoveRecentSearch: (String) -> Unit = {},
+    onClearRecentSearches: () -> Unit = {},
+    onFilterClick: () -> Unit = {},
+    fetchQuickActionState: suspend (TvShowPreview) -> QuickActionState = { QuickActionState(false, false) },
+    onQuickToggleWatchlist: (TvShowPreview) -> Unit = {},
+    onQuickToggleWatched: (TvShowPreview) -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         HomeTopBar(
@@ -58,6 +66,10 @@ fun ShowsScreen(
             onSearchExpandedChange = onSearchExpandedChange,
             onSearch = onSearch,
             onSearchResultClick = onSearchResultClick,
+            recentSearches = recentSearches,
+            onRecentSearchClick = onRecentSearchClick,
+            onRemoveRecentSearch = onRemoveRecentSearch,
+            onClearRecentSearches = onClearRecentSearches,
             trailingContent = {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -98,7 +110,10 @@ fun ShowsScreen(
                     ShowsList(
                         modifier = Modifier.weight(1f),
                         shows = shows,
-                        onShowClick = onShowClick
+                        onShowClick = onShowClick,
+                        fetchQuickActionState = fetchQuickActionState,
+                        onQuickToggleWatchlist = onQuickToggleWatchlist,
+                        onQuickToggleWatched = onQuickToggleWatched
                     )
                 }
             }

@@ -47,6 +47,10 @@ fun AppNavHost(
     isSearchExpanded: Boolean,
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
+    recentSearches: List<String> = emptyList(),
+    onRecentSearchClick: (String) -> Unit = {},
+    onRemoveRecentSearch: (String) -> Unit = {},
+    onClearRecentSearches: () -> Unit = {},
     bottomPadding: Dp,
     modifier: Modifier = Modifier,
     startDestination: String = AppRoute.MoviesGraph.route
@@ -72,6 +76,10 @@ fun AppNavHost(
             isSearchExpanded,
             onSearchExpandedChange,
             onSearch,
+            recentSearches,
+            onRecentSearchClick,
+            onRemoveRecentSearch,
+            onClearRecentSearches,
             bottomPadding
         )
         showsGraph(
@@ -81,6 +89,10 @@ fun AppNavHost(
             isSearchExpanded,
             onSearchExpandedChange,
             onSearch,
+            recentSearches,
+            onRecentSearchClick,
+            onRemoveRecentSearch,
+            onClearRecentSearches,
             bottomPadding
         )
         collectionGraph(navController, bottomPadding)
@@ -96,6 +108,10 @@ private fun NavGraphBuilder.moviesGraph(
     isSearchExpanded: Boolean,
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
+    recentSearches: List<String>,
+    onRecentSearchClick: (String) -> Unit,
+    onRemoveRecentSearch: (String) -> Unit,
+    onClearRecentSearches: () -> Unit,
     bottomPadding: Dp
 ) {
     navigation(
@@ -112,14 +128,18 @@ private fun NavGraphBuilder.moviesGraph(
                 isSearchExpanded = isSearchExpanded,
                 onSearchExpandedChange = onSearchExpandedChange,
                 onSearch = onSearch,
+                recentSearches = recentSearches,
+                onRecentSearchClick = onRecentSearchClick,
+                onRemoveRecentSearch = onRemoveRecentSearch,
+                onClearRecentSearches = onClearRecentSearches,
                 onMovieClick = { id ->
                     navController.navigate(AppRoute.MovieDetails.create(id))
                 },
                 onSearchResultClick = { item: SearchPreview ->
-                    if (item.mediaType == "tv") {
-                        navController.navigate(AppRoute.ShowDetails.create(item.id))
-                    } else {
-                        navController.navigate(AppRoute.MovieDetails.create(item.id))
+                    when (item.mediaType) {
+                        "tv" -> navController.navigate(AppRoute.ShowDetails.create(item.id))
+                        "person" -> navController.navigate(AppRoute.CastCrewDetails.create(item.id, isTv = false))
+                        else -> navController.navigate(AppRoute.MovieDetails.create(item.id))
                     }
                 },
                 onFilterClick = {
@@ -175,6 +195,10 @@ private fun NavGraphBuilder.showsGraph(
     isSearchExpanded: Boolean,
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
+    recentSearches: List<String>,
+    onRecentSearchClick: (String) -> Unit,
+    onRemoveRecentSearch: (String) -> Unit,
+    onClearRecentSearches: () -> Unit,
     bottomPadding: Dp
 ) {
     navigation(
@@ -191,14 +215,18 @@ private fun NavGraphBuilder.showsGraph(
                 isSearchExpanded = isSearchExpanded,
                 onSearchExpandedChange = onSearchExpandedChange,
                 onSearch = onSearch,
+                recentSearches = recentSearches,
+                onRecentSearchClick = onRecentSearchClick,
+                onRemoveRecentSearch = onRemoveRecentSearch,
+                onClearRecentSearches = onClearRecentSearches,
                 onShowClick = { id ->
                     navController.navigate(AppRoute.ShowDetails.create(id))
                 },
                 onSearchResultClick = { item: SearchPreview ->
-                    if (item.mediaType == "tv") {
-                        navController.navigate(AppRoute.ShowDetails.create(item.id))
-                    } else {
-                        navController.navigate(AppRoute.MovieDetails.create(item.id))
+                    when (item.mediaType) {
+                        "tv" -> navController.navigate(AppRoute.ShowDetails.create(item.id))
+                        "person" -> navController.navigate(AppRoute.CastCrewDetails.create(item.id, isTv = false))
+                        else -> navController.navigate(AppRoute.MovieDetails.create(item.id))
                     }
                 },
                 onFilterClick = {

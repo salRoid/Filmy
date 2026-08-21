@@ -31,6 +31,7 @@ import tech.salroid.filmy.ui.common.components.CategorySelector
 import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.common.components.HomeTopBar
 import tech.salroid.filmy.ui.common.components.LoadingWidget
+import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.common.icons.MoreUp
 import tech.salroid.filmy.ui.movies.components.MoviesList
 import tech.salroid.filmy.ui.search.SearchScreenState
@@ -56,8 +57,15 @@ fun MoviesScreen(
     onSearch: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
     onSearchResultClick: (SearchPreview) -> Unit,
+    recentSearches: List<String> = emptyList(),
+    onRecentSearchClick: (String) -> Unit = {},
+    onRemoveRecentSearch: (String) -> Unit = {},
+    onClearRecentSearches: () -> Unit = {},
     onFilterClick: () -> Unit = {},
-    onPeopleClick: () -> Unit = {}
+    onPeopleClick: () -> Unit = {},
+    fetchQuickActionState: suspend (MoviePreview) -> QuickActionState = { QuickActionState(false, false) },
+    onQuickToggleWatchlist: (MoviePreview) -> Unit = {},
+    onQuickToggleWatched: (MoviePreview) -> Unit = {}
 ) {
     var showMoreMenu by remember { mutableStateOf(false) }
 
@@ -69,6 +77,10 @@ fun MoviesScreen(
             onSearchExpandedChange = onSearchExpandedChange,
             onSearch = onSearch,
             onSearchResultClick = onSearchResultClick,
+            recentSearches = recentSearches,
+            onRecentSearchClick = onRecentSearchClick,
+            onRemoveRecentSearch = onRemoveRecentSearch,
+            onClearRecentSearches = onClearRecentSearches,
             trailingContent = {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -139,7 +151,10 @@ fun MoviesScreen(
                     MoviesList(
                         modifier = Modifier.weight(1f),
                         movies = movies,
-                        onMovieClick = onMovieClick
+                        onMovieClick = onMovieClick,
+                        fetchQuickActionState = fetchQuickActionState,
+                        onQuickToggleWatchlist = onQuickToggleWatchlist,
+                        onQuickToggleWatched = onQuickToggleWatched
                     )
                 }
             }

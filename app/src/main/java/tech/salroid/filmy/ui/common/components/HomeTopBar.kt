@@ -22,6 +22,10 @@ fun HomeTopBar(
     onSearchExpandedChange: (Boolean) -> Unit,
     onSearch: (String) -> Unit,
     onSearchResultClick: (SearchPreview) -> Unit,
+    recentSearches: List<String> = emptyList(),
+    onRecentSearchClick: (String) -> Unit = {},
+    onRemoveRecentSearch: (String) -> Unit = {},
+    onClearRecentSearches: () -> Unit = {},
     trailingContent: @Composable () -> Unit = {}
 ) {
     Column(modifier = Modifier.statusBarsPadding()) {
@@ -39,7 +43,11 @@ fun HomeTopBar(
             searchUiState = searchUiState,
             expanded = isSearchExpanded,
             onExpandedChange = onSearchExpandedChange,
-            onSearchResultClick = onSearchResultClick
+            onSearchResultClick = onSearchResultClick,
+            recentSearches = recentSearches,
+            onRecentSearchClick = onRecentSearchClick,
+            onRemoveRecentSearch = onRemoveRecentSearch,
+            onClearRecentSearches = onClearRecentSearches
         )
     }
 }

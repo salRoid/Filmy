@@ -22,7 +22,7 @@ fun SearchList(
         contentPadding = PaddingValues(22.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(searchPreviews, key = { it.id }) { item ->
+        items(searchPreviews, key = { "${it.mediaType}_${it.id}" }) { item ->
             SearchItem(
                 searchPreview = item,
                 onItemClick = { onSearchItemClick(item) }

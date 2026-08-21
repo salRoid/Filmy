@@ -483,6 +483,9 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
+    /** Synchronous - just a SharedPreferences read, safe to call right before a UI decision. */
+    fun isLoggedIn(): Boolean = accountRepository.isLoggedIn()
+
     /**
      * Fetches the user's TMDB lists and, for each, checks whether [movieId] is
      * already a member (TMDB has no cheaper "is this movie in this list" lookup,

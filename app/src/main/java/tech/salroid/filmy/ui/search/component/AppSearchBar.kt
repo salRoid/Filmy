@@ -3,19 +3,34 @@ package tech.salroid.filmy.ui.search.component
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,10 +43,12 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import tech.salroid.filmy.data.model.SearchPreview
+import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.search.SearchScreenState
 import tech.salroid.filmy.ui.theme.AppTheme
 
@@ -44,7 +61,11 @@ fun AppSearchBar(
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     onSearchResultClick: (SearchPreview) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    recentSearches: List<String> = emptyList(),
+    onRecentSearchClick: (String) -> Unit = {},
+    onRemoveRecentSearch: (String) -> Unit = {},
+    onClearRecentSearches: () -> Unit = {}
 ) {
     Box(
         modifier
@@ -65,11 +86,9 @@ fun AppSearchBar(
                 ),
             inputField = {
                 SearchBarDefaults.InputField(
-                    query = textFieldState.text.toString(),
-                    onQueryChange = { textFieldState.edit { replace(0, length, it) } },
+                    state = textFieldState,
                     onSearch = {
                         onSearch(textFieldState.text.toString())
-                        onExpandedChange(false)
                     },
                     expanded = expanded,
                     onExpandedChange = onExpandedChange,
@@ -81,6 +100,16 @@ fun AppSearchBar(
                             ),
                             text = "Search Movies or Shows"
                         )
+                    },
+                    trailingIcon = {
+                        if (textFieldState.text.isNotEmpty()) {
+                            IconButton(onClick = { textFieldState.clearText() }) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Clear search"
+                                )
+                            }
+                        }
                     }
                 )
             },
@@ -111,10 +140,109 @@ fun AppSearchBar(
                 )
             }
 
-            val searchResults = (searchUiState as? SearchScreenState.Success)?.previews ?: emptyList()
-            SearchList(searchPreviews = searchResults) { item ->
-                onExpandedChange(false)
-                onSearchResultClick(item)
+            val query = textFieldState.text.toString()
+            when {
+                searchUiState is SearchScreenState.Error -> {
+                    ErrorWidget(
+                        modifier = Modifier.fillMaxSize(),
+                        message = searchUiState.errorMessage,
+                        onRetryClick = { onSearch(query) }
+                    )
+                }
+
+                query.isBlank() -> {
+                    RecentSearchesList(
+                        recentSearches = recentSearches,
+                        onRecentSearchClick = { recent ->
+                            textFieldState.setTextAndPlaceCursorAtEnd(recent)
+                            onSearch(recent)
+                        },
+                        onRemoveClick = onRemoveRecentSearch,
+                        onClearAllClick = onClearRecentSearches
+                    )
+                }
+
+                searchUiState is SearchScreenState.Success && searchUiState.previews.isEmpty() -> {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(32.dp),
+                        text = "No results for \"$query\"",
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
+                else -> {
+                    val searchResults = (searchUiState as? SearchScreenState.Success)?.previews ?: emptyList()
+                    SearchList(searchPreviews = searchResults) { item ->
+                        onExpandedChange(false)
+                        onSearchResultClick(item)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RecentSearchesList(
+    recentSearches: List<String>,
+    onRecentSearchClick: (String) -> Unit,
+    onRemoveClick: (String) -> Unit,
+    onClearAllClick: () -> Unit
+) {
+    if (recentSearches.isEmpty()) return
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 22.dp, vertical = 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Recent searches",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            TextButton(onClick = onClearAllClick) {
+                Text(text = "Clear all", style = MaterialTheme.typography.labelMedium)
+            }
+        }
+        LazyColumn {
+            items(recentSearches, key = { it }) { recent ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onRecentSearchClick(recent) }
+                        .padding(horizontal = 22.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Default.History,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.height(18.dp)
+                        )
+                        Text(
+                            modifier = Modifier.padding(start = 16.dp),
+                            text = recent,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                    IconButton(onClick = { onRemoveClick(recent) }) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Remove",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.height(16.dp)
+                        )
+                    }
+                }
             }
         }
     }

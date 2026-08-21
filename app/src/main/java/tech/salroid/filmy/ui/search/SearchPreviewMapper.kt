@@ -15,7 +15,7 @@ class SearchPreviewMapper @Inject constructor() {
         SearchPreview(
             id = searchResult.id,
             title = (searchResult.title ?: searchResult.name).orEmpty(),
-            posterUrl = posterBaseUrl + searchResult.posterPath.orEmpty(),
+            posterUrl = posterBaseUrl + (searchResult.posterPath ?: searchResult.profilePath).orEmpty(),
             readableReleaseDate = (searchResult.releaseDate ?: searchResult.firstAirDate)
                 ?.let(::formateReleaseDate)
                 .orEmpty(),

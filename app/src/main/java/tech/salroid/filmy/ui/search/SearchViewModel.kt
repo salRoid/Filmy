@@ -1,5 +1,6 @@
 package tech.salroid.filmy.ui.search
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -7,6 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -16,6 +18,10 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.ui.home.MoviesRepository
+import tech.salroid.filmy.utility.PreferenceHelper.addRecentSearch
+import tech.salroid.filmy.utility.PreferenceHelper.clearRecentSearches
+import tech.salroid.filmy.utility.PreferenceHelper.recentSearches
+import tech.salroid.filmy.utility.PreferenceHelper.removeRecentSearch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,11 +31,15 @@ import javax.inject.Inject
 )
 class SearchViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository,
-    private val searchPreviewMapper: SearchPreviewMapper
+    private val searchPreviewMapper: SearchPreviewMapper,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
+
+    private val _recentSearches = MutableStateFlow<List<String>>(sharedPreferences.recentSearches())
+    val recentSearches: StateFlow<List<String>> = _recentSearches.asStateFlow()
 
     val uiState = _searchQuery
         .debounce(300)
@@ -69,5 +79,21 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             _searchQuery.value = query
         }
+    }
+
+    fun commitSearch(query: String) {
+        if (query.isBlank()) return
+        sharedPreferences.addRecentSearch(query)
+        _recentSearches.value = sharedPreferences.recentSearches()
+    }
+
+    fun removeRecentSearch(query: String) {
+        sharedPreferences.removeRecentSearch(query)
+        _recentSearches.value = sharedPreferences.recentSearches()
+    }
+
+    fun clearRecentSearches() {
+        sharedPreferences.clearRecentSearches()
+        _recentSearches.value = emptyList()
     }
 }

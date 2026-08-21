@@ -21,6 +21,10 @@ fun ShowsRoute(
     onSearch: (String) -> Unit,
     onShowClick: (Int) -> Unit,
     onSearchResultClick: (SearchPreview) -> Unit,
+    recentSearches: List<String> = emptyList(),
+    onRecentSearchClick: (String) -> Unit = {},
+    onRemoveRecentSearch: (String) -> Unit = {},
+    onClearRecentSearches: () -> Unit = {},
     onFilterClick: () -> Unit = {}
 ) {
     val shows = viewModel.showsPagingData.collectAsLazyPagingItems()
@@ -38,6 +42,13 @@ fun ShowsRoute(
         onSearch = onSearch,
         onShowClick = onShowClick,
         onSearchResultClick = onSearchResultClick,
-        onFilterClick = onFilterClick
+        recentSearches = recentSearches,
+        onRecentSearchClick = onRecentSearchClick,
+        onRemoveRecentSearch = onRemoveRecentSearch,
+        onClearRecentSearches = onClearRecentSearches,
+        onFilterClick = onFilterClick,
+        fetchQuickActionState = viewModel::getQuickActionState,
+        onQuickToggleWatchlist = viewModel::quickToggleWatchlist,
+        onQuickToggleWatched = viewModel::quickToggleWatched
     )
 }

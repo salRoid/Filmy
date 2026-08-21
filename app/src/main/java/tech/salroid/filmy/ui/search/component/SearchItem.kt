@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -43,11 +45,18 @@ fun SearchItem(
         onClick = { onItemClick() }
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            val isPerson = searchPreview.mediaType == "person"
             AsyncImage(
-                modifier = Modifier
-                    .height(80.dp)
-                    .width(50.dp)
-                    .clip(RoundedCornerShape(corner = CornerSize(4.dp))),
+                modifier = if (isPerson) {
+                    Modifier
+                        .size(50.dp)
+                        .clip(CircleShape)
+                } else {
+                    Modifier
+                        .height(80.dp)
+                        .width(50.dp)
+                        .clip(RoundedCornerShape(corner = CornerSize(4.dp)))
+                },
                 contentScale = ContentScale.Crop,
                 model = searchPreview.posterUrl,
                 contentDescription = "${searchPreview.title} Poster Image"
@@ -68,7 +77,12 @@ fun SearchItem(
                         text = searchPreview.title
                     )
 
-                    if (searchPreview.mediaType == "tv") {
+                    val badgeText = when (searchPreview.mediaType) {
+                        "tv" -> "SHOW"
+                        "person" -> "PERSON"
+                        else -> null
+                    }
+                    if (badgeText != null) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Surface(
                             color = MaterialTheme.colorScheme.secondaryContainer,
@@ -76,7 +90,7 @@ fun SearchItem(
                             modifier = Modifier.padding(top = 8.dp)
                         ) {
                             Text(
-                                text = "SHOW",
+                                text = badgeText,
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)

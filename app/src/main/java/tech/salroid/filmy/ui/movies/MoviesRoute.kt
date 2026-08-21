@@ -21,6 +21,10 @@ fun MoviesRoute(
     onSearch: (String) -> Unit,
     onMovieClick: (Int) -> Unit,
     onSearchResultClick: (SearchPreview) -> Unit,
+    recentSearches: List<String> = emptyList(),
+    onRecentSearchClick: (String) -> Unit = {},
+    onRemoveRecentSearch: (String) -> Unit = {},
+    onClearRecentSearches: () -> Unit = {},
     onFilterClick: () -> Unit = {},
     onPeopleClick: () -> Unit = {}
 ) {
@@ -39,7 +43,14 @@ fun MoviesRoute(
         onSearch = onSearch,
         onMovieClick = onMovieClick,
         onSearchResultClick = onSearchResultClick,
+        recentSearches = recentSearches,
+        onRecentSearchClick = onRecentSearchClick,
+        onRemoveRecentSearch = onRemoveRecentSearch,
+        onClearRecentSearches = onClearRecentSearches,
         onFilterClick = onFilterClick,
-        onPeopleClick = onPeopleClick
+        onPeopleClick = onPeopleClick,
+        fetchQuickActionState = viewModel::getQuickActionState,
+        onQuickToggleWatchlist = viewModel::quickToggleWatchlist,
+        onQuickToggleWatched = viewModel::quickToggleWatched
     )
 }

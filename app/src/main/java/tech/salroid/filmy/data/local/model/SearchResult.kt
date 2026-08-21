@@ -53,5 +53,8 @@ data class SearchResult(
     var name: String? = null,
 
     @SerializedName("first_air_date")
-    var firstAirDate: String? = null
+    var firstAirDate: String? = null,
+
+    @SerializedName("profile_path")
+    var profilePath: String? = null
 )

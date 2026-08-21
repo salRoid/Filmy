@@ -18,8 +18,17 @@ class LoginViewModel @Inject constructor(
 
     private val _uiStateToken = MutableStateFlow<RequestTokenResponse?>(null)
     private val _isLoggingOut = MutableStateFlow(false)
+    private val _isAuthenticating = MutableStateFlow(false)
     val uiStateToken: StateFlow<RequestTokenResponse?> = _uiStateToken.asStateFlow()
     val isLoggingOut: StateFlow<Boolean> = _isLoggingOut.asStateFlow()
+
+    /**
+     * True from the moment login starts until it either succeeds (profile
+     * saved) or fails at any step - including the user closing the Custom
+     * Tab without approving the request token, which surfaces as a failure
+     * when exchanging it for an access token. Never gets stuck on true.
+     */
+    val isAuthenticating: StateFlow<Boolean> = _isAuthenticating.asStateFlow()
 
     /**
      * Reactive to the local `profile` table via [AccountRepository.getProfileFlow]
@@ -40,12 +49,14 @@ class LoginViewModel @Inject constructor(
     }
 
     fun getRequestToken() {
+        _isAuthenticating.value = true
         viewModelScope.launch {
             val requestTokenData = RequestTokenData(redirectTo = "https://www.themoviedb.org/")
             accountRepository.getRequestToken(requestTokenData)
                 .flowOn(Dispatchers.IO)
                 .catch {
                     it.printStackTrace()
+                    _isAuthenticating.value = false
                 }.collect {
                     requestToken = it.requestToken
                     _uiStateToken.emit(it)
@@ -59,7 +70,13 @@ class LoginViewModel @Inject constructor(
             accountRepository.getAccessToken(requestTokenData)
                 .flowOn(Dispatchers.IO)
                 .catch {
+                    // Reached when the user closed the Custom Tab without
+                    // approving the request token - exchanging it then
+                    // fails. Clear it so a later, unrelated app resume
+                    // doesn't keep retrying a dead token.
                     it.printStackTrace()
+                    requestToken = null
+                    _isAuthenticating.value = false
                 }.collect {
                     accessToken = it.accessToken
                     getSession()
@@ -74,6 +91,7 @@ class LoginViewModel @Inject constructor(
                 .flowOn(Dispatchers.IO)
                 .catch {
                     it.printStackTrace()
+                    _isAuthenticating.value = false
                 }.collect {
                     sessionId = it.sessionId
                     accountRepository.storeSessionId(sessionId)
@@ -90,6 +108,7 @@ class LoginViewModel @Inject constructor(
                 .flowOn(Dispatchers.IO)
                 .catch {
                     it.printStackTrace()
+                    _isAuthenticating.value = false
                 }.collect { profile ->
                     // Writing here is enough - uiStateProfile is reactive to
                     // this same local table, so it (and every other screen's
@@ -97,6 +116,7 @@ class LoginViewModel @Inject constructor(
                     withContext(Dispatchers.IO) {
                         accountRepository.saveProfileToLocal(profile)
                     }
+                    _isAuthenticating.value = false
                 }
         }
     }

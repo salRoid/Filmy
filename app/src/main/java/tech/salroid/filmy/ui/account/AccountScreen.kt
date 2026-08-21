@@ -52,14 +52,12 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -90,18 +88,14 @@ fun AccountScreen(
     val uiStateProfile by viewModel.uiStateProfile.collectAsState()
     val uiStateToken by viewModel.uiStateToken.collectAsState()
     val isLoggingOut by viewModel.isLoggingOut.collectAsState()
+    val isAuthenticating by viewModel.isAuthenticating.collectAsState()
 
-    var isLoading by remember { mutableStateOf(false) }
-    var rootSize by remember { mutableStateOf(IntSize.Zero) }
-    var cardSize by remember { mutableStateOf(IntSize.Zero) }
     var showLogoutDialog by remember { mutableStateOf(false) }
 
     val customTabLauncher = rememberLauncherForActivityResult(
         contract = object : ActivityResultContract<String, Int>() {
             override fun createIntent(context: Context, input: String): Intent {
-                val builder = CustomTabsIntent.Builder()
-                    .setInitialActivityHeightPx(rootSize.height - cardSize.height)
-                val customTabsIntent = builder.build().intent
+                val customTabsIntent = CustomTabsIntent.Builder().build().intent
                 customTabsIntent.data = input.toUri()
                 return customTabsIntent
             }
@@ -133,25 +127,16 @@ fun AccountScreen(
         }
     }
 
-    LaunchedEffect(uiStateProfile) {
-        isLoading = false
-    }
-
     AccountScreenContent(
         profile = uiStateProfile,
-        isLoading = isLoading || isLoggingOut,
+        isLoading = isAuthenticating || isLoggingOut,
         showLoginCard = true,
-        onLoginClick = {
-            isLoading = true
-            viewModel.getRequestToken()
-        },
+        onLoginClick = { viewModel.getRequestToken() },
         onLogoutClick = { showLogoutDialog = true },
         onAboutClick = onAboutClick,
         onLicenseClick = onLicenseClick,
         onMyListsClick = onMyListsClick,
-        modifier = modifier,
-        onRootSizeChanged = { rootSize = it },
-        onCardSizeChanged = { cardSize = it }
+        modifier = modifier
     )
 
     if (showLogoutDialog) {
@@ -187,9 +172,7 @@ fun AccountScreenContent(
     onAboutClick: () -> Unit,
     onLicenseClick: () -> Unit,
     onMyListsClick: () -> Unit = {},
-    modifier: Modifier = Modifier,
-    onRootSizeChanged: (IntSize) -> Unit = {},
-    onCardSizeChanged: (IntSize) -> Unit = {}
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     Column(
@@ -197,15 +180,13 @@ fun AccountScreenContent(
             .fillMaxSize()
             .statusBarsPadding()
             .verticalScroll(rememberScrollState())
-            .onGloballyPositioned { onRootSizeChanged(it.size) }
     ) {
         if (showLoginCard) {
             LoginCard(
                 profile = profile,
                 onLoginClick = onLoginClick,
                 onLogoutClick = onLogoutClick,
-                isLoading = isLoading,
-                modifier = Modifier.onGloballyPositioned { onCardSizeChanged(it.size) }
+                isLoading = isLoading
             )
         }
 

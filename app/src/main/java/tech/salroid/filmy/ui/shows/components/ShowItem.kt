@@ -27,7 +27,7 @@ fun ShowItem(
         title = show.title,
         posterUrl = show.posterUrl,
         readableDate = show.firstAirReadableDate,
-        contentDescription = stringResource(R.string.show_item_content_description, show.title),
+        contentDescription = stringResource(R.string.cd_show_poster, show.title),
         onItemClick = onShowClick,
         fetchQuickActionState = fetchQuickActionState,
         onToggleWatchlist = onToggleWatchlist,

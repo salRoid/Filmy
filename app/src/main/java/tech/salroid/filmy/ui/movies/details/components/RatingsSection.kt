@@ -3,7 +3,6 @@ package tech.salroid.filmy.ui.movies.details.components
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -18,6 +17,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -128,10 +128,11 @@ fun RatingCard(
     )
 
     Surface(
+        onClick = onClick,
+        enabled = rating.url != null,
         modifier = modifier
             .height(52.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .clickable(enabled = rating.url != null, onClick = onClick),
+            .semantics(mergeDescendants = true) {},
         color = backgroundColor,
         shape = RoundedCornerShape(16.dp),
         border = androidx.compose.foundation.BorderStroke(

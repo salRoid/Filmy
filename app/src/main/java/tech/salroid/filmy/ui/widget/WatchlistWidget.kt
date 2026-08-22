@@ -223,7 +223,7 @@ private fun WatchlistItem(
 
         Image(
             provider = ImageProvider(R.drawable.ic_check),
-            contentDescription = context.getString(R.string.mark_watched),
+            contentDescription = context.getString(R.string.cd_mark_watched),
             modifier = GlanceModifier
                 .size(28.dp)
                 .padding(4.dp)

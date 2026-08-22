@@ -46,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
@@ -270,12 +271,16 @@ private fun RecentSearchesList(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onRecentSearchClick(recent) }
                         .padding(horizontal = 22.dp, vertical = 12.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier
+                            .clickable(role = Role.Button) { onRecentSearchClick(recent) }
+                            .semantics(mergeDescendants = true) {},
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Icon(
                             imageVector = Icons.Default.History,
                             contentDescription = null,

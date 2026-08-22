@@ -62,7 +62,6 @@ fun ErrorWidget(
                 modifier = Modifier
                     .statusBarsPadding()
                     .padding(start = 16.dp, top = 16.dp)
-                    .size(32.dp)
             ) {
                 Icon(
                     painterResource(R.drawable.ic_arrow_back),

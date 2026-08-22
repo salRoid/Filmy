@@ -10,6 +10,7 @@ import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +20,8 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import tech.salroid.filmy.R
@@ -95,8 +98,10 @@ private fun LinkTile(link: ExternalLink, onLinkClick: (String) -> Unit, modifier
 
     Row(
         modifier = modifier
+            .minimumInteractiveComponentSize()
             .clip(RoundedCornerShape(8.dp))
-            .clickable { onLinkClick(link.url) }
+            .clickable(role = Role.Button) { onLinkClick(link.url) }
+            .semantics(mergeDescendants = true) {}
             .padding(vertical = 13.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

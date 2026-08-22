@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +43,7 @@ fun SearchItem(
     onItemClick: () -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.semantics(mergeDescendants = true) {},
         shape = RoundedCornerShape(corner = CornerSize(4.dp)),
         colors = CardDefaults.cardColors(containerColor = Transparent),
         onClick = { onItemClick() }
@@ -62,7 +63,7 @@ fun SearchItem(
                 },
                 contentScale = ContentScale.Crop,
                 model = searchPreview.posterUrl,
-                contentDescription = stringResource(R.string.poster_image_content_description, searchPreview.title),
+                contentDescription = null,
                 error = painterResource(
                     if (isPerson) R.drawable.default_avatar else R.drawable.poster_error_placeholder
                 )

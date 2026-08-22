@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -121,15 +122,20 @@ fun GalleryScreen(
                         }
                     ) { index ->
                         val image = currentList[index]
+                        val imageDescription = if (selectedTab == 0) {
+                            stringResource(R.string.cd_gallery_backdrop, index + 1)
+                        } else {
+                            stringResource(R.string.cd_gallery_poster, index + 1)
+                        }
                         AsyncImage(
                             model = "https://image.tmdb.org/t/p/w500${image.filePath}",
-                            contentDescription = null,
+                            contentDescription = imageDescription,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(if (selectedTab == 0) 16f / 9f else 2f / 3f)
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                                .clickable { fullScreenIndex = index },
+                                .clickable(role = Role.Button) { fullScreenIndex = index },
                             contentScale = ContentScale.Crop
                         )
                     }

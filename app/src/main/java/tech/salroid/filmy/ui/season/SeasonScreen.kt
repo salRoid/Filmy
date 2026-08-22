@@ -187,7 +187,7 @@ private fun EpisodeItem(episode: Episode, imdbRating: String? = null, onClick: (
         Column {
             AsyncImage(
                 model = stringResource(R.string.movie_poster_url, episode.stillPath ?: ""),
-                contentDescription = episode.name,
+                contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp)

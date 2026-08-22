@@ -14,6 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -226,7 +227,10 @@ fun CastCrewDetailsBody(
                     textAlign = TextAlign.Justify,
                     maxLines = 5,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.clickable { showFullBiography = true }
+                    modifier = Modifier.clickable(
+                        onClickLabel = stringResource(R.string.cd_read_full_biography),
+                        role = Role.Button
+                    ) { showFullBiography = true }
                 )
             }
 

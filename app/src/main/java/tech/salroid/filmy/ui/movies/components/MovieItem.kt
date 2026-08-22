@@ -27,7 +27,7 @@ fun MovieItem(
         title = movie.title,
         posterUrl = movie.posterUrl,
         readableDate = movie.readableReleaseDate,
-        contentDescription = stringResource(R.string.movie_item_content_description, movie.title),
+        contentDescription = stringResource(R.string.cd_movie_poster, movie.title),
         onItemClick = onMovieClick,
         fetchQuickActionState = fetchQuickActionState,
         onToggleWatchlist = onToggleWatchlist,

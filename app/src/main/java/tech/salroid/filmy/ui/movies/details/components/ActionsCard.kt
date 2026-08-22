@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarBorder
@@ -23,6 +24,8 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -80,6 +83,7 @@ fun ActionsCard(
                 )
                 actions.onWatchedToggle()
             },
+            isToggle = true,
             modifier = Modifier.weight(1f)
         )
 
@@ -105,6 +109,7 @@ fun ActionsCard(
                 )
                 actions.onWatchlistToggle()
             },
+            isToggle = true,
             modifier = Modifier.weight(1f)
         )
 
@@ -155,7 +160,8 @@ private fun ActionItem(
     selectedColor: Color,
     unselectedColor: Color,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isToggle: Boolean = false
 ) {
     val color by animateColorAsState(
         targetValue = if (isSelected) selectedColor else unselectedColor,
@@ -183,18 +189,32 @@ private fun ActionItem(
 
     Column(
         modifier = modifier
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(),
-                onClick = onClick
+            .then(
+                if (isToggle) {
+                    Modifier.toggleable(
+                        value = isSelected,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(),
+                        role = Role.Checkbox,
+                        onValueChange = { onClick() }
+                    )
+                } else {
+                    Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(),
+                        role = Role.Button,
+                        onClick = onClick
+                    )
+                }
             )
+            .semantics(mergeDescendants = true) {}
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
             painter = if (isSelected) onIcon else offIcon,
-            contentDescription = label,
+            contentDescription = null,
             tint = color,
             modifier = Modifier
                 .size(22.dp)

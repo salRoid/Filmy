@@ -1,12 +1,12 @@
 package tech.salroid.filmy.ui.movies.details.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Checkbox
@@ -28,6 +28,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import tech.salroid.filmy.R
@@ -74,13 +76,18 @@ fun AddToListSheet(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable { onToggle(list.id, checked) }
+                                .toggleable(
+                                    value = checked,
+                                    role = Role.Checkbox,
+                                    onValueChange = { onToggle(list.id, checked) }
+                                )
+                                .semantics(mergeDescendants = true) {}
                                 .padding(vertical = 4.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Checkbox(
                                 checked = checked,
-                                onCheckedChange = { onToggle(list.id, checked) }
+                                onCheckedChange = null
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(

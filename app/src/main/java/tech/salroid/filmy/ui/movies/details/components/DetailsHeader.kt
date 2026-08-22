@@ -24,6 +24,9 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -260,7 +263,12 @@ fun HeaderInfoCard(
             .fillMaxWidth()
             .padding(top = 220.dp)
             .padding(horizontal = 8.dp)
-            .clickable { onHeaderClick() },
+            .clickable(
+                onClickLabel = stringResource(R.string.cd_read_full_overview),
+                role = Role.Button,
+                onClick = onHeaderClick
+            )
+            .semantics(mergeDescendants = true) {},
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = paletteColors?.vibrantRgb?.let { Color(it) }
@@ -402,7 +410,14 @@ fun HeaderPoster(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 onClick = onClick
-            ),
+            )
+            // This tap only replays a cosmetic shine/tilt flourish - it doesn't
+            // navigate or change any state a screen reader user would care
+            // about, and the poster image itself is already decorative (its
+            // title/info is announced by the header card), so it's excluded
+            // from the accessibility tree instead of exposing an unlabeled,
+            // functionally-inert "Button".
+            .clearAndSetSemantics {},
         elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
         shape = RoundedCornerShape(16.dp)
     ) {

@@ -34,6 +34,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -164,7 +166,9 @@ private fun ListEntry(
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Column(
-            modifier = Modifier.combinedClickable(onClick = onClick, onLongClick = onLongClick),
+            modifier = Modifier
+                .combinedClickable(onClick = onClick, onLongClick = onLongClick, role = Role.Button)
+                .semantics(mergeDescendants = true) {},
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
@@ -174,7 +178,7 @@ private fun ListEntry(
                     .clip(RoundedCornerShape(corner = CornerSize(8.dp))),
                 contentScale = ContentScale.Crop,
                 model = stringResource(R.string.movie_poster_url, item.posterPath ?: ""),
-                contentDescription = item.displayTitle,
+                contentDescription = null,
                 error = painterResource(R.drawable.poster_error_placeholder)
             )
             Text(

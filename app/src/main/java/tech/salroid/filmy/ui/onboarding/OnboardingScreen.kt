@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -121,7 +122,9 @@ fun OnboardingScreen(
 
                     OutlinedButton(
                         onClick = { showCountryDialog = true },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .semantics(mergeDescendants = true) {}
                     ) {
                         Icon(
                             imageVector = Icons.Default.Public,
@@ -137,7 +140,7 @@ fun OnboardingScreen(
                         )
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowRight,
-                            contentDescription = stringResource(R.string.change_country)
+                            contentDescription = null
                         )
                     }
 

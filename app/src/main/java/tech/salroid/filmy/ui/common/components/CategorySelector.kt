@@ -14,6 +14,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,8 +44,9 @@ fun <T> CategorySelector(
     Box(modifier = modifier) {
         Row(
             modifier = Modifier
+                .minimumInteractiveComponentSize()
                 .clip(RoundedCornerShape(50))
-                .clickable { expanded = true }
+                .clickable(role = Role.Button) { expanded = true }
                 .padding(
                     horizontal = 10.dp,
                     vertical = 6.dp

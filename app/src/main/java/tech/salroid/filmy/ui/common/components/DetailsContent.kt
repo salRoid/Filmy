@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
@@ -192,47 +193,59 @@ fun DetailsToolbar(
         navigationIcon = {
             IconButton(
                 onClick = actions.onBackNavigation,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(32.dp)
-                    .background(buttonBackgroundColor, CircleShape)
+                modifier = Modifier.padding(start = 16.dp)
             ) {
-                Icon(
-                    painterResource(R.drawable.ic_arrow_back),
-                    contentDescription = stringResource(R.string.back),
-                    tint = iconColor,
-                    modifier = Modifier.size(24.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(buttonBackgroundColor, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painterResource(R.drawable.ic_arrow_back),
+                        contentDescription = stringResource(R.string.back),
+                        tint = iconColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
         },
         actions = {
             IconButton(
                 onClick = onGalleryClick,
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .size(32.dp)
-                    .background(buttonBackgroundColor, CircleShape)
+                modifier = Modifier.padding(end = 16.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Default.PhotoLibrary,
-                    contentDescription = stringResource(R.string.photos),
-                    tint = iconColor,
-                    modifier = Modifier.size(24.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(buttonBackgroundColor, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PhotoLibrary,
+                        contentDescription = stringResource(R.string.photos),
+                        tint = iconColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
             IconButton(
                 onClick = actions.onShareClick,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .size(32.dp)
-                    .background(buttonBackgroundColor, CircleShape)
+                modifier = Modifier.padding(horizontal = 16.dp)
             ) {
-                Icon(
-                    painterResource(R.drawable.twotone_share_24),
-                    contentDescription = stringResource(R.string.share),
-                    tint = iconColor,
-                    modifier = Modifier.size(24.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(buttonBackgroundColor, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painterResource(R.drawable.twotone_share_24),
+                        contentDescription = stringResource(R.string.share),
+                        tint = iconColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

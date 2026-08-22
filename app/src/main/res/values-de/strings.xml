@@ -124,6 +124,7 @@
     <string name="episode_count">%1$d Folgen</string>
     <string name="region">Region</string>
     <string name="language">Sprache</string>
+    <string name="open_source_libraries">Open-Source-Bibliotheken</string>
     <string name="logout">Abmelden</string>
     <string name="known_for">Bekannt für</string>
     <string name="no_cast_or_crew_found">Keine Besetzung oder Crew gefunden.</string>

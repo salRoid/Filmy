@@ -102,7 +102,7 @@ fun PersonSkeletonLoader(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-private fun PersonSkeletonLoaderPreview() {
+internal fun PersonSkeletonLoaderPreview() {
     AppTheme {
         PersonSkeletonLoader()
     }

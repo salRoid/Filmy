@@ -28,6 +28,7 @@ import tech.salroid.filmy.ui.common.model.PaletteColors
 import tech.salroid.filmy.ui.movies.details.components.*
 import tech.salroid.filmy.utility.themeSystemBars
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsContent(
     state: MediaDetailsUiState,

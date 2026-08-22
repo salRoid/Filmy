@@ -1,5 +1,8 @@
 package tech.salroid.filmy.utility
 
+import androidx.core.os.LocaleListCompat
+import java.util.Locale
+
 /**
  * appTag: passed to AppCompatDelegate.setApplicationLocales() / matches a values-XX resource
  *         folder. null = "System Default" (clears the override).
@@ -20,3 +23,17 @@ val SUPPORTED_LANGUAGES = listOf(
     LanguageOption(appTag = "hi-IN", apiTag = "hi-IN", nativeName = "हिन्दी"),
     LanguageOption(appTag = "nl-NL", apiTag = "nl-NL", nativeName = "Nederlands")
 )
+
+/**
+ * Resolves [appLocales] (AppCompatDelegate's current per-app override, or an empty
+ * list for "System Default") to the TMDB-ready `language` query param tag: the
+ * matching [SUPPORTED_LANGUAGES] entry's apiTag when overridden, otherwise the
+ * device's own default locale formatted as "xx-XX".
+ */
+fun resolveApiLanguageTag(appLocales: LocaleListCompat, deviceLocale: Locale = Locale.getDefault()): String {
+    if (!appLocales.isEmpty) {
+        val tag = appLocales.toLanguageTags()
+        return SUPPORTED_LANGUAGES.firstOrNull { it.appTag == tag }?.apiTag ?: tag
+    }
+    return "${deviceLocale.language}-${deviceLocale.country.ifBlank { deviceLocale.language.uppercase() }}"
+}

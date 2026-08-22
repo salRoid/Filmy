@@ -92,7 +92,7 @@ fun <T> CategorySelector(
 
 @Preview(showBackground = true)
 @Composable
-private fun CategorySelectorPreview() {
+internal fun CategorySelectorPreview() {
     AppTheme {
         CategorySelector(
             categories = Movie.MovieType.entries,
@@ -110,7 +110,7 @@ private fun CategorySelectorPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun CategorySelectorExpandedPreview() {
+internal fun CategorySelectorExpandedPreview() {
     AppTheme {
         CategorySelector(
             categories = Movie.MovieType.entries,

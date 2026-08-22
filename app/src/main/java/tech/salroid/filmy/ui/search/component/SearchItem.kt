@@ -123,7 +123,7 @@ fun SearchItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun SearchItemPreview() {
+internal fun SearchItemPreview() {
     AppTheme {
         SearchItem(
             searchPreview = SearchPreview(
@@ -139,7 +139,7 @@ private fun SearchItemPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun SearchItemTvPreview() {
+internal fun SearchItemTvPreview() {
     AppTheme {
         SearchItem(
             searchPreview = SearchPreview(

@@ -309,7 +309,7 @@ private fun RecentSearchesList(
 
 @Preview(showBackground = true)
 @Composable
-private fun AppSearchBarPreview() {
+internal fun AppSearchBarPreview() {
     AppTheme {
         AppSearchBar(
             textFieldState = rememberTextFieldState(),
@@ -324,7 +324,7 @@ private fun AppSearchBarPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun AppSearchBarExpandedPreview() {
+internal fun AppSearchBarExpandedPreview() {
     AppTheme {
         AppSearchBar(
             textFieldState = rememberTextFieldState("Inception"),

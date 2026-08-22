@@ -23,7 +23,7 @@ fun String.toReadableDate(): String {
 
     val fromDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val toDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    val date = fromDateFormat.parse(this)
+    val date = runCatching { fromDateFormat.parse(this) }.getOrNull()
     return date?.let { toDateFormat.format(it) } ?: this
 }
 

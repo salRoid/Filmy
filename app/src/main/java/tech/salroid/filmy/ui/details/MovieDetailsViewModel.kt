@@ -81,50 +81,72 @@ class MovieDetailsViewModel @Inject constructor(
     val uiStateUpdateCollection: StateFlow<Triple<Int, String, Boolean>> =
         _uiStateUpdateCollection.asStateFlow()
 
-    val mediaDetailsUiState: StateFlow<MediaDetailsUiState?> = combine(
+    private data class CoreDetails(
+        val movie: MovieDetails?,
+        val tv: TvDetails?,
+        val reviews: ReviewResponse?,
+        val watchProviders: WatchProviderResponse?,
+        val cast: CastAndCrewResponse?
+    )
+
+    private data class RelatedDetails(
+        val similar: SimilarMoviesResponse?,
+        val recommendations: SimilarMoviesResponse?,
+        val ratings: RatingResponse?,
+        val releaseDates: ReleaseDatesResponse?,
+        val contentRatings: ContentRatingsResponse?
+    )
+
+    private data class ExtraDetails(
+        val keywords: List<Keyword>,
+        val images: ImagesResponse?,
+        val externalIds: ExternalIdsResponse?
+    )
+
+    private val coreDetails = combine(
         _uiStateMovieDetails,
         _uiStateTvDetails,
         _uiStateReviews,
         _uiStateWatchProviders,
         _uiStateCastAndCrew,
+        ::CoreDetails
+    )
+
+    private val relatedDetails = combine(
         _uiStateSimilar,
         _uiStateRecommendation,
         _uiStateRatings,
         _uiStateReleaseDates,
         _uiStateContentRatings,
+        ::RelatedDetails
+    )
+
+    private val extraDetails = combine(
         _uiStateKeywords,
         _uiStateImages,
-        _uiStateExternalIds
-    ) { args ->
-        val movie = args[0] as MovieDetails?
-        val tv = args[1] as TvDetails?
-        val reviews = args[2] as ReviewResponse?
-        val watchProviders = args[3] as WatchProviderResponse?
-        val cast = args[4] as CastAndCrewResponse?
-        val similar = args[5] as SimilarMoviesResponse?
-        val recommendations = args[6] as SimilarMoviesResponse?
-        val ratings = args[7] as RatingResponse?
-        val releaseDates = args[8] as ReleaseDatesResponse?
-        val contentRatings = args[9] as ContentRatingsResponse?
-        @Suppress("UNCHECKED_CAST")
-        val keywords = args[10] as List<Keyword>
-        val images = args[11] as ImagesResponse?
-        val externalIds = args[12] as ExternalIdsResponse?
+        _uiStateExternalIds,
+        ::ExtraDetails
+    )
 
+    val mediaDetailsUiState: StateFlow<MediaDetailsUiState?> = combine(
+        coreDetails,
+        relatedDetails,
+        extraDetails
+    ) { core, related, extra ->
         mediaDetailsMapper.map(
-            movie = movie,
-            tv = tv,
-            reviews = reviews,
-            watchProviders = watchProviders,
-            cast = cast,
-            similar = similar,
-            recommendations = recommendations,
-            ratings = ratings,
-            releaseDates = releaseDates,
-            contentRatings = contentRatings,
-            keywords = keywords,
-            images = images,
-            externalIds = externalIds
+            movie = core.movie,
+            tv = core.tv,
+            reviews = core.reviews,
+            watchProviders = core.watchProviders,
+            cast = core.cast,
+            similar = related.similar,
+            recommendations = related.recommendations,
+            ratings = related.ratings,
+            releaseDates = related.releaseDates,
+            contentRatings = related.contentRatings,
+            keywords = extra.keywords,
+            images = extra.images,
+            externalIds = extra.externalIds
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 

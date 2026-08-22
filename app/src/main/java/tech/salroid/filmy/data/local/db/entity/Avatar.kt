@@ -1,11 +1,13 @@
 package tech.salroid.filmy.data.local.db.entity
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Avatar(
-    @SerializedName("gravatar")
-    var gravatar: Gravatar? = Gravatar(),
+    @SerialName("gravatar")
+    var gravatar: Gravatar? = null,
 
-    @SerializedName("tmdb")
-    var tmdb: Tmdb? = Tmdb()
+    @SerialName("tmdb")
+    var tmdb: Tmdb? = null
 )

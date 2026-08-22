@@ -1,19 +1,22 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ContentRatingsResponse(
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("results")
+    @SerialName("results")
     var results: List<ContentRating> = emptyList(),
 )
 
+@Serializable
 data class ContentRating(
-    @SerializedName("iso_3166_1")
+    @SerialName("iso_3166_1")
     var iso31661: String? = null,
 
-    @SerializedName("rating")
+    @SerialName("rating")
     var rating: String? = null,
 )

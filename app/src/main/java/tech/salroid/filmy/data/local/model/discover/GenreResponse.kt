@@ -1,9 +1,11 @@
 package tech.salroid.filmy.data.local.model.discover
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import tech.salroid.filmy.data.local.model.Genre
 
+@Serializable
 data class GenreResponse(
-    @SerializedName("genres")
+    @SerialName("genres")
     var genres: List<Genre> = emptyList()
 )

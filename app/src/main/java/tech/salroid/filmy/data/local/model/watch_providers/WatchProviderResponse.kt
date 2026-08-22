@@ -1,12 +1,14 @@
 package tech.salroid.filmy.data.local.model.watch_providers
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class WatchProviderResponse(
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("results")
+    @SerialName("results")
     var results: Map<String, WatchProviderCountry> = emptyMap()
 )

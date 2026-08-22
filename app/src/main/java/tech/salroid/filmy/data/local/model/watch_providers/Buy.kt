@@ -1,18 +1,20 @@
 package tech.salroid.filmy.data.local.model.watch_providers
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Buy(
 
-    @SerializedName("display_priority")
+    @SerialName("display_priority")
     var displayPriority: Int? = null,
 
-    @SerializedName("logo_path")
+    @SerialName("logo_path")
     var logoPath: String? = null,
 
-    @SerializedName("provider_id")
+    @SerialName("provider_id")
     var providerId: Int? = null,
 
-    @SerializedName("provider_name")
+    @SerialName("provider_name")
     var providerName: String? = null
 )

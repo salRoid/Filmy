@@ -1,27 +1,29 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Review(
 
-    @SerializedName("author")
+    @SerialName("author")
     var author: String? = null,
 
-    @SerializedName("author_details")
-    var authorDetails: AuthorDetails? = AuthorDetails(),
+    @SerialName("author_details")
+    var authorDetails: AuthorDetails? = null,
 
-    @SerializedName("content")
+    @SerialName("content")
     var content: String? = null,
 
-    @SerializedName("created_at")
+    @SerialName("created_at")
     var createdAt: String? = null,
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: String? = null,
 
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     var updatedAt: String? = null,
 
-    @SerializedName("url")
+    @SerialName("url")
     var url: String? = null
 )

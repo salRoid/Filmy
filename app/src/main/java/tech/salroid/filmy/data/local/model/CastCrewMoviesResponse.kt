@@ -1,14 +1,16 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CastCrewMoviesResponse(
-    @SerializedName("cast")
+    @SerialName("cast")
     var castMovies: ArrayList<CastMovie> = arrayListOf(),
 
-    @SerializedName("crew")
+    @SerialName("crew")
     var crewMovies: ArrayList<CrewMovie> = arrayListOf(),
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null
 )

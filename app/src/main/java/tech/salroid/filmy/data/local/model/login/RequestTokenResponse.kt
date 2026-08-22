@@ -1,24 +1,26 @@
 package tech.salroid.filmy.data.local.model.login
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RequestTokenResponse(
 
-    @SerializedName("status_message")
+    @SerialName("status_message")
     var statusMessage: String? = null,
 
-    @SerializedName("request_token")
+    @SerialName("request_token")
     var requestToken: String? = null,
 
-    @SerializedName("success")
+    @SerialName("success")
     var success: Boolean? = null,
 
-    @SerializedName("status_code")
+    @SerialName("status_code")
     var statusCode: Int? = null,
 
-    @SerializedName("access_token")
+    @SerialName("access_token")
     var accessToken: String? = null,
 
-    @SerializedName("account_id")
+    @SerialName("account_id")
     var accountId: String? = null
 )

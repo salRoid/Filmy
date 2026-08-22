@@ -1,41 +1,43 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 import java.io.Serializable
 
+@KSerializable
 data class Crew(
 
-    @SerializedName("adult")
+    @SerialName("adult")
     var adult: Boolean? = null,
 
-    @SerializedName("gender")
+    @SerialName("gender")
     var gender: Int? = null,
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("known_for_department")
+    @SerialName("known_for_department")
     var knownForDepartment: String? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("original_name")
+    @SerialName("original_name")
     var originalName: String? = null,
 
-    @SerializedName("popularity")
+    @SerialName("popularity")
     var popularity: Double? = null,
 
-    @SerializedName("profile_path")
+    @SerialName("profile_path")
     var profilePath: String? = null,
 
-    @SerializedName("credit_id")
+    @SerialName("credit_id")
     var creditId: String? = null,
 
-    @SerializedName("department")
+    @SerialName("department")
     var department: String? = null,
 
-    @SerializedName("job")
+    @SerialName("job")
     var job: String? = null
 
 ) : Serializable

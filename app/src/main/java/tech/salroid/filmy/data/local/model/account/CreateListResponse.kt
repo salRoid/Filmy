@@ -1,17 +1,19 @@
 package tech.salroid.filmy.data.local.model.account
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CreateListResponse(
-    @SerializedName("id")
+    @SerialName("id")
     var listId: Int? = null,
 
-    @SerializedName("success")
+    @SerialName("success")
     var success: Boolean? = null,
 
-    @SerializedName("status_code")
+    @SerialName("status_code")
     var statusCode: Int? = null,
 
-    @SerializedName("status_message")
+    @SerialName("status_message")
     var statusMessage: String? = null,
 )

@@ -1,19 +1,21 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TvShowResponse(
 
-    @SerializedName("page")
+    @SerialName("page")
     var page: Int? = null,
 
-    @SerializedName("results")
+    @SerialName("results")
     var results: ArrayList<TvShow> = arrayListOf(),
 
-    @SerializedName("total_results")
+    @SerialName("total_results")
     var totalResults: Int? = null,
 
-    @SerializedName("total_pages")
+    @SerialName("total_pages")
     var totalPages: Int? = null,
 
     var resetLocal: Boolean = false

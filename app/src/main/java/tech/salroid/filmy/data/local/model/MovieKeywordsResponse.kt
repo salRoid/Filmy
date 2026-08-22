@@ -1,8 +1,10 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MovieKeywordsResponse(
-    @SerializedName("keywords")
+    @SerialName("keywords")
     var keywords: List<Keyword> = emptyList()
 )

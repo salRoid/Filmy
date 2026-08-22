@@ -1,93 +1,95 @@
 package tech.salroid.filmy.data.local.db.entity
 
 import androidx.room.Entity
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import tech.salroid.filmy.data.local.model.*
 import tech.salroid.filmy.data.local.model.Collection
 
 @Entity(tableName = "movie_details", primaryKeys = ["id", "type"])
+@Serializable
 data class MovieDetails(
 
-    @SerializedName("id")
-    var id: Int,
+    @SerialName("id")
+    var id: Int = 0,
 
-    @SerializedName("adult")
+    @SerialName("adult")
     var adult: Boolean? = null,
 
-    @SerializedName("backdrop_path")
+    @SerialName("backdrop_path")
     var backdropPath: String? = null,
 
-    @SerializedName("belongs_to_collection")
+    @SerialName("belongs_to_collection")
     var belongsToCollection: Collection? = null,
 
-    @SerializedName("budget")
+    @SerialName("budget")
     var budget: Long? = null,
 
-    @SerializedName("genres")
+    @SerialName("genres")
     var genres: ArrayList<Genre> = arrayListOf(),
 
-    @SerializedName("homepage")
+    @SerialName("homepage")
     var homepage: String? = null,
 
-    @SerializedName("imdb_id")
+    @SerialName("imdb_id")
     var imdbId: String? = null,
 
-    @SerializedName("original_language")
+    @SerialName("original_language")
     var originalLanguage: String? = null,
 
-    @SerializedName(value = "original_title", alternate = ["original_name"])
+    @SerialName("original_title")
     var originalTitle: String? = null,
 
-    @SerializedName("overview")
+    @SerialName("overview")
     var overview: String? = null,
 
-    @SerializedName("popularity")
+    @SerialName("popularity")
     var popularity: Double? = null,
 
-    @SerializedName("poster_path")
+    @SerialName("poster_path")
     var posterPath: String? = null,
 
-    @SerializedName("production_companies")
+    @SerialName("production_companies")
     var productionCompanies: ArrayList<ProductionCompanies> = arrayListOf(),
 
-    @SerializedName("production_countries")
+    @SerialName("production_countries")
     var productionCountries: ArrayList<ProductionCountries> = arrayListOf(),
 
-    @SerializedName(value = "release_date", alternate = ["first_air_date"])
+    @SerialName("release_date")
     var releaseDate: String? = null,
 
-    @SerializedName("revenue")
+    @SerialName("revenue")
     var revenue: Long? = null,
 
-    @SerializedName("runtime")
+    @SerialName("runtime")
     var runtime: Int? = null,
 
-    @SerializedName("spoken_languages")
+    @SerialName("spoken_languages")
     var spokenLanguages: ArrayList<SpokenLanguages> = arrayListOf(),
 
-    @SerializedName("status")
+    @SerialName("status")
     var status: String? = null,
 
-    @SerializedName("tagline")
+    @SerialName("tagline")
     var tagline: String? = null,
 
-    @SerializedName(value = "title", alternate = ["name"])
+    @SerialName("title")
     var title: String? = null,
 
-    @SerializedName("video")
+    @SerialName("video")
     var video: Boolean? = null,
 
-    @SerializedName("vote_average")
+    @SerialName("vote_average")
     var voteAverage: Double? = null,
 
-    @SerializedName("vote_count")
+    @SerialName("vote_count")
     var voteCount: Long? = null,
 
-    @SerializedName("trailers")
-    var trailers: Trailers? = Trailers(),
+    @SerialName("trailers")
+    var trailers: Trailers? = null,
 
-    @SerializedName("videos")
-    var videos: Videos? = Videos(),
+    @SerialName("videos")
+    var videos: Videos? = null,
 
     var type: Int = 0,
 

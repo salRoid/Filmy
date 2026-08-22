@@ -1,15 +1,17 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SpokenLanguages(
 
-    @SerializedName("english_name")
+    @SerialName("english_name")
     var englishName: String? = null,
 
-    @SerializedName("iso_639_1")
+    @SerialName("iso_639_1")
     var iso6391: String? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null
 )

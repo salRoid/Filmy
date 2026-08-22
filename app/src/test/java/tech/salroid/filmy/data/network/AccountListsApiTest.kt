@@ -2,6 +2,7 @@ package tech.salroid.filmy.data.network
 
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -15,7 +16,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 /**
  * Pins the TMDB v4 list calls to the request shapes and response fields the
@@ -42,7 +43,10 @@ class AccountListsApiTest {
                         .build()
                 }).build()
             )
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(
+                Json { ignoreUnknownKeys = true; isLenient = true; coerceInputValues = true }
+                    .asConverterFactory("application/json".toMediaType())
+            )
             .build()
             .create(AccountApiService::class.java)
     )
@@ -135,7 +139,7 @@ class AccountListsApiTest {
 
         val request = lastRequest!!
         assertEquals("https://api.themoviedb.org/4/list", request.url.toString())
-        assertEquals("""{"name":"Weekend","description":"","iso_639_1":"en"}""", request.bodyText())
+        assertEquals("""{"name":"Weekend","iso_639_1":"en"}""", request.bodyText())
         assertEquals(99, created.listId)
     }
 

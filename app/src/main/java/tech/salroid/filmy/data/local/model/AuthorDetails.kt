@@ -1,21 +1,23 @@
 package tech.salroid.filmy.data.local.model
 
 import android.content.Context
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import tech.salroid.filmy.R
 
+@Serializable
 data class AuthorDetails(
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("username")
+    @SerialName("username")
     var username: String? = null,
 
-    @SerializedName("avatar_path")
+    @SerialName("avatar_path")
     var avatarPath: String? = null,
 
-    @SerializedName("rating")
+    @SerialName("rating")
     var rating: Int? = null
 ) {
 

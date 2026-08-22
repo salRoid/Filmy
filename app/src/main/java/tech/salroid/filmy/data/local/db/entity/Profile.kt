@@ -2,30 +2,32 @@ package tech.salroid.filmy.data.local.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Entity(tableName = "profile")
+@Serializable
 data class Profile(
 
-    @SerializedName("avatar")
-    var avatar: Avatar? = Avatar(),
+    @SerialName("avatar")
+    var avatar: Avatar? = null,
 
     @PrimaryKey
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("iso_639_1")
+    @SerialName("iso_639_1")
     var iso6391: String? = null,
 
-    @SerializedName("iso_3166_1")
+    @SerialName("iso_3166_1")
     var iso31661: String? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("include_adult")
+    @SerialName("include_adult")
     var includeAdult: Boolean? = null,
 
-    @SerializedName("username")
+    @SerialName("username")
     var username: String? = null
 )

@@ -1,18 +1,21 @@
 package tech.salroid.filmy.data.local.model.account
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /** Body for adding to / removing from a TMDB v4 list, which holds both movies and shows. */
+@Serializable
 data class ListItemsRequest(
-    @SerializedName("items")
+    @SerialName("items")
     var items: List<ListItemRef>,
 )
 
+@Serializable
 data class ListItemRef(
-    @SerializedName("media_type")
+    @SerialName("media_type")
     var mediaType: String,
 
-    @SerializedName("media_id")
+    @SerialName("media_id")
     var mediaId: Int,
 ) {
     companion object {

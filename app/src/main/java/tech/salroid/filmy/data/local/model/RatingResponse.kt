@@ -1,114 +1,116 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RatingResponse(
 
-    @SerializedName("Title")
+    @SerialName("Title")
     var title: String? = null,
 
-    @SerializedName("Year")
+    @SerialName("Year")
     var year: String? = null,
 
-    @SerializedName("Rated")
+    @SerialName("Rated")
     var rated: String? = null,
 
-    @SerializedName("Released")
+    @SerialName("Released")
     var released: String? = null,
 
-    @SerializedName("Runtime")
+    @SerialName("Runtime")
     var runtime: String? = null,
 
-    @SerializedName("Genre")
+    @SerialName("Genre")
     var genre: String? = null,
 
-    @SerializedName("Director")
+    @SerialName("Director")
     var director: String? = null,
 
-    @SerializedName("Writer")
+    @SerialName("Writer")
     var writer: String? = null,
 
-    @SerializedName("Actors")
+    @SerialName("Actors")
     var actors: String? = null,
 
-    @SerializedName("Plot")
+    @SerialName("Plot")
     var plot: String? = null,
 
-    @SerializedName("Language")
+    @SerialName("Language")
     var language: String? = null,
 
-    @SerializedName("Country")
+    @SerialName("Country")
     var country: String? = null,
 
-    @SerializedName("Awards")
+    @SerialName("Awards")
     var awards: String? = null,
 
-    @SerializedName("Poster")
+    @SerialName("Poster")
     var poster: String? = null,
 
-    @SerializedName("Ratings")
+    @SerialName("Ratings")
     var ratings: ArrayList<Ratings> = arrayListOf(),
 
-    @SerializedName("Metascore")
+    @SerialName("Metascore")
     var metascore: String? = null,
 
-    @SerializedName("imdbRating")
+    @SerialName("imdbRating")
     var imdbRating: String? = null,
 
-    @SerializedName("imdbVotes")
+    @SerialName("imdbVotes")
     var imdbVotes: String? = null,
 
-    @SerializedName("imdbID")
+    @SerialName("imdbID")
     var imdbID: String? = null,
 
-    @SerializedName("Type")
+    @SerialName("Type")
     var type: String? = null,
 
-    @SerializedName("tomatoMeter")
+    @SerialName("tomatoMeter")
     var tomatoMeter: String? = null,
 
-    @SerializedName("tomatoImage")
+    @SerialName("tomatoImage")
     var tomatoImage: String? = null,
 
-    @SerializedName("tomatoRating")
+    @SerialName("tomatoRating")
     var tomatoRating: String? = null,
 
-    @SerializedName("tomatoReviews")
+    @SerialName("tomatoReviews")
     var tomatoReviews: String? = null,
 
-    @SerializedName("tomatoFresh")
+    @SerialName("tomatoFresh")
     var tomatoFresh: String? = null,
 
-    @SerializedName("tomatoRotten")
+    @SerialName("tomatoRotten")
     var tomatoRotten: String? = null,
 
-    @SerializedName("tomatoConsensus")
+    @SerialName("tomatoConsensus")
     var tomatoConsensus: String? = null,
 
-    @SerializedName("tomatoUserMeter")
+    @SerialName("tomatoUserMeter")
     var tomatoUserMeter: String? = null,
 
-    @SerializedName("tomatoUserRating")
+    @SerialName("tomatoUserRating")
     var tomatoUserRating: String? = null,
 
-    @SerializedName("tomatoUserReviews")
+    @SerialName("tomatoUserReviews")
     var tomatoUserReviews: String? = null,
 
-    @SerializedName("tomatoURL")
+    @SerialName("tomatoURL")
     var tomatoURL: String? = null,
 
-    @SerializedName("DVD")
+    @SerialName("DVD")
     var dvd: String? = null,
 
-    @SerializedName("BoxOffice")
+    @SerialName("BoxOffice")
     var boxOffice: String? = null,
 
-    @SerializedName("Production")
+    @SerialName("Production")
     var production: String? = null,
 
-    @SerializedName("Website")
+    @SerialName("Website")
     var website: String? = null,
 
-    @SerializedName("Response")
+    @SerialName("Response")
     var response: String? = null
 )

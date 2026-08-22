@@ -1,27 +1,31 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ReleaseDatesResponse(
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("results")
+    @SerialName("results")
     var results: List<CountryReleaseDates> = emptyList(),
 )
 
+@Serializable
 data class CountryReleaseDates(
-    @SerializedName("iso_3166_1")
+    @SerialName("iso_3166_1")
     var iso31661: String? = null,
 
-    @SerializedName("release_dates")
+    @SerialName("release_dates")
     var releaseDates: List<ReleaseDateEntry> = emptyList(),
 )
 
+@Serializable
 data class ReleaseDateEntry(
-    @SerializedName("certification")
+    @SerialName("certification")
     var certification: String? = null,
 
-    @SerializedName("type")
+    @SerialName("type")
     var type: Int? = null,
 )

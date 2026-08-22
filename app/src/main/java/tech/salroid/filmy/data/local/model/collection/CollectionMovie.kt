@@ -1,17 +1,19 @@
 package tech.salroid.filmy.data.local.model.collection
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CollectionMovie(
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int,
 
-    @SerializedName("name")
+    @SerialName("name")
     var title: String? = null,
 
-    @SerializedName("poster_path")
+    @SerialName("poster_path")
     var posterPath: String? = null,
 
-    @SerializedName("release_date")
+    @SerialName("release_date")
     var releaseDate: String? = null,
 )

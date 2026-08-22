@@ -1,118 +1,120 @@
 package tech.salroid.filmy.data.local.db
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-
-import com.google.gson.reflect.TypeToken
+import kotlinx.serialization.json.Json
 import tech.salroid.filmy.data.local.db.entity.Avatar
 import tech.salroid.filmy.data.local.model.*
 import tech.salroid.filmy.data.local.model.Collection
-import java.lang.reflect.Type
 
 class Converters {
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        coerceInputValues = true
+    }
+
     @TypeConverter
     fun fromString(value: String?): ArrayList<Int>? {
-        val listType: Type = object : TypeToken<ArrayList<Int>?>() {}.type
-        return Gson().fromJson(value, listType)
+        if (value.isNullOrEmpty()) return null
+        return ArrayList(json.decodeFromString<List<Int>>(value))
     }
 
     @TypeConverter
     fun fromArrayList(list: ArrayList<Int>?): String? {
-        val gson = Gson()
-        return gson.toJson(list)
+        if (list == null) return null
+        return json.encodeToString(list.toList())
     }
 
     @TypeConverter
     fun fromStringOfCollection(value: String?): Collection? {
-        val listType: Type = object : TypeToken<Collection?>() {}.type
-        return Gson().fromJson(value, listType)
+        if (value.isNullOrEmpty()) return null
+        return json.decodeFromString<Collection>(value)
     }
 
     @TypeConverter
     fun fromCollection(collection: Collection?): String? {
-        val gson = Gson()
-        return gson.toJson(collection)
+        if (collection == null) return null
+        return json.encodeToString(collection)
     }
 
     @TypeConverter
     fun fromStringOfArrayListOfGenres(value: String?): ArrayList<Genre> {
         if (value.isNullOrEmpty()) return arrayListOf()
-        val listType: Type = object : TypeToken<ArrayList<Genre>>() {}.type
-        return Gson().fromJson(value, listType) ?: arrayListOf()
+        return ArrayList(json.decodeFromString<List<Genre>>(value))
     }
 
     @TypeConverter
     fun fromArrayListOfGenres(genres: ArrayList<Genre>): String {
-        return Gson().toJson(genres)
+        return json.encodeToString(genres.toList())
     }
 
     @TypeConverter
     fun fromStringOfArrayListOfProductionCompanies(value: String?): ArrayList<ProductionCompanies> {
         if (value.isNullOrEmpty()) return arrayListOf()
-        val listType: Type = object : TypeToken<ArrayList<ProductionCompanies>>() {}.type
-        return Gson().fromJson(value, listType) ?: arrayListOf()
+        return ArrayList(json.decodeFromString<List<ProductionCompanies>>(value))
     }
 
     @TypeConverter
     fun fromArrayListOfProductionCompanies(genres: ArrayList<ProductionCompanies>): String {
-        return Gson().toJson(genres)
+        return json.encodeToString(genres.toList())
     }
 
     @TypeConverter
     fun fromStringOfArrayListOfProductionCountries(value: String?): ArrayList<ProductionCountries> {
         if (value.isNullOrEmpty()) return arrayListOf()
-        val listType: Type = object : TypeToken<ArrayList<ProductionCountries>>() {}.type
-        return Gson().fromJson(value, listType) ?: arrayListOf()
+        return ArrayList(json.decodeFromString<List<ProductionCountries>>(value))
     }
 
     @TypeConverter
     fun fromArrayListOfProductionCountries(genres: ArrayList<ProductionCountries>): String {
-        return Gson().toJson(genres)
+        return json.encodeToString(genres.toList())
     }
 
     @TypeConverter
     fun fromStringOfArrayListOfSpokenLanguages(value: String?): ArrayList<SpokenLanguages> {
         if (value.isNullOrEmpty()) return arrayListOf()
-        val listType: Type = object : TypeToken<ArrayList<SpokenLanguages>>() {}.type
-        return Gson().fromJson(value, listType) ?: arrayListOf()
+        return ArrayList(json.decodeFromString<List<SpokenLanguages>>(value))
     }
 
     @TypeConverter
     fun fromArrayListOfSpokenLanguages(genres: ArrayList<SpokenLanguages>): String {
-        return Gson().toJson(genres)
+        return json.encodeToString(genres.toList())
     }
 
     @TypeConverter
     fun fromStringOfTrailers(value: String?): Trailers? {
-        val listType: Type = object : TypeToken<Trailers?>() {}.type
-        return Gson().fromJson(value, listType)
+        if (value.isNullOrEmpty()) return null
+        return json.decodeFromString<Trailers>(value)
     }
 
     @TypeConverter
     fun fromTrailers(genres: Trailers?): String? {
-        return Gson().toJson(genres)
+        if (genres == null) return null
+        return json.encodeToString(genres)
     }
 
     @TypeConverter
     fun fromStringOfAvatar(value: String?): Avatar? {
-        val listType: Type = object : TypeToken<Avatar?>() {}.type
-        return Gson().fromJson(value, listType)
+        if (value.isNullOrEmpty()) return null
+        return json.decodeFromString<Avatar>(value)
     }
 
     @TypeConverter
     fun fromAvatar(avatar: Avatar?): String? {
-        return Gson().toJson(avatar)
+        if (avatar == null) return null
+        return json.encodeToString(avatar)
     }
 
     @TypeConverter
     fun fromStringOfVideos(value: String?): Videos? {
-        val listType: Type = object : TypeToken<Videos?>() {}.type
-        return Gson().fromJson(value, listType)
+        if (value.isNullOrEmpty()) return null
+        return json.decodeFromString<Videos>(value)
     }
 
     @TypeConverter
     fun fromVideos(videos: Videos?): String? {
-        return Gson().toJson(videos)
+        if (videos == null) return null
+        return json.encodeToString(videos)
     }
 }

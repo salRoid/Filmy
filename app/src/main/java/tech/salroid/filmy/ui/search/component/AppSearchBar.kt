@@ -1,8 +1,12 @@
 package tech.salroid.filmy.ui.search.component
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,11 +38,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
@@ -93,13 +99,17 @@ fun AppSearchBar(
                     expanded = expanded,
                     onExpandedChange = onExpandedChange,
                     placeholder = {
-                        Text(
-                            modifier = Modifier.padding(start = 16.dp),
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.Medium
-                            ),
-                            text = "Search Movies or Shows"
-                        )
+                        if (expanded) {
+                            Text(
+                                modifier = Modifier.padding(start = 16.dp),
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Medium
+                                ),
+                                text = "Search Movies, Shows or People"
+                            )
+                        } else {
+                            RotatingSearchPlaceholder(modifier = Modifier.padding(start = 16.dp))
+                        }
                     },
                     trailingIcon = {
                         if (textFieldState.text.isNotEmpty()) {
@@ -181,6 +191,45 @@ fun AppSearchBar(
                     }
                 }
             }
+        }
+    }
+}
+
+private val searchPlaceholderSubjects = listOf("Movies", "Shows", "People")
+
+@Composable
+private fun RotatingSearchPlaceholder(modifier: Modifier = Modifier) {
+    var index by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(4800)
+            index = (index + 1) % searchPlaceholderSubjects.size
+        }
+    }
+
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = "Search ",
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
+        )
+        AnimatedContent(
+            targetState = index,
+            modifier = Modifier.clipToBounds(),
+            transitionSpec = {
+                (slideInVertically { height -> height } + fadeIn()) togetherWith
+                    (slideOutVertically { height -> -height } + fadeOut())
+            },
+            label = "search_placeholder_subject"
+        ) { subjectIndex ->
+            Text(
+                text = searchPlaceholderSubjects[subjectIndex],
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

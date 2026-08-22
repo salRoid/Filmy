@@ -1,9 +1,7 @@
 package tech.salroid.filmy.ui.shows
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Tune
@@ -27,6 +25,7 @@ import tech.salroid.filmy.ui.common.components.LoadingWidget
 import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.shows.components.ShowsList
 import tech.salroid.filmy.ui.search.SearchScreenState
+import tech.salroid.filmy.utility.toUserMessage
 
 private fun labelFor(category: TvShow.ShowType): Int = when (category) {
     TvShow.ShowType.TRENDING -> R.string.tv_label_trending
@@ -58,65 +57,65 @@ fun ShowsScreen(
     onQuickToggleWatchlist: (TvShowPreview) -> Unit = {},
     onQuickToggleWatched: (TvShowPreview) -> Unit = {}
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        HomeTopBar(
-            textFieldState = textFieldState,
-            searchUiState = searchUiState,
-            isSearchExpanded = isSearchExpanded,
-            onSearchExpandedChange = onSearchExpandedChange,
-            onSearch = onSearch,
-            onSearchResultClick = onSearchResultClick,
-            recentSearches = recentSearches,
-            onRecentSearchClick = onRecentSearchClick,
-            onRemoveRecentSearch = onRemoveRecentSearch,
-            onClearRecentSearches = onClearRecentSearches,
-            trailingContent = {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CategorySelector(
-                        categories = TvShow.ShowType.entries,
-                        selected = selectedCategory,
-                        label = { stringResource(labelFor(it)) },
-                        onSelected = onCategorySelected
+    HomeTopBar(
+        modifier = modifier,
+        textFieldState = textFieldState,
+        searchUiState = searchUiState,
+        isSearchExpanded = isSearchExpanded,
+        onSearchExpandedChange = onSearchExpandedChange,
+        onSearch = onSearch,
+        onSearchResultClick = onSearchResultClick,
+        recentSearches = recentSearches,
+        onRecentSearchClick = onRecentSearchClick,
+        onRemoveRecentSearch = onRemoveRecentSearch,
+        onClearRecentSearches = onClearRecentSearches,
+        trailingContent = {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CategorySelector(
+                    categories = TvShow.ShowType.entries,
+                    selected = selectedCategory,
+                    label = { stringResource(labelFor(it)) },
+                    onSelected = onCategorySelected
+                )
+                IconButton(onClick = onFilterClick) {
+                    Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.discover_filters))
+                }
+            }
+        },
+        content = {
+            when (val state = shows.loadState.refresh) {
+                is LoadState.Loading -> {
+                    LoadingWidget(modifier = Modifier.weight(1f))
+                }
+                is LoadState.Error -> {
+                    ErrorWidget(
+                        modifier = Modifier.weight(1f),
+                        message = state.error.toUserMessage(),
+                        onRetryClick = { shows.retry() }
                     )
-                    IconButton(onClick = onFilterClick) {
-                        Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.discover_filters))
+                }
+                else -> {
+                    if (shows.itemCount == 0 && shows.loadState.append is LoadState.NotLoading && shows.loadState.append.endOfPaginationReached) {
+                        ErrorWidget(
+                            modifier = Modifier.weight(1f),
+                            message = "No shows found",
+                            onRetryClick = { shows.refresh() }
+                        )
+                    } else {
+                        ShowsList(
+                            modifier = Modifier.weight(1f),
+                            shows = shows,
+                            onShowClick = onShowClick,
+                            fetchQuickActionState = fetchQuickActionState,
+                            onQuickToggleWatchlist = onQuickToggleWatchlist,
+                            onQuickToggleWatched = onQuickToggleWatched
+                        )
                     }
                 }
             }
-        )
-
-        when (val state = shows.loadState.refresh) {
-            is LoadState.Loading -> {
-                LoadingWidget(modifier = Modifier.weight(1f))
-            }
-            is LoadState.Error -> {
-                ErrorWidget(
-                    modifier = Modifier.weight(1f),
-                    message = state.error.message ?: "Something went wrong",
-                    onRetryClick = { shows.retry() }
-                )
-            }
-            else -> {
-                if (shows.itemCount == 0 && shows.loadState.append is LoadState.NotLoading && shows.loadState.append.endOfPaginationReached) {
-                    ErrorWidget(
-                        modifier = Modifier.weight(1f),
-                        message = "No shows found",
-                        onRetryClick = { shows.refresh() }
-                    )
-                } else {
-                    ShowsList(
-                        modifier = Modifier.weight(1f),
-                        shows = shows,
-                        onShowClick = onShowClick,
-                        fetchQuickActionState = fetchQuickActionState,
-                        onQuickToggleWatchlist = onQuickToggleWatchlist,
-                        onQuickToggleWatched = onQuickToggleWatched
-                    )
-                }
-            }
         }
-    }
+    )
 }

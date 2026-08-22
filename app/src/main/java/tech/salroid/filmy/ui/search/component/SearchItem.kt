@@ -23,12 +23,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import tech.salroid.filmy.R
 import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.theme.AppTheme
 
@@ -59,7 +61,10 @@ fun SearchItem(
                 },
                 contentScale = ContentScale.Crop,
                 model = searchPreview.posterUrl,
-                contentDescription = "${searchPreview.title} Poster Image"
+                contentDescription = "${searchPreview.title} Poster Image",
+                error = painterResource(
+                    if (isPerson) R.drawable.default_avatar else R.drawable.poster_error_placeholder
+                )
             )
 
             Spacer(modifier = Modifier.padding(start = 16.dp))

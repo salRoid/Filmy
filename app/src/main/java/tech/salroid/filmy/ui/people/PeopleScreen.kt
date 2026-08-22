@@ -36,6 +36,7 @@ import tech.salroid.filmy.data.local.model.Person
 import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.common.components.LoadingWidget
 import tech.salroid.filmy.ui.common.components.PaginatedPreviewList
+import tech.salroid.filmy.utility.toUserMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +80,7 @@ private fun PeopleContent(
         is LoadState.Error -> {
             ErrorWidget(
                 modifier = Modifier.fillMaxSize(),
-                message = state.error.message ?: "Something went wrong",
+                message = state.error.toUserMessage(),
                 onRetryClick = { people.retry() }
             )
         }

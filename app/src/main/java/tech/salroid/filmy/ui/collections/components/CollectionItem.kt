@@ -80,7 +80,8 @@ fun CollectionItem(
                     .height(150.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(R.drawable.movie_skeleton)
+                placeholder = painterResource(R.drawable.movie_skeleton),
+                error = painterResource(R.drawable.poster_error_placeholder)
             )
             Column(
                 modifier = Modifier

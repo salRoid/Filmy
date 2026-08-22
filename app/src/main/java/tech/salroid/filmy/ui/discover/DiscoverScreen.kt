@@ -32,6 +32,7 @@ import tech.salroid.filmy.ui.common.components.PaginatedPreviewList
 import tech.salroid.filmy.ui.discover.components.DiscoverFilterSheet
 import tech.salroid.filmy.ui.movies.components.MovieItem
 import tech.salroid.filmy.ui.shows.components.ShowItem
+import tech.salroid.filmy.utility.toUserMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +86,7 @@ fun DiscoverScreen(
                     is LoadState.Error -> {
                         ErrorWidget(
                             modifier = Modifier.fillMaxSize(),
-                            message = state.error.message ?: "Something went wrong",
+                            message = state.error.toUserMessage(),
                             onRetryClick = { shows.retry() }
                         )
                     }
@@ -115,7 +116,7 @@ fun DiscoverScreen(
                     is LoadState.Error -> {
                         ErrorWidget(
                             modifier = Modifier.fillMaxSize(),
-                            message = state.error.message ?: "Something went wrong",
+                            message = state.error.toUserMessage(),
                             onRetryClick = { movies.retry() }
                         )
                     }

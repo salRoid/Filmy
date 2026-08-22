@@ -173,7 +173,8 @@ private fun ListMovieItem(
                     .clip(RoundedCornerShape(corner = CornerSize(8.dp))),
                 contentScale = ContentScale.Crop,
                 model = stringResource(R.string.movie_poster_url, movie.posterPath ?: ""),
-                contentDescription = movie.title
+                contentDescription = movie.title,
+                error = painterResource(R.drawable.poster_error_placeholder)
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp),

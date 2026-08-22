@@ -10,6 +10,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.window.core.layout.WindowSizeClass
 import tech.salroid.filmy.ui.LocalWindowSizeClass
+import tech.salroid.filmy.utility.toUserMessage
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -133,7 +134,7 @@ fun <T : Any> PaginatedPreviewList(
                 is LoadState.Error -> {
                     ErrorWidget(
                         modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        message = state.error.message ?: "Something went wrong",
+                        message = state.error.toUserMessage(),
                         onRetryClick = { items.retry() }
                     )
                 }

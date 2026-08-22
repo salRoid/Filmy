@@ -14,7 +14,10 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.WindowCompat
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.snackbar.Snackbar
+import retrofit2.HttpException
 import tech.salroid.filmy.R
+import java.io.IOException
+import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -124,4 +127,16 @@ fun Context.shareMedia(title: String, tagline: String?, imdbId: String?, isTvSho
 
 fun Context.openUrl(url: String) {
     startActivity(Intent(ACTION_VIEW, url.toUri()))
+}
+
+/**
+ * Maps a network/parsing failure to copy a user can act on, instead of the
+ * raw exception message (e.g. "Unable to resolve host ...") that Retrofit/
+ * OkHttp throwables carry by default.
+ */
+fun Throwable.toUserMessage(): String = when (this) {
+    is SocketTimeoutException -> "Request timed out. Please try again."
+    is IOException -> "No internet connection. Check your network and try again."
+    is HttpException -> "Something went wrong on our end. Please try again later."
+    else -> "Something went wrong. Please try again."
 }

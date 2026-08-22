@@ -2,9 +2,7 @@ package tech.salroid.filmy.ui.movies
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -35,6 +33,7 @@ import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.common.icons.MoreUp
 import tech.salroid.filmy.ui.movies.components.MoviesList
 import tech.salroid.filmy.ui.search.SearchScreenState
+import tech.salroid.filmy.utility.toUserMessage
 
 private fun labelFor(category: Movie.MovieType): Int = when (category) {
     Movie.MovieType.TRENDING -> R.string.label_trending
@@ -69,19 +68,19 @@ fun MoviesScreen(
 ) {
     var showMoreMenu by remember { mutableStateOf(false) }
 
-    Column(modifier = modifier.fillMaxSize()) {
-        HomeTopBar(
-            textFieldState = textFieldState,
-            searchUiState = searchUiState,
-            isSearchExpanded = isSearchExpanded,
-            onSearchExpandedChange = onSearchExpandedChange,
-            onSearch = onSearch,
-            onSearchResultClick = onSearchResultClick,
-            recentSearches = recentSearches,
-            onRecentSearchClick = onRecentSearchClick,
-            onRemoveRecentSearch = onRemoveRecentSearch,
-            onClearRecentSearches = onClearRecentSearches,
-            trailingContent = {
+    HomeTopBar(
+        modifier = modifier,
+        textFieldState = textFieldState,
+        searchUiState = searchUiState,
+        isSearchExpanded = isSearchExpanded,
+        onSearchExpandedChange = onSearchExpandedChange,
+        onSearch = onSearch,
+        onSearchResultClick = onSearchResultClick,
+        recentSearches = recentSearches,
+        onRecentSearchClick = onRecentSearchClick,
+        onRemoveRecentSearch = onRemoveRecentSearch,
+        onClearRecentSearches = onClearRecentSearches,
+        trailingContent = {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -121,43 +120,43 @@ fun MoviesScreen(
                         }
                     }
                 }
-            }
-        )
+            },
+        content = {
+            when (val state = movies.loadState.refresh) {
+                is LoadState.Loading -> {
+                    LoadingWidget(modifier = Modifier.weight(1f))
+                }
 
-        when (val state = movies.loadState.refresh) {
-            is LoadState.Loading -> {
-                LoadingWidget(modifier = Modifier.weight(1f))
-            }
-
-            is LoadState.Error -> {
-                ErrorWidget(
-                    modifier = Modifier.weight(1f),
-                    message = state.error.message ?: "Something went wrong",
-                    onRetryClick = { movies.retry() }
-                )
-            }
-
-            else -> {
-                if (movies.itemCount == 0 &&
-                    movies.loadState.append is LoadState.NotLoading &&
-                    movies.loadState.append.endOfPaginationReached
-                ) {
+                is LoadState.Error -> {
                     ErrorWidget(
                         modifier = Modifier.weight(1f),
-                        message = "No movies found",
-                        onRetryClick = { movies.refresh() }
+                        message = state.error.toUserMessage(),
+                        onRetryClick = { movies.retry() }
                     )
-                } else {
-                    MoviesList(
-                        modifier = Modifier.weight(1f),
-                        movies = movies,
-                        onMovieClick = onMovieClick,
-                        fetchQuickActionState = fetchQuickActionState,
-                        onQuickToggleWatchlist = onQuickToggleWatchlist,
-                        onQuickToggleWatched = onQuickToggleWatched
-                    )
+                }
+
+                else -> {
+                    if (movies.itemCount == 0 &&
+                        movies.loadState.append is LoadState.NotLoading &&
+                        movies.loadState.append.endOfPaginationReached
+                    ) {
+                        ErrorWidget(
+                            modifier = Modifier.weight(1f),
+                            message = "No movies found",
+                            onRetryClick = { movies.refresh() }
+                        )
+                    } else {
+                        MoviesList(
+                            modifier = Modifier.weight(1f),
+                            movies = movies,
+                            onMovieClick = onMovieClick,
+                            fetchQuickActionState = fetchQuickActionState,
+                            onQuickToggleWatchlist = onQuickToggleWatchlist,
+                            onQuickToggleWatched = onQuickToggleWatched
+                        )
+                    }
                 }
             }
         }
-    }
+    )
 }

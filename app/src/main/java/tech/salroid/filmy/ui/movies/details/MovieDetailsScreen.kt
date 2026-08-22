@@ -141,13 +141,11 @@ fun MovieDetailsScreen(
             ErrorWidget(
                 modifier = modifier,
                 message = "Couldn't load details. Check your connection.",
-                onRetryClick = { viewModel.fetchAllMovieDetails(movieId.toString(), 0) }
-            )
-        } else {
-            DetailsSkeletonLoader(
-                modifier = modifier,
+                onRetryClick = { viewModel.fetchAllMovieDetails(movieId.toString(), 0) },
                 onBackClick = onBackNavigation
             )
+        } else {
+            DetailsSkeletonLoader(modifier = modifier)
         }
     }
 

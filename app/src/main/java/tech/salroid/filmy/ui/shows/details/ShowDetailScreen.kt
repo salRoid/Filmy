@@ -104,13 +104,11 @@ fun ShowDetailsScreen(
             ErrorWidget(
                 modifier = modifier,
                 message = "Couldn't load details. Check your connection.",
-                onRetryClick = { viewModel.fetchAllTvDetails(showId.toString(), 1) }
-            )
-        } else {
-            DetailsSkeletonLoader(
-                modifier = modifier,
+                onRetryClick = { viewModel.fetchAllTvDetails(showId.toString(), 1) },
                 onBackClick = onBackNavigation
             )
+        } else {
+            DetailsSkeletonLoader(modifier = modifier)
         }
     }
 }

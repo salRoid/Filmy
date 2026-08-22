@@ -19,8 +19,7 @@ import tech.salroid.filmy.utility.themeSystemBars
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsSkeletonLoader(
-    modifier: Modifier = Modifier,
-    onBackClick: () -> Unit = {}
+    modifier: Modifier = Modifier
 ) {
     val transition = rememberInfiniteTransition(label = "shimmer")
     val alpha by transition.animateFloat(

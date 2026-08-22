@@ -124,7 +124,8 @@ fun PreviewItem(
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop,
                         model = posterUrl,
-                        contentDescription = contentDescription
+                        contentDescription = contentDescription,
+                        error = painterResource(R.drawable.poster_error_placeholder)
                     )
                 } else {
                     val isWatchlisted = quickActionState?.isWatchlisted == true

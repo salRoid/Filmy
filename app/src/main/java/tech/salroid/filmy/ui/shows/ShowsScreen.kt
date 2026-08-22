@@ -101,7 +101,7 @@ fun ShowsScreen(
                     if (shows.itemCount == 0 && shows.loadState.append is LoadState.NotLoading && shows.loadState.append.endOfPaginationReached) {
                         ErrorWidget(
                             modifier = Modifier.weight(1f),
-                            message = "No shows found",
+                            message = stringResource(R.string.no_shows_found),
                             onRetryClick = { shows.refresh() }
                         )
                     } else {

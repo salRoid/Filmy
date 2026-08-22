@@ -232,7 +232,7 @@ fun PreferencesSection(
             onClick = { showThemeDialog = true }
         )
         PreferenceItem(
-            title = "Region",
+            title = stringResource(R.string.region),
             summary = currentRegionSummary,
             icon = painterResource(R.drawable.ic_language_24dp),
             onClick = { showRegionDialog = true }
@@ -305,7 +305,7 @@ fun RegionSelectionDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "Region",
+                text = stringResource(R.string.region),
                 style = MaterialTheme.typography.titleLarge
             )
         },
@@ -505,7 +505,7 @@ fun LoginCard(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_logout),
-                            contentDescription = "Logout",
+                            contentDescription = stringResource(R.string.logout),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }

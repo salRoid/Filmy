@@ -75,9 +75,9 @@ fun MyListsScreen(
             // Logged in, but from before lists could hold shows: one more
             // login grants the access they need.
             message = if (profile != null) {
-                "Lists can now hold shows as well as movies.\nLog in to TMDB once more to keep using your lists."
+                stringResource(R.string.lists_relogin_required_message)
             } else {
-                "Log in to your TMDB account to view\n and manage your lists"
+                stringResource(R.string.lists_login_required_message)
             },
             onLoginClick = startLogin,
             onBackClick = onBackClick
@@ -146,7 +146,7 @@ fun MyListsContent(
                 title = { Text(stringResource(R.string.my_lists)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -171,7 +171,7 @@ fun MyListsContent(
                             .fillMaxWidth()
                             .padding(16.dp)
                     ) {
-                        Text("+ " + stringResource(R.string.create_new_list))
+                        Text(stringResource(R.string.create_new_list_action, stringResource(R.string.create_new_list)))
                     }
                 }
 
@@ -217,7 +217,7 @@ private fun LoggedOutContent(
                 title = { Text(stringResource(R.string.my_lists)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -239,7 +239,7 @@ private fun LoggedOutContent(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = onLoginClick) {
-                Text("Log In")
+                Text(stringResource(R.string.login_now))
             }
         }
     }
@@ -266,7 +266,7 @@ private fun ListRow(
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "${list.itemCount ?: 0} items",
+                text = stringResource(R.string.list_item_count, list.itemCount ?: 0),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -70,7 +71,7 @@ fun AllCastCrewScreenContent(
                 title = { Text(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -101,7 +102,7 @@ fun AllCastCrewScreenContent(
                         .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No cast or crew found.")
+                    Text(stringResource(R.string.no_cast_or_crew_found))
                 }
             } else {
                 LazyVerticalGrid(

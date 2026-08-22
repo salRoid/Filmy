@@ -9,6 +9,7 @@
 
 
     <string name="app_name">Filmy</string>
+    <string name="back">Back</string>
     <string name="movies">Movies</string>
     <string name="cast">Cast</string>
     <string name="license">License</string>
@@ -198,6 +199,8 @@ POSSIBILITY OF SUCH DAMAGE.
     <string name="email">Email</string>
     <string name="website">Website</string>
     <string name="github">GitHub</string>
+    <string name="powered_by_tmdb">Powered by TMDB</string>
+    <string name="send_feedback">Send feedback</string>
 
     <!-- New: TODO Finalise position -->
     <string name="movie_poster_url" formatted="false" translatable="false">https://image.tmdb.org/t/p/w500%1$s</string>
@@ -215,6 +218,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <string name="discover_reset">Reset</string>
     <string name="discover_apply">Apply</string>
     <string name="discover_no_results">No results found</string>
+    <string name="no_entries_found">No entries found.</string>
     <string name="discover_sort_popularity">Most Popular</string>
     <string name="discover_sort_rating">Top Rated</string>
     <string name="discover_sort_newest">Newest</string>
@@ -276,5 +280,65 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <string name="where_to_watch">Where to Watch</string>
     <string name="no_watch_providers_available">No watch providers available for your region.</string>
+
+    <string name="people">People</string>
+    <string name="search_bar_hint">Search Movies, Shows or People</string>
+    <string name="clear_search">Clear search</string>
+    <string name="no_results_for_query">No results for \"%1$s\"</string>
+    <string name="search_prefix">"Search "</string>
+    <string name="recent_searches">Recent searches</string>
+    <string name="clear_all">Clear all</string>
+    <string name="poster_image_content_description">%1$s Poster Image</string>
+    <string name="badge_show">SHOW</string>
+    <string name="badge_person">PERSON</string>
+    <string name="widget_watchlist_title">Watchlist</string>
+    <string name="widget_watchlist_empty">No items in watchlist</string>
+    <string name="mark_watched">Mark watched</string>
+    <string name="unknown_title">Unknown</string>
+    <string name="media_type_movie">Movie</string>
+    <string name="media_type_show">Show</string>
+    <string name="widget_to_rate_title">To Rate</string>
+    <string name="widget_to_rate_empty">You\'re all caught up</string>
+    <string name="search_country">Search country</string>
+    <string name="login_required_title">Log in required</string>
+    <string name="share">Share</string>
+    <string name="more_options">More options</string>
+    <string name="popular_persons">Popular Persons</string>
+    <string name="budget">Budget</string>
+    <string name="revenue">Revenue</string>
+    <string name="awards">Awards</string>
+    <string name="reviews">Reviews</string>
+    <string name="part_of_a_collection">Part of a Collection</string>
+    <string name="ratings">Ratings</string>
+    <string name="studios">Studios</string>
+    <string name="seasons">Seasons</string>
+    <string name="episode_count">%1$d Episodes</string>
+    <string name="movie_item_content_description">%1$s - Movie Item</string>
+    <string name="show_item_content_description">%1$s - Show Item</string>
+    <string name="region">Region</string>
+    <string name="logout">Logout</string>
+    <string name="known_for">Known For</string>
+    <string name="no_cast_or_crew_found">No cast or crew found.</string>
+    <string name="episode_title_format">%1$d. %2$s</string>
+    <string name="welcome_to_filmy">Welcome to Filmy</string>
+    <string name="onboarding_country_subtitle">Set your country for accurate watch providers, ratings, and release dates.</string>
+    <string name="change_country">Change country</string>
+    <string name="continue_label">Continue</string>
+    <string name="no_reviews_found">No reviews found.</string>
+    <string name="popular_people_title">Popular People</string>
+    <string name="no_movies_found">No movies found</string>
+    <string name="no_people_found">No people found</string>
+    <string name="no_shows_found">No shows found</string>
+    <string name="couldnt_load_details">Couldn\'t load details. Check your connection.</string>
+    <string name="couldnt_load_person">Couldn\'t load this person. Check your connection.</string>
+    <string name="login_required_add_to_list_message">Log in to your TMDB account to add this to a list.</string>
+    <string name="photos">Photos</string>
+    <string name="backdrops">Backdrops</string>
+    <string name="posters">Posters</string>
+    <string name="close">Close</string>
+    <string name="create_new_list_action">+ %1$s</string>
+    <string name="lists_login_required_message">Log in to your TMDB account to view\n and manage your lists</string>
+    <string name="lists_relogin_required_message">Lists can now hold shows as well as movies. Log in to TMDB once more to keep using your lists.</string>
+    <string name="list_item_count">%1$d items</string>
 
 </resources>

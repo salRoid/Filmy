@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,7 +50,7 @@ fun RatingsSection(
         )
     ) {
         Text(
-            text = "Ratings",
+            text = stringResource(R.string.ratings),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)

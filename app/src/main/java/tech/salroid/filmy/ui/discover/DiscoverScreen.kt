@@ -61,7 +61,7 @@ fun DiscoverScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 },
                 actions = {

@@ -17,6 +17,7 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.action.Action
 import androidx.glance.action.actionParametersOf
@@ -113,6 +114,7 @@ fun WatchlistWidgetContent(
     watchlist: List<WatchlistItemData>,
     onItemClick: (WatchlistItemData) -> Action
 ) {
+    val context = LocalContext.current
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
@@ -131,7 +133,7 @@ fun WatchlistWidgetContent(
             )
             Spacer(modifier = GlanceModifier.width(8.dp))
             Text(
-                text = "Watchlist",
+                text = context.getString(R.string.widget_watchlist_title),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 16.sp,
@@ -148,7 +150,7 @@ fun WatchlistWidgetContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "No items in watchlist",
+                    text = context.getString(R.string.widget_watchlist_empty),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurfaceVariant,
                         fontSize = 14.sp
@@ -177,6 +179,7 @@ private fun WatchlistItem(
 ) {
     val item = data.movie
     val bitmap = data.bitmap
+    val context = LocalContext.current
 
     Row(
         modifier = GlanceModifier
@@ -201,7 +204,7 @@ private fun WatchlistItem(
 
         Column(modifier = GlanceModifier.defaultWeight()) {
             Text(
-                text = item.title ?: "Unknown",
+                text = item.title ?: context.getString(R.string.unknown_title),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSecondaryContainer,
                     fontSize = 14.sp,
@@ -210,7 +213,7 @@ private fun WatchlistItem(
                 maxLines = 1
             )
             Text(
-                text = if (item.type == 1) "Show" else "Movie",
+                text = if (item.type == 1) context.getString(R.string.media_type_show) else context.getString(R.string.media_type_movie),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSecondaryContainer,
                     fontSize = 12.sp
@@ -220,7 +223,7 @@ private fun WatchlistItem(
 
         Image(
             provider = ImageProvider(R.drawable.ic_check),
-            contentDescription = "Mark watched",
+            contentDescription = context.getString(R.string.mark_watched),
             modifier = GlanceModifier
                 .size(28.dp)
                 .padding(4.dp)

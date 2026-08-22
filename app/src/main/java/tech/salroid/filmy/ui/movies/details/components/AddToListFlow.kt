@@ -3,7 +3,9 @@ package tech.salroid.filmy.ui.movies.details.components
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.common.components.LoginRequiredDialog
 import tech.salroid.filmy.ui.details.MovieDetailsViewModel
 import tech.salroid.filmy.ui.home.LoginViewModel
@@ -50,9 +52,9 @@ fun AddToListFlow(
             // Someone with a session but no list access logged in before
             // lists could hold shows; one more login upgrades them.
             message = if (viewModel.isLoggedIn()) {
-                "Lists can now hold shows as well as movies. Log in to TMDB once more to keep using your lists."
+                stringResource(R.string.lists_relogin_required_message)
             } else {
-                "Log in to your TMDB account to add this to a list."
+                stringResource(R.string.login_required_add_to_list_message)
             },
             onLogin = startLogin,
             onDismiss = onDismiss

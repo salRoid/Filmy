@@ -108,7 +108,7 @@ fun CollectionItem(
                             shape = RoundedCornerShape(4.dp)
                         ) {
                             Text(
-                                text = "SHOW",
+                                text = stringResource(R.string.badge_show),
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)

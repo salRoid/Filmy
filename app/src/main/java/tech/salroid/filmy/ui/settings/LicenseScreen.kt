@@ -33,7 +33,7 @@ fun LicenseScreen(onBackClick: () -> Unit) {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             painter = painterResource(R.drawable.ic_arrow_back),
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 }
@@ -50,7 +50,7 @@ fun LicenseScreen(onBackClick: () -> Unit) {
         ) {
             Image(
                 painter = painterResource(R.drawable.newtmdb),
-                contentDescription = "Powered by TMDB",
+                contentDescription = stringResource(R.string.powered_by_tmdb),
                 modifier = Modifier
                     .height(88.dp)
                     .padding(16.dp)

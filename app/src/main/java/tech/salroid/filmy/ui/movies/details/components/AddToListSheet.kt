@@ -128,7 +128,7 @@ fun AddToListSheet(
                         .fillMaxWidth()
                         .padding(bottom = 24.dp)
                 ) {
-                    Text("+ " + stringResource(R.string.create_new_list))
+                    Text(stringResource(R.string.create_new_list_action, stringResource(R.string.create_new_list)))
                 }
             }
         }

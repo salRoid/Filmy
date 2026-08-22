@@ -8,7 +8,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -95,7 +94,7 @@ fun MoviesScreen(
                         IconButton(onClick = { showMoreMenu = true }) {
                             Icon(
                                 DropdownMenuIcon,
-                                contentDescription = "More options"
+                                contentDescription = stringResource(R.string.more_options),
                             )
                         }
                         DropdownMenu(
@@ -103,14 +102,14 @@ fun MoviesScreen(
                             onDismissRequest = { showMoreMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Discover Movies") },
+                                text = { Text(stringResource(R.string.discover_movies_title)) },
                                 onClick = {
                                     showMoreMenu = false
                                     onFilterClick()
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Popular People") },
+                                text = { Text(stringResource(R.string.popular_persons)) },
                                 onClick = {
                                     showMoreMenu = false
                                     onPeopleClick()
@@ -141,7 +140,7 @@ fun MoviesScreen(
                     ) {
                         ErrorWidget(
                             modifier = Modifier.weight(1f),
-                            message = "No movies found",
+                            message = stringResource(R.string.no_movies_found),
                             onRetryClick = { movies.refresh() }
                         )
                     } else {

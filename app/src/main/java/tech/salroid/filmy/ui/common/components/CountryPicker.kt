@@ -20,9 +20,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import java.util.Locale
+import tech.salroid.filmy.R
 
 data class CountryOption(val code: String, val name: String)
 
@@ -47,7 +49,7 @@ fun CountrySelectionList(
         OutlinedTextField(
             value = query,
             onValueChange = { query = it },
-            placeholder = { Text("Search country") },
+            placeholder = { Text(stringResource(R.string.search_country)) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()

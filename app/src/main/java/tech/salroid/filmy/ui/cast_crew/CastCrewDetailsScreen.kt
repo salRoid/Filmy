@@ -94,7 +94,7 @@ fun CastCrewDetailsContent(
                 title = {},
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -140,7 +140,7 @@ fun CastCrewDetailsBody(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            message = "Couldn't load this person. Check your connection.",
+            message = stringResource(R.string.couldnt_load_person),
             onRetryClick = onRetryClick
         )
         return
@@ -242,7 +242,7 @@ fun CastCrewDetailsBody(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Known For",
+                    text = stringResource(R.string.known_for),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.fillMaxWidth()

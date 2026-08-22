@@ -80,10 +80,10 @@ fun GalleryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Photos") },
+                title = { Text(stringResource(R.string.photos)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -111,12 +111,12 @@ fun GalleryScreen(
                                     selected = selectedTab == 0,
                                     onClick = { selectedTab = 0 },
                                     shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2)
-                                ) { Text("Backdrops") }
+                                ) { Text(stringResource(R.string.backdrops)) }
                                 SegmentedButton(
                                     selected = selectedTab == 1,
                                     onClick = { selectedTab = 1 },
                                     shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2)
-                                ) { Text("Posters") }
+                                ) { Text(stringResource(R.string.posters)) }
                             }
                         }
                     ) { index ->
@@ -167,7 +167,7 @@ private fun FullScreenImagePager(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_arrow_back),
-                contentDescription = "Close",
+                contentDescription = stringResource(R.string.close),
                 tint = Color.White
             )
         }

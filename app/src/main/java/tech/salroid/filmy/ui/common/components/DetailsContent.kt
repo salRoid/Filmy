@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -198,7 +199,7 @@ fun DetailsToolbar(
             ) {
                 Icon(
                     painterResource(R.drawable.ic_arrow_back),
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.back),
                     tint = iconColor,
                     modifier = Modifier.size(24.dp)
                 )
@@ -214,7 +215,7 @@ fun DetailsToolbar(
             ) {
                 Icon(
                     imageVector = Icons.Default.PhotoLibrary,
-                    contentDescription = "Photos",
+                    contentDescription = stringResource(R.string.photos),
                     tint = iconColor,
                     modifier = Modifier.size(24.dp)
                 )
@@ -228,7 +229,7 @@ fun DetailsToolbar(
             ) {
                 Icon(
                     painterResource(R.drawable.twotone_share_24),
-                    contentDescription = "Share",
+                    contentDescription = stringResource(R.string.share),
                     tint = iconColor,
                     modifier = Modifier.size(24.dp)
                 )

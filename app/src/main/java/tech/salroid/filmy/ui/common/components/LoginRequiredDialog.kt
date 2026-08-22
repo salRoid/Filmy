@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import tech.salroid.filmy.R
 
 @Composable
 fun LoginRequiredDialog(
@@ -18,14 +19,14 @@ fun LoginRequiredDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                "Log in required",
+                stringResource(R.string.login_required_title),
                 style = MaterialTheme.typography.titleLarge
             )
         },
         text = { Text(message) },
         confirmButton = {
             Button(onClick = onLogin) {
-                Text("Log In")
+                Text(stringResource(R.string.login_now))
             }
         },
         dismissButton = {

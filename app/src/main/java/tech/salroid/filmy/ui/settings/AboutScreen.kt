@@ -41,7 +41,7 @@ fun AboutScreen(onBackClick: () -> Unit) {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             painter = painterResource(R.drawable.ic_arrow_back),
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 }
@@ -90,6 +90,7 @@ fun DeveloperCard(
     websiteUrl: String
 ) {
     val context = LocalContext.current
+    val sendFeedbackLabel = stringResource(R.string.send_feedback)
 
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -148,7 +149,7 @@ fun DeveloperCard(
                         val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
                             data = Uri.parse("mailto:$email")
                         }
-                        context.startActivity(Intent.createChooser(emailIntent, "Send feedback"))
+                        context.startActivity(Intent.createChooser(emailIntent, sendFeedbackLabel))
                     },
                     modifier = Modifier.weight(1f)
                 ) {

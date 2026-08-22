@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.ui.res.stringResource
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -153,7 +154,7 @@ fun PreviewItem(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "Close",
+                                contentDescription = stringResource(R.string.close),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(14.dp)
                             )

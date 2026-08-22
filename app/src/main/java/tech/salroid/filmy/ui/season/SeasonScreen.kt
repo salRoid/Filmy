@@ -99,7 +99,7 @@ fun SeasonContent(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -204,7 +204,7 @@ private fun EpisodeItem(episode: Episode, imdbRating: String? = null, onClick: (
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "${episode.episodeNumber ?: 0}. ${episode.name ?: ""}",
+                    text = stringResource(R.string.episode_title_format, episode.episodeNumber ?: 0, episode.name ?: ""),
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

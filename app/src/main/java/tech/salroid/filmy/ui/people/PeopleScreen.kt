@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,10 +53,10 @@ fun PeopleScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text("Popular People") },
+                title = { Text(stringResource(R.string.popular_people_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -92,7 +93,7 @@ private fun PeopleContent(
             ) {
                 ErrorWidget(
                     modifier = Modifier.fillMaxSize(),
-                    message = "No people found",
+                    message = stringResource(R.string.no_people_found),
                     onRetryClick = { people.refresh() }
                 )
             } else {

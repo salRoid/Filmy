@@ -17,6 +17,7 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.action.Action
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
@@ -111,6 +112,7 @@ fun ToRateWidgetContent(
     items: List<ToRateItemData>,
     onItemClick: (ToRateItemData) -> Action
 ) {
+    val context = LocalContext.current
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
@@ -129,7 +131,7 @@ fun ToRateWidgetContent(
             )
             Spacer(modifier = GlanceModifier.width(8.dp))
             Text(
-                text = "To Rate",
+                text = context.getString(R.string.widget_to_rate_title),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 16.sp,
@@ -146,7 +148,7 @@ fun ToRateWidgetContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "You're all caught up",
+                    text = context.getString(R.string.widget_to_rate_empty),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurfaceVariant,
                         fontSize = 14.sp
@@ -175,6 +177,7 @@ private fun ToRateItem(
 ) {
     val item = data.movie
     val bitmap = data.bitmap
+    val context = LocalContext.current
 
     Row(
         modifier = GlanceModifier
@@ -198,7 +201,7 @@ private fun ToRateItem(
 
         Column(modifier = GlanceModifier.defaultWeight()) {
             Text(
-                text = item.title ?: "Unknown",
+                text = item.title ?: context.getString(R.string.unknown_title),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSecondaryContainer,
                     fontSize = 14.sp,
@@ -207,7 +210,7 @@ private fun ToRateItem(
                 maxLines = 1
             )
             Text(
-                text = if (item.type == 1) "Show" else "Movie",
+                text = if (item.type == 1) context.getString(R.string.media_type_show) else context.getString(R.string.media_type_movie),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSecondaryContainer,
                     fontSize = 12.sp

@@ -29,7 +29,7 @@ fun SeasonsSection(
 ) {
     val visibleSeasons = seasons?.filter { it.episodeCount > 0 }
     if (!visibleSeasons.isNullOrEmpty()) {
-        DetailsSection(title = "Seasons") {
+        DetailsSection(title = stringResource(R.string.seasons)) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(visibleSeasons) { season ->
                     SeasonItem(season) { onSeasonClick(season.seasonNumber) }
@@ -67,7 +67,7 @@ private fun SeasonItem(
             modifier = Modifier.padding(top = 4.dp)
         )
         Text(
-            text = "${season.episodeCount} Episodes",
+            text = stringResource(R.string.episode_count, season.episodeCount),
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.alpha(0.6f)
         )

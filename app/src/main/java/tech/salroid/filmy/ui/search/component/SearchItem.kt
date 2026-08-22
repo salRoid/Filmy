@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,7 +62,7 @@ fun SearchItem(
                 },
                 contentScale = ContentScale.Crop,
                 model = searchPreview.posterUrl,
-                contentDescription = "${searchPreview.title} Poster Image",
+                contentDescription = stringResource(R.string.poster_image_content_description, searchPreview.title),
                 error = painterResource(
                     if (isPerson) R.drawable.default_avatar else R.drawable.poster_error_placeholder
                 )
@@ -83,8 +84,8 @@ fun SearchItem(
                     )
 
                     val badgeText = when (searchPreview.mediaType) {
-                        "tv" -> "SHOW"
-                        "person" -> "PERSON"
+                        "tv" -> stringResource(R.string.badge_show)
+                        "person" -> stringResource(R.string.badge_person)
                         else -> null
                     }
                     if (badgeText != null) {

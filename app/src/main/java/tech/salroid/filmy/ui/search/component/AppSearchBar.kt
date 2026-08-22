@@ -45,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
@@ -53,6 +54,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import tech.salroid.filmy.R
 import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.search.SearchScreenState
@@ -105,7 +107,7 @@ fun AppSearchBar(
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.Medium
                                 ),
-                                text = "Search Movies, Shows or People"
+                                text = stringResource(R.string.search_bar_hint)
                             )
                         } else {
                             RotatingSearchPlaceholder(modifier = Modifier.padding(start = 16.dp))
@@ -116,7 +118,7 @@ fun AppSearchBar(
                             IconButton(onClick = { textFieldState.clearText() }) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = "Clear search"
+                                    contentDescription = stringResource(R.string.clear_search)
                                 )
                             }
                         }
@@ -177,7 +179,7 @@ fun AppSearchBar(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(32.dp),
-                        text = "No results for \"$query\"",
+                        text = stringResource(R.string.no_results_for_query, query),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -195,10 +197,13 @@ fun AppSearchBar(
     }
 }
 
-private val searchPlaceholderSubjects = listOf("Movies", "Shows", "People")
-
 @Composable
 private fun RotatingSearchPlaceholder(modifier: Modifier = Modifier) {
+    val searchPlaceholderSubjects = listOf(
+        stringResource(R.string.movies),
+        stringResource(R.string.tv_shows),
+        stringResource(R.string.people)
+    )
     var index by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
@@ -213,7 +218,7 @@ private fun RotatingSearchPlaceholder(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Search ",
+            text = stringResource(R.string.search_prefix),
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
         )
         AnimatedContent(
@@ -252,12 +257,12 @@ private fun RecentSearchesList(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Recent searches",
+                text = stringResource(R.string.recent_searches),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             TextButton(onClick = onClearAllClick) {
-                Text(text = "Clear all", style = MaterialTheme.typography.labelMedium)
+                Text(text = stringResource(R.string.clear_all), style = MaterialTheme.typography.labelMedium)
             }
         }
         LazyColumn {
@@ -286,7 +291,7 @@ private fun RecentSearchesList(
                     IconButton(onClick = { onRemoveClick(recent) }) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Remove",
+                            contentDescription = stringResource(R.string.remove),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.height(16.dp)
                         )

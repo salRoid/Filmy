@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -44,10 +43,6 @@ import androidx.glance.material3.ColorProviders
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import coil3.asDrawable
-import coil3.imageLoader
-import coil3.request.ImageRequest
-import coil3.request.SuccessResult
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -81,7 +76,7 @@ class ToRateWidget : GlanceAppWidget() {
                     val topItems = list.reversed().take(5)
                     itemsWithBitmaps = topItems.map { item ->
                         val posterUrl = "https://image.tmdb.org/t/p/w185${item.posterPath}"
-                        val bitmap = loadBitmap(context, posterUrl)
+                        val bitmap = loadWidgetPosterBitmap(context, posterUrl)
                         ToRateItemData(item, bitmap)
                     }
                 }
@@ -105,24 +100,6 @@ class ToRateWidget : GlanceAppWidget() {
                     }
                 )
             }
-        }
-    }
-
-    private suspend fun loadBitmap(context: Context, url: String): Bitmap? {
-        return try {
-            val loader = context.imageLoader
-            val request = ImageRequest.Builder(context)
-                .data(url)
-                .size(200, 300)
-                .build()
-            val result = loader.execute(request)
-            if (result is SuccessResult) {
-                result.image.asDrawable(context.resources).toBitmap()
-            } else {
-                null
-            }
-        } catch (e: Exception) {
-            null
         }
     }
 }

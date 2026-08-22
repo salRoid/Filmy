@@ -123,6 +123,7 @@
     <string name="seasons">Temporadas</string>
     <string name="episode_count">%1$d episodios</string>
     <string name="region">Región</string>
+    <string name="language">Idioma</string>
     <string name="logout">Cerrar sesión</string>
     <string name="known_for">Conocido por</string>
     <string name="no_cast_or_crew_found">No se encontró reparto ni equipo.</string>

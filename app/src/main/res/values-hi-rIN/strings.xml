@@ -123,6 +123,7 @@
     <string name="seasons">सीज़न</string>
     <string name="episode_count">%1$d एपिसोड</string>
     <string name="region">क्षेत्र</string>
+    <string name="language">भाषा</string>
     <string name="logout">लॉग आउट</string>
     <string name="known_for">इसके लिए जाना जाता है</string>
     <string name="no_cast_or_crew_found">कोई कलाकार या क्रू नहीं मिला।</string>

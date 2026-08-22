@@ -3,6 +3,7 @@ package tech.salroid.filmy.di
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.room.Room
 import dagger.Module
@@ -23,6 +24,8 @@ import tech.salroid.filmy.data.local.db.MIGRATION_2_4
 import tech.salroid.filmy.data.local.db.MIGRATION_4_5
 import tech.salroid.filmy.data.network.*
 import tech.salroid.filmy.utility.PreferenceHelper
+import tech.salroid.filmy.utility.SUPPORTED_LANGUAGES
+import java.util.Locale
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -59,8 +62,21 @@ object AppModule {
             val original = chain.request()
             val request = if (original.url.host == "api.themoviedb.org") {
                 val country = appPref.getString(PreferenceHelper.COUNTRY_KEY, null) ?: "US"
+                val appLocales = AppCompatDelegate.getApplicationLocales()
+                val language = if (!appLocales.isEmpty) {
+                    val tag = appLocales.toLanguageTags()
+                    SUPPORTED_LANGUAGES.firstOrNull { it.appTag == tag }?.apiTag ?: tag
+                } else {
+                    val deviceLocale = Locale.getDefault()
+                    "${deviceLocale.language}-${deviceLocale.country.ifBlank { deviceLocale.language.uppercase() }}"
+                }
                 original.newBuilder()
-                    .url(original.url.newBuilder().setQueryParameter("region", country).build())
+                    .url(
+                        original.url.newBuilder()
+                            .setQueryParameter("region", country)
+                            .setQueryParameter("language", language)
+                            .build()
+                    )
                     .build()
             } else {
                 original

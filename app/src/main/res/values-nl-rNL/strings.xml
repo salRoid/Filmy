@@ -122,6 +122,7 @@
     <string name="seasons">Seizoenen</string>
     <string name="episode_count">%1$d afleveringen</string>
     <string name="region">Regio</string>
+    <string name="language">Taal</string>
     <string name="logout">Uitloggen</string>
     <string name="known_for">Bekend van</string>
     <string name="no_cast_or_crew_found">Geen cast of crew gevonden.</string>

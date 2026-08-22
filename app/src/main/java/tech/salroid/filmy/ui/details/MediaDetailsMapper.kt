@@ -308,7 +308,7 @@ class MediaDetailsMapper @Inject constructor(
             
             avatarPath?.let {
                 if (it.contains("www.gravatar.com")) {
-                    finalAvatarUrl = it.subSequence(1, it.length - 1).toString()
+                    finalAvatarUrl = it.substring(1)
                 }
             }
 

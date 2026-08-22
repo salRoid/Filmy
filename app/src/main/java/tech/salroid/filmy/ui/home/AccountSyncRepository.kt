@@ -1,6 +1,10 @@
 package tech.salroid.filmy.ui.home
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.MoviesResponse
 import tech.salroid.filmy.data.local.model.TvShowResponse
@@ -64,70 +68,78 @@ class AccountSyncRepository @Inject constructor(
         val movieFlags = mutableMapOf<Int, MediaFlags>()
         val tvFlags = mutableMapOf<Int, MediaFlags>()
 
-        suspend fun collectMoviePages(
-            fetchPage: suspend (Int) -> MoviesResponse,
-            mark: (MediaFlags) -> Unit
-        ) {
+        // Each collector only reads from the network and returns its own plain
+        // list - no shared mutable state - so all six pulls below can run
+        // concurrently via async without needing to synchronize writes. The
+        // movieFlags/tvFlags maps are only mutated afterwards, sequentially,
+        // once every result is back.
+        suspend fun collectMoviePages(fetchPage: suspend (Int) -> MoviesResponse): List<Int> {
+            val ids = mutableListOf<Int>()
             var page = 1
             var totalPages = 1
             while (page <= totalPages) {
                 val response = fetchPage(page)
                 totalPages = response.totalPages ?: 1
-                response.results.forEach { movie ->
-                    mark(movieFlags.getOrPut(movie.id) { MediaFlags() })
-                }
+                response.results.forEach { ids.add(it.id) }
                 page++
             }
+            return ids
         }
 
-        suspend fun collectTvPages(
-            fetchPage: suspend (Int) -> TvShowResponse,
-            mark: (MediaFlags) -> Unit
-        ) {
+        suspend fun collectTvPages(fetchPage: suspend (Int) -> TvShowResponse): List<Int> {
+            val ids = mutableListOf<Int>()
             var page = 1
             var totalPages = 1
             while (page <= totalPages) {
                 val response = fetchPage(page)
                 totalPages = response.totalPages ?: 1
-                response.results.forEach { show ->
-                    mark(tvFlags.getOrPut(show.id) { MediaFlags() })
-                }
+                response.results.forEach { ids.add(it.id) }
                 page++
             }
+            return ids
         }
 
-        suspend fun collectRatedMoviePages() {
+        suspend fun collectRatedMoviePages(): List<Pair<Int, Float?>> {
+            val items = mutableListOf<Pair<Int, Float?>>()
             var page = 1
             var totalPages = 1
             while (page <= totalPages) {
                 val response = accountRepository.getRatedMovies(accountId, sessionId, page).first()
                 totalPages = response.totalPages ?: 1
-                response.results.forEach { item ->
-                    movieFlags.getOrPut(item.id) { MediaFlags() }.rating = item.rating
-                }
+                response.results.forEach { items.add(it.id to it.rating) }
                 page++
             }
+            return items
         }
 
-        suspend fun collectRatedTvPages() {
+        suspend fun collectRatedTvPages(): List<Pair<Int, Float?>> {
+            val items = mutableListOf<Pair<Int, Float?>>()
             var page = 1
             var totalPages = 1
             while (page <= totalPages) {
                 val response = accountRepository.getRatedTv(accountId, sessionId, page).first()
                 totalPages = response.totalPages ?: 1
-                response.results.forEach { item ->
-                    tvFlags.getOrPut(item.id) { MediaFlags() }.rating = item.rating
-                }
+                response.results.forEach { items.add(it.id to it.rating) }
                 page++
             }
+            return items
         }
 
-        collectMoviePages({ accountRepository.getFavoriteMovies(accountId, sessionId, it).first() }) { it.favorite = true }
-        collectMoviePages({ accountRepository.getWatchlistMovies(accountId, sessionId, it).first() }) { it.watchlist = true }
-        collectTvPages({ accountRepository.getFavoriteTv(accountId, sessionId, it).first() }) { it.favorite = true }
-        collectTvPages({ accountRepository.getWatchlistTv(accountId, sessionId, it).first() }) { it.watchlist = true }
-        collectRatedMoviePages()
-        collectRatedTvPages()
+        coroutineScope {
+            val favoriteMovies = async { collectMoviePages { accountRepository.getFavoriteMovies(accountId, sessionId, it).first() } }
+            val watchlistMovies = async { collectMoviePages { accountRepository.getWatchlistMovies(accountId, sessionId, it).first() } }
+            val favoriteTv = async { collectTvPages { accountRepository.getFavoriteTv(accountId, sessionId, it).first() } }
+            val watchlistTv = async { collectTvPages { accountRepository.getWatchlistTv(accountId, sessionId, it).first() } }
+            val ratedMovies = async { collectRatedMoviePages() }
+            val ratedTv = async { collectRatedTvPages() }
+
+            favoriteMovies.await().forEach { movieFlags.getOrPut(it) { MediaFlags() }.favorite = true }
+            watchlistMovies.await().forEach { movieFlags.getOrPut(it) { MediaFlags() }.watchlist = true }
+            favoriteTv.await().forEach { tvFlags.getOrPut(it) { MediaFlags() }.favorite = true }
+            watchlistTv.await().forEach { tvFlags.getOrPut(it) { MediaFlags() }.watchlist = true }
+            ratedMovies.await().forEach { (id, rating) -> movieFlags.getOrPut(id) { MediaFlags() }.rating = rating }
+            ratedTv.await().forEach { (id, rating) -> tvFlags.getOrPut(id) { MediaFlags() }.rating = rating }
+        }
 
         // Fetch full details only for items whose flags actually differ from what's
         // already stored locally, then write everything in one batch — so the
@@ -200,41 +212,56 @@ class AccountSyncRepository @Inject constructor(
         val localWatchlist = moviesRepository.getWatchlist().first()
         val localRated = moviesRepository.getRated().first()
 
-        localWatched.forEach { movie ->
-            if (movie.id to movie.type !in pulled.favoriteKeys) {
-                try {
-                    accountRepository.markFavorite(
-                        accountId, sessionId, mediaType(movie.type), movie.id, favorite = true
-                    ).first()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
+        // Bounded concurrency: a user who marked many items before ever logging
+        // in shouldn't pay for one-at-a-time sequential round-trips, but
+        // unbounded parallel requests risk tripping TMDB's rate limiting.
+        val semaphore = Semaphore(permits = 5)
 
-        localWatchlist.forEach { movie ->
-            if (movie.id to movie.type !in pulled.watchlistKeys) {
-                try {
-                    accountRepository.markWatchlist(
-                        accountId, sessionId, mediaType(movie.type), movie.id, watchlist = true
-                    ).first()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-
-        localRated.forEach { movie ->
-            val rating = movie.userRating ?: return@forEach
-            if (movie.id to movie.type !in pulled.ratedKeys) {
-                try {
-                    if (movie.type == 1) {
-                        accountRepository.rateTv(movie.id, sessionId, rating).first()
-                    } else {
-                        accountRepository.rateMovie(movie.id, sessionId, rating).first()
+        coroutineScope {
+            localWatched.filter { it.id to it.type !in pulled.favoriteKeys }.forEach { movie ->
+                async {
+                    semaphore.withPermit {
+                        try {
+                            accountRepository.markFavorite(
+                                accountId, sessionId, mediaType(movie.type), movie.id, favorite = true
+                            ).first()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                }
+            }
+
+            localWatchlist.filter { it.id to it.type !in pulled.watchlistKeys }.forEach { movie ->
+                async {
+                    semaphore.withPermit {
+                        try {
+                            accountRepository.markWatchlist(
+                                accountId, sessionId, mediaType(movie.type), movie.id, watchlist = true
+                            ).first()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+
+            localRated.forEach { movie ->
+                val rating = movie.userRating ?: return@forEach
+                if (movie.id to movie.type !in pulled.ratedKeys) {
+                    async {
+                        semaphore.withPermit {
+                            try {
+                                if (movie.type == 1) {
+                                    accountRepository.rateTv(movie.id, sessionId, rating).first()
+                                } else {
+                                    accountRepository.rateMovie(movie.id, sessionId, rating).first()
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -254,12 +281,20 @@ class AccountSyncRepository @Inject constructor(
 
         return try {
             val type = mediaType(movieDetails.type)
-            accountRepository.markFavorite(
-                accountId, sessionId, type, movieDetails.id, movieDetails.watched
-            ).first()
-            accountRepository.markWatchlist(
-                accountId, sessionId, type, movieDetails.id, movieDetails.watchlist
-            ).first()
+            coroutineScope {
+                val favorite = async {
+                    accountRepository.markFavorite(
+                        accountId, sessionId, type, movieDetails.id, movieDetails.watched
+                    ).first()
+                }
+                val watchlist = async {
+                    accountRepository.markWatchlist(
+                        accountId, sessionId, type, movieDetails.id, movieDetails.watchlist
+                    ).first()
+                }
+                favorite.await()
+                watchlist.await()
+            }
             true
         } catch (e: Exception) {
             e.printStackTrace()

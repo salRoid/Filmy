@@ -21,6 +21,7 @@ import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.TvShow
 import tech.salroid.filmy.data.model.TvShowPreview
 import tech.salroid.filmy.ui.common.components.QuickActionState
+import tech.salroid.filmy.ui.home.AccountSyncRepository
 import tech.salroid.filmy.ui.home.MoviesRepository
 import tech.salroid.filmy.utility.ImageConfig
 import tech.salroid.filmy.utility.PreferenceHelper.selectedCountryFlow
@@ -31,6 +32,7 @@ import javax.inject.Inject
 class ShowsViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository,
     private val mapper: TvShowsPreviewMapper,
+    private val accountSyncRepository: AccountSyncRepository,
     sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
@@ -71,14 +73,22 @@ class ShowsViewModel @Inject constructor(
     fun quickToggleWatchlist(show: TvShowPreview) {
         viewModelScope.launch(Dispatchers.IO) {
             val merged = mergedLocalDetails(show)
-            moviesRepository.addMovieDetailsToLocal(merged.copy(watchlist = !merged.watchlist))
+            val updated = merged.copy(watchlist = !merged.watchlist)
+            moviesRepository.addMovieDetailsToLocal(updated)
+            if (!accountSyncRepository.pushItemState(updated)) {
+                moviesRepository.addMovieDetailsToLocal(merged)
+            }
         }
     }
 
     fun quickToggleWatched(show: TvShowPreview) {
         viewModelScope.launch(Dispatchers.IO) {
             val merged = mergedLocalDetails(show)
-            moviesRepository.addMovieDetailsToLocal(merged.copy(watched = !merged.watched))
+            val updated = merged.copy(watched = !merged.watched)
+            moviesRepository.addMovieDetailsToLocal(updated)
+            if (!accountSyncRepository.pushItemState(updated)) {
+                moviesRepository.addMovieDetailsToLocal(merged)
+            }
         }
     }
 

@@ -134,8 +134,9 @@ class MoviesRepository @Inject constructor(
      * re-saving an already-known item doesn't silently reshuffle list order.
      */
     fun addMovieDetailsToLocal(movieDetails: MovieDetails) {
-        upsertMovieDetails(movieDetails)
-        refreshWidget()
+        if (upsertMovieDetails(movieDetails)) {
+            refreshWidget()
+        }
     }
 
     /**
@@ -145,19 +146,38 @@ class MoviesRepository @Inject constructor(
      */
     suspend fun saveMovieDetailsBatch(items: List<MovieDetails>) {
         if (items.isEmpty()) return
+        var watchStateChanged = false
         filmyDatabase.withTransaction {
-            items.forEach { upsertMovieDetails(it) }
+            items.forEach { if (upsertMovieDetails(it)) watchStateChanged = true }
         }
-        refreshWidget()
+        if (watchStateChanged) {
+            refreshWidget()
+        }
     }
 
-    private fun upsertMovieDetails(movieDetails: MovieDetails) {
+    /**
+     * Upserts [movieDetails] atomically (check-then-act wrapped in a transaction,
+     * so two concurrent callers for the same id+type can't both see "no existing
+     * row" and insert duplicates). Returns whether the row's watched/watchlist
+     * state actually changed, so callers can skip refreshing the home-screen
+     * widgets (which only ever show watched/watchlist items) for pure
+     * metadata-refresh saves that don't affect what the widgets display.
+     */
+    private fun upsertMovieDetails(movieDetails: MovieDetails): Boolean {
         val dao = filmyDatabase.movieDetailsDao()
-        if (dao.getDetailsOfType(movieDetails.id, movieDetails.type) != null) {
-            dao.updateDetails(movieDetails)
-        } else {
-            dao.insert(movieDetails)
+        var watchStateChanged = false
+        filmyDatabase.runInTransaction {
+            val existing = dao.getDetailsOfType(movieDetails.id, movieDetails.type)
+            if (existing != null) {
+                dao.updateDetails(movieDetails)
+                watchStateChanged = existing.watched != movieDetails.watched ||
+                    existing.watchlist != movieDetails.watchlist
+            } else {
+                dao.insert(movieDetails)
+                watchStateChanged = movieDetails.watched || movieDetails.watchlist
+            }
         }
+        return watchStateChanged
     }
 
     fun deleteMovieDetailsFromLocal(movieDetails: MovieDetails) {

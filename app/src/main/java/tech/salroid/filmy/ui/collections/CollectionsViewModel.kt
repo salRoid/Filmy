@@ -50,18 +50,6 @@ class CollectionsViewModel @Inject constructor(
         }
     }
 
-    // Legacy support for Fragments
-    val uiStateFavorites: StateFlow<List<MovieDetails>> = watched
-    val uiStateWatchlist: StateFlow<List<MovieDetails>> = watchlist
-
-    fun getWatchedList() {
-        // No-op, now reactive via watched StateFlow
-    }
-
-    fun getWatchLists() {
-        // No-op, now reactive via watchlist StateFlow
-    }
-
     /**
      * Optimistically removes [movie] from Watched locally, then pushes the change
      * to TMDB. If that push fails (while logged in), the removal is rolled back
@@ -90,13 +78,4 @@ class CollectionsViewModel @Inject constructor(
         }
     }
 
-    fun updateMovieDetailsInDb(
-        movie: MovieDetails,
-        position: Int,
-        currentCollectionType: CollectionTypeFragment.CollectionType
-    ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            moviesRepository.updateMovieDetails(movie)
-        }
-    }
 }

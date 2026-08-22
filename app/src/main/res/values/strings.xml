@@ -23,15 +23,6 @@
 
 
     <string name="app_name">Filmy</string>
-    <string name="title_activity_detailed">DetailedActivity</string>
-    <string name="title_activity_detailed__cast">Detailed_Cast</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_full_cast">FullCastActivity</string>
-    <string name="title_activity_full_movie">FullMovieActivity</string>
-    <string name="title_activity_full_screen_image">FullScreenImage</string>
-
-    <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_saved_movies">Offline Movies</string>
     <string name="image_quality">medium</string>
     <string name="low">low</string>
     <string name="high">high</string>
@@ -345,9 +336,6 @@ limitations under the License.
 
     <!-- Pref Keys -->
     <string name="theme_key" translatable="false">themeKey</string>
-    <string name="license_key" translatable="false">licenseKey</string>
-    <string name="share_key" translatable="false">shareKey</string>
-    <string name="about_key" translatable="false">aboutKey</string>
 
     <!-- Pref Values -->
     <string name="mode_night_no" translatable="false">MODE_NIGHT_NO</string>

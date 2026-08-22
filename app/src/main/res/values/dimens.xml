@@ -44,7 +44,4 @@
     <dimen name="widget_margin_half">@dimen/filmy4dp</dimen>
     <dimen name="rounded_corners">@dimen/filmy16dp</dimen>
     <dimen name="rounded_corners_inner">@dimen/filmy8dp</dimen>
-
-    <dimen name="search_icon_padding">12dp</dimen>
-    <dimen name="search_view_text_padding">65dp</dimen>
 </resources>

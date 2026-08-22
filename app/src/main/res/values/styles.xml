@@ -1,50 +1,5 @@
 <resources>
 
-    <style name="ThemeOverlay.BottomNavView" parent="">
-        <item name="motionDurationLong1">0</item>
-    </style>
-
-    <style name="Widget.App.Snackbar" parent="Widget.Material3.Snackbar">
-        <item name="shapeAppearance">@style/ShapeAppearance.Material3.LargeComponent</item>
-        <item name="android:layout_margin">16dp</item>
-    </style>
-
-    <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
-    </style>
-
-    <style name="ModalBottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
-        <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
-    </style>
-
-    <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">8dp</item>
-    </style>
-
-    <style name="circleImageView" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="roundedImageView" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">6%</item>
-    </style>
-
-    <style name="roundedImageViewInsideCard" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">6%</item>
-    </style>
-
-    <style name="MaterialSearchViewStyle">
-        <item name="searchVoiceIcon">@drawable/ic_mic_24</item>
-        <item name="searchIcon">@drawable/ic_search_24</item>
-        <item name="searchCloseIcon">@drawable/ic_round_close_24</item>
-        <item name="searchBackIcon">@drawable/ic_arrow_back</item>
-        <item name="searchSuggestionIcon">@drawable/ic_info_24</item>
-    </style>
-
     <!-- Filmy Widget Styles -->
     <style name="Widget.AppWidget.AppWidget.Container" parent="android:Widget">
         <item name="android:id">@android:id/background</item>
@@ -55,73 +10,6 @@
     <style name="Widget.AppWidget.AppWidget.InnerView" parent="android:Widget">
         <item name="android:padding">?attr/appWidgetPadding</item>
         <item name="android:background">@drawable/app_widget_inner_view_background</item>
-    </style>
-
-    <!-- Filmy TextAppearance Styles -->
-    <style name="TextAppearance.Filmy.Headline" parent="TextAppearance.Material3.HeadlineSmall">
-        <item name="android:textSize">22sp</item>
-    </style>
-
-    <style name="TextAppearance.Filmy.Title" parent="TextAppearance.Material3.TitleSmall">
-        <item name="fontFamily">@font/barlow_black</item>
-        <item name="android:fontFamily">@font/barlow_black</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:alpha">0.8</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.Filmy.SubTitle" parent="TextAppearance.Material3.TitleSmall">
-        <item name="fontFamily">@font/barlow_black</item>
-        <item name="android:fontFamily">@font/barlow_black</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:alpha">0.5</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
-    <style name="TextAppearance.Filmy.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
-        <item name="fontFamily">@font/circularstd_book</item>
-        <item name="android:fontFamily">@font/circularstd_book</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:letterSpacing">0.05</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="TextAppearance.Filmy.LabelMedium" parent="TextAppearance.Material3.LabelLarge">
-        <item name="fontFamily">@font/circularstd_book</item>
-        <item name="android:fontFamily">@font/circularstd_book</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="TextAppearance.Filmy.LabelMedium.Bold" parent="TextAppearance.Material3.LabelLarge">
-        <item name="fontFamily">@font/circularstd_book</item>
-        <item name="android:fontFamily">@font/circularstd_book</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextAppearance.Filmy.Logo" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="android:textStyle">bold</item>
-        <item name="fontFamily">@font/lobster_regular</item>
-        <item name="android:fontFamily">@font/lobster_regular</item>
-        <item name="android:alpha">0.8</item>
-    </style>
-
-    <style name="MSV_ImageButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">?android:attr/selectableItemBackground</item>
-        <item name="android:paddingLeft">@dimen/search_icon_padding</item>
-        <item name="android:paddingRight">@dimen/search_icon_padding</item>
-    </style>
-
-    <style name="MaterialPreferenceThemeOverlay" parent="PreferenceThemeOverlay">
-        <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat</item>
-    </style>
-
-    <style name="Preference.SwitchPreferenceCompat" parent="Preference.SwitchPreferenceCompat.Material">
-        <item name="android:widgetLayout">@layout/preference_material_switch</item>
     </style>
 
 </resources>

@@ -45,20 +45,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.details.MovieDetailsActivity" />
-        <activity android:name=".ui.details.TvDetailsActivity" />
-        <activity android:name=".ui.full.FullBannerActivity" />
-        <activity android:name=".ui.full.AllMoviesActivity" />
-        <activity
-            android:name=".ui.full.YoutubePlayerActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:exported="false"
-            android:hardwareAccelerated="true" />
-        <activity android:name=".ui.cast_crew.CastCrewDetailsActivity" />
-        <activity android:name=".ui.cast_crew.AllCastCrewActivity" />
-        <activity android:name=".ui.settings.LicenseActivity" />
-        <activity android:name=".ui.settings.AboutActivity" />
-
         <receiver
             android:name=".ui.widget.WatchlistWidgetReceiver"
             android:exported="true">

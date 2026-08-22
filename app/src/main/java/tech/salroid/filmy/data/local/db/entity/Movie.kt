@@ -1,10 +1,7 @@
 package tech.salroid.filmy.data.local.db.entity
 
-import android.content.Context
 import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
-import tech.salroid.filmy.R
-import tech.salroid.filmy.ui.component.NavigationItemData
 
 @Entity(tableName = "movies", primaryKeys = ["id", "type"])
 data class Movie(
@@ -79,25 +76,3 @@ fun String.toMovieType() = when (this) {
     else -> null
 }
 
-fun getMoviesNavigationList(context: Context) = listOf(
-    NavigationItemData(
-        tag = Movie.MovieType.TRENDING.toMovieTypeString(),
-        label = context.getString(R.string.label_trending)
-    ),
-    NavigationItemData(
-        tag = Movie.MovieType.NOW_PLAYING.toMovieTypeString(),
-        label = context.getString(R.string.label_now_playing)
-    ),
-    NavigationItemData(
-        tag = Movie.MovieType.UPCOMING.toMovieTypeString(),
-        label = context.getString(R.string.label_upcoming)
-    ),
-    NavigationItemData(
-        tag = Movie.MovieType.POPULAR.toMovieTypeString(),
-        label = context.getString(R.string.label_pouplar)
-    ),
-    NavigationItemData(
-        tag = Movie.MovieType.TOP_RATED.toMovieTypeString(),
-        label = context.getString(R.string.label_top_rated)
-    )
-)

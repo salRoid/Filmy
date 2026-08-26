@@ -17,7 +17,9 @@ class Converters {
     @TypeConverter
     fun fromString(value: String?): ArrayList<Int>? {
         if (value.isNullOrEmpty()) return null
-        return ArrayList(json.decodeFromString<List<Int>>(value))
+        return runCatching {
+            ArrayList(json.decodeFromString<List<Int>>(value))
+        }.getOrNull()
     }
 
     @TypeConverter
@@ -29,7 +31,9 @@ class Converters {
     @TypeConverter
     fun fromStringOfCollection(value: String?): Collection? {
         if (value.isNullOrEmpty()) return null
-        return json.decodeFromString<Collection>(value)
+        return runCatching {
+            json.decodeFromString<Collection>(value)
+        }.getOrNull()
     }
 
     @TypeConverter
@@ -41,7 +45,11 @@ class Converters {
     @TypeConverter
     fun fromStringOfArrayListOfGenres(value: String?): ArrayList<Genre> {
         if (value.isNullOrEmpty()) return arrayListOf()
-        return ArrayList(json.decodeFromString<List<Genre>>(value))
+        return runCatching {
+            ArrayList(json.decodeFromString<List<Genre>>(value))
+        }.getOrDefault(
+            arrayListOf()
+        )
     }
 
     @TypeConverter
@@ -52,7 +60,11 @@ class Converters {
     @TypeConverter
     fun fromStringOfArrayListOfProductionCompanies(value: String?): ArrayList<ProductionCompanies> {
         if (value.isNullOrEmpty()) return arrayListOf()
-        return ArrayList(json.decodeFromString<List<ProductionCompanies>>(value))
+        return runCatching {
+            ArrayList(json.decodeFromString<List<ProductionCompanies>>(value))
+        }.getOrDefault(
+            arrayListOf()
+        )
     }
 
     @TypeConverter
@@ -63,7 +75,11 @@ class Converters {
     @TypeConverter
     fun fromStringOfArrayListOfProductionCountries(value: String?): ArrayList<ProductionCountries> {
         if (value.isNullOrEmpty()) return arrayListOf()
-        return ArrayList(json.decodeFromString<List<ProductionCountries>>(value))
+        return runCatching {
+            ArrayList(json.decodeFromString<List<ProductionCountries>>(value))
+        }.getOrDefault(
+            arrayListOf()
+        )
     }
 
     @TypeConverter
@@ -74,7 +90,11 @@ class Converters {
     @TypeConverter
     fun fromStringOfArrayListOfSpokenLanguages(value: String?): ArrayList<SpokenLanguages> {
         if (value.isNullOrEmpty()) return arrayListOf()
-        return ArrayList(json.decodeFromString<List<SpokenLanguages>>(value))
+        return runCatching {
+            ArrayList(json.decodeFromString<List<SpokenLanguages>>(value))
+        }.getOrDefault(
+            arrayListOf()
+        )
     }
 
     @TypeConverter
@@ -85,7 +105,9 @@ class Converters {
     @TypeConverter
     fun fromStringOfTrailers(value: String?): Trailers? {
         if (value.isNullOrEmpty()) return null
-        return json.decodeFromString<Trailers>(value)
+        return runCatching {
+            json.decodeFromString<Trailers>(value)
+        }.getOrNull()
     }
 
     @TypeConverter
@@ -97,7 +119,9 @@ class Converters {
     @TypeConverter
     fun fromStringOfAvatar(value: String?): Avatar? {
         if (value.isNullOrEmpty()) return null
-        return json.decodeFromString<Avatar>(value)
+        return runCatching {
+            json.decodeFromString<Avatar>(value)
+        }.getOrNull()
     }
 
     @TypeConverter
@@ -109,7 +133,9 @@ class Converters {
     @TypeConverter
     fun fromStringOfVideos(value: String?): Videos? {
         if (value.isNullOrEmpty()) return null
-        return json.decodeFromString<Videos>(value)
+        return runCatching {
+            json.decodeFromString<Videos>(value)
+        }.getOrNull()
     }
 
     @TypeConverter

@@ -1,24 +1,27 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class OmdbSeasonResponse(
 
-    @SerializedName("Episodes")
+    @SerialName("Episodes")
     var episodes: List<OmdbEpisodeRating> = emptyList(),
 
-    @SerializedName("Response")
+    @SerialName("Response")
     var response: String? = null
 )
 
+@Serializable
 data class OmdbEpisodeRating(
 
-    @SerializedName("Episode")
+    @SerialName("Episode")
     var episode: Int? = null,
 
-    @SerializedName("imdbRating")
+    @SerialName("imdbRating")
     var imdbRating: String? = null,
 
-    @SerializedName("imdbID")
+    @SerialName("imdbID")
     var imdbID: String? = null
 )

@@ -109,7 +109,7 @@ fun MoviesScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.popular_persons)) },
+                                text = { Text(stringResource(R.string.popular_people_title)) },
                                 onClick = {
                                     showMoreMenu = false
                                     onPeopleClick()

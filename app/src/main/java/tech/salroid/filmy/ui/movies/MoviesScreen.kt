@@ -30,7 +30,7 @@ import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.common.components.HomeTopBar
 import tech.salroid.filmy.ui.common.components.LoadingWidget
 import tech.salroid.filmy.ui.common.components.QuickActionState
-import tech.salroid.filmy.ui.common.icons.MoreUp
+import tech.salroid.filmy.ui.common.icons.DropdownMenuIcon
 import tech.salroid.filmy.ui.movies.components.MoviesList
 import tech.salroid.filmy.ui.search.SearchScreenState
 import tech.salroid.filmy.utility.toUserMessage
@@ -94,9 +94,8 @@ fun MoviesScreen(
                     Box {
                         IconButton(onClick = { showMoreMenu = true }) {
                             Icon(
-                                MoreUp,
-                                contentDescription = "More options",
-                                tint = MaterialTheme.colorScheme.primary
+                                DropdownMenuIcon,
+                                contentDescription = "More options"
                             )
                         }
                         DropdownMenu(
@@ -111,7 +110,7 @@ fun MoviesScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Popular Persons") },
+                                text = { Text("Popular People") },
                                 onClick = {
                                     showMoreMenu = false
                                     onPeopleClick()

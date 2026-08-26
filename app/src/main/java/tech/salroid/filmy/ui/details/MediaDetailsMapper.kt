@@ -324,7 +324,7 @@ class MediaDetailsMapper @Inject constructor(
         return ReviewResponseUiModel(results = mappedResults)
     }
 
-    private fun mapWatchProviders(watchProviders: WatchProviderResponse?): WatchProvidersUiModel? {
+    internal fun mapWatchProviders(watchProviders: WatchProviderResponse?): WatchProvidersUiModel? {
         val results = watchProviders?.results ?: return null
 
         // Priority to the user's selected region, falling back to 'US'.

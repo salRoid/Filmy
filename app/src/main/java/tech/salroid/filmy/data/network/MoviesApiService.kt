@@ -65,6 +65,15 @@ interface MoviesApiService {
         @Query("r") r: String,
     ): RatingResponse
 
+    @GET
+    suspend fun getOMDBSeasonRatings(
+        @Url url: String,
+        @Query("i") seriesId: String,
+        @Query("Season") season: Int,
+        @Query("apikey") apiKey: String,
+        @Query("r") r: String,
+    ): OmdbSeasonResponse
+
     @GET("movie/{movie_id}/casts")
     suspend fun getCasts(@Path("movie_id") movieId: String): CastAndCrewResponse
 

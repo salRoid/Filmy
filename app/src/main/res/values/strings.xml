@@ -399,5 +399,6 @@ limitations under the License.
     <string name="cancel">Cancel</string>
 
     <string name="where_to_watch">Where to Watch</string>
+    <string name="no_watch_providers_available">No watch providers available for your region.</string>
 
 </resources>

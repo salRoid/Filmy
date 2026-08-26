@@ -216,6 +216,9 @@ class MoviesRepository @Inject constructor(
     fun getSeasonDetails(tvId: String, seasonNumber: Int): Flow<SeasonDetailsResponse> =
         moviesApiHelper.getSeasonDetails(tvId, seasonNumber)
 
+    fun getSeasonRatings(seriesImdbId: String, seasonNumber: Int): Flow<OmdbSeasonResponse> =
+        moviesApiHelper.getOMDBSeasonRatings(seriesImdbId, seasonNumber)
+
     fun getTvExternalIds(tvId: String): Flow<ExternalIdsResponse> =
         moviesApiHelper.getTvExternalIds(tvId)
 

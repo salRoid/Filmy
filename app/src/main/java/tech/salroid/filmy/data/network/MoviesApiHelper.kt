@@ -29,6 +29,7 @@ interface MoviesApiHelper {
     fun getMovieDetails(id: String): Flow<MovieDetails>
     fun getTvShowDetails(id: String): Flow<TvDetails>
     fun getOMDBRatings(id: String): Flow<RatingResponse>
+    fun getOMDBSeasonRatings(seriesImdbId: String, seasonNumber: Int): Flow<OmdbSeasonResponse>
     fun getCastAndCrew(id: String): Flow<CastAndCrewResponse>
     fun getCastAndCrewTv(id: String): Flow<CastAndCrewResponse>
     fun getSimilar(id: String): Flow<SimilarMoviesResponse>

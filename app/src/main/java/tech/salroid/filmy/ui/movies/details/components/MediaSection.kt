@@ -31,7 +31,7 @@ fun MediaSuggestionsSection(
         DetailsSection(title = title) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(response.results) { media ->
-                    SuggestionItem(media.title, media.posterPath) {
+                    SuggestionItem(media.displayTitle, media.posterPath) {
                         onMediaClick(media.id ?: 0)
                     }
                 }
@@ -62,6 +62,7 @@ fun SuggestionItem(
         Text(
             text = title ?: "",
             style = MaterialTheme.typography.labelSmall,
+            minLines = 2,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = 4.dp)

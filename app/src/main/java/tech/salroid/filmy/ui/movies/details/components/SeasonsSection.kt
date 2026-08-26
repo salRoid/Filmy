@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,10 +27,11 @@ fun SeasonsSection(
     seasons: List<SeasonUiModel>?,
     onSeasonClick: (Int) -> Unit
 ) {
-    if (!seasons.isNullOrEmpty()) {
+    val visibleSeasons = seasons?.filter { it.episodeCount > 0 }
+    if (!visibleSeasons.isNullOrEmpty()) {
         DetailsSection(title = "Seasons") {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                items(seasons) { season ->
+                items(visibleSeasons) { season ->
                     SeasonItem(season) { onSeasonClick(season.seasonNumber) }
                 }
             }
@@ -53,11 +55,13 @@ private fun SeasonItem(
             modifier = Modifier
                 .size(100.dp, 145.dp)
                 .clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            error = painterResource(R.drawable.poster_error_placeholder)
         )
         Text(
             text = season.name,
             style = MaterialTheme.typography.labelSmall,
+            minLines = 2,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = 4.dp)

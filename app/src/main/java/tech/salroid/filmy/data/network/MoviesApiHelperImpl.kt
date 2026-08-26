@@ -80,6 +80,12 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
         )
     }
 
+    override fun getOMDBSeasonRatings(seriesImdbId: String, seasonNumber: Int): Flow<OmdbSeasonResponse> = flow {
+        emit(
+            apiService.getOMDBSeasonRatings(BASE_URL_OMDB, seriesImdbId, seasonNumber, OMDB_API_KEY, "json")
+        )
+    }
+
     override fun getCastAndCrew(id: String): Flow<CastAndCrewResponse> = flow {
         emit(apiService.getCasts(id))
     }

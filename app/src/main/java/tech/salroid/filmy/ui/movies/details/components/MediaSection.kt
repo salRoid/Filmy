@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,7 +58,8 @@ fun SuggestionItem(
             modifier = Modifier
                 .size(100.dp, 145.dp)
                 .clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            error = painterResource(R.drawable.poster_error_placeholder)
         )
         Text(
             text = title ?: "",

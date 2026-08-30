@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
@@ -137,6 +138,7 @@ fun DetailsHeader(
 
 private const val BACKDROP_ROTATION_INTERVAL_MS = 6000L
 private const val BACKDROP_CROSSFADE_DURATION_MS = 1200
+private const val BACKDROP_ZOOM_TARGET_SCALE = 1.12f
 
 @Composable
 fun HeaderBackdrop(
@@ -163,19 +165,41 @@ fun HeaderBackdrop(
         modifier = Modifier
             .fillMaxWidth()
             .height(280.dp)
+            .clipToBounds()
     ) {
         Crossfade(
             targetState = currentUrl,
             animationSpec = tween(BACKDROP_CROSSFADE_DURATION_MS),
             label = "backdrop_crossfade"
         ) { url ->
+            // Ken Burns effect: each banner slowly zooms in for as long as it's
+            // shown, resetting to 1x whenever a new one crossfades in - the
+            // remember(url) scope is torn down and recreated fresh per banner
+            // since Crossfade composes each distinct target state separately.
+            val zoomScale = remember(url) { Animatable(1f) }
+            LaunchedEffect(url) {
+                zoomScale.snapTo(1f)
+                zoomScale.animateTo(
+                    targetValue = BACKDROP_ZOOM_TARGET_SCALE,
+                    animationSpec = tween(
+                        durationMillis = BACKDROP_ROTATION_INTERVAL_MS.toInt(),
+                        easing = LinearEasing
+                    )
+                )
+            }
+
             AsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(url)
                     .allowHardware(false)
                     .build(),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        scaleX = zoomScale.value
+                        scaleY = zoomScale.value
+                    },
                 contentScale = ContentScale.Crop,
                 onSuccess = { imageState ->
                     // Only the very first backdrop drives the screen's color theme —

@@ -98,7 +98,7 @@ class TvDetailsActivity : AppCompatActivity() {
     companion object {
         const val IMAGE_QUALITY_DEFAULT = "original"
         const val WATCHLIST = "watchlist"
-        const val FAVOURITES = "favorites"
+        const val WATCHED = "watched"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -157,7 +157,7 @@ class TvDetailsActivity : AppCompatActivity() {
             viewModel.uiStateAddToCollection.collect { (addedToCollection, message) ->
                 if (addedToCollection) {
                     if (message == WATCHLIST) isWatchlist = true
-                    if (message == FAVOURITES) isFavourite = true
+                    if (message == WATCHED) isFavourite = true
                     binding.backdrop.showSnackBar("Movie added to $message")
                     updateOptionsMenu()
                 }
@@ -168,7 +168,7 @@ class TvDetailsActivity : AppCompatActivity() {
                 if (updatedID > 0) {
                     if (remove) {
                         if (message == WATCHLIST) isWatchlist = false
-                        if (message == FAVOURITES) isFavourite = false
+                        if (message == WATCHED) isFavourite = false
 
                         binding.backdrop.showSnackBar(
                             "Movie removed from $message",
@@ -176,7 +176,7 @@ class TvDetailsActivity : AppCompatActivity() {
                         )
                     } else {
                         if (message == WATCHLIST) isWatchlist = true
-                        if (message == FAVOURITES) isFavourite = true
+                        if (message == WATCHED) isFavourite = true
                         binding.backdrop.showSnackBar("Movie added to $message")
                     }
 
@@ -793,7 +793,7 @@ class TvDetailsActivity : AppCompatActivity() {
          else {
              var smallTitle = movieTitleHyphen?.lowercase()
              smallTitle = smallTitle?.replace("[^\\d-a-z]".toRegex(), "")
-             val url = "http://www.metacritic.com/movie/$smallTitle"
+             val url = "https://www.metacritic.com/movie/$smallTitle"
 
              if (metaScoreRating != null) {
                  when {
@@ -832,9 +832,9 @@ class TvDetailsActivity : AppCompatActivity() {
     }
 
     private fun setWatchProviderInfo(watchProviderResponse: WatchProviderResponse) {
-        val watchProviderStream = watchProviderResponse.results?.IN?.flatrate?.firstOrNull()
-        val watchProviderBuy = watchProviderResponse.results?.IN?.buy?.firstOrNull()
-        val watchProviderRent = watchProviderResponse.results?.IN?.rent?.firstOrNull()
+        val watchProviderStream = watchProviderResponse.results["IN"]?.flatrate?.firstOrNull()
+        val watchProviderBuy = watchProviderResponse.results["IN"]?.buy?.firstOrNull()
+        val watchProviderRent = watchProviderResponse.results["IN"]?.rent?.firstOrNull()
 
         binding.watchProviderContainer.isVisible =
             watchProviderStream != null || watchProviderBuy != null || watchProviderRent != null

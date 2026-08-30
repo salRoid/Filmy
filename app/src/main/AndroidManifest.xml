@@ -9,17 +9,17 @@
     <application
         android:name=".FilmyApplication"
         android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="n">
+        >
 
         <activity
-            android:name=".ui.home.MainActivity"
+            android:name=".ui.home.MainActivityCompose"
             android:exported="true"
             android:theme="@style/Theme.App.Starting">
 
@@ -58,17 +58,27 @@
         <activity android:name=".ui.cast_crew.AllCastCrewActivity" />
         <activity android:name=".ui.settings.LicenseActivity" />
         <activity android:name=".ui.settings.AboutActivity" />
-        <activity android:name=".ui.intro.FilmyIntroActivity" />
 
         <receiver
-            android:name=".ui.widget.FilmyWidgetProvider"
-            android:exported="false">
+            android:name=".ui.widget.WatchlistWidgetReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/filmy_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".ui.widget.ToRateWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/filmy_to_rate_widget_info" />
         </receiver>
 
     </application>

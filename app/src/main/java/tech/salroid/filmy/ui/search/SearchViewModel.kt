@@ -1,79 +1,100 @@
 package tech.salroid.filmy.ui.search
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import tech.salroid.filmy.data.local.model.SearchResult
 import tech.salroid.filmy.ui.home.MoviesRepository
-import tech.salroid.filmy.ui.home.SearchViewUiState
+import tech.salroid.filmy.utility.PreferenceHelper.addRecentSearch
+import tech.salroid.filmy.utility.PreferenceHelper.clearRecentSearches
+import tech.salroid.filmy.utility.PreferenceHelper.recentSearches
+import tech.salroid.filmy.utility.PreferenceHelper.removeRecentSearch
+import tech.salroid.filmy.utility.toUserMessage
 import javax.inject.Inject
 
 @HiltViewModel
+@OptIn(
+    FlowPreview::class,
+    ExperimentalCoroutinesApi::class
+)
 class SearchViewModel @Inject constructor(
-    private val moviesRepository: MoviesRepository
+    private val moviesRepository: MoviesRepository,
+    private val searchPreviewMapper: SearchPreviewMapper,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
-    val isSearchOpen = MutableStateFlow(false)
-    val query = MutableStateFlow("")
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
 
-    private val _uiStateCloseSearchView = MutableStateFlow(false)
-    private val _uiStateSearchView = MutableStateFlow<SearchViewUiState>(SearchViewUiState.Hidden)
-    private val _uiStateSearchResult = MutableStateFlow<ArrayList<SearchResult>?>(null)
-    val uiStateSearchResults: StateFlow<ArrayList<SearchResult>?> =
-        _uiStateSearchResult.asStateFlow()
-    val uiStateSearchView: StateFlow<SearchViewUiState?> = _uiStateSearchView.asStateFlow()
-    val uiStateCloseSearch: StateFlow<Boolean> = _uiStateCloseSearchView.asStateFlow()
+    private val _recentSearches = MutableStateFlow<List<String>>(sharedPreferences.recentSearches())
+    val recentSearches: StateFlow<List<String>> = _recentSearches.asStateFlow()
 
-    init {
-        searchMovies()
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-    private fun searchMovies() {
-        viewModelScope.launch(Dispatchers.IO) {
-            query.debounce(300)
-                .filter { query ->
-                    return@filter query.isNotEmpty()
-                }.distinctUntilChanged().flatMapLatest { query ->
-                    moviesRepository.searchMovies(query)
-                }.flowOn(Dispatchers.Main).collect { result ->
-                    viewModelScope.launch(Dispatchers.Main) {
-                        result.results
-                            .let {
-                                _uiStateSearchResult.emit(it)
-                            }
-                    }
+    val uiState = _searchQuery
+        .debounce(300)
+        .distinctUntilChanged()
+        .flatMapLatest { query ->
+            if (query.isBlank()) {
+                flowOf(SearchScreenState.Idle)
+            } else {
+                flow<SearchScreenState> {
+                    emit(SearchScreenState.Loading)
+                    
+                    moviesRepository
+                        .searchMultiFlow(query)
+                        .collect { searchResultResponse ->
+                            searchResultResponse.fold(onSuccess = { response ->
+                                runCatching {
+                                    response.results
+                                        .map(searchPreviewMapper::map)
+                                }.fold(onSuccess = { previews ->
+                                    emit(SearchScreenState.Success(previews))
+                                }, onFailure = { exception ->
+                                    emit(SearchScreenState.Error(exception.toUserMessage()))
+                                })
+                            }, onFailure = { exception ->
+                                emit(SearchScreenState.Error(exception.toUserMessage()))
+                            })
+                        }
                 }
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = SearchScreenState.Idle
+        )
+
+    fun onSearchQueryChange(query: String) {
+        viewModelScope.launch {
+            _searchQuery.value = query
         }
     }
 
-    fun searchViewVisible() {
-        viewModelScope.launch {
-            _uiStateSearchView.emit(SearchViewUiState.Visible)
-        }
+    fun commitSearch(query: String) {
+        if (query.isBlank()) return
+        sharedPreferences.addRecentSearch(query)
+        _recentSearches.value = sharedPreferences.recentSearches()
     }
 
-    fun searchViewHidden() {
-        viewModelScope.launch {
-            _uiStateSearchView.emit(SearchViewUiState.Hidden)
-            isSearchOpen.emit(false)
-        }
+    fun removeRecentSearch(query: String) {
+        sharedPreferences.removeRecentSearch(query)
+        _recentSearches.value = sharedPreferences.recentSearches()
     }
 
-    fun closeSearch() {
-        viewModelScope.launch {
-            _uiStateCloseSearchView.emit(true)
-        }
-    }
-
-    fun closeSearchDone() {
-        viewModelScope.launch {
-            _uiStateCloseSearchView.emit(false)
-        }
+    fun clearRecentSearches() {
+        sharedPreferences.clearRecentSearches()
+        _recentSearches.value = emptyList()
     }
 }

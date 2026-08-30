@@ -10,6 +10,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,13 +18,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.data.local.db.FilmyDatabase
 import tech.salroid.filmy.data.network.*
+import tech.salroid.filmy.utility.PreferenceHelper
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Provides
-    fun provideOkhttpClient(): OkHttpClient = OkHttpClient.Builder()
+    fun provideOkhttpClient(appPref: SharedPreferences): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor {
             val original = it.request()
             val originalUrl = original.url
@@ -44,6 +46,18 @@ object AppModule {
                 v4Url = v4Url.replace("/3/", "/4/")
             }
             it.proceed(it.request().newBuilder().url(v4Url).build())
+
+        }.addInterceptor { chain ->
+            val original = chain.request()
+            val request = if (original.url.host == "api.themoviedb.org") {
+                val country = appPref.getString(PreferenceHelper.COUNTRY_KEY, null) ?: "US"
+                original.newBuilder()
+                    .url(original.url.newBuilder().addQueryParameter("region", country).build())
+                    .build()
+            } else {
+                original
+            }
+            chain.proceed(request)
 
         }.addInterceptor(HttpLoggingInterceptor {
             Log.d("OkHttp", it)
@@ -79,12 +93,15 @@ object AppModule {
     }
 
     @Provides
+    @Singleton
     fun provideMoviesDatabase(@ApplicationContext appContext: Context): FilmyDatabase {
         return Room.databaseBuilder(
             appContext,
             FilmyDatabase::class.java,
             "filmy"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(true)
+            .build()
     }
 
     @Provides

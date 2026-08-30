@@ -14,7 +14,7 @@ data class SearchResult(
     var genreIds: ArrayList<Int> = arrayListOf(),
 
     @SerializedName("id")
-    var id: Int? = null,
+    var id: Int,
 
     @SerializedName("original_language")
     var originalLanguage: String? = null,
@@ -44,5 +44,17 @@ data class SearchResult(
     var voteAverage: Double? = null,
 
     @SerializedName("vote_count")
-    var voteCount: Int? = null
+    var voteCount: Int? = null,
+
+    @SerializedName("media_type")
+    var mediaType: String? = null,
+
+    @SerializedName("name")
+    var name: String? = null,
+
+    @SerializedName("first_air_date")
+    var firstAirDate: String? = null,
+
+    @SerializedName("profile_path")
+    var profilePath: String? = null
 )

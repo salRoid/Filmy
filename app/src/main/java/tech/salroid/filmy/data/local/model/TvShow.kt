@@ -11,7 +11,7 @@ data class TvShow(
     var popularity: Double? = null,
 
     @SerializedName("id")
-    var id: Int? = null,
+    var id: Int,
 
     @SerializedName("backdrop_path")
     var backdropPath: String? = null,

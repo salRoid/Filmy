@@ -58,12 +58,21 @@ fun FilmyApp(
     val snackBarHostState = remember { SnackbarHostState() }
     val textFieldState = remember { TextFieldState() }
     val context = LocalContext.current
-    val startDestination = remember {
+    // Saveable so the graph keeps the same start destination when the activity is recreated
+    // (e.g. on a theme change) and the restored back stack still matches it.
+    val startDestination = rememberSaveable {
         when {
             PreferenceHelper.isColdStart(context) -> AppRoute.Onboarding.route
             throughShortcut -> AppRoute.CollectionGraph.route
             else -> AppRoute.MoviesGraph.route
         }
+    }
+    // The screen sitting at the bottom of the back stack that tab switches pop up to.
+    // Onboarding removes itself and lands on Movies, so it can't be the graph's start destination.
+    val tabRootRoute = if (startDestination == AppRoute.CollectionGraph.route) {
+        AppRoute.Collection.route
+    } else {
+        AppRoute.Movies.route
     }
 
     val searchQuery by searchViewModel.searchQuery.collectAsStateWithLifecycle()
@@ -128,7 +137,7 @@ fun FilmyApp(
                     ),
                     modifier = Modifier.align(Alignment.BottomCenter)
                 ) {
-                    AppNavigationBar(navController)
+                    AppNavigationBar(navController, tabRootRoute)
                 }
             }
         }

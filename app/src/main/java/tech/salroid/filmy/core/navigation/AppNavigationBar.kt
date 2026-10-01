@@ -10,12 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
-fun AppNavigationBar(navController: NavHostController) {
+fun AppNavigationBar(navController: NavHostController, tabRootRoute: String) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
 
@@ -29,7 +28,7 @@ fun AppNavigationBar(navController: NavHostController) {
                     } == true,
                 onClick = {
                     navController.navigate(route = destination.graphRoute) {
-                        popUpTo(navController.graph.findStartDestination().id) {
+                        popUpTo(tabRootRoute) {
                             saveState = true
                         }
                         launchSingleTop = true

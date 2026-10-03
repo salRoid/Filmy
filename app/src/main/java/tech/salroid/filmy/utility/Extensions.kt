@@ -47,7 +47,7 @@ fun Long.toMoneyString(): String {
         value >= 1_000_000_000 -> String.format(Locale.getDefault(), "$%.1fB", value / 1_000_000_000)
         value >= 1_000_000 -> String.format(Locale.getDefault(), "$%.1fM", value / 1_000_000)
         value >= 1_000 -> String.format(Locale.getDefault(), "$%.1fK", value / 1_000)
-        else -> "$$value"
+        else -> "$$this"
     }
 }
 

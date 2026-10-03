@@ -32,20 +32,15 @@ class SearchViewModelLegacy @Inject constructor(
     }
 
     private fun searchMovies() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             query.debounce(300)
                 .filter { query ->
                     return@filter query.isNotEmpty()
                 }.distinctUntilChanged()
                 .flatMapLatest { query ->
                     moviesRepository.searchMovies(query)
-                }.flowOn(Dispatchers.Main).collect { result ->
-                    viewModelScope.launch(Dispatchers.Main) {
-                        result.results
-                            .let {
-                                _uiStateSearchResult.emit(it)
-                            }
-                    }
+                }.flowOn(Dispatchers.IO).collect { result ->
+                    _uiStateSearchResult.emit(result.results)
                 }
         }
     }

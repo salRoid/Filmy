@@ -3,7 +3,7 @@ package tech.salroid.filmy.ui.shows
 import tech.salroid.filmy.data.local.model.TvShow
 import tech.salroid.filmy.data.model.TvShowPreview
 import tech.salroid.filmy.utility.ImageConfig
-import tech.salroid.filmy.utility.formateReleaseDate
+import tech.salroid.filmy.utility.formatReleaseDate
 import javax.inject.Inject
 
 class TvShowsPreviewMapper @Inject constructor() {
@@ -15,7 +15,7 @@ class TvShowsPreviewMapper @Inject constructor() {
             title = tvShow.name.orEmpty(),
             posterUrl = posterBaseUrl + tvShow.posterPath.orEmpty(),
             firstAirReadableDate = tvShow.firstAirDate
-                ?.let(::formateReleaseDate)
+                ?.let(::formatReleaseDate)
                 .orEmpty()
         )
 }

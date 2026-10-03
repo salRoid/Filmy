@@ -17,6 +17,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.data.local.db.FilmyDatabase
+import tech.salroid.filmy.data.local.db.MIGRATION_2_4
+import tech.salroid.filmy.data.local.db.MIGRATION_4_5
 import tech.salroid.filmy.data.network.*
 import tech.salroid.filmy.utility.PreferenceHelper
 
@@ -52,7 +54,7 @@ object AppModule {
             val request = if (original.url.host == "api.themoviedb.org") {
                 val country = appPref.getString(PreferenceHelper.COUNTRY_KEY, null) ?: "US"
                 original.newBuilder()
-                    .url(original.url.newBuilder().addQueryParameter("region", country).build())
+                    .url(original.url.newBuilder().setQueryParameter("region", country).build())
                     .build()
             } else {
                 original
@@ -100,7 +102,7 @@ object AppModule {
             FilmyDatabase::class.java,
             "filmy"
         )
-            .fallbackToDestructiveMigration(true)
+            .addMigrations(MIGRATION_2_4, MIGRATION_4_5)
             .build()
     }
 

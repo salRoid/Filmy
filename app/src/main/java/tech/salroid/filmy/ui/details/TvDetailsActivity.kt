@@ -61,6 +61,7 @@ import tech.salroid.filmy.ui.similar_recommendation.SimilarRecommendationFragmen
 import tech.salroid.filmy.ui.similar_recommendation.SimilarRecommendationFragment.Companion.TAG_SIMILAR
 import tech.salroid.filmy.ui.similar_recommendation.SimilarRecommendationViewModel
 import tech.salroid.filmy.utility.*
+import tech.salroid.filmy.utility.PreferenceHelper
 import tech.salroid.filmy.utility.FilmyUtility.getNavigationBarHeight
 
 @AndroidEntryPoint
@@ -832,9 +833,10 @@ class TvDetailsActivity : AppCompatActivity() {
     }
 
     private fun setWatchProviderInfo(watchProviderResponse: WatchProviderResponse) {
-        val watchProviderStream = watchProviderResponse.results["IN"]?.flatrate?.firstOrNull()
-        val watchProviderBuy = watchProviderResponse.results["IN"]?.buy?.firstOrNull()
-        val watchProviderRent = watchProviderResponse.results["IN"]?.rent?.firstOrNull()
+        val regionProviders = watchProviderResponse.results[PreferenceHelper.getSelectedCountry(this)]
+        val watchProviderStream = regionProviders?.flatrate?.firstOrNull()
+        val watchProviderBuy = regionProviders?.buy?.firstOrNull()
+        val watchProviderRent = regionProviders?.rent?.firstOrNull()
 
         binding.watchProviderContainer.isVisible =
             watchProviderStream != null || watchProviderBuy != null || watchProviderRent != null

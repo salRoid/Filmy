@@ -3,7 +3,7 @@ package tech.salroid.filmy.ui.search
 import tech.salroid.filmy.data.local.model.SearchResult
 import tech.salroid.filmy.data.model.SearchPreview
 import tech.salroid.filmy.utility.ImageConfig
-import tech.salroid.filmy.utility.formateReleaseDate
+import tech.salroid.filmy.utility.formatReleaseDate
 import javax.inject.Inject
 
 class SearchPreviewMapper @Inject constructor() {
@@ -17,7 +17,7 @@ class SearchPreviewMapper @Inject constructor() {
             title = (searchResult.title ?: searchResult.name).orEmpty(),
             posterUrl = posterBaseUrl + (searchResult.posterPath ?: searchResult.profilePath).orEmpty(),
             readableReleaseDate = (searchResult.releaseDate ?: searchResult.firstAirDate)
-                ?.let(::formateReleaseDate)
+                ?.let(::formatReleaseDate)
                 .orEmpty(),
             mediaType = searchResult.mediaType
         )

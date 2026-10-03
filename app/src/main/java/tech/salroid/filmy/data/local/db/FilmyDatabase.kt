@@ -13,7 +13,7 @@ import tech.salroid.filmy.data.local.db.entity.Profile
 @Database(
     entities = [Movie::class, MovieDetails::class, Profile::class],
     version = 5,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class FilmyDatabase : RoomDatabase() {

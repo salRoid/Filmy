@@ -25,6 +25,7 @@ import tech.salroid.filmy.data.local.db.MIGRATION_4_5
 import tech.salroid.filmy.data.network.*
 import tech.salroid.filmy.utility.PreferenceHelper
 import tech.salroid.filmy.utility.resolveApiLanguageTag
+import tech.salroid.filmy.utility.resolveImageLanguages
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -67,6 +68,14 @@ object AppModule {
                         original.url.newBuilder()
                             .setQueryParameter("region", country)
                             .setQueryParameter("language", language)
+                            .apply {
+                                if (original.url.encodedPath.endsWith("/images")) {
+                                    setQueryParameter(
+                                        "include_image_language",
+                                        resolveImageLanguages(language)
+                                    )
+                                }
+                            }
                             .build()
                     )
                     .build()

@@ -23,6 +23,7 @@ import tech.salroid.filmy.data.model.TvShowPreview
 import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.home.AccountSyncRepository
 import tech.salroid.filmy.ui.home.MoviesRepository
+import tech.salroid.filmy.utility.ApiLanguage
 import tech.salroid.filmy.utility.ImageConfig
 import tech.salroid.filmy.utility.PreferenceHelper.selectedCountryFlow
 import javax.inject.Inject
@@ -41,8 +42,9 @@ class ShowsViewModel @Inject constructor(
 
     val showsPagingData: Flow<PagingData<TvShowPreview>> = combine(
         _selectedCategory,
-        sharedPreferences.selectedCountryFlow()
-    ) { category, _ -> category }
+        sharedPreferences.selectedCountryFlow(),
+        ApiLanguage.tag
+    ) { category, _, _ -> category }
         .flatMapLatest { category ->
             moviesRepository.getTvShows(
                 type = category.toApiTypeString(),

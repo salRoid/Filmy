@@ -24,6 +24,7 @@ import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.model.MoviePreview
 import tech.salroid.filmy.ui.home.AccountSyncRepository
 import tech.salroid.filmy.ui.home.MoviesRepository
+import tech.salroid.filmy.utility.ApiLanguage
 
 // moviesPagingData chains combine()+flatMapLatest()+map()+cachedIn(viewModelScope) -
 // cachedIn's multicasting is well documented as hard to drive to completion with
@@ -82,6 +83,18 @@ class MoviesViewModelTest {
         viewModel.onCategorySelected(Movie.MovieType.POPULAR)
 
         verify(timeout = 1000) { moviesRepository.getMovies("popular", false) }
+    }
+
+    @Test
+    fun `moviesPagingData refetches when the API language changes`() = runTest(mainDispatcherRule.testDispatcher) {
+        every { moviesRepository.getMovies("day", true) } returns flowOf(PagingData.empty())
+        ApiLanguage.update("en-US")
+
+        viewModel.moviesPagingData.onEach { }.launchIn(backgroundScope)
+        verify(timeout = 1000, exactly = 1) { moviesRepository.getMovies("day", true) }
+        ApiLanguage.update("hi-IN")
+
+        verify(timeout = 1000, exactly = 2) { moviesRepository.getMovies("day", true) }
     }
 
     @Test

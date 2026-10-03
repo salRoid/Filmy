@@ -23,6 +23,7 @@ import tech.salroid.filmy.data.model.MoviePreview
 import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.home.AccountSyncRepository
 import tech.salroid.filmy.ui.home.MoviesRepository
+import tech.salroid.filmy.utility.ApiLanguage
 import tech.salroid.filmy.utility.ImageConfig
 import tech.salroid.filmy.utility.PreferenceHelper.selectedCountryFlow
 import javax.inject.Inject
@@ -41,8 +42,9 @@ class MoviesViewModel @Inject constructor(
 
     val moviesPagingData: Flow<PagingData<MoviePreview>> = combine(
         _selectedCategory,
-        sharedPreferences.selectedCountryFlow()
-    ) { category, _ -> category }
+        sharedPreferences.selectedCountryFlow(),
+        ApiLanguage.tag
+    ) { category, _, _ -> category }
         .flatMapLatest { category ->
             moviesRepository.getMovies(
                 type = category.toApiTypeString(),

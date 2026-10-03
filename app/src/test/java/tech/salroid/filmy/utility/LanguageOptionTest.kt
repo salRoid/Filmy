@@ -46,4 +46,14 @@ class LanguageOptionTest {
 
         assertEquals("eo-EO", tag)
     }
+
+    @Test
+    fun `image languages include the selected language, English and untagged images`() {
+        assertEquals("hi,en,null", resolveImageLanguages("hi-IN"))
+    }
+
+    @Test
+    fun `image languages don't repeat English when it is the selected language`() {
+        assertEquals("en,null", resolveImageLanguages("en-US"))
+    }
 }

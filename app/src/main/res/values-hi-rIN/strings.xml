@@ -3,30 +3,30 @@
 
 
     <string name="app_name">फिल्मी</string>
-    <string name="movies">चलचित्र</string>
+    <string name="movies">फ़िल्में</string>
     <string name="cast">कलाकार</string>
     <string name="license">लाइसेंस</string>
     <string name="version">संस्करण</string>
-    <string name="about">के बारे में</string>
-    <string name="about_screen_tittle">फिल्म प्रेमियों के लिए  खास बनाया  गया ।</string>
+    <string name="about">ऐप के बारे में</string>
+    <string name="about_screen_tittle">फ़िल्म प्रेमियों के लिए बनाया गया</string>
     <string name="details">विवरण</string>
 
 
     <string name="name_webianks">रामांकित सिंह</string>
     <string name="name_salroid">सजल गुप्ता</string>
-    <string name="email">ईमेल भेजें</string>
+    <string name="email">ईमेल</string>
     <string name="website">वेबसाइट</string>
     <string name="github">गिटहब</string>
 
-    <string name="bio_webianks">मुझे एंड्रॉयड,डिजाइन और संगीत से प्यार है।</string>
-    <string name="bio_salroid">दर्पण के दूसरी तरफ शैतान के साथ।</string>
+    <string name="bio_webianks">मुझे एंड्रॉयड, डिज़ाइन और संगीत से प्यार है।</string>
+    <string name="bio_salroid">वह, जिसके आईने के दूसरी ओर शैतान है।</string>
 
-    <string name="shareappdetails">इस एप को शेयर करें।</string>
+    <string name="shareappdetails">इस ऐप को शेयर करें</string>
 
-    <string name="crew">कर्मी दल</string>
-    <string name="favourite">पसंदीदा</string>
-    <string name="your_fav_movies_appear_here">अपने पसंदीदा फिल्म यहाँ दिखाई</string>
-    <string name="your_watchlist_movies_appear_here">आपकी फिल्में देखने के लिए यहाँ है</string>
+    <string name="crew">क्रू</string>
+    <string name="favourite">देखा गया</string>
+    <string name="your_fav_movies_appear_here">आपकी देखी गई फ़िल्में यहाँ दिखाई देंगी।</string>
+    <string name="your_watchlist_movies_appear_here">आपकी वॉचलिस्ट यहाँ दिखाई देगी।</string>
 
     <!-- Added by translation pass -->
     <string name="back">वापस</string>
@@ -151,11 +151,22 @@
     <string name="cd_remove_from_watchlist">वॉचलिस्ट से हटाएं</string>
     <string name="cd_mark_watched">देखा गया के रूप में चिह्नित करें</string>
     <string name="cd_mark_unwatched">न देखा गया के रूप में चिह्नित करें</string>
-    <string name="cd_movie_poster">%1$s मूवी पोस्टर</string>
+    <string name="cd_movie_poster">%1$s फ़िल्म पोस्टर</string>
     <string name="cd_show_poster">%1$s शो पोस्टर</string>
     <string name="cd_play_trailer">ट्रेलर चलाएं</string>
     <string name="cd_read_full_overview">पूरा विवरण पढ़ें</string>
     <string name="cd_gallery_backdrop">बैकड्रॉप छवि %1$d</string>
     <string name="cd_gallery_poster">पोस्टर छवि %1$d</string>
     <string name="cd_read_full_biography">पूरी जीवनी पढ़ें</string>
+    <string name="watchlist">वॉचलिस्ट</string>
+    <string name="tab_movies">फ़िल्में</string>
+    <string name="tab_shows">शो</string>
+    <string name="tab_collection">संग्रह</string>
+    <string name="tab_account">खाता</string>
+    <string name="no_watch_providers_available">आपके क्षेत्र के लिए कोई वॉच प्रोवाइडर उपलब्ध नहीं है।</string>
+    <string name="person_born">जन्म</string>
+    <string name="person_died">निधन</string>
+    <string name="person_age">आयु</string>
+    <string name="person_birthplace">जन्मस्थान</string>
+    <string name="person_credits">क्रेडिट</string>
 </resources>

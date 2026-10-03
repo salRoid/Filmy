@@ -3,30 +3,30 @@
 
     <string name="app_name">Filmy</string>
 
-    <string name="movies">Película</string>
-    <string name="cast">artista</string>
-    <string name="license">licencia</string>
-    <string name="version">versión</string>
-    <string name="about">acerca de</string>
+    <string name="movies">Películas</string>
+    <string name="cast">Reparto</string>
+    <string name="license">Licencia</string>
+    <string name="version">Versión</string>
+    <string name="about">Acerca de</string>
     <string name="about_screen_tittle">Hecho para cinéfilos</string>
-    <string name="details">detalles</string>
+    <string name="details">Detalles</string>
 
 
     <string name="name_webianks">Ramankit Singh</string>
     <string name="name_salroid">Sajal Gupta</string>
-    <string name="email">enviar Email</string>
-    <string name="website">sitio web</string>
+    <string name="email">Correo electrónico</string>
+    <string name="website">Sitio web</string>
     <string name="github">GitHub</string>
 
-    <string name="bio_webianks">Yo androide , diseño y música amor .</string>
-    <string name="bio_salroid">El que tiene el diablo al otro lado del espejo..</string>
+    <string name="bio_webianks">Me encantan Android, el diseño y la música.</string>
+    <string name="bio_salroid">El que tiene al diablo al otro lado del espejo.</string>
 
     <string name="shareappdetails">Comparte esta aplicación</string>
 
-    <string name="crew">Tripulación</string>
-    <string name="favourite">Favoritos</string>
-    <string name="your_fav_movies_appear_here">Tu película favorita aparece aquí</string>
-    <string name="your_watchlist_movies_appear_here">Su lista aparece aquí</string>
+    <string name="crew">Equipo</string>
+    <string name="favourite">Vistas</string>
+    <string name="your_fav_movies_appear_here">Tus películas vistas aparecen aquí.</string>
+    <string name="your_watchlist_movies_appear_here">Tu lista de seguimiento aparece aquí.</string>
 
     <!-- Added by translation pass -->
     <string name="back">Atrás</string>
@@ -50,7 +50,7 @@
     <string name="discover_sort_rating">Mejor valorados</string>
     <string name="discover_sort_newest">Más recientes</string>
     <string name="discover_sort_oldest">Más antiguos</string>
-    <string name="label_pouplar">Popular</string>
+    <string name="label_pouplar">Populares</string>
     <string name="label_now_playing">En cartelera</string>
     <string name="label_upcoming">Próximamente</string>
     <string name="widget_title">Tendencias ahora</string>
@@ -82,7 +82,7 @@
     <string name="list_empty">Esta lista está vacía.</string>
     <string name="delete_list_confirmation">¿Eliminar esta lista?</string>
     <string name="tv_label_trending">Tendencias</string>
-    <string name="tv_label_popular">Popular</string>
+    <string name="tv_label_popular">Populares</string>
     <string name="tv_label_arriving_today">Emitiéndose hoy</string>
     <string name="tv_label_on_tv">En TV</string>
     <string name="tv_label_top_rated">Mejor valoradas</string>
@@ -158,4 +158,15 @@
     <string name="cd_gallery_backdrop">Imagen de fondo %1$d</string>
     <string name="cd_gallery_poster">Imagen de póster %1$d</string>
     <string name="cd_read_full_biography">Leer biografía completa</string>
+    <string name="watchlist">Lista de seguimiento</string>
+    <string name="tab_movies">Películas</string>
+    <string name="tab_shows">Series</string>
+    <string name="tab_collection">Colección</string>
+    <string name="tab_account">Cuenta</string>
+    <string name="no_watch_providers_available">No hay proveedores de streaming disponibles en tu región.</string>
+    <string name="person_born">Nacimiento</string>
+    <string name="person_died">Fallecimiento</string>
+    <string name="person_age">Edad</string>
+    <string name="person_birthplace">Origen</string>
+    <string name="person_credits">Créditos</string>
 </resources>

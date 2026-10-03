@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -20,6 +21,7 @@ fun AppNavigationBar(navController: NavHostController, tabRootRoute: String) {
 
     NavigationBar {
         TopLevelDestinations.forEach { destination ->
+            val label = stringResource(destination.labelRes)
             NavigationBarItem(
                 selected = currentDestination
                     ?.hierarchy
@@ -38,10 +40,10 @@ fun AppNavigationBar(navController: NavHostController, tabRootRoute: String) {
                 icon = {
                     Icon(
                         painterResource(destination.iconRes),
-                        contentDescription = destination.contentDescription
+                        contentDescription = label
                     )
                 },
-                label = { Text(destination.label) },
+                label = { Text(label) },
                 colors = NavigationBarItemDefaults.colors(
                     selectedTextColor = MaterialTheme.colorScheme.primary,
                     selectedIconColor = MaterialTheme.colorScheme.primary,

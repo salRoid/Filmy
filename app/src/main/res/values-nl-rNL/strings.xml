@@ -2,30 +2,30 @@
 <resources>
 
     <string name="app_name">Filmy</string>
-    <string name="movies">film</string>
-    <string name="cast">kunstenaar</string>
-    <string name="license">licentie</string>
-    <string name="version">editie</string>
-    <string name="about">over</string>
-    <string name="about_screen_tittle">Speciaal ontworpen voor filmliefhebbers .</string>
-    <string name="details">gegevens</string>
+    <string name="movies">Films</string>
+    <string name="cast">Cast</string>
+    <string name="license">Licentie</string>
+    <string name="version">Versie</string>
+    <string name="about">Over</string>
+    <string name="about_screen_tittle">Gemaakt voor filmliefhebbers</string>
+    <string name="details">Details</string>
 
 
     <string name="name_webianks">Ramankit Singh</string>
     <string name="name_salroid">Sajal Gupta</string>
-    <string name="email">Send Email</string>
+    <string name="email">E-mail</string>
     <string name="website">Website</string>
     <string name="github">GitHub</string>
 
-    <string name="bio_webianks">Ik hou van Android , het ontwerpen en muziek.</string>
-    <string name="bio_salroid">De een met duivel aan de andere kant van de spiegel.</string>
+    <string name="bio_webianks">Ik hou van Android, ontwerpen en muziek.</string>
+    <string name="bio_salroid">Degene met de duivel aan de andere kant van de spiegel.</string>
 
-    <string name="shareappdetails">Deel deze app .</string>
+    <string name="shareappdetails">Deel deze app</string>
 
-    <string name="crew">Bemanning</string>
-    <string name="favourite">favorieten</string>
-    <string name="your_fav_movies_appear_here">your favourite movie appears here</string>
-    <string name="your_watchlist_movies_appear_here">uw watchlist verschijnt hier</string>
+    <string name="crew">Crew</string>
+    <string name="favourite">Bekeken</string>
+    <string name="your_fav_movies_appear_here">Je bekeken films verschijnen hier.</string>
+    <string name="your_watchlist_movies_appear_here">Je kijklijst verschijnt hier.</string>
 
     <!-- Added by translation pass -->
     <string name="back">Terug</string>
@@ -157,4 +157,15 @@
     <string name="cd_gallery_backdrop">Achtergrondafbeelding %1$d</string>
     <string name="cd_gallery_poster">Posterafbeelding %1$d</string>
     <string name="cd_read_full_biography">Volledige biografie lezen</string>
+    <string name="watchlist">Kijklijst</string>
+    <string name="tab_movies">Films</string>
+    <string name="tab_shows">Series</string>
+    <string name="tab_collection">Collectie</string>
+    <string name="tab_account">Account</string>
+    <string name="no_watch_providers_available">Geen streamingaanbieders beschikbaar voor je regio.</string>
+    <string name="person_born">Geboren</string>
+    <string name="person_died">Overleden</string>
+    <string name="person_age">Leeftijd</string>
+    <string name="person_birthplace">Geboorteplaats</string>
+    <string name="person_credits">Titels</string>
 </resources>

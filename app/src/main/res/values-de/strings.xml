@@ -9,24 +9,24 @@
     <string name="version">Version</string>
     <string name="about">Über</string>
     <string name="about_screen_tittle">Gemacht für Kinoliebhaber</string>
-    <string name="details">Einzelheiten</string>
+    <string name="details">Details</string>
 
 
     <string name="name_webianks">Ramankit Singh</string>
     <string name="name_salroid">Sajal Gupta</string>
-    <string name="email">Sende eine Email</string>
+    <string name="email">E-Mail</string>
     <string name="website">Webseite</string>
-    <string name="github">Github</string>
+    <string name="github">GitHub</string>
 
     <string name="bio_webianks">Ich mag Android, Design und Musik.</string>
-    <string name="bio_salroid">Der mit Teufel auf der anderen Seite des Spiegels.</string>
+    <string name="bio_salroid">Der mit dem Teufel auf der anderen Seite des Spiegels.</string>
 
-    <string name="shareappdetails">Teile diese App</string>
+    <string name="shareappdetails">Diese App teilen</string>
 
     <string name="crew">Crew</string>
-    <string name="favourite">Favoriten</string>
-    <string name="your_fav_movies_appear_here">Ihr Lieblingsfilm erscheint hier</string>
-    <string name="your_watchlist_movies_appear_here">Ihr Watchlist erscheint hier</string>
+    <string name="favourite">Gesehen</string>
+    <string name="your_fav_movies_appear_here">Ihre gesehenen Filme erscheinen hier.</string>
+    <string name="your_watchlist_movies_appear_here">Ihre Merkliste erscheint hier.</string>
 
     <!-- Added by translation pass -->
     <string name="back">Zurück</string>
@@ -158,4 +158,15 @@
     <string name="cd_gallery_backdrop">Hintergrundbild %1$d</string>
     <string name="cd_gallery_poster">Poster %1$d</string>
     <string name="cd_read_full_biography">Vollständige Biografie lesen</string>
+    <string name="watchlist">Merkliste</string>
+    <string name="tab_movies">Filme</string>
+    <string name="tab_shows">Serien</string>
+    <string name="tab_collection">Sammlung</string>
+    <string name="tab_account">Konto</string>
+    <string name="no_watch_providers_available">Für Ihre Region sind keine Streaminganbieter verfügbar.</string>
+    <string name="person_born">Geboren</string>
+    <string name="person_died">Gestorben</string>
+    <string name="person_age">Alter</string>
+    <string name="person_birthplace">Geburtsort</string>
+    <string name="person_credits">Titel</string>
 </resources>

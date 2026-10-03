@@ -11,6 +11,10 @@
     <string name="app_name">Filmy</string>
     <string name="back">Back</string>
     <string name="movies">Movies</string>
+    <string name="tab_movies">Movies</string>
+    <string name="tab_shows">Shows</string>
+    <string name="tab_collection">Collection</string>
+    <string name="tab_account">Account</string>
     <string name="cast">Cast</string>
     <string name="license">License</string>
     <string name="version">Version</string>
@@ -20,50 +24,6 @@
 
 
 
-    <string name="crashlytics" translatable="false"><![CDATA[
-    <b>Crashlytics
-    </b>
-     <br>
-     <pre>
-
-      SDK:
-protobuf-c http://code.google.com/p/protobuf-c/source/browse/trunk/LICENSE
-
-Copyright © 2008-2011, Dave Benson.
-
-All rights reserved.
-
-Redistribution and use in source and binary forms, with
-or without modification, are permitted provided that the
-following conditions are met:
-
-* Redistributions of source code must retain the above
-copyright notice, this list of conditions and the following
-disclaimer.
-* Redistributions in binary form must reproduce
-the above copyright notice, this list of conditions and
-the following disclaimer in the documentation and/or other
-materials provided with the distribution.
-* Neither the name
-of "protobuf-c" nor the names of its contributors
-may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER
-OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
-GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-</pre>]]></string>
 
     <string name="app_share_link" translatable="false">https://play.google.com/store/apps/details?id=tech.salroid.filmy</string>
     <string name="website_webianks" translatable="false">http://webianks.in</string>
@@ -73,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <string name="shareappdetails">Share this App</string>
 
     <string name="crew">Crew</string>
-    <string name="watchlist" translatable="false">Watch List</string>
+    <string name="watchlist">Watch List</string>
     <string name="favourite">Watched</string>
     <string name="your_fav_movies_appear_here">Your watched movies appear here.</string>
     <string name="your_watchlist_movies_appear_here">Your watchlist appears here.</string>
@@ -245,4 +205,9 @@ POSSIBILITY OF SUCH DAMAGE.
     <string name="cd_gallery_poster">Poster image %1$d</string>
     <string name="cd_read_full_biography">Read full biography</string>
 
+    <string name="person_born">Born</string>
+    <string name="person_died">Died</string>
+    <string name="person_age">Age</string>
+    <string name="person_birthplace">Birthplace</string>
+    <string name="person_credits">Credits</string>
 </resources>

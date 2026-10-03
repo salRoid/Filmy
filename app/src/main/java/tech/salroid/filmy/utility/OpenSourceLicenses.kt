@@ -68,7 +68,7 @@ val OPEN_SOURCE_LICENSES = listOf(
         url = "https://github.com/airbnb/lottie-android/blob/master/LICENSE.txt"
     ),
     OpenSourceLicense(
-        name = "Firebase Android SDK",
+        name = "Firebase (Analytics, Crashlytics)",
         license = "Apache License 2.0",
         url = "https://github.com/firebase/firebase-android-sdk/blob/master/LICENSE"
     )

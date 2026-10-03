@@ -48,7 +48,11 @@ fun KeywordsSection(
                 modifier = Modifier.height(28.dp),
                 shape = RoundedCornerShape(percent = 50),
                 colors = AssistChipDefaults.assistChipColors(
-                    labelColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    labelColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                ),
+                border = AssistChipDefaults.assistChipBorder(
+                    enabled = true,
+                    borderColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                 )
             )
         }

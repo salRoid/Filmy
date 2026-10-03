@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -34,7 +35,12 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.common.model.DetailsActions
 import tech.salroid.filmy.ui.common.model.MediaDetailsUiState
 import tech.salroid.filmy.ui.common.model.PaletteColors
+import tech.salroid.filmy.ui.common.shiftedUntil
 import tech.salroid.filmy.ui.theme.AppTheme
+
+// Roughly a 4.5:1 contrast against the near-white / near-black page.
+private const val MAX_TINT_LUMINANCE_ON_LIGHT = 0.16f
+private const val MIN_TINT_LUMINANCE_ON_DARK = 0.35f
 
 @Composable
 fun ActionsCard(
@@ -44,13 +50,18 @@ fun ActionsCard(
     modifier: Modifier = Modifier
 ) {
     val isDark = isSystemInDarkTheme()
+    // The selected state has to stand out from both the page and the grey
+    // unselected items, so the palette colour is taken from its deep end on a
+    // light page (and its bright end on a dark one), then pushed further if
+    // the image's own tones are too washed out to read.
     val tint = remember(paletteColors, isDark) {
-        val color = if (isDark) {
-            paletteColors?.lightVibrantRgb ?: paletteColors?.vibrantRgb
+        if (isDark) {
+            (paletteColors?.lightVibrantRgb ?: paletteColors?.vibrantRgb)
+                ?.let { Color(it).shiftedUntil(Color.White) { c -> c.luminance() >= MIN_TINT_LUMINANCE_ON_DARK } }
         } else {
-            paletteColors?.vibrantRgb ?: paletteColors?.darkVibrantRgb
+            (paletteColors?.darkVibrantRgb ?: paletteColors?.vibrantRgb ?: paletteColors?.darkMutedRgb)
+                ?.let { Color(it).shiftedUntil(Color.Black) { c -> c.luminance() <= MAX_TINT_LUMINANCE_ON_LIGHT } }
         }
-        color?.let { Color(it) }
     } ?: MaterialTheme.colorScheme.primary
 
     val unselectedColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)

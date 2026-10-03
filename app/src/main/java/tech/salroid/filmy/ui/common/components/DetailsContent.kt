@@ -3,13 +3,11 @@ package tech.salroid.filmy.ui.common.components
 import android.app.Activity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
@@ -189,64 +187,54 @@ fun DetailsToolbar(
     val buttonBackgroundColor =
         if (isTransparent) Color.Black.copy(alpha = 0.35f) else Color.Transparent
 
+    // 48dp circles that double as the touch target. Paddings are 8dp less than the
+    // visual spacing would suggest because the app bar already insets its content.
+    val buttonColors = IconButtonDefaults.iconButtonColors(containerColor = buttonBackgroundColor)
+
     CenterAlignedTopAppBar(
         title = { },
         navigationIcon = {
             IconButton(
                 onClick = actions.onBackNavigation,
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .size(48.dp),
+                colors = buttonColors
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .background(buttonBackgroundColor, CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painterResource(R.drawable.ic_arrow_back),
-                        contentDescription = stringResource(R.string.back),
-                        tint = iconColor,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
+                Icon(
+                    painterResource(R.drawable.ic_arrow_back),
+                    contentDescription = stringResource(R.string.back),
+                    tint = iconColor,
+                    modifier = Modifier.size(24.dp)
+                )
             }
         },
         actions = {
             IconButton(
                 onClick = onGalleryClick,
-                modifier = Modifier.padding(end = 16.dp)
+                modifier = Modifier.size(48.dp),
+                colors = buttonColors
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .background(buttonBackgroundColor, CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.PhotoLibrary,
-                        contentDescription = stringResource(R.string.photos),
-                        tint = iconColor,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Default.PhotoLibrary,
+                    contentDescription = stringResource(R.string.photos),
+                    tint = iconColor,
+                    modifier = Modifier.size(24.dp)
+                )
             }
             IconButton(
                 onClick = actions.onShareClick,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 8.dp)
+                    .size(48.dp),
+                colors = buttonColors
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .background(buttonBackgroundColor, CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painterResource(R.drawable.twotone_share_24),
-                        contentDescription = stringResource(R.string.share),
-                        tint = iconColor,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
+                Icon(
+                    painterResource(R.drawable.twotone_share_24),
+                    contentDescription = stringResource(R.string.share),
+                    tint = iconColor,
+                    modifier = Modifier.size(24.dp)
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

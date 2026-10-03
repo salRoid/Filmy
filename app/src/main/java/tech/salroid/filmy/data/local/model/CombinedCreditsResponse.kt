@@ -46,7 +46,22 @@ data class CombinedCredit(
     var mediaType: String? = null,
 
     @SerialName("popularity")
-    var popularity: Double? = null
+    var popularity: Double? = null,
+
+    @SerialName("vote_count")
+    var voteCount: Int? = null,
+
+    @SerialName("episode_count")
+    var episodeCount: Int? = null,
+
+    @SerialName("genre_ids")
+    var genreIds: List<Int> = emptyList(),
+
+    @SerialName("order")
+    var order: Int? = null,
+
+    @SerialName("department")
+    var department: String? = null
 ) : Serializable {
     val displayTitle: String? get() = title ?: name
     val displayDate: String? get() = releaseDate ?: firstAirDate

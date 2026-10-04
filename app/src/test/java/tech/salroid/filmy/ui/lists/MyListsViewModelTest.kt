@@ -15,7 +15,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
-import tech.salroid.filmy.data.local.db.entity.Profile
 import tech.salroid.filmy.data.local.model.account.CreateListResponse
 import tech.salroid.filmy.data.local.model.account.TmdbList
 import tech.salroid.filmy.data.local.model.account.TmdbListsResponse
@@ -48,10 +47,9 @@ class MyListsViewModelTest {
     @Test
     fun `init loads the user's lists when logged in`() = runTest {
         accountRepository = mockk()
-        every { accountRepository.getSessionIdFromPref() } returns "session"
-        every { accountRepository.getProfileFromLocal() } returns Profile(id = 1)
+        every { accountRepository.canManageLists() } returns true
         val list = TmdbList(id = 1, name = "Watch later")
-        coEvery { accountRepository.getLists(1, "session") } returns
+        coEvery { accountRepository.getLists() } returns
             flowOf(TmdbListsResponse(results = listOf(list)))
 
         // init{}'s loadLists() dispatches onto a real thread (Dispatchers.IO)
@@ -59,15 +57,15 @@ class MyListsViewModelTest {
         // reaches a Turbine subscription, so asserting an "initial empty" first
         // item would race. Synchronize on the network call instead.
         val viewModel = viewModel()
-        coVerify(timeout = 1000) { accountRepository.getLists(1, "session") }
+        coVerify(timeout = 1000) { accountRepository.getLists() }
 
         assertEquals(listOf(list), viewModel.lists.value)
     }
 
     @Test
-    fun `init does nothing when there is no session`() {
+    fun `init does nothing without list access`() {
         accountRepository = mockk()
-        every { accountRepository.getSessionIdFromPref() } returns null
+        every { accountRepository.canManageLists() } returns false
 
         val viewModel = viewModel()
 
@@ -77,11 +75,11 @@ class MyListsViewModelTest {
     @Test
     fun `createList appends the new list locally on success`() = runTest {
         accountRepository = mockk()
-        every { accountRepository.getSessionIdFromPref() } returns null // skip init's loadLists
+        every { accountRepository.canManageLists() } returns false // skip init's loadLists
 
         val viewModel = viewModel()
-        every { accountRepository.getSessionIdFromPref() } returns "session"
-        coEvery { accountRepository.createList("session", "New list") } returns
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.createList("New list") } returns
             flowOf(CreateListResponse(listId = 42))
 
         viewModel.lists.test {
@@ -105,42 +103,40 @@ class MyListsViewModelTest {
     @Test
     fun `deleteList removes optimistically and keeps it removed on success`() = runTest {
         accountRepository = mockk()
-        every { accountRepository.getSessionIdFromPref() } returns "session"
-        every { accountRepository.getProfileFromLocal() } returns Profile(id = 1)
+        every { accountRepository.canManageLists() } returns true
         val list = TmdbList(id = 9, name = "Doomed")
-        coEvery { accountRepository.getLists(1, "session") } returns
+        coEvery { accountRepository.getLists() } returns
             flowOf(TmdbListsResponse(results = listOf(list)))
-        coEvery { accountRepository.deleteList(9, "session") } returns flowOf(TmdbStatusResponse())
+        coEvery { accountRepository.deleteList(9) } returns flowOf(TmdbStatusResponse())
 
         val viewModel = viewModel()
-        verify(timeout = 1000) { accountRepository.getLists(1, "session") }
+        verify(timeout = 1000) { accountRepository.getLists() }
 
         viewModel.deleteList(9)
 
         assertEquals(emptyList<TmdbList>(), viewModel.lists.value)
-        coVerify(timeout = 1000) { accountRepository.deleteList(9, "session") }
+        coVerify(timeout = 1000) { accountRepository.deleteList(9) }
         assertEquals(emptyList<TmdbList>(), viewModel.lists.value)
     }
 
     @Test
-    fun `deleteList rolls back when there is no session at push time`() = runTest {
+    fun `deleteList rolls back when list access is gone at push time`() = runTest {
         accountRepository = mockk()
-        every { accountRepository.getSessionIdFromPref() } returns "session"
-        every { accountRepository.getProfileFromLocal() } returns Profile(id = 1)
+        every { accountRepository.canManageLists() } returns true
         val list = TmdbList(id = 9, name = "Doomed")
-        coEvery { accountRepository.getLists(1, "session") } returns
+        coEvery { accountRepository.getLists() } returns
             flowOf(TmdbListsResponse(results = listOf(list)))
 
         val viewModel = viewModel()
-        verify(timeout = 1000) { accountRepository.getLists(1, "session") }
+        verify(timeout = 1000) { accountRepository.getLists() }
 
-        every { accountRepository.getSessionIdFromPref() } returns null
+        every { accountRepository.canManageLists() } returns false
         viewModel.deleteList(9)
 
         assertEquals(emptyList<TmdbList>(), viewModel.lists.value)
         // 2nd call overall (1st was init's loadLists) - waiting for it confirms
         // the rollback branch has run to completion.
-        verify(timeout = 1000, exactly = 2) { accountRepository.getSessionIdFromPref() }
+        verify(timeout = 1000, exactly = 2) { accountRepository.canManageLists() }
         assertEquals(listOf(list), viewModel.lists.value)
     }
 }

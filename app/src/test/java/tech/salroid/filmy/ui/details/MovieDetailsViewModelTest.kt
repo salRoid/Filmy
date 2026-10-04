@@ -24,7 +24,7 @@ import tech.salroid.filmy.data.local.db.entity.Profile
 import tech.salroid.filmy.data.local.model.ReviewResponse
 import tech.salroid.filmy.data.local.model.account.CreateListResponse
 import tech.salroid.filmy.data.local.model.account.TmdbList
-import tech.salroid.filmy.data.local.model.account.TmdbListDetailsResponse
+import tech.salroid.filmy.data.local.model.account.ListItemsResponse
 import tech.salroid.filmy.data.local.model.account.TmdbListsResponse
 import tech.salroid.filmy.data.local.model.account.TmdbStatusResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
@@ -226,13 +226,14 @@ class MovieDetailsViewModelTest {
     // --- loadUserLists ---
 
     @Test
-    fun `loadUserLists fetches lists and computes membership`() = runTest {
-        every { accountRepository.getSessionIdFromPref() } returns "session"
-        every { accountRepository.getProfileFromLocal() } returns Profile(id = 1)
-        val list = TmdbList(id = 10, name = "Watch later")
-        coEvery { accountRepository.getLists(1, "session") } returns flowOf(TmdbListsResponse(results = listOf(list)))
-        coEvery { accountRepository.getListDetails(10, "session") } returns
-            flowOf(TmdbListDetailsResponse(id = 10, items = listOf(tech.salroid.filmy.data.local.db.entity.Movie(id = 55))))
+    fun `loadUserLists fetches lists and asks TMDB which ones hold the title`() = runTest {
+        every { accountRepository.canManageLists() } returns true
+        val watchLater = TmdbList(id = 10, name = "Watch later")
+        val favourites = TmdbList(id = 11, name = "Favourites")
+        coEvery { accountRepository.getLists() } returns
+            flowOf(TmdbListsResponse(results = listOf(watchLater, favourites)))
+        coEvery { accountRepository.isInList(10, 55, true) } returns flowOf(true)
+        coEvery { accountRepository.isInList(11, 55, true) } returns flowOf(false)
 
         // listMembership only emits once in this function (unlike
         // uiStateUpdateCollection elsewhere), so awaiting it via Turbine is safe -
@@ -240,35 +241,39 @@ class MovieDetailsViewModelTest {
         // update also guarantees userLists has already settled.
         viewModel.listMembership.test {
             assertEquals(emptyMap<Int, Boolean>(), awaitItem())
-            viewModel.loadUserLists(55)
-            assertEquals(mapOf(10 to true), awaitItem())
+            viewModel.loadUserLists(55, isTv = true)
+            assertEquals(mapOf(10 to true, 11 to false), awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
-        assertEquals(listOf(list), viewModel.userLists.value)
+        assertEquals(listOf(watchLater, favourites), viewModel.userLists.value)
     }
 
     // --- toggleListMembership ---
 
     @Test
-    fun `toggleListMembership flips membership optimistically and keeps it on success`() = runTest {
-        every { accountRepository.getSessionIdFromPref() } returns "session"
-        coEvery { accountRepository.addToList(10, "session", 55) } returns flowOf(TmdbStatusResponse())
+    fun `toggleListMembership adds a show optimistically and keeps it on success`() = runTest {
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.addToList(10, 55, true) } returns flowOf(ListItemsResponse(success = true))
 
-        viewModel.toggleListMembership(10, 55, currentlyIn = false)
+        viewModel.toggleListMembership(10, 55, isTv = true, currentlyIn = false)
 
         assertEquals(true, viewModel.listMembership.value[10])
-        coVerify(timeout = 1000) { accountRepository.addToList(10, "session", 55) }
+        coVerify(timeout = 1000) { accountRepository.addToList(10, 55, true) }
         assertEquals(true, viewModel.listMembership.value[10])
     }
 
     @Test
-    fun `toggleListMembership rolls back when there is no session`() = runTest {
-        every { accountRepository.getSessionIdFromPref() } returns null
+    fun `toggleListMembership rolls back without list access`() = runTest {
+        every { accountRepository.canManageLists() } returns false
 
-        viewModel.toggleListMembership(10, 55, currentlyIn = false)
+        viewModel.toggleListMembership(10, 55, isTv = false, currentlyIn = false)
 
         assertEquals(true, viewModel.listMembership.value[10])
-        verify(timeout = 1000, exactly = 1) { accountRepository.getSessionIdFromPref() }
+        verify(timeout = 1000, exactly = 1) { accountRepository.canManageLists() }
+        val deadline = System.currentTimeMillis() + 1000
+        while (viewModel.listMembership.value[10] != false && System.currentTimeMillis() < deadline) {
+            Thread.sleep(10)
+        }
         assertEquals(false, viewModel.listMembership.value[10])
     }
 
@@ -276,8 +281,8 @@ class MovieDetailsViewModelTest {
 
     @Test
     fun `createList appends the new list on success`() = runTest {
-        every { accountRepository.getSessionIdFromPref() } returns "session"
-        coEvery { accountRepository.createList("session", "New list") } returns flowOf(CreateListResponse(listId = 99))
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.createList("New list") } returns flowOf(CreateListResponse(listId = 99))
 
         viewModel.userLists.test {
             assertEquals(emptyList<TmdbList>(), awaitItem())

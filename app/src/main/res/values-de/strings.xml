@@ -169,4 +169,5 @@
     <string name="person_age">Alter</string>
     <string name="person_birthplace">Geburtsort</string>
     <string name="person_credits">Titel</string>
+    <string name="lists_relogin_required_message">Listen können jetzt neben Filmen auch Serien enthalten. Melden Sie sich einmal erneut bei TMDB an, um Ihre Listen weiter zu nutzen.</string>
 </resources>

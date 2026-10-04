@@ -6,6 +6,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import io.mockk.verifyOrder
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -37,7 +38,14 @@ class LoginViewModelTest {
             every { accountRepository.clearProfile() } returns 0
         }
         every { accountRepository.getProfileFlow() } returns flowOf(null)
+        stubListAccess()
         return LoginViewModel(accountRepository).also { createdViewModel = it }
+    }
+
+    // canManageLists is built at construction from both of these.
+    private fun stubListAccess() {
+        every { accountRepository.canManageLists() } returns false
+        every { accountRepository.canManageListsFlow() } returns flowOf(false)
     }
 
     // repairStaleLocalProfile() launches with Dispatchers.IO - a real
@@ -63,6 +71,7 @@ class LoginViewModelTest {
         accountRepository = mockk()
         every { accountRepository.isLoggedIn() } returns true
         every { accountRepository.getProfileFlow() } returns flowOf(null)
+        stubListAccess()
 
         LoginViewModel(accountRepository).also { createdViewModel = it }
 
@@ -102,13 +111,15 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `full login chain stores the session and saves the profile`() = runTest {
+    fun `full login chain stores the session, the profile and then list access`() = runTest {
         accountRepository = mockk()
         val viewModel = viewModel()
         viewModel.requestToken = "req-token"
 
         coEvery { accountRepository.getAccessToken(any()) } returns
-            flowOf(RequestTokenResponse(accessToken = "access-token", success = true))
+            flowOf(RequestTokenResponse(accessToken = "access-token", accountId = "account-object-id", success = true))
+        every { accountRepository.getSessionIdFromPref() } returns null
+        every { accountRepository.storeUserAccessToken("access-token", "account-object-id") } returns Unit
         coEvery { accountRepository.getSession(any()) } returns
             flowOf(SessionDataResponse(sessionId = "session-id", success = true))
         val profile = Profile(id = 1, name = "Someone")
@@ -122,10 +133,39 @@ class LoginViewModelTest {
         // true on the success path (only getRequestToken does, and only error
         // paths flip it), so there's no state-flow transition to await here -
         // verify(timeout=...) on the terminal side effects is the sync point.
-        verify(timeout = 1000) { accountRepository.saveProfileToLocal(profile) }
+        verify(timeout = 1000) { accountRepository.storeUserAccessToken("access-token", "account-object-id") }
         assertEquals("access-token", viewModel.accessToken)
         assertEquals("session-id", viewModel.sessionId)
-        verify { accountRepository.storeSessionId("session-id") }
+        verifyOrder {
+            accountRepository.storeSessionId("session-id")
+            accountRepository.saveProfileToLocal(profile)
+            accountRepository.storeUserAccessToken("access-token", "account-object-id")
+        }
+        verify(exactly = 0) { accountRepository.deleteSession(any()) }
+    }
+
+    @Test
+    fun `logging in again over an existing session revokes the old one`() = runTest {
+        accountRepository = mockk()
+        val viewModel = viewModel(loggedInAtStart = true)
+        viewModel.requestToken = "req-token"
+
+        coEvery { accountRepository.getAccessToken(any()) } returns
+            flowOf(RequestTokenResponse(accessToken = "access-token", accountId = "account-object-id", success = true))
+        every { accountRepository.getSessionIdFromPref() } returns "old-session"
+        coEvery { accountRepository.getSession(any()) } returns
+            flowOf(SessionDataResponse(sessionId = "new-session", success = true))
+        coEvery { accountRepository.deleteSession("old-session") } returns flowOf(DeleteSession(success = true))
+        val profile = Profile(id = 1, name = "Someone")
+        coEvery { accountRepository.getProfile("new-session") } returns flowOf(profile)
+        every { accountRepository.storeSessionId("new-session") } returns Unit
+        every { accountRepository.saveProfileToLocal(profile) } returns Unit
+        every { accountRepository.storeUserAccessToken("access-token", "account-object-id") } returns Unit
+
+        viewModel.getAccessToken()
+
+        verify(timeout = 1000) { accountRepository.deleteSession("old-session") }
+        verify(timeout = 1000) { accountRepository.storeUserAccessToken("access-token", "account-object-id") }
     }
 
     @Test
@@ -157,8 +197,10 @@ class LoginViewModelTest {
         accountRepository = mockk()
         val viewModel = viewModel()
         every { accountRepository.getSessionIdFromPref() } returns null
+        every { accountRepository.getUserAccessToken() } returns null
         every { accountRepository.clearProfile() } returns 0
         every { accountRepository.storeSessionId(null) } returns Unit
+        every { accountRepository.storeUserAccessToken(null, null) } returns Unit
 
         viewModel.isLoggingOut.test {
             assertEquals(false, awaitItem())
@@ -168,16 +210,22 @@ class LoginViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
         verify(timeout = 1000) { accountRepository.storeSessionId(null) }
+        verify(timeout = 1000) { accountRepository.storeUserAccessToken(null, null) }
+        verify(exactly = 0) { accountRepository.revokeUserAccessToken(any()) }
     }
 
     @Test
-    fun `logout best-effort revokes the server session when one exists`() = runTest {
+    fun `logout best-effort revokes the server session and the user's token when they exist`() = runTest {
         accountRepository = mockk()
         val viewModel = viewModel()
         every { accountRepository.getSessionIdFromPref() } returns "session-id"
+        every { accountRepository.getUserAccessToken() } returns "access-token"
         coEvery { accountRepository.deleteSession("session-id") } returns flowOf(DeleteSession(success = true))
+        // A failed revoke must not stop the local logout.
+        coEvery { accountRepository.revokeUserAccessToken("access-token") } returns flow { throw RuntimeException("offline") }
         every { accountRepository.clearProfile() } returns 0
         every { accountRepository.storeSessionId(null) } returns Unit
+        every { accountRepository.storeUserAccessToken(null, null) } returns Unit
 
         viewModel.isLoggingOut.test {
             assertEquals(false, awaitItem())
@@ -187,6 +235,8 @@ class LoginViewModelTest {
             cancelAndIgnoreRemainingEvents()
         }
         verify(timeout = 1000) { accountRepository.deleteSession("session-id") }
+        verify { accountRepository.revokeUserAccessToken("access-token") }
         verify { accountRepository.storeSessionId(null) }
+        verify { accountRepository.storeUserAccessToken(null, null) }
     }
 }

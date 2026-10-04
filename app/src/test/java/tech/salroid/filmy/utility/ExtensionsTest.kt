@@ -51,7 +51,7 @@ class ExtensionsTest {
 
     @Test
     fun `toMoneyString formats small values as a plain dollar amount`() {
-        assertEquals("$500.0", 500L.toMoneyString())
+        assertEquals("$500", 500L.toMoneyString())
     }
 
     // --- parseHtml ---

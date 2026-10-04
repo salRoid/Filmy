@@ -1,5 +1,6 @@
 package tech.salroid.filmy.ui.movies.details.components
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,6 +20,7 @@ import tech.salroid.filmy.ui.home.rememberLoginLauncher
  *
  * Compose this only while the flow is open; [onDismiss] closes it.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddToListFlow(
     mediaId: Int,
@@ -33,6 +35,7 @@ fun AddToListFlow(
     if (canManageLists) {
         val userLists by viewModel.userLists.collectAsStateWithLifecycle()
         val listMembership by viewModel.listMembership.collectAsStateWithLifecycle()
+        val isLoading by viewModel.userListsLoading.collectAsStateWithLifecycle()
 
         LaunchedEffect(mediaId, isTv) {
             viewModel.loadUserLists(mediaId, isTv)
@@ -41,10 +44,11 @@ fun AddToListFlow(
         AddToListSheet(
             lists = userLists,
             membership = listMembership,
+            isLoading = isLoading,
             onToggle = { listId, currentlyIn ->
                 viewModel.toggleListMembership(listId, mediaId, isTv, currentlyIn)
             },
-            onCreateList = { name -> viewModel.createList(name) },
+            onCreateList = { name -> viewModel.createList(name, mediaId, isTv) },
             onDismiss = onDismiss
         )
     } else {

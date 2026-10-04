@@ -120,7 +120,10 @@
     <string name="ratings">रेटिंग</string>
     <string name="studios">स्टूडियो</string>
     <string name="seasons">सीज़न</string>
-    <string name="episode_count">%1$d एपिसोड</string>
+    <plurals name="episode_count">
+        <item quantity="one">%1$d एपिसोड</item>
+        <item quantity="other">%1$d एपिसोड</item>
+    </plurals>
     <string name="region">क्षेत्र</string>
     <string name="language">भाषा</string>
     <string name="open_source_libraries">ओपन सोर्स लाइब्रेरी</string>
@@ -143,9 +146,11 @@
     <string name="backdrops">बैकड्रॉप</string>
     <string name="posters">पोस्टर</string>
     <string name="close">बंद करें</string>
-    <string name="create_new_list_action">+ %1$s</string>
     <string name="lists_login_required_message">अपनी सूचियाँ देखने\n और प्रबंधित करने के लिए अपने TMDB खाते में लॉग इन करें</string>
-    <string name="list_item_count">%1$d आइटम</string>
+    <plurals name="list_item_count">
+        <item quantity="one">%1$d आइटम</item>
+        <item quantity="other">%1$d आइटम</item>
+    </plurals>
     <string name="cd_open_details">विवरण खोलें</string>
     <string name="cd_add_to_watchlist">वॉचलिस्ट में जोड़ें</string>
     <string name="cd_remove_from_watchlist">वॉचलिस्ट से हटाएं</string>
@@ -189,4 +194,8 @@
     <string name="remove">हटाएं</string>
     <string name="collection_short_label">संग्रह</string>
     <string name="collection_long_label">अपना संग्रह खोलें।</string>
+    <string name="list_more_items">+%1$d और</string>
+    <string name="create">बनाएं</string>
+    <string name="loading_lists">आपकी सूचियाँ लोड हो रही हैं</string>
+    <string name="in_list">सूची में</string>
 </resources>

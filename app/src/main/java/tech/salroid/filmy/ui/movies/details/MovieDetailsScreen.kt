@@ -48,6 +48,15 @@ fun MovieDetailsScreen(
         viewModel.fetchAllMovieDetails(movieId.toString(), 0)
     }
 
+    // Checks the user's lists up front so "Add to List" can show that this
+    // title is already in one - and again after a login from this screen.
+    val canManageLists by loginViewModel.canManageLists.collectAsStateWithLifecycle()
+    LaunchedEffect(movieId, canManageLists) {
+        if (canManageLists) {
+            viewModel.loadUserLists(movieId, isTv = false)
+        }
+    }
+
     Crossfade(
         targetState = state != null && movieDetails != null,
         animationSpec = tween(durationMillis = 600),

@@ -120,7 +120,10 @@
     <string name="ratings">Valoraciones</string>
     <string name="studios">Estudios</string>
     <string name="seasons">Temporadas</string>
-    <string name="episode_count">%1$d episodios</string>
+    <plurals name="episode_count">
+        <item quantity="one">%1$d episodio</item>
+        <item quantity="other">%1$d episodios</item>
+    </plurals>
     <string name="region">Región</string>
     <string name="language">Idioma</string>
     <string name="open_source_libraries">Bibliotecas de código abierto</string>
@@ -143,9 +146,11 @@
     <string name="backdrops">Fondos</string>
     <string name="posters">Pósters</string>
     <string name="close">Cerrar</string>
-    <string name="create_new_list_action">+ %1$s</string>
     <string name="lists_login_required_message">Inicia sesión en tu cuenta de TMDB para ver\n y gestionar tus listas</string>
-    <string name="list_item_count">%1$d elementos</string>
+    <plurals name="list_item_count">
+        <item quantity="one">%1$d elemento</item>
+        <item quantity="other">%1$d elementos</item>
+    </plurals>
     <string name="cd_open_details">Abrir detalles</string>
     <string name="cd_add_to_watchlist">Añadir a la lista de seguimiento</string>
     <string name="cd_remove_from_watchlist">Quitar de la lista de seguimiento</string>
@@ -189,4 +194,8 @@
     <string name="remove">Quitar</string>
     <string name="collection_short_label">Colección</string>
     <string name="collection_long_label">Abre tu colección.</string>
+    <string name="list_more_items">+%1$d más</string>
+    <string name="create">Crear</string>
+    <string name="loading_lists">Cargando tus listas</string>
+    <string name="in_list">En lista</string>
 </resources>

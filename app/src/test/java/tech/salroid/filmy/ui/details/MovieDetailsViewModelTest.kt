@@ -8,6 +8,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.cancel
@@ -225,6 +226,11 @@ class MovieDetailsViewModelTest {
 
     // --- loadUserLists ---
 
+    private fun waitFor(condition: () -> Boolean) {
+        val deadline = System.currentTimeMillis() + 2000
+        while (!condition() && System.currentTimeMillis() < deadline) Thread.sleep(10)
+    }
+
     @Test
     fun `loadUserLists fetches lists and asks TMDB which ones hold the title`() = runTest {
         every { accountRepository.canManageLists() } returns true
@@ -235,17 +241,82 @@ class MovieDetailsViewModelTest {
         coEvery { accountRepository.isInList(10, 55, true) } returns flowOf(true)
         coEvery { accountRepository.isInList(11, 55, true) } returns flowOf(false)
 
-        // listMembership only emits once in this function (unlike
-        // uiStateUpdateCollection elsewhere), so awaiting it via Turbine is safe -
-        // and since it's written after userLists in the same coroutine, seeing it
-        // update also guarantees userLists has already settled.
-        viewModel.listMembership.test {
-            assertEquals(emptyMap<Int, Boolean>(), awaitItem())
-            viewModel.loadUserLists(55, isTv = true)
-            assertEquals(mapOf(10 to true, 11 to false), awaitItem())
+        viewModel.loadUserLists(55, isTv = true)
+
+        // Each list's membership arrives on its own, so wait for both.
+        waitFor { viewModel.listMembership.value.size == 2 }
+        assertEquals(mapOf(10 to true, 11 to false), viewModel.listMembership.value)
+        assertEquals(listOf(watchLater, favourites), viewModel.userLists.value)
+        assertEquals(false, viewModel.userListsLoading.value)
+    }
+
+    @Test
+    fun `loadUserLists reports loading until the lists have arrived`() = runTest {
+        every { accountRepository.canManageLists() } returns true
+        val gate = kotlinx.coroutines.CompletableDeferred<Unit>()
+        coEvery { accountRepository.getLists() } returns flow {
+            gate.await()
+            emit(TmdbListsResponse(results = emptyList()))
+        }
+
+        viewModel.loadUserLists(55, isTv = false)
+        waitFor { viewModel.userListsLoading.value }
+        assertEquals(true, viewModel.userListsLoading.value)
+
+        gate.complete(Unit)
+        waitFor { !viewModel.userListsLoading.value }
+        assertEquals(false, viewModel.userListsLoading.value)
+    }
+
+    @Test
+    fun `a membership check that fails leaves the list usable as not-a-member`() = runTest {
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.getLists() } returns
+            flowOf(TmdbListsResponse(results = listOf(TmdbList(id = 10, name = "Watch later"))))
+        coEvery { accountRepository.isInList(10, 55, false) } returns flow { throw RuntimeException("offline") }
+
+        viewModel.loadUserLists(55, isTv = false)
+
+        waitFor { viewModel.listMembership.value.containsKey(10) }
+        assertEquals(mapOf(10 to false), viewModel.listMembership.value)
+    }
+
+    @Test
+    fun `isInAnyList turns true once any list holds the title`() = runTest {
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.getLists() } returns flowOf(
+            TmdbListsResponse(results = listOf(TmdbList(id = 10, name = "A"), TmdbList(id = 11, name = "B")))
+        )
+        coEvery { accountRepository.isInList(10, 55, false) } returns flowOf(false)
+        coEvery { accountRepository.isInList(11, 55, false) } returns flowOf(true)
+
+        viewModel.isInAnyList.test {
+            assertEquals(false, awaitItem())
+            viewModel.loadUserLists(55, isTv = false)
+            assertEquals(true, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
-        assertEquals(listOf(watchLater, favourites), viewModel.userLists.value)
+    }
+
+    @Test
+    fun `reloading the lists refreshes in place without a loader or losing membership`() = runTest {
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.getLists() } returns
+            flowOf(TmdbListsResponse(results = listOf(TmdbList(id = 10, name = "A"))))
+        coEvery { accountRepository.isInList(10, 55, false) } returns flowOf(true)
+        viewModel.loadUserLists(55, isTv = false)
+        waitFor { viewModel.listMembership.value[10] == true }
+
+        val loaderStates = mutableListOf<Boolean>()
+        val job = backgroundScope.launch(kotlinx.coroutines.Dispatchers.Unconfined) {
+            viewModel.userListsLoading.collect { loaderStates += it }
+        }
+        viewModel.loadUserLists(55, isTv = false)
+        coVerify(timeout = 1000, exactly = 2) { accountRepository.isInList(10, 55, false) }
+        job.cancel()
+
+        assertEquals(listOf(false), loaderStates)
+        assertEquals(true, viewModel.listMembership.value[10])
     }
 
     // --- toggleListMembership ---
@@ -270,28 +341,58 @@ class MovieDetailsViewModelTest {
 
         assertEquals(true, viewModel.listMembership.value[10])
         verify(timeout = 1000, exactly = 1) { accountRepository.canManageLists() }
-        val deadline = System.currentTimeMillis() + 1000
-        while (viewModel.listMembership.value[10] != false && System.currentTimeMillis() < deadline) {
-            Thread.sleep(10)
-        }
+        waitFor { viewModel.listMembership.value[10] == false }
         assertEquals(false, viewModel.listMembership.value[10])
+    }
+
+    @Test
+    fun `toggling keeps the list's shown item count in step`() = runTest {
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.getLists() } returns
+            flowOf(TmdbListsResponse(results = listOf(TmdbList(id = 10, name = "Watch later", itemCount = 3))))
+        coEvery { accountRepository.isInList(10, 55, false) } returns flowOf(false)
+        coEvery { accountRepository.addToList(10, 55, false) } returns flowOf(ListItemsResponse(success = true))
+        coEvery { accountRepository.removeFromList(10, 55, false) } returns flowOf(ListItemsResponse(success = true))
+        viewModel.loadUserLists(55, isTv = false)
+        waitFor { viewModel.listMembership.value.containsKey(10) }
+
+        viewModel.toggleListMembership(10, 55, isTv = false, currentlyIn = false)
+        assertEquals(4, viewModel.userLists.value.single().itemCount)
+
+        viewModel.toggleListMembership(10, 55, isTv = false, currentlyIn = true)
+        assertEquals(3, viewModel.userLists.value.single().itemCount)
     }
 
     // --- createList ---
 
     @Test
-    fun `createList appends the new list on success`() = runTest {
+    fun `createList makes the list and puts this title in it`() = runTest {
         every { accountRepository.canManageLists() } returns true
         coEvery { accountRepository.createList("New list") } returns flowOf(CreateListResponse(listId = 99))
+        coEvery { accountRepository.addToList(99, 55, true) } returns flowOf(ListItemsResponse(success = true))
 
-        viewModel.userLists.test {
-            assertEquals(emptyList<TmdbList>(), awaitItem())
-            viewModel.createList("New list")
-            val updated = awaitItem()
-            assertEquals(1, updated.size)
-            assertEquals(99, updated.first().id)
-            cancelAndIgnoreRemainingEvents()
-        }
+        viewModel.createList("New list", 55, isTv = true)
+
+        waitFor { viewModel.listMembership.value[99] == true }
+        val created = viewModel.userLists.value.single()
+        assertEquals(99, created.id)
+        assertEquals("New list", created.name)
+        assertEquals(1, created.itemCount)
+        assertEquals(true, viewModel.listMembership.value[99])
+    }
+
+    @Test
+    fun `createList keeps the new list even if adding the title to it fails`() = runTest {
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.createList("New list") } returns flowOf(CreateListResponse(listId = 99))
+        coEvery { accountRepository.addToList(99, 55, false) } returns flow { throw RuntimeException("offline") }
+
+        viewModel.createList("New list", 55, isTv = false)
+
+        coVerify(timeout = 1000) { accountRepository.addToList(99, 55, false) }
+        waitFor { viewModel.userLists.value.isNotEmpty() }
+        assertEquals(0, viewModel.userLists.value.single().itemCount)
+        assertEquals(false, viewModel.listMembership.value[99])
     }
 
     // --- misc ---

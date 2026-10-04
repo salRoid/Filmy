@@ -163,7 +163,10 @@
     <string name="ratings">Ratings</string>
     <string name="studios">Studios</string>
     <string name="seasons">Seasons</string>
-    <string name="episode_count">%1$d Episodes</string>
+    <plurals name="episode_count">
+        <item quantity="one">%1$d Episode</item>
+        <item quantity="other">%1$d Episodes</item>
+    </plurals>
     <string name="region">Region</string>
     <string name="language">Language</string>
     <string name="open_source_libraries">Open Source Libraries</string>
@@ -186,10 +189,12 @@
     <string name="backdrops">Backdrops</string>
     <string name="posters">Posters</string>
     <string name="close">Close</string>
-    <string name="create_new_list_action">+ %1$s</string>
     <string name="lists_login_required_message">Log in to your TMDB account to view\n and manage your lists</string>
     <string name="lists_relogin_required_message">Lists can now hold shows as well as movies. Log in to TMDB once more to keep using your lists.</string>
-    <string name="list_item_count">%1$d items</string>
+    <plurals name="list_item_count">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d items</item>
+    </plurals>
 
     <!-- Accessibility content descriptions / labels -->
     <string name="cd_open_details">Open details</string>
@@ -226,4 +231,8 @@
     <string name="error_no_internet">No internet connection. Check your network and try again.</string>
     <string name="error_server">Something went wrong on our end. Please try again later.</string>
     <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="list_more_items">+%1$d more</string>
+    <string name="create">Create</string>
+    <string name="loading_lists">Loading your lists</string>
+    <string name="in_list">In List</string>
 </resources>

@@ -8,6 +8,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -17,6 +18,8 @@ import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
 import tech.salroid.filmy.data.local.model.account.CreateListResponse
 import tech.salroid.filmy.data.local.model.account.TmdbList
+import tech.salroid.filmy.data.local.model.account.TmdbListDetailsResponse
+import tech.salroid.filmy.data.local.model.account.TmdbListItem
 import tech.salroid.filmy.data.local.model.account.TmdbListsResponse
 import tech.salroid.filmy.data.local.model.account.TmdbStatusResponse
 import tech.salroid.filmy.ui.home.AccountRepository
@@ -60,6 +63,89 @@ class MyListsViewModelTest {
         coVerify(timeout = 1000) { accountRepository.getLists() }
 
         assertEquals(listOf(list), viewModel.lists.value)
+    }
+
+    // --- item previews for the list cards ---
+
+    private fun waitFor(condition: () -> Boolean) {
+        val deadline = System.currentTimeMillis() + 2000
+        while (!condition() && System.currentTimeMillis() < deadline) Thread.sleep(10)
+    }
+
+    @Test
+    fun `each list's first few titles are loaded for its card, movies and shows alike`() = runTest {
+        accountRepository = mockk()
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.getLists() } returns
+            flowOf(TmdbListsResponse(results = listOf(TmdbList(id = 1, name = "Mix", itemCount = 6))))
+        coEvery { accountRepository.getListDetails(1) } returns flowOf(
+            TmdbListDetailsResponse(
+                id = 1,
+                items = listOf(
+                    TmdbListItem(id = 550, mediaType = "movie", title = "Fight Club"),
+                    TmdbListItem(id = 1396, mediaType = "tv", name = "Breaking Bad"),
+                    TmdbListItem(id = 3, mediaType = "movie", title = ""),
+                    TmdbListItem(id = 4, mediaType = "movie", title = "Inception"),
+                    TmdbListItem(id = 5, mediaType = "tv", name = "Dark"),
+                    TmdbListItem(id = 6, mediaType = "movie", title = "Seven")
+                )
+            )
+        )
+
+        val viewModel = viewModel()
+        waitFor { viewModel.itemPreviews.value.containsKey(1) }
+
+        // Untitled entries are skipped and the card stops at four.
+        assertEquals(
+            mapOf(1 to listOf("Fight Club", "Breaking Bad", "Inception", "Dark")),
+            viewModel.itemPreviews.value
+        )
+    }
+
+    @Test
+    fun `empty lists are not fetched, and one list failing leaves the others' titles`() = runTest {
+        accountRepository = mockk()
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.getLists() } returns flowOf(
+            TmdbListsResponse(
+                results = listOf(
+                    TmdbList(id = 1, name = "Empty", itemCount = 0),
+                    TmdbList(id = 2, name = "Broken", itemCount = 3),
+                    TmdbList(id = 3, name = "Fine", itemCount = 1)
+                )
+            )
+        )
+        coEvery { accountRepository.getListDetails(2) } returns flow { throw RuntimeException("offline") }
+        coEvery { accountRepository.getListDetails(3) } returns
+            flowOf(TmdbListDetailsResponse(id = 3, items = listOf(TmdbListItem(id = 9, mediaType = "tv", name = "Severance"))))
+
+        val viewModel = viewModel()
+        waitFor { viewModel.itemPreviews.value.containsKey(3) }
+        coVerify(timeout = 1000) { accountRepository.getListDetails(2) }
+
+        assertEquals(mapOf(3 to listOf("Severance")), viewModel.itemPreviews.value)
+        coVerify(exactly = 0) { accountRepository.getListDetails(1) }
+        // The lists themselves still show.
+        assertEquals(3, viewModel.lists.value.size)
+    }
+
+    @Test
+    fun `deleting a list drops its card titles too`() = runTest {
+        accountRepository = mockk()
+        every { accountRepository.canManageLists() } returns true
+        coEvery { accountRepository.getLists() } returns
+            flowOf(TmdbListsResponse(results = listOf(TmdbList(id = 9, name = "Doomed", itemCount = 1))))
+        coEvery { accountRepository.getListDetails(9) } returns
+            flowOf(TmdbListDetailsResponse(id = 9, items = listOf(TmdbListItem(id = 1, mediaType = "movie", title = "Seven"))))
+        coEvery { accountRepository.deleteList(9) } returns flowOf(TmdbStatusResponse())
+
+        val viewModel = viewModel()
+        waitFor { viewModel.itemPreviews.value.containsKey(9) }
+
+        viewModel.deleteList(9)
+
+        assertEquals(emptyMap<Int, List<String>>(), viewModel.itemPreviews.value)
+        coVerify(timeout = 1000) { accountRepository.deleteList(9) }
     }
 
     @Test

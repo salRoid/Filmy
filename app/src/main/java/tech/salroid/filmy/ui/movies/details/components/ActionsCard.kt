@@ -150,10 +150,10 @@ fun ActionsCard(
 
         // Add to List
         ActionItem(
-            isSelected = false,
+            isSelected = state.isInList,
             onIcon = painterResource(R.drawable.ic_collections_bookmark_24dp),
             offIcon = painterResource(R.drawable.ic_collections_bookmark_24dp),
-            label = stringResource(R.string.add_to_list),
+            label = stringResource(if (state.isInList) R.string.in_list else R.string.add_to_list),
             selectedColor = tint,
             unselectedColor = unselectedColor,
             onClick = actions.onAddToListClick,

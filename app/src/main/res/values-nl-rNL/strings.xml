@@ -119,7 +119,10 @@
     <string name="ratings">Beoordelingen</string>
     <string name="studios">Studio\'s</string>
     <string name="seasons">Seizoenen</string>
-    <string name="episode_count">%1$d afleveringen</string>
+    <plurals name="episode_count">
+        <item quantity="one">%1$d aflevering</item>
+        <item quantity="other">%1$d afleveringen</item>
+    </plurals>
     <string name="region">Regio</string>
     <string name="language">Taal</string>
     <string name="open_source_libraries">Opensourcebibliotheken</string>
@@ -142,9 +145,11 @@
     <string name="backdrops">Achtergronden</string>
     <string name="posters">Posters</string>
     <string name="close">Sluiten</string>
-    <string name="create_new_list_action">+ %1$s</string>
     <string name="lists_login_required_message">Log in bij je TMDB-account om je lijsten te bekijken\n en te beheren</string>
-    <string name="list_item_count">%1$d items</string>
+    <plurals name="list_item_count">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d items</item>
+    </plurals>
     <string name="cd_open_details">Details openen</string>
     <string name="cd_add_to_watchlist">Toevoegen aan kijklijst</string>
     <string name="cd_remove_from_watchlist">Verwijderen van kijklijst</string>
@@ -188,4 +193,8 @@
     <string name="remove">Verwijderen</string>
     <string name="collection_short_label">Collectie</string>
     <string name="collection_long_label">Open je collectie.</string>
+    <string name="list_more_items">+%1$d meer</string>
+    <string name="create">Aanmaken</string>
+    <string name="loading_lists">Je lijsten worden geladen</string>
+    <string name="in_list">In lijst</string>
 </resources>

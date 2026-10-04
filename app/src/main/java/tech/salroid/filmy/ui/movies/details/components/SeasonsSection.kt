@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
@@ -69,7 +70,7 @@ private fun SeasonItem(
             modifier = Modifier.padding(top = 4.dp)
         )
         Text(
-            text = stringResource(R.string.episode_count, season.episodeCount),
+            text = pluralStringResource(R.plurals.episode_count, season.episodeCount, season.episodeCount),
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.alpha(0.6f)
         )

@@ -1,44 +1,54 @@
 package tech.salroid.filmy.ui.lists
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallExtendedFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -59,6 +69,7 @@ fun MyListsScreen(
 ) {
     val lists by viewModel.lists.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val itemPreviews by viewModel.itemPreviews.collectAsStateWithLifecycle()
     val profile by loginViewModel.uiStateProfile.collectAsStateWithLifecycle()
     val canManageLists by loginViewModel.canManageLists.collectAsStateWithLifecycle()
     val startLogin = rememberLoginLauncher(loginViewModel)
@@ -89,6 +100,7 @@ fun MyListsScreen(
     } else {
         MyListsContent(
             lists = lists,
+            itemPreviews = itemPreviews,
             isLoading = isLoading,
             onListClick = onListClick,
             onCreateClick = { showCreateDialog = true },
@@ -134,16 +146,24 @@ fun MyListsScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun MyListsContent(
     lists: List<TmdbList>,
+    itemPreviews: Map<Int, List<String>>,
     isLoading: Boolean,
     onListClick: (Int, String) -> Unit,
     onCreateClick: () -> Unit,
     onListLongClick: (TmdbList) -> Unit,
     onBackClick: () -> Unit
 ) {
+    val gridState = rememberLazyStaggeredGridState()
+    // The button shows its label at rest and shrinks to just the icon once
+    // the cards are scrolled, so it stays out of their way.
+    val isAtTop by remember {
+        derivedStateOf { gridState.firstVisibleItemIndex == 0 && gridState.firstVisibleItemScrollOffset == 0 }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -154,53 +174,69 @@ fun MyListsContent(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            if (!isLoading) {
+                SmallExtendedFloatingActionButton(
+                    text = { Text(stringResource(R.string.create_new_list)) },
+                    // Once collapsed the label is gone, so the icon has to carry it.
+                    icon = {
+                        Icon(
+                            Icons.Default.Add,
+                            contentDescription = if (isAtTop) null else stringResource(R.string.create_new_list)
+                        )
+                    },
+                    onClick = onCreateClick,
+                    expanded = isAtTop
+                )
+            }
         }
     ) { paddingValues ->
-        if (isLoading) {
-            LoadingWidget(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize()
-            )
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize()
-            ) {
-                item {
-                    TextButton(
-                        onClick = onCreateClick,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    ) {
-                        Text(stringResource(R.string.create_new_list_action, stringResource(R.string.create_new_list)))
-                    }
-                }
+        when {
+            isLoading -> {
+                LoadingWidget(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize()
+                )
+            }
 
-                if (lists.isEmpty()) {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(32.dp)
-                        ) {
-                            Text(
-                                text = stringResource(R.string.no_lists_yet),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                } else {
+            lists.isEmpty() -> {
+                Box(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.no_lists_yet),
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            else -> {
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Adaptive(minSize = 160.dp),
+                    state = gridState,
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize(),
+                    // Bottom room so the last cards can scroll clear of the button.
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 96.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalItemSpacing = 12.dp
+                ) {
                     items(lists, key = { it.id }) { list ->
-                        ListRow(
+                        ListCard(
                             list = list,
+                            previewTitles = itemPreviews[list.id],
                             onClick = { onListClick(list.id, list.name ?: "") },
                             onLongClick = { onListLongClick(list) }
                         )
-                        HorizontalDivider()
                     }
                 }
             }
@@ -249,74 +285,87 @@ private fun LoggedOutContent(
     }
 }
 
+/**
+ * One list as a card: its name, the first few titles in it and how many it
+ * holds in total. Cards differ in height with how much they have to show,
+ * which is what the staggered grid is for.
+ *
+ * [previewTitles] is null while that list's titles are still loading.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ListRow(
+private fun ListCard(
     list: TmdbList,
+    previewTitles: List<String>?,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
-    Row(
+    val itemCount = list.itemCount ?: 0
+    val shape = RoundedCornerShape(20.dp)
+
+    Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clip(shape)
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .combinedClickable(
                 onClick = onClick,
+                onClickLabel = stringResource(R.string.cd_open_details),
                 onLongClick = onLongClick,
                 onLongClickLabel = stringResource(R.string.remove),
                 role = Role.Button
             )
             .semantics(mergeDescendants = true) {}
-            .padding(horizontal = 16.dp, vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(16.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = list.name ?: "",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = stringResource(R.string.list_item_count, list.itemCount ?: 0),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
+        Text(
+            text = list.name ?: "",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
 
-@Composable
-private fun CreateListDialog(
-    onCreate: (String) -> Unit,
-    onDismiss: () -> Unit
-) {
-    var name by remember { mutableStateOf("") }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
+        if (itemCount == 0) {
             Text(
-                stringResource(R.string.create_new_list),
-                style = MaterialTheme.typography.titleLarge
+                text = stringResource(R.string.list_empty),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(top = 8.dp)
             )
-        },
-        text = {
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                placeholder = { Text(stringResource(R.string.list_name_hint)) },
-                singleLine = true
-            )
-        },
-        confirmButton = {
-            TextButton(onClick = { if (name.isNotBlank()) onCreate(name.trim()) }) {
-                Text(stringResource(R.string.add))
+            return@Column
+        }
+
+        if (!previewTitles.isNullOrEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            previewTitles.forEach { title ->
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(vertical = 2.dp)
+                )
             }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(android.R.string.cancel))
+            val remaining = itemCount - previewTitles.size
+            if (remaining > 0) {
+                Text(
+                    text = stringResource(R.string.list_more_items, remaining),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
             }
         }
-    )
+
+        Text(
+            text = pluralStringResource(R.plurals.list_item_count, itemCount, itemCount),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 12.dp)
+        )
+    }
 }
 
 @Preview(showBackground = true)
@@ -326,7 +375,17 @@ internal fun MyListsContentPreview() {
         MyListsContent(
             lists = listOf(
                 TmdbList(id = 1, name = "Weekend watch", itemCount = 12),
-                TmdbList(id = 2, name = "Shows to finish", itemCount = 3)
+                TmdbList(id = 2, name = "Shows to finish", itemCount = 3),
+                TmdbList(id = 3, name = "Rewatch someday", itemCount = 0),
+                TmdbList(id = 4, name = "Christopher Nolan, ranked", itemCount = 2),
+                TmdbList(id = 5, name = "Still loading", itemCount = 7),
+                TmdbList(id = 6, name = "Just the one", itemCount = 1)
+            ),
+            itemPreviews = mapOf(
+                1 to listOf("Fight Club", "Inception", "Breaking Bad", "The Grand Budapest Hotel"),
+                2 to listOf("Severance", "The Bear", "Dark"),
+                4 to listOf("The Prestige", "Interstellar"),
+                6 to listOf("Paddington 2")
             ),
             isLoading = false,
             onListClick = { _, _ -> },

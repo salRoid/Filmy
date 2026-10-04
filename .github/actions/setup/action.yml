@@ -1,0 +1,56 @@
+name: Set up the build
+description: Installs the JDK and Gradle, and writes the config files that are kept out of git.
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@v5
+      with:
+        distribution: temurin
+        java-version: 21
+
+    - uses: gradle/actions/setup-gradle@v4
+
+    # secrets.properties and google-services.json are gitignored, and the build
+    # reads both at configuration time. Nothing built here is shipped or calls
+    # a real API, so placeholders are enough - and they keep CI working for
+    # pull requests from forks, which cannot read repository secrets.
+    - name: Write placeholder config
+      shell: bash
+      run: |
+        cat > secrets.properties <<'PROPS'
+        TMDB_API_KEY=ci-placeholder
+        TMDB_ACCESS_TOKEN=ci-placeholder
+        OMDB_API_KEY=ci-placeholder
+        PROPS
+        cat > app/google-services.json <<'JSON'
+        {
+          "project_info": {
+            "project_number": "000000000000",
+            "project_id": "filmy-ci",
+            "storage_bucket": "filmy-ci.appspot.com"
+          },
+          "client": [
+            {
+              "client_info": {
+                "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+                "android_client_info": {
+                  "package_name": "tech.salroid.filmy"
+                }
+              },
+              "oauth_client": [],
+              "api_key": [
+                {
+                  "current_key": "ci-placeholder"
+                }
+              ],
+              "services": {
+                "appinvite_service": {
+                  "other_platform_oauth_client": []
+                }
+              }
+            }
+          ],
+          "configuration_version": "1"
+        }
+        JSON

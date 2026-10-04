@@ -44,6 +44,11 @@ android {
             buildConfigField("String", "TMDB_API_KEY", "\"" + getTMDBApiKey() + "\"")
             buildConfigField("String", "TMDB_ACCESS_TOKEN", "\"" + getTMDBAccessToken() + "\"")
             buildConfigField("String", "OMDB_API_KEY", "\"" + getOMDBApiKey() + "\"")
+            // CI builds with a placeholder google-services.json, so it has
+            // no Firebase project to upload the R8 mapping file to.
+            firebaseCrashlytics {
+                mappingFileUploadEnabled = System.getenv("CI") == null
+            }
         }
 
         releaseUnminified {

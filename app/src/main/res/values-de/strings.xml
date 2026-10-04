@@ -2,55 +2,14 @@
 <resources>
 
     <string name="app_name">Filmy</string>
-    <string name="title_activity_detailed">DetailedActivity</string>
-    <string name="title_activity_detailed__cast">Detailed_Cast</string>
-    <string name="title_activity_search">SearchActivity</string>
-    <string name="title_activity_full_cast">FullCastActivity</string>
-    <string name="title_activity_full_movie">FullMovieActivity</string>
-    <string name="title_activity_full_screen_image">FullScreenImage</string>
 
-    <string name="title_activity_settings">Einstellungen</string>
-    <string name="title_activity_saved_movies">Offline Filme</string>
-    <string name="image_quality">medium</string>
-    <string name="error_title_damn">Etwas ist schiefgelaufen!</string>
-    <string name="info_retrying">Wiederholen</string>
-    <string name="rating">Bewertung</string>
     <string name="movies">Filme</string>
     <string name="cast">Besetzung</string>
-    <string name="dash">- - - -</string>
-    <string name="more">Mehr</string>
-    <string name="runtime">Laufzeit:</string>
-    <string name="genre">Genre:</string>
-    <string name="language">Sprache:</string>
-    <string name="release_date">Erscheinungsdatum:</string>
-    <string name="play">Abspielen</string>
-    <string name="trailer">Vorschau</string>
-    <string name="banner_image">Banner Bild</string>
-    <string name="you_saved_movies_appear_here">Die gespeicherten Filme werden hier angezeigt.</string>
-    <string name="no_saved_movies">Keine gespeicherten Filme</string>
-    <string name="saved_movies">Offline Filme</string>
-    <string name="welcome_to_filmy">Willkommen bei Filmy</string>
-    <string name="filmy_is_your_new_movie_app">Filmy ist deine neue Filme App.</string>
-    <string name="categorized">Kategorisiert</string>
-    <string name="get_different_movies_in_different_categories_at_one_place">Hol dir verschiedene Filme von verschiedenen Kategorien am selben Ort.</string>
-    <string name="offline_movies">Offline Filme</string>
-    <string name="save_movies_locally_to_see_various_details_even_if_you_don_t_have_internet">Speichern Sie Filme lokal um verschiedene Details zu sehen, auch wenn Sie kein Internet haben.</string>
-    <string name="exploration">Erkundung</string>
-    <string name="search_through_the_large_sea_of_movies_and_know_about_different_casts">Durchstöbern Sie die große Auswahl an Filmen und lernen Sie die Besetzung kennen.</string>
-    <string name="close_description">Beschreibung schließen</string>
-    <string name="low">Tief</string>
-    <string name="high">Hoch</string>
-    <string name="image">Bildqualität</string>
     <string name="license">Lizenz</string>
     <string name="version">Version</string>
     <string name="about">Über</string>
     <string name="about_screen_tittle">Gemacht für Kinoliebhaber</string>
-    <string name="error_details">Filme konnten nicht abgerufen werden. Überprüfe die Internet Verbindung und versuche es noch einmal.</string>
-    <string name="trending">Beliebt</string>
-    <string name="theatres">IN KINOS</string>
-    <string name="upcoming">DEMNÄCHST ERHÄLTLICH</string>
     <string name="details">Einzelheiten</string>
-    <string name="error_retry">WIEDERHOLEN</string>
 
 
     <string name="name_webianks">Ramankit Singh</string>
@@ -63,23 +22,11 @@
     <string name="bio_salroid">Der mit Teufel auf der anderen Seite des Spiegels.</string>
 
     <string name="shareappdetails">Teile diese App</string>
-    <string name="dark">Nacht Modus</string>
 
     <string name="crew">Crew</string>
-    <string name="similar">Ähnliche Filme</string>
-    <string name="home">Zuhause</string>
-    <string name="favorite">Favoriten</string>
-    <string name="account">Konto</string>
-    <string name="user_holder">Nicht eingeloggt</string>
-    <string name="form_username">Benutzername</string>
-    <string name="form_password">Passwort</string>
-    <string name="login">TMDB Anmeldung</string>
-    <string name="login_normal">Anmeldung</string>
-    <string name="trailers">Anhänger</string>
     <string name="favourite">Favoriten</string>
     <string name="your_fav_movies_appear_here">Ihr Lieblingsfilm erscheint hier</string>
     <string name="your_watchlist_movies_appear_here">Ihr Watchlist erscheint hier</string>
-    <string name="you_dont_hav_fav">Keine Filme in der Liste</string>
 
 
 

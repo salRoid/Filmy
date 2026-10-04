@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -44,20 +43,6 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.details.MovieDetailsActivity" />
-        <activity android:name=".ui.details.TvDetailsActivity" />
-        <activity android:name=".ui.full.FullBannerActivity" />
-        <activity android:name=".ui.full.AllMoviesActivity" />
-        <activity
-            android:name=".ui.full.YoutubePlayerActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:exported="false"
-            android:hardwareAccelerated="true" />
-        <activity android:name=".ui.cast_crew.CastCrewDetailsActivity" />
-        <activity android:name=".ui.cast_crew.AllCastCrewActivity" />
-        <activity android:name=".ui.settings.LicenseActivity" />
-        <activity android:name=".ui.settings.AboutActivity" />
 
         <receiver
             android:name=".ui.widget.WatchlistWidgetReceiver"

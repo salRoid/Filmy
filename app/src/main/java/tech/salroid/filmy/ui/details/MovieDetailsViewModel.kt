@@ -22,8 +22,6 @@ import tech.salroid.filmy.data.local.model.SimilarMoviesResponse
 import tech.salroid.filmy.data.local.model.account.TmdbList
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
-import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.WATCHED
-import tech.salroid.filmy.ui.details.MovieDetailsActivity.Companion.WATCHLIST
 import tech.salroid.filmy.ui.home.AccountRepository
 import tech.salroid.filmy.ui.home.AccountSyncRepository
 import tech.salroid.filmy.ui.home.MoviesRepository
@@ -37,6 +35,11 @@ class MovieDetailsViewModel @Inject constructor(
     private val accountSyncRepository: AccountSyncRepository,
     private val accountRepository: AccountRepository
 ) : ViewModel() {
+
+    companion object {
+        private const val WATCHED = "watched"
+        private const val WATCHLIST = "watchlist"
+    }
 
     private val _uiStateMovieDetails = MutableStateFlow<MovieDetails?>(null)
     private val _uiStateTvDetails = MutableStateFlow<TvDetails?>(null)

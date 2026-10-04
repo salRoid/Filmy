@@ -59,12 +59,3 @@ data class TvShow(
         }
     }
 }
-
-fun String.toShowType() = when (this) {
-    "tv_show_trending" -> TvShow.ShowType.TRENDING
-    "tv_show_popular" -> TvShow.ShowType.POPULAR
-    "tv_show_airing_today" -> TvShow.ShowType.AIRING_TODAY
-    "tv_show_on_the_air" -> TvShow.ShowType.ON_TV
-    "tv_show_top_rated" -> TvShow.ShowType.TOP_RATED
-    else -> null
-}

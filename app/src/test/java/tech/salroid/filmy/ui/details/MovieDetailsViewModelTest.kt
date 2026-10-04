@@ -6,6 +6,8 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -229,6 +231,7 @@ class MovieDetailsViewModelTest {
     private fun waitFor(condition: () -> Boolean) {
         val deadline = System.currentTimeMillis() + 2000
         while (!condition() && System.currentTimeMillis() < deadline) Thread.sleep(10)
+        assertTrue("Timed out waiting for the expected state", condition())
     }
 
     @Test
@@ -335,11 +338,16 @@ class MovieDetailsViewModelTest {
 
     @Test
     fun `toggleListMembership rolls back without list access`() = runTest {
-        every { accountRepository.canManageLists() } returns false
+        val pushGate = CountDownLatch(1)
+        every { accountRepository.canManageLists() } answers {
+            pushGate.await(2, TimeUnit.SECONDS)
+            false
+        }
 
         viewModel.toggleListMembership(10, 55, isTv = false, currentlyIn = false)
 
         assertEquals(true, viewModel.listMembership.value[10])
+        pushGate.countDown()
         verify(timeout = 1000, exactly = 1) { accountRepository.canManageLists() }
         waitFor { viewModel.listMembership.value[10] == false }
         assertEquals(false, viewModel.listMembership.value[10])

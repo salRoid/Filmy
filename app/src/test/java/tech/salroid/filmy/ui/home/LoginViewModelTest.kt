@@ -8,6 +8,7 @@ import io.mockk.verify
 import io.mockk.verifyOrder
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -100,12 +101,17 @@ class LoginViewModelTest {
     fun `getRequestToken clears isAuthenticating on failure`() = runTest {
         accountRepository = mockk()
         val viewModel = viewModel()
-        coEvery { accountRepository.getRequestToken(any()) } returns flow { throw RuntimeException("boom") }
+        val requestGate = CompletableDeferred<Unit>()
+        coEvery { accountRepository.getRequestToken(any()) } returns flow {
+            requestGate.await()
+            throw RuntimeException("boom")
+        }
 
         viewModel.isAuthenticating.test {
             assertEquals(false, awaitItem())
             viewModel.getRequestToken()
             assertEquals(true, awaitItem())
+            requestGate.complete(Unit)
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }

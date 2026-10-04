@@ -6,6 +6,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -76,12 +77,14 @@ class CollectionsViewModelTest {
 
     @Test
     fun `trySync delegates to AccountSyncRepository and clears isSyncing`() = runTest {
-        coEvery { accountSyncRepository.syncIfNeeded() } returns Unit
+        val syncGate = CompletableDeferred<Unit>()
+        coEvery { accountSyncRepository.syncIfNeeded() } coAnswers { syncGate.await() }
 
         viewModel.isSyncing.test {
             assertEquals(false, awaitItem())
             viewModel.trySync()
             assertEquals(true, awaitItem())
+            syncGate.complete(Unit)
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }

@@ -3,6 +3,7 @@ package tech.salroid.filmy.ui.franchise
 import app.cash.turbine.test
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -56,7 +57,9 @@ class FranchiseViewModelTest {
 
     @Test
     fun `loadCollection clears isLoading even when the fetch fails`() = runTest {
+        val fetchGate = CompletableDeferred<Unit>()
         every { moviesRepository.getCollectionDetails(10) } returns flow {
+            fetchGate.await()
             throw RuntimeException("network error")
         }
 
@@ -64,6 +67,7 @@ class FranchiseViewModelTest {
             assertEquals(false, awaitItem())
             viewModel.loadCollection(10)
             assertEquals(true, awaitItem())
+            fetchGate.complete(Unit)
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }

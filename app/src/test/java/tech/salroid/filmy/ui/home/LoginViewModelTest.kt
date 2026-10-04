@@ -7,6 +7,8 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifyOrder
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -198,7 +200,11 @@ class LoginViewModelTest {
         val viewModel = viewModel()
         every { accountRepository.getSessionIdFromPref() } returns null
         every { accountRepository.getUserAccessToken() } returns null
-        every { accountRepository.clearProfile() } returns 0
+        val cleanupGate = CountDownLatch(1)
+        every { accountRepository.clearProfile() } answers {
+            cleanupGate.await(2, TimeUnit.SECONDS)
+            0
+        }
         every { accountRepository.storeSessionId(null) } returns Unit
         every { accountRepository.storeUserAccessToken(null, null) } returns Unit
 
@@ -206,6 +212,7 @@ class LoginViewModelTest {
             assertEquals(false, awaitItem())
             viewModel.logout()
             assertEquals(true, awaitItem())
+            cleanupGate.countDown()
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
@@ -223,7 +230,11 @@ class LoginViewModelTest {
         coEvery { accountRepository.deleteSession("session-id") } returns flowOf(DeleteSession(success = true))
         // A failed revoke must not stop the local logout.
         coEvery { accountRepository.revokeUserAccessToken("access-token") } returns flow { throw RuntimeException("offline") }
-        every { accountRepository.clearProfile() } returns 0
+        val cleanupGate = CountDownLatch(1)
+        every { accountRepository.clearProfile() } answers {
+            cleanupGate.await(2, TimeUnit.SECONDS)
+            0
+        }
         every { accountRepository.storeSessionId(null) } returns Unit
         every { accountRepository.storeUserAccessToken(null, null) } returns Unit
 
@@ -231,6 +242,7 @@ class LoginViewModelTest {
             assertEquals(false, awaitItem())
             viewModel.logout()
             assertEquals(true, awaitItem())
+            cleanupGate.countDown()
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }

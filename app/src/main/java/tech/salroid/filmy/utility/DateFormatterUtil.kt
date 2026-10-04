@@ -1,16 +1,14 @@
 package tech.salroid.filmy.utility
 
-import java.text.ParsePosition
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-// java.time needs API 26 (or core library desugaring) and minSdk is 24, so
-// this sticks to SimpleDateFormat.
+private val ISO_DATE = Regex("""\d{4}-\d{2}-\d{2}""")
+
 fun formatReleaseDate(raw: String): String {
-    val position = ParsePosition(0)
-    val date = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        .apply { isLenient = false }
-        .parse(raw, position)
-    if (date == null || position.index != raw.length) return ""
+    if (!ISO_DATE.matches(raw)) return ""
+    val date = runCatching {
+        SimpleDateFormat("yyyy-MM-dd", Locale.US).apply { isLenient = false }.parse(raw)
+    }.getOrNull() ?: return ""
     return SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)
 }

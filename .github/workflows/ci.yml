@@ -51,6 +51,7 @@ jobs:
           path: |
             app/build/reports/tests/
             app/build/reports/screenshotTest/
+            app/build/outputs/screenshotTest-results/
             app/build/test-results/
 
   build:

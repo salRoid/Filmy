@@ -13,6 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +35,7 @@ fun TrailersSection(
     onPlusMoreClick: () -> Unit = {}
 ) {
     youtubeTrailers?.firstOrNull()?.let { trailer ->
+        val playTrailerDescription = stringResource(R.string.cd_play_trailer)
         Card(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -47,6 +52,11 @@ fun TrailersSection(
                 Box(
                     modifier = Modifier
                         .weight(7.5f)
+                        .semantics {
+                            contentDescription = trailer.name
+                                ?: playTrailerDescription
+                            role = Role.Button
+                        }
                         .clickable {
                             trailer.source?.let { onTrailerClick(it) }
                         }
@@ -75,7 +85,8 @@ fun TrailersSection(
                     modifier = Modifier
                         .weight(2.5f)
                         .fillMaxHeight()
-                        .clickable { onPlusMoreClick() },
+                        .clickable(role = Role.Button) { onPlusMoreClick() }
+                        .semantics(mergeDescendants = true) {},
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {

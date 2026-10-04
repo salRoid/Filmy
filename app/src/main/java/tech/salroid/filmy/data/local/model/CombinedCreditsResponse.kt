@@ -1,49 +1,67 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 import java.io.Serializable
 
+@KSerializable
 data class CombinedCreditsResponse(
-    @SerializedName("cast")
+    @SerialName("cast")
     var cast: List<CombinedCredit> = emptyList(),
 
-    @SerializedName("crew")
+    @SerialName("crew")
     var crew: List<CombinedCredit> = emptyList(),
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null
 )
 
+@KSerializable
 data class CombinedCredit(
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("title")
+    @SerialName("title")
     var title: String? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("poster_path")
+    @SerialName("poster_path")
     var posterPath: String? = null,
 
-    @SerializedName("release_date")
+    @SerialName("release_date")
     var releaseDate: String? = null,
 
-    @SerializedName("first_air_date")
+    @SerialName("first_air_date")
     var firstAirDate: String? = null,
 
-    @SerializedName("character")
+    @SerialName("character")
     var character: String? = null,
 
-    @SerializedName("job")
+    @SerialName("job")
     var job: String? = null,
 
-    @SerializedName("media_type")
+    @SerialName("media_type")
     var mediaType: String? = null,
 
-    @SerializedName("popularity")
-    var popularity: Double? = null
+    @SerialName("popularity")
+    var popularity: Double? = null,
+
+    @SerialName("vote_count")
+    var voteCount: Int? = null,
+
+    @SerialName("episode_count")
+    var episodeCount: Int? = null,
+
+    @SerialName("genre_ids")
+    var genreIds: List<Int> = emptyList(),
+
+    @SerialName("order")
+    var order: Int? = null,
+
+    @SerialName("department")
+    var department: String? = null
 ) : Serializable {
     val displayTitle: String? get() = title ?: name
     val displayDate: String? get() = releaseDate ?: firstAirDate

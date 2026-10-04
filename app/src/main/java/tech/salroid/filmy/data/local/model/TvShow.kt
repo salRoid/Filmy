@@ -1,46 +1,48 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TvShow(
 
-    @SerializedName("poster_path")
+    @SerialName("poster_path")
     var posterPath: String? = null,
 
-    @SerializedName("popularity")
+    @SerialName("popularity")
     var popularity: Double? = null,
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int,
 
-    @SerializedName("backdrop_path")
+    @SerialName("backdrop_path")
     var backdropPath: String? = null,
 
-    @SerializedName("vote_average")
+    @SerialName("vote_average")
     var voteAverage: Double? = null,
 
-    @SerializedName("overview")
+    @SerialName("overview")
     var overview: String? = null,
 
-    @SerializedName("first_air_date")
+    @SerialName("first_air_date")
     var firstAirDate: String? = null,
 
-    @SerializedName("origin_country")
+    @SerialName("origin_country")
     var originCountry: ArrayList<String> = arrayListOf(),
 
-    @SerializedName("genre_ids")
+    @SerialName("genre_ids")
     var genreIds: ArrayList<Int> = arrayListOf(),
 
-    @SerializedName("original_language")
+    @SerialName("original_language")
     var originalLanguage: String? = null,
 
-    @SerializedName("vote_count")
+    @SerialName("vote_count")
     var voteCount: Int? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("original_name")
+    @SerialName("original_name")
     var originalName: String? = null
 ) {
     enum class ShowType {

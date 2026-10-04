@@ -11,13 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.action.Action
 import androidx.glance.action.actionParametersOf
@@ -46,10 +46,6 @@ import androidx.glance.material3.ColorProviders
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import coil3.asDrawable
-import coil3.imageLoader
-import coil3.request.ImageRequest
-import coil3.request.SuccessResult
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -82,7 +78,7 @@ class WatchlistWidget : GlanceAppWidget() {
                     val topItems = list.reversed().take(5)
                     val itemsWithBitmaps = topItems.map { item ->
                         val posterUrl = "https://image.tmdb.org/t/p/w185${item.posterPath}"
-                        val bitmap = loadBitmap(context, posterUrl)
+                        val bitmap = loadWidgetPosterBitmap(context, posterUrl)
                         WatchlistItemData(item, bitmap)
                     }
                     watchlistWithBitmaps = itemsWithBitmaps
@@ -109,24 +105,6 @@ class WatchlistWidget : GlanceAppWidget() {
             }
         }
     }
-
-    private suspend fun loadBitmap(context: Context, url: String): Bitmap? {
-        return try {
-            val loader = context.imageLoader
-            val request = ImageRequest.Builder(context)
-                .data(url)
-                .size(200, 300) // Small size for widget to save memory
-                .build()
-            val result = loader.execute(request)
-            if (result is SuccessResult) {
-                result.image.asDrawable(context.resources).toBitmap()
-            } else {
-                null
-            }
-        } catch (e: Exception) {
-            null
-        }
-    }
 }
 
 data class WatchlistItemData(val movie: MovieDetails, val bitmap: Bitmap?)
@@ -136,6 +114,7 @@ fun WatchlistWidgetContent(
     watchlist: List<WatchlistItemData>,
     onItemClick: (WatchlistItemData) -> Action
 ) {
+    val context = LocalContext.current
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
@@ -154,7 +133,7 @@ fun WatchlistWidgetContent(
             )
             Spacer(modifier = GlanceModifier.width(8.dp))
             Text(
-                text = "Watchlist",
+                text = context.getString(R.string.widget_watchlist_title),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSurface,
                     fontSize = 16.sp,
@@ -171,7 +150,7 @@ fun WatchlistWidgetContent(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "No items in watchlist",
+                    text = context.getString(R.string.widget_watchlist_empty),
                     style = TextStyle(
                         color = GlanceTheme.colors.onSurfaceVariant,
                         fontSize = 14.sp
@@ -200,6 +179,7 @@ private fun WatchlistItem(
 ) {
     val item = data.movie
     val bitmap = data.bitmap
+    val context = LocalContext.current
 
     Row(
         modifier = GlanceModifier
@@ -224,7 +204,7 @@ private fun WatchlistItem(
 
         Column(modifier = GlanceModifier.defaultWeight()) {
             Text(
-                text = item.title ?: "Unknown",
+                text = item.title ?: context.getString(R.string.unknown_title),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSecondaryContainer,
                     fontSize = 14.sp,
@@ -233,7 +213,7 @@ private fun WatchlistItem(
                 maxLines = 1
             )
             Text(
-                text = if (item.type == 1) "Show" else "Movie",
+                text = if (item.type == 1) context.getString(R.string.media_type_show) else context.getString(R.string.media_type_movie),
                 style = TextStyle(
                     color = GlanceTheme.colors.onSecondaryContainer,
                     fontSize = 12.sp
@@ -243,7 +223,7 @@ private fun WatchlistItem(
 
         Image(
             provider = ImageProvider(R.drawable.ic_check),
-            contentDescription = "Mark watched",
+            contentDescription = context.getString(R.string.cd_mark_watched),
             modifier = GlanceModifier
                 .size(28.dp)
                 .padding(4.dp)

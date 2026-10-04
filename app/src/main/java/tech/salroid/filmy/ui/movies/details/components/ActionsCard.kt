@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarBorder
@@ -17,12 +18,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,7 +35,12 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.common.model.DetailsActions
 import tech.salroid.filmy.ui.common.model.MediaDetailsUiState
 import tech.salroid.filmy.ui.common.model.PaletteColors
+import tech.salroid.filmy.ui.common.shiftedUntil
 import tech.salroid.filmy.ui.theme.AppTheme
+
+// Roughly a 4.5:1 contrast against the near-white / near-black page.
+private const val MAX_TINT_LUMINANCE_ON_LIGHT = 0.16f
+private const val MIN_TINT_LUMINANCE_ON_DARK = 0.35f
 
 @Composable
 fun ActionsCard(
@@ -41,13 +50,18 @@ fun ActionsCard(
     modifier: Modifier = Modifier
 ) {
     val isDark = isSystemInDarkTheme()
+    // The selected state has to stand out from both the page and the grey
+    // unselected items, so the palette colour is taken from its deep end on a
+    // light page (and its bright end on a dark one), then pushed further if
+    // the image's own tones are too washed out to read.
     val tint = remember(paletteColors, isDark) {
-        val color = if (isDark) {
-            paletteColors?.lightVibrantRgb ?: paletteColors?.vibrantRgb
+        if (isDark) {
+            (paletteColors?.lightVibrantRgb ?: paletteColors?.vibrantRgb)
+                ?.let { Color(it).shiftedUntil(Color.White) { c -> c.luminance() >= MIN_TINT_LUMINANCE_ON_DARK } }
         } else {
-            paletteColors?.vibrantRgb ?: paletteColors?.darkVibrantRgb
+            (paletteColors?.darkVibrantRgb ?: paletteColors?.vibrantRgb ?: paletteColors?.darkMutedRgb)
+                ?.let { Color(it).shiftedUntil(Color.Black) { c -> c.luminance() <= MAX_TINT_LUMINANCE_ON_LIGHT } }
         }
-        color?.let { Color(it) }
     } ?: MaterialTheme.colorScheme.primary
 
     val unselectedColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
@@ -80,6 +94,7 @@ fun ActionsCard(
                 )
                 actions.onWatchedToggle()
             },
+            isToggle = true,
             modifier = Modifier.weight(1f)
         )
 
@@ -105,6 +120,7 @@ fun ActionsCard(
                 )
                 actions.onWatchlistToggle()
             },
+            isToggle = true,
             modifier = Modifier.weight(1f)
         )
 
@@ -134,10 +150,10 @@ fun ActionsCard(
 
         // Add to List
         ActionItem(
-            isSelected = false,
+            isSelected = state.isInList,
             onIcon = painterResource(R.drawable.ic_collections_bookmark_24dp),
             offIcon = painterResource(R.drawable.ic_collections_bookmark_24dp),
-            label = stringResource(R.string.add_to_list),
+            label = stringResource(if (state.isInList) R.string.in_list else R.string.add_to_list),
             selectedColor = tint,
             unselectedColor = unselectedColor,
             onClick = actions.onAddToListClick,
@@ -155,7 +171,8 @@ private fun ActionItem(
     selectedColor: Color,
     unselectedColor: Color,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isToggle: Boolean = false
 ) {
     val color by animateColorAsState(
         targetValue = if (isSelected) selectedColor else unselectedColor,
@@ -183,18 +200,32 @@ private fun ActionItem(
 
     Column(
         modifier = modifier
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(),
-                onClick = onClick
+            .then(
+                if (isToggle) {
+                    Modifier.toggleable(
+                        value = isSelected,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(),
+                        role = Role.Checkbox,
+                        onValueChange = { onClick() }
+                    )
+                } else {
+                    Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(),
+                        role = Role.Button,
+                        onClick = onClick
+                    )
+                }
             )
+            .semantics(mergeDescendants = true) {}
             .padding(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
             painter = if (isSelected) onIcon else offIcon,
-            contentDescription = label,
+            contentDescription = null,
             tint = color,
             modifier = Modifier
                 .size(22.dp)

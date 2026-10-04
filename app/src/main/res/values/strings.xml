@@ -4,12 +4,17 @@
     <string name="trailer_img_url" formatted="false" translatable="false">https://img.youtube.com/vi/%1$s/0.jpg</string>
     <string name="poster_prefix_500" translatable="false">https://image.tmdb.org/t/p/w1280</string>
 
-    <string name="collection_short_label" translatable="false">Collections</string>
-    <string name="collection_long_label" translatable="false">Open your collection.</string>
+    <string name="collection_short_label">Collections</string>
+    <string name="collection_long_label">Open your collection.</string>
 
 
     <string name="app_name">Filmy</string>
+    <string name="back">Back</string>
     <string name="movies">Movies</string>
+    <string name="tab_movies">Movies</string>
+    <string name="tab_shows">Shows</string>
+    <string name="tab_collection">Collection</string>
+    <string name="tab_account">Account</string>
     <string name="cast">Cast</string>
     <string name="license">License</string>
     <string name="version">Version</string>
@@ -18,157 +23,7 @@
     <string name="details">Details</string>
 
 
-    <string name="glide" translatable="false"><![CDATA[
-    <b>Glide
-    </b>
-     <br>
-     <pre>
 
-      License for everything not in third_party and not otherwise marked:
-
-Copyright 2014 Google, Inc. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are
-permitted provided that the following conditions are met:
-
-   1. Redistributions of source code must retain the above copyright notice, this list of
-         conditions and the following disclaimer.
-
-   2. Redistributions in binary form must reproduce the above copyright notice, this list
-         of conditions and the following disclaimer in the documentation and/or other materials
-         provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY GOOGLE, INC. ``AS IS\'\' AND ANY EXPRESS OR IMPLIED
-WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL GOOGLE, INC. OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-The views and conclusions contained in the software and documentation are those of the
-authors and should not be interpreted as representing official policies, either expressed
-or implied, of Google, Inc.
------------------------------------------------------------------------
-
-License for third_party/disklrucache:
-
-Copyright 2012 Jake Wharton
-Copyright 2011 The Android Open Source Project
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-------------------------------------------------------------------------
-
-License for third_party/gif_decoder:
-
-Copyright © 2013 Xcellent Creations, Inc.
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-------------------------------------------------------------------------
-
-License for third_party/gif_encoder/AnimatedGifEncoder.java and
-third_party/gif_encoder/LZWEncoder.java:
-
-No copyright asserted on the source code of this class. May be used for any
-purpose, however, refer to the Unisys LZW patent for restrictions on use of
-the associated LZWEncoder class. Please forward any corrections to
-kweiner@fmsware.com.
-
-------------------------------------------------------------------------
-
-License for third_party/gif_encoder/NeuQuant.java
-
-Copyright © 1994 Anthony Dekker
-
-NEUQUANT Neural-Net quantization algorithm by Anthony Dekker, 1994. See
-"Kohonen neural networks for optimal colour quantization" in "Network:
-Computation in Neural Systems" Vol. 5 (1994) pp 351-367. for a discussion of
-the algorithm.
-
-Any party obtaining a copy of these files from the author, directly or
-indirectly, is granted, free of charge, a full and unrestricted irrevocable,
-world-wide, paid up, royalty-free, nonexclusive right and license to deal in
-this software and documentation files (the "Software"), including without
-limitation the rights to use, copy, modify, merge, publish, distribute,
-sublicense, and/or sell copies of the Software, and to permit persons who
-receive copies from any such party to do so, with the only requirement being
-that this copyright notice remain intact.
-</pre>
-    ]]></string>
-
-    <string name="crashlytics" translatable="false"><![CDATA[
-    <b>Crashlytics
-    </b>
-     <br>
-     <pre>
-
-      SDK:
-protobuf-c http://code.google.com/p/protobuf-c/source/browse/trunk/LICENSE
-
-Copyright © 2008-2011, Dave Benson.
-
-All rights reserved.
-
-Redistribution and use in source and binary forms, with
-or without modification, are permitted provided that the
-following conditions are met:
-
-* Redistributions of source code must retain the above
-copyright notice, this list of conditions and the following
-disclaimer.
-* Redistributions in binary form must reproduce
-the above copyright notice, this list of conditions and
-the following disclaimer in the documentation and/or other
-materials provided with the distribution.
-* Neither the name
-of "protobuf-c" nor the names of its contributors
-may be used to endorse or promote products derived from
-this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER
-OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
-GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-</pre>]]></string>
 
     <string name="app_share_link" translatable="false">https://play.google.com/store/apps/details?id=tech.salroid.filmy</string>
     <string name="website_webianks" translatable="false">http://webianks.in</string>
@@ -178,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <string name="shareappdetails">Share this App</string>
 
     <string name="crew">Crew</string>
-    <string name="watchlist" translatable="false">Watch List</string>
+    <string name="watchlist">Watch List</string>
     <string name="favourite">Watched</string>
     <string name="your_fav_movies_appear_here">Your watched movies appear here.</string>
     <string name="your_watchlist_movies_appear_here">Your watchlist appears here.</string>
@@ -198,11 +53,13 @@ POSSIBILITY OF SUCH DAMAGE.
     <string name="email">Email</string>
     <string name="website">Website</string>
     <string name="github">GitHub</string>
+    <string name="powered_by_tmdb">Powered by TMDB</string>
+    <string name="send_feedback">Send feedback</string>
 
     <!-- New: TODO Finalise position -->
     <string name="movie_poster_url" formatted="false" translatable="false">https://image.tmdb.org/t/p/w500%1$s</string>
     <string name="member_profile_url" formatted="false" translatable="false">https://image.tmdb.org/t/p/w500%1$s</string>
-    <string name="remove" translatable="false">Remove</string>
+    <string name="remove">Remove</string>
     <string name="plus_more">+ More</string>
     <string name="discover_movies_title">Discover Movies</string>
     <string name="discover_shows_title">Discover Shows</string>
@@ -215,6 +72,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <string name="discover_reset">Reset</string>
     <string name="discover_apply">Apply</string>
     <string name="discover_no_results">No results found</string>
+    <string name="no_entries_found">No entries found.</string>
     <string name="discover_sort_popularity">Most Popular</string>
     <string name="discover_sort_rating">Top Rated</string>
     <string name="discover_sort_newest">Newest</string>
@@ -277,4 +135,104 @@ POSSIBILITY OF SUCH DAMAGE.
     <string name="where_to_watch">Where to Watch</string>
     <string name="no_watch_providers_available">No watch providers available for your region.</string>
 
+    <string name="people">People</string>
+    <string name="search_bar_hint">Search Movies, Shows or People</string>
+    <string name="clear_search">Clear search</string>
+    <string name="no_results_for_query">No results for \"%1$s\"</string>
+    <string name="search_prefix">"Search "</string>
+    <string name="recent_searches">Recent searches</string>
+    <string name="clear_all">Clear all</string>
+    <string name="badge_show">SHOW</string>
+    <string name="badge_person">PERSON</string>
+    <string name="widget_watchlist_title">Watchlist</string>
+    <string name="widget_watchlist_empty">No items in watchlist</string>
+    <string name="unknown_title">Unknown</string>
+    <string name="media_type_movie">Movie</string>
+    <string name="media_type_show">Show</string>
+    <string name="widget_to_rate_title">To Rate</string>
+    <string name="widget_to_rate_empty">You\'re all caught up</string>
+    <string name="search_country">Search country</string>
+    <string name="login_required_title">Log in required</string>
+    <string name="share">Share</string>
+    <string name="more_options">More options</string>
+    <string name="budget">Budget</string>
+    <string name="revenue">Revenue</string>
+    <string name="awards">Awards</string>
+    <string name="reviews">Reviews</string>
+    <string name="part_of_a_collection">Part of a Collection</string>
+    <string name="ratings">Ratings</string>
+    <string name="studios">Studios</string>
+    <string name="seasons">Seasons</string>
+    <plurals name="episode_count">
+        <item quantity="one">%1$d Episode</item>
+        <item quantity="other">%1$d Episodes</item>
+    </plurals>
+    <string name="region">Region</string>
+    <string name="language">Language</string>
+    <string name="open_source_libraries">Open Source Libraries</string>
+    <string name="logout">Logout</string>
+    <string name="known_for">Known For</string>
+    <string name="no_cast_or_crew_found">No cast or crew found.</string>
+    <string name="episode_title_format">%1$d. %2$s</string>
+    <string name="welcome_to_filmy">Welcome to Filmy</string>
+    <string name="onboarding_country_subtitle">Set your country for accurate watch providers, ratings, and release dates.</string>
+    <string name="continue_label">Continue</string>
+    <string name="no_reviews_found">No reviews found.</string>
+    <string name="popular_people_title">Popular People</string>
+    <string name="no_movies_found">No movies found</string>
+    <string name="no_people_found">No people found</string>
+    <string name="no_shows_found">No shows found</string>
+    <string name="couldnt_load_details">Couldn\'t load details. Check your connection.</string>
+    <string name="couldnt_load_person">Couldn\'t load this person. Check your connection.</string>
+    <string name="login_required_add_to_list_message">Log in to your TMDB account to add this to a list.</string>
+    <string name="photos">Photos</string>
+    <string name="backdrops">Backdrops</string>
+    <string name="posters">Posters</string>
+    <string name="close">Close</string>
+    <string name="lists_login_required_message">Log in to your TMDB account to view\n and manage your lists</string>
+    <string name="lists_relogin_required_message">Lists can now hold shows as well as movies. Log in to TMDB once more to keep using your lists.</string>
+    <plurals name="list_item_count">
+        <item quantity="one">%1$d item</item>
+        <item quantity="other">%1$d items</item>
+    </plurals>
+
+    <!-- Accessibility content descriptions / labels -->
+    <string name="cd_open_details">Open details</string>
+    <string name="cd_add_to_watchlist">Add to Watchlist</string>
+    <string name="cd_remove_from_watchlist">Remove from Watchlist</string>
+    <string name="cd_mark_watched">Mark as Watched</string>
+    <string name="cd_mark_unwatched">Mark as Unwatched</string>
+    <string name="cd_movie_poster">%1$s movie poster</string>
+    <string name="cd_show_poster">%1$s show poster</string>
+    <string name="cd_play_trailer">Play trailer</string>
+    <string name="cd_read_full_overview">Read full overview</string>
+    <string name="cd_gallery_backdrop">Backdrop image %1$d</string>
+    <string name="cd_gallery_poster">Poster image %1$d</string>
+    <string name="cd_read_full_biography">Read full biography</string>
+
+    <string name="person_born">Born</string>
+    <string name="person_died">Died</string>
+    <string name="person_age">Age</string>
+    <string name="person_birthplace">Birthplace</string>
+    <string name="person_credits">Credits</string>
+    <string name="similar">Similar</string>
+    <string name="similar_shows">Similar Shows</string>
+    <string name="recommended">Recommended</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="retry">Retry</string>
+    <string name="season_number">Season %1$d</string>
+    <string name="runtime_hours_minutes">%1$dh %2$dm</string>
+    <string name="runtime_minutes">%1$dm</string>
+    <string name="rating_source_you">You</string>
+    <string name="rating_source_generic">Rating</string>
+    <string name="share_with">Share with</string>
+    <string name="share_app_message">Check out this awesome movie app.</string>
+    <string name="error_timeout">Request timed out. Please try again.</string>
+    <string name="error_no_internet">No internet connection. Check your network and try again.</string>
+    <string name="error_server">Something went wrong on our end. Please try again later.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="list_more_items">+%1$d more</string>
+    <string name="create">Create</string>
+    <string name="loading_lists">Loading your lists</string>
+    <string name="in_list">In List</string>
 </resources>

@@ -1,19 +1,22 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ImagesResponse(
-    @SerializedName("backdrops")
+    @SerialName("backdrops")
     var backdrops: List<ImageItem> = emptyList(),
 
-    @SerializedName("posters")
+    @SerialName("posters")
     var posters: List<ImageItem> = emptyList()
 )
 
+@Serializable
 data class ImageItem(
-    @SerializedName("file_path")
+    @SerialName("file_path")
     var filePath: String? = null,
 
-    @SerializedName("vote_average")
+    @SerialName("vote_average")
     var voteAverage: Double? = null
 )

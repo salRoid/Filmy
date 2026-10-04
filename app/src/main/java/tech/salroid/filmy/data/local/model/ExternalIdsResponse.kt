@@ -1,17 +1,19 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ExternalIdsResponse(
-    @SerializedName("imdb_id")
+    @SerialName("imdb_id")
     var imdbId: String? = null,
 
-    @SerializedName("facebook_id")
+    @SerialName("facebook_id")
     var facebookId: String? = null,
 
-    @SerializedName("instagram_id")
+    @SerialName("instagram_id")
     var instagramId: String? = null,
 
-    @SerializedName("twitter_id")
+    @SerialName("twitter_id")
     var twitterId: String? = null
 )

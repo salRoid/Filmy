@@ -3,7 +3,6 @@ package tech.salroid.filmy.ui.common.components
 import android.app.Activity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhotoLibrary
@@ -15,6 +14,7 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleResumeEffect
@@ -26,6 +26,7 @@ import tech.salroid.filmy.ui.common.model.PaletteColors
 import tech.salroid.filmy.ui.movies.details.components.*
 import tech.salroid.filmy.utility.themeSystemBars
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsContent(
     state: MediaDetailsUiState,
@@ -186,19 +187,23 @@ fun DetailsToolbar(
     val buttonBackgroundColor =
         if (isTransparent) Color.Black.copy(alpha = 0.35f) else Color.Transparent
 
+    // 48dp circles that double as the touch target. Paddings are 8dp less than the
+    // visual spacing would suggest because the app bar already insets its content.
+    val buttonColors = IconButtonDefaults.iconButtonColors(containerColor = buttonBackgroundColor)
+
     CenterAlignedTopAppBar(
         title = { },
         navigationIcon = {
             IconButton(
                 onClick = actions.onBackNavigation,
                 modifier = Modifier
-                    .padding(start = 16.dp)
-                    .size(32.dp)
-                    .background(buttonBackgroundColor, CircleShape)
+                    .padding(start = 8.dp)
+                    .size(48.dp),
+                colors = buttonColors
             ) {
                 Icon(
                     painterResource(R.drawable.ic_arrow_back),
-                    contentDescription = "Back",
+                    contentDescription = stringResource(R.string.back),
                     tint = iconColor,
                     modifier = Modifier.size(24.dp)
                 )
@@ -207,14 +212,12 @@ fun DetailsToolbar(
         actions = {
             IconButton(
                 onClick = onGalleryClick,
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .size(32.dp)
-                    .background(buttonBackgroundColor, CircleShape)
+                modifier = Modifier.size(48.dp),
+                colors = buttonColors
             ) {
                 Icon(
                     imageVector = Icons.Default.PhotoLibrary,
-                    contentDescription = "Photos",
+                    contentDescription = stringResource(R.string.photos),
                     tint = iconColor,
                     modifier = Modifier.size(24.dp)
                 )
@@ -222,13 +225,13 @@ fun DetailsToolbar(
             IconButton(
                 onClick = actions.onShareClick,
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .size(32.dp)
-                    .background(buttonBackgroundColor, CircleShape)
+                    .padding(start = 16.dp, end = 8.dp)
+                    .size(48.dp),
+                colors = buttonColors
             ) {
                 Icon(
                     painterResource(R.drawable.twotone_share_24),
-                    contentDescription = "Share",
+                    contentDescription = stringResource(R.string.share),
                     tint = iconColor,
                     modifier = Modifier.size(24.dp)
                 )
@@ -369,12 +372,12 @@ fun DetailsMainContent(
                 onReviewClick = onReviewClick
             )
             MediaSuggestionsSection(
-                title = if (state.isTvShow) "Similar Shows" else "Similar",
+                title = stringResource(if (state.isTvShow) R.string.similar_shows else R.string.similar),
                 response = state.similarMedia,
                 onMediaClick = actions.onMediaClick
             )
             MediaSuggestionsSection(
-                title = if (state.isTvShow) "Recommendations" else "Recommended",
+                title = stringResource(if (state.isTvShow) R.string.recommendations else R.string.recommended),
                 response = state.recommendations,
                 onMediaClick = actions.onMediaClick
             )

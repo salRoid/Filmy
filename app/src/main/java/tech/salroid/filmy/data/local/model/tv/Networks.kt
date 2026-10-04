@@ -1,18 +1,20 @@
 package tech.salroid.filmy.data.local.model.tv
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Networks(
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("logo_path")
+    @SerialName("logo_path")
     var logoPath: String? = null,
 
-    @SerializedName("origin_country")
+    @SerialName("origin_country")
     var originCountry: String? = null
 )

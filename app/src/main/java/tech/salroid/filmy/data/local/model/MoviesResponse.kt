@@ -1,19 +1,21 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import tech.salroid.filmy.data.local.db.entity.Movie
 
+@Serializable
 data class MoviesResponse(
-    @SerializedName("page")
+    @SerialName("page")
     var page: Int? = null,
 
-    @SerializedName("results")
+    @SerialName("results")
     var results: List<Movie> = listOf(),
 
-    @SerializedName("total_pages")
+    @SerialName("total_pages")
     var totalPages: Int? = null,
 
-    @SerializedName("total_results")
+    @SerialName("total_results")
     var totalResults: Int? = null,
 
     var resetLocal: Boolean = false

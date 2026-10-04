@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tech.salroid.filmy.R
 import tech.salroid.filmy.data.model.MoviePreview
 import tech.salroid.filmy.ui.common.components.PreviewItem
 import tech.salroid.filmy.ui.common.components.QuickActionState
@@ -25,7 +27,7 @@ fun MovieItem(
         title = movie.title,
         posterUrl = movie.posterUrl,
         readableDate = movie.readableReleaseDate,
-        contentDescription = "${movie.title} - Movie Item",
+        contentDescription = stringResource(R.string.cd_movie_poster, movie.title),
         onItemClick = onMovieClick,
         fetchQuickActionState = fetchQuickActionState,
         onToggleWatchlist = onToggleWatchlist,

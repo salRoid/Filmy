@@ -2,6 +2,7 @@ package tech.salroid.filmy.data.network
 
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -14,8 +15,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import retrofit2.HttpException
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 /**
  * Pins the TMDB v4 list calls to the request shapes and response fields the
@@ -42,7 +44,10 @@ class AccountListsApiTest {
                         .build()
                 }).build()
             )
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(
+                Json { ignoreUnknownKeys = true; isLenient = true; coerceInputValues = true }
+                    .asConverterFactory("application/json".toMediaType())
+            )
             .build()
             .create(AccountApiService::class.java)
     )
@@ -101,6 +106,16 @@ class AccountListsApiTest {
     }
 
     @Test
+    fun `a membership check that fails for another reason is an error, not a no`() = runBlocking {
+        respond("""{"success":false,"status_code":7}""", code = 401)
+
+        val failure = runCatching { helper.isInList("expired-token", 7, 1396, isTv = true).first() }.exceptionOrNull()
+
+        assertTrue(failure is HttpException)
+        assertEquals(401, (failure as HttpException).code())
+    }
+
+    @Test
     fun `list details parse mixed movie and show entries`() = runBlocking {
         respond(
             """{"id":7,"name":"Mix","total_pages":3,"results":[
@@ -135,7 +150,7 @@ class AccountListsApiTest {
 
         val request = lastRequest!!
         assertEquals("https://api.themoviedb.org/4/list", request.url.toString())
-        assertEquals("""{"name":"Weekend","description":"","iso_639_1":"en"}""", request.bodyText())
+        assertEquals("""{"name":"Weekend","iso_639_1":"en"}""", request.bodyText())
         assertEquals(99, created.listId)
     }
 

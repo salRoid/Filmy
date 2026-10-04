@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +43,7 @@ fun SearchItem(
     onItemClick: () -> Unit
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.semantics(mergeDescendants = true) {},
         shape = RoundedCornerShape(corner = CornerSize(4.dp)),
         colors = CardDefaults.cardColors(containerColor = Transparent),
         onClick = { onItemClick() }
@@ -61,7 +63,7 @@ fun SearchItem(
                 },
                 contentScale = ContentScale.Crop,
                 model = searchPreview.posterUrl,
-                contentDescription = "${searchPreview.title} Poster Image",
+                contentDescription = null,
                 error = painterResource(
                     if (isPerson) R.drawable.default_avatar else R.drawable.poster_error_placeholder
                 )
@@ -83,8 +85,8 @@ fun SearchItem(
                     )
 
                     val badgeText = when (searchPreview.mediaType) {
-                        "tv" -> "SHOW"
-                        "person" -> "PERSON"
+                        "tv" -> stringResource(R.string.badge_show)
+                        "person" -> stringResource(R.string.badge_person)
                         else -> null
                     }
                     if (badgeText != null) {
@@ -121,7 +123,7 @@ fun SearchItem(
 
 @Preview(showBackground = true)
 @Composable
-private fun SearchItemPreview() {
+internal fun SearchItemPreview() {
     AppTheme {
         SearchItem(
             searchPreview = SearchPreview(
@@ -137,7 +139,7 @@ private fun SearchItemPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun SearchItemTvPreview() {
+internal fun SearchItemTvPreview() {
     AppTheme {
         SearchItem(
             searchPreview = SearchPreview(

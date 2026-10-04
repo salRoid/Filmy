@@ -153,7 +153,7 @@ fun CollectionScreenContent(
                     icon = {
                         Icon(
                             painter = painterResource(if (index == 0) R.drawable.ic_check else R.drawable.ic_round_bookmark_added_24),
-                            contentDescription = title
+                            contentDescription = null
                         )
                     },
                     selectedContentColor = MaterialTheme.colorScheme.primary,

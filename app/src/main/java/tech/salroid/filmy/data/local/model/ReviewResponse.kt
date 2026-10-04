@@ -1,21 +1,23 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ReviewResponse(
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("page")
+    @SerialName("page")
     var page: Int? = null,
 
-    @SerializedName("results")
+    @SerialName("results")
     var results: ArrayList<Review> = arrayListOf(),
 
-    @SerializedName("total_pages")
+    @SerialName("total_pages")
     var totalPages: Int? = null,
 
-    @SerializedName("total_results")
+    @SerialName("total_results")
     var totalResults: Int? = null
 )

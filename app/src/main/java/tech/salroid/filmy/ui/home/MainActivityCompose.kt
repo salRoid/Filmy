@@ -13,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.FilmyApp
 import tech.salroid.filmy.ui.theme.AppTheme
+import tech.salroid.filmy.utility.ApiLanguage
 import tech.salroid.filmy.utility.PreferenceHelper
 
 @AndroidEntryPoint
@@ -21,6 +22,8 @@ class MainActivityCompose : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().setKeepOnScreenCondition { false }
         super.onCreate(savedInstanceState)
+
+        ApiLanguage.refresh()
 
         val throughShortcut = intent.getBooleanExtra("throughShortcut", false)
 

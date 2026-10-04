@@ -108,10 +108,16 @@ interface MoviesApiService {
     suspend fun getPersonExternalIds(@Path("person_id") personId: String): ExternalIdsResponse
 
     @GET("search/movie")
-    suspend fun searchMovies(@Query("query") query: String): SearchResultResponse
+    suspend fun searchMovies(
+        @Query("query") query: String,
+        @Query("include_adult") includeAdult: Boolean = false
+    ): SearchResultResponse
 
     @GET("search/multi")
-    suspend fun searchMulti(@Query("query") query: String): SearchResultResponse
+    suspend fun searchMulti(
+        @Query("query") query: String,
+        @Query("include_adult") includeAdult: Boolean = false
+    ): SearchResultResponse
 
     @GET("movie/{movie_id}/reviews")
     suspend fun getReviews(@Path("movie_id") movieId: String): ReviewResponse
@@ -138,7 +144,8 @@ interface MoviesApiService {
         @Query("vote_average.gte") minRating: Float?,
         @Query("with_keywords") withKeywords: String?,
         @Query("sort_by") sortBy: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("include_adult") includeAdult: Boolean = false
     ): MoviesResponse
 
     @GET("discover/tv")
@@ -148,7 +155,8 @@ interface MoviesApiService {
         @Query("vote_average.gte") minRating: Float?,
         @Query("with_keywords") withKeywords: String?,
         @Query("sort_by") sortBy: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("include_adult") includeAdult: Boolean = false
     ): TvShowResponse
 
     @GET("person/popular")

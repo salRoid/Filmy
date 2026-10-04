@@ -1,21 +1,23 @@
 package tech.salroid.filmy.data.local.model.tv
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CreatedBy(
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("credit_id")
+    @SerialName("credit_id")
     var creditId: String? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("gender")
+    @SerialName("gender")
     var gender: Int? = null,
 
-    @SerializedName("profile_path")
+    @SerialName("profile_path")
     var profilePath: String? = null
 )

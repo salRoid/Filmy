@@ -1,12 +1,14 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Trailers(
 
-    @SerializedName("quicktime")
+    @SerialName("quicktime")
     var quicktime: ArrayList<String> = arrayListOf(),
 
-    @SerializedName("youtube")
+    @SerialName("youtube")
     var youtube: ArrayList<Youtube> = arrayListOf()
 )

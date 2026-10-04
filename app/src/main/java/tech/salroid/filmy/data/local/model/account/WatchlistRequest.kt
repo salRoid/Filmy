@@ -1,14 +1,16 @@
 package tech.salroid.filmy.data.local.model.account
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class WatchlistRequest(
-    @SerializedName("media_type")
+    @SerialName("media_type")
     var mediaType: String,
 
-    @SerializedName("media_id")
+    @SerialName("media_id")
     var mediaId: Int,
 
-    @SerializedName("watchlist")
+    @SerialName("watchlist")
     var watchlist: Boolean,
 )

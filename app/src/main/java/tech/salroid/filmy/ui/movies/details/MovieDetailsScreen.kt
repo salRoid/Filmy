@@ -5,8 +5,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.common.components.DetailsContent
 import tech.salroid.filmy.ui.common.components.DetailsSkeletonLoader
 import tech.salroid.filmy.ui.common.components.ErrorWidget
@@ -44,6 +46,15 @@ fun MovieDetailsScreen(
 
     LaunchedEffect(movieId) {
         viewModel.fetchAllMovieDetails(movieId.toString(), 0)
+    }
+
+    // Checks the user's lists up front so "Add to List" can show that this
+    // title is already in one - and again after a login from this screen.
+    val canManageLists by loginViewModel.canManageLists.collectAsStateWithLifecycle()
+    LaunchedEffect(movieId, canManageLists) {
+        if (canManageLists) {
+            viewModel.loadUserLists(movieId, isTv = false)
+        }
     }
 
     Crossfade(
@@ -114,7 +125,7 @@ fun MovieDetailsScreen(
         } else if (isError) {
             ErrorWidget(
                 modifier = modifier,
-                message = "Couldn't load details. Check your connection.",
+                message = stringResource(R.string.couldnt_load_details),
                 onRetryClick = { viewModel.fetchAllMovieDetails(movieId.toString(), 0) },
                 onBackClick = onBackNavigation
             )

@@ -1,48 +1,57 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Person(
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("profile_path")
+    @SerialName("profile_path")
     var profilePath: String? = null,
 
-    @SerializedName("known_for_department")
+    @SerialName("known_for_department")
     var knownForDepartment: String? = null,
 
-    @SerializedName("popularity")
+    @SerialName("popularity")
     var popularity: Double? = null,
 
-    @SerializedName("known_for")
+    @SerialName("known_for")
     var knownFor: List<KnownForItem> = emptyList()
 )
 
+@Serializable
 data class KnownForItem(
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName(value = "title", alternate = ["name"])
+    @SerialName("title")
     var title: String? = null,
 
-    @SerializedName("media_type")
-    var mediaType: String? = null
-)
+    @SerialName("name")
+    var name: String? = null,
 
+    @SerialName("media_type")
+    var mediaType: String? = null
+) {
+    val displayTitle: String? get() = title ?: name
+}
+
+@Serializable
 data class PeopleResponse(
-    @SerializedName("page")
+    @SerialName("page")
     var page: Int? = null,
 
-    @SerializedName("results")
+    @SerialName("results")
     var results: List<Person> = emptyList(),
 
-    @SerializedName("total_pages")
+    @SerialName("total_pages")
     var totalPages: Int? = null,
 
-    @SerializedName("total_results")
+    @SerialName("total_results")
     var totalResults: Int? = null
 )

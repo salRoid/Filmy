@@ -1,57 +1,59 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CrewMovie(
 
-    @SerializedName("adult")
+    @SerialName("adult")
     var adult: Boolean? = null,
 
-    @SerializedName("backdrop_path")
+    @SerialName("backdrop_path")
     var backdropPath: String? = null,
 
-    @SerializedName("genre_ids")
+    @SerialName("genre_ids")
     var genreIds: ArrayList<Int> = arrayListOf(),
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("original_language")
+    @SerialName("original_language")
     var originalLanguage: String? = null,
 
-    @SerializedName("original_title")
+    @SerialName("original_title")
     var originalTitle: String? = null,
 
-    @SerializedName("overview")
+    @SerialName("overview")
     var overview: String? = null,
 
-    @SerializedName("poster_path")
+    @SerialName("poster_path")
     var posterPath: String? = null,
 
-    @SerializedName("release_date")
+    @SerialName("release_date")
     var releaseDate: String? = null,
 
-    @SerializedName("title")
+    @SerialName("title")
     var title: String? = null,
 
-    @SerializedName("video")
+    @SerialName("video")
     var video: Boolean? = null,
 
-    @SerializedName("vote_average")
+    @SerialName("vote_average")
     var voteAverage: Double? = null,
 
-    @SerializedName("vote_count")
+    @SerialName("vote_count")
     var voteCount: Int? = null,
 
-    @SerializedName("popularity")
+    @SerialName("popularity")
     var popularity: Double? = null,
 
-    @SerializedName("credit_id")
+    @SerialName("credit_id")
     var creditId: String? = null,
 
-    @SerializedName("department")
+    @SerialName("department")
     var department: String? = null,
 
-    @SerializedName("job")
+    @SerialName("job")
     var job: String? = null
 )

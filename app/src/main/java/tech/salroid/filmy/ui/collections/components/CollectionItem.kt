@@ -25,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import tech.salroid.filmy.utility.toReadableDate
@@ -60,8 +62,12 @@ fun CollectionItem(
             .clip(RoundedCornerShape(12.dp))
             .combinedClickable(
                 onClick = onClick,
-                onLongClick = onLongClick
-            ),
+                onClickLabel = stringResource(R.string.cd_open_details),
+                onLongClick = onLongClick,
+                onLongClickLabel = stringResource(R.string.remove_from_collection),
+                role = Role.Button
+            )
+            .semantics(mergeDescendants = true) {},
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
@@ -74,7 +80,7 @@ fun CollectionItem(
         ) {
             AsyncImage(
                 model = stringResource(R.string.movie_poster_url, movie.posterPath ?: ""),
-                contentDescription = movie.title,
+                contentDescription = null,
                 modifier = Modifier
                     .width(105.dp)
                     .height(150.dp)
@@ -108,7 +114,7 @@ fun CollectionItem(
                             shape = RoundedCornerShape(4.dp)
                         ) {
                             Text(
-                                text = "SHOW",
+                                text = stringResource(R.string.badge_show),
                                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)

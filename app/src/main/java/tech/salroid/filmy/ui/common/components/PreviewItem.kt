@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,6 +44,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -97,16 +103,25 @@ fun PreviewItem(
         colors = CardDefaults.cardColors(containerColor = Transparent)
     ) {
         Column(
-            modifier = modifier.combinedClickable(
-                onClick = {
-                    if (isFlipped) isFlipped = false else onItemClick()
-                },
-                onLongClick = if (hasQuickActions) {
-                    // combinedClickable already performs LongPress haptic itself
-                    // when onLongClick fires - no need to call it again here.
-                    { isFlipped = true }
-                } else null
-            ),
+            modifier = modifier
+                // Only merge the title/subtitle/date text into one announcement
+                // while the front (poster) face is showing - merging while the
+                // back face (with its own individually-focusable close/toggle
+                // buttons) is showing would swallow those buttons' semantics.
+                .semantics(mergeDescendants = !showBack) {}
+                .combinedClickable(
+                    onClick = {
+                        if (isFlipped) isFlipped = false else onItemClick()
+                    },
+                    onClickLabel = stringResource(R.string.cd_open_details),
+                    onLongClickLabel = if (hasQuickActions) stringResource(R.string.more_options) else null,
+                    role = Role.Button,
+                    onLongClick = if (hasQuickActions) {
+                        // combinedClickable already performs LongPress haptic itself
+                        // when onLongClick fires - no need to call it again here.
+                        { isFlipped = true }
+                    } else null
+                ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
@@ -142,21 +157,29 @@ fun PreviewItem(
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 isFlipped = false
                             },
+                            // The 24dp circle sits centred in the 48dp touch target, 12dp
+                            // in from its edges; shifting the target 8dp outwards puts the
+                            // circle 4dp from the card's top-right corner.
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
-                                .padding(4.dp)
-                                .size(24.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
-                                    shape = CircleShape
-                                )
+                                .offset(x = 8.dp, y = (-8).dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = "Close",
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(14.dp)
-                            )
+                            Box(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
+                                        shape = CircleShape
+                                    ),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = stringResource(R.string.close),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.size(14.dp)
+                                )
+                            }
                         }
 
                         Column(
@@ -173,6 +196,9 @@ fun PreviewItem(
                                         quickActionState = (quickActionState ?: QuickActionState(false, false))
                                             .copy(isWatchlisted = !isWatchlisted)
                                         onToggleWatchlist()
+                                    },
+                                    modifier = Modifier.semantics {
+                                        toggleableState = ToggleableState(isWatchlisted)
                                     }
                                 ) {
                                     Icon(
@@ -180,7 +206,11 @@ fun PreviewItem(
                                             if (isWatchlisted) R.drawable.ic_round_bookmark_added_24
                                             else R.drawable.ic_round_bookmark_add_24
                                         ),
-                                        contentDescription = if (isWatchlisted) "Remove from Watchlist" else "Add to Watchlist",
+                                        contentDescription = if (isWatchlisted) {
+                                            stringResource(R.string.cd_remove_from_watchlist)
+                                        } else {
+                                            stringResource(R.string.cd_add_to_watchlist)
+                                        },
                                         tint = if (isWatchlisted) MaterialTheme.colorScheme.primary
                                         else MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -195,11 +225,18 @@ fun PreviewItem(
                                         quickActionState = (quickActionState ?: QuickActionState(false, false))
                                             .copy(isWatched = !isWatched)
                                         onToggleWatched()
+                                    },
+                                    modifier = Modifier.semantics {
+                                        toggleableState = ToggleableState(isWatched)
                                     }
                                 ) {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_check),
-                                        contentDescription = if (isWatched) "Mark as Unwatched" else "Mark Watched",
+                                        contentDescription = if (isWatched) {
+                                            stringResource(R.string.cd_mark_unwatched)
+                                        } else {
+                                            stringResource(R.string.cd_mark_watched)
+                                        },
                                         tint = if (isWatched) MaterialTheme.colorScheme.primary
                                         else MaterialTheme.colorScheme.onSurfaceVariant
                                     )

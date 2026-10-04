@@ -1,62 +1,64 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 import java.io.Serializable
 
+@KSerializable
 data class CastMovie(
 
-    @SerializedName("adult")
+    @SerialName("adult")
     var adult: Boolean? = null,
 
-    @SerializedName("backdrop_path")
+    @SerialName("backdrop_path")
     var backdropPath: String? = null,
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("genre_ids")
+    @SerialName("genre_ids")
     var genreIds: ArrayList<Int> = arrayListOf(),
 
-    @SerializedName("original_language")
+    @SerialName("original_language")
     var originalLanguage: String? = null,
 
-    @SerializedName("original_title")
+    @SerialName("original_title")
     var originalTitle: String? = null,
 
-    @SerializedName("poster_path")
+    @SerialName("poster_path")
     var posterPath: String? = null,
 
-    @SerializedName("title")
+    @SerialName("title")
     var title: String? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("video")
+    @SerialName("video")
     var video: Boolean? = null,
 
-    @SerializedName("vote_average")
+    @SerialName("vote_average")
     var voteAverage: Double? = null,
 
-    @SerializedName("overview")
+    @SerialName("overview")
     var overview: String? = null,
 
-    @SerializedName("release_date")
+    @SerialName("release_date")
     var releaseDate: String? = null,
 
-    @SerializedName("vote_count")
+    @SerialName("vote_count")
     var voteCount: Int? = null,
 
-    @SerializedName("popularity")
+    @SerialName("popularity")
     var popularity: Double? = null,
 
-    @SerializedName("character")
+    @SerialName("character")
     var character: String? = null,
 
-    @SerializedName("credit_id")
+    @SerialName("credit_id")
     var creditId: String? = null,
 
-    @SerializedName("order")
+    @SerialName("order")
     var order: Int? = null
 
 ) : Serializable

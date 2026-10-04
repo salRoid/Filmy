@@ -3,6 +3,7 @@ package tech.salroid.filmy.di
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.room.Room
 import dagger.Module
@@ -11,16 +12,20 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import tech.salroid.filmy.BuildConfig
 import tech.salroid.filmy.data.local.db.FilmyDatabase
 import tech.salroid.filmy.data.local.db.MIGRATION_2_4
 import tech.salroid.filmy.data.local.db.MIGRATION_4_5
 import tech.salroid.filmy.data.network.*
 import tech.salroid.filmy.utility.PreferenceHelper
+import tech.salroid.filmy.utility.resolveApiLanguageTag
+import tech.salroid.filmy.utility.resolveImageLanguages
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -57,8 +62,22 @@ object AppModule {
             val original = chain.request()
             val request = if (original.url.host == "api.themoviedb.org") {
                 val country = appPref.getString(PreferenceHelper.COUNTRY_KEY, null) ?: "US"
+                val language = resolveApiLanguageTag(AppCompatDelegate.getApplicationLocales())
                 original.newBuilder()
-                    .url(original.url.newBuilder().setQueryParameter("region", country).build())
+                    .url(
+                        original.url.newBuilder()
+                            .setQueryParameter("region", country)
+                            .setQueryParameter("language", language)
+                            .apply {
+                                if (original.url.encodedPath.endsWith("/images")) {
+                                    setQueryParameter(
+                                        "include_image_language",
+                                        resolveImageLanguages(language)
+                                    )
+                                }
+                            }
+                            .build()
+                    )
                     .build()
             } else {
                 original
@@ -74,10 +93,17 @@ object AppModule {
         }).build()
 
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+    fun provideJson(): Json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        coerceInputValues = true
+    }
+
+    @Provides
+    fun provideRetrofit(okHttpClient: OkHttpClient, json: Json): Retrofit = Retrofit.Builder()
         .baseUrl(MoviesApiService.BASE_URL)
         .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
 
     @Provides

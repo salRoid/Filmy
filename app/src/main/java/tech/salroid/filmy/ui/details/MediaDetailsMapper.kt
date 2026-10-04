@@ -2,6 +2,7 @@ package tech.salroid.filmy.ui.details
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.CastAndCrewResponse
 import tech.salroid.filmy.data.local.model.ContentRatingsResponse
@@ -54,7 +55,7 @@ class MediaDetailsMapper @Inject constructor(
         if (movie != null && tv == null) {
             val hours = movie.runtime?.div(60) ?: 0
             val mins = movie.runtime?.rem(60) ?: 0
-            val runtimeText = if (hours > 0 || mins > 0) "${hours}h ${mins}m" else ""
+            val runtimeText = if (hours > 0 || mins > 0) context.getString(R.string.runtime_hours_minutes, hours, mins) else ""
             val releaseDate = movie.releaseDate?.toReadableDate() ?: ""
             val releaseDateText = if (runtimeText.isNotEmpty() && releaseDate.isNotEmpty()) " • $releaseDate" else releaseDate
 
@@ -96,7 +97,7 @@ class MediaDetailsMapper @Inject constructor(
             )
         } else if (tv != null) {
             val runtime = tv.episodeRunTime.firstOrNull() ?: 0
-            val runtimeText = if (runtime > 0) "${runtime}m" else ""
+            val runtimeText = if (runtime > 0) context.getString(R.string.runtime_minutes, runtime) else ""
             val releaseDate = tv.firstAirDate?.toReadableDate() ?: ""
             val releaseDateText = if (runtimeText.isNotEmpty() && releaseDate.isNotEmpty()) " • $releaseDate" else releaseDate
 
@@ -144,7 +145,7 @@ class MediaDetailsMapper @Inject constructor(
             SeasonUiModel(
                 id = id,
                 seasonNumber = seasonNumber,
-                name = season.name ?: "Season $seasonNumber",
+                name = season.name ?: context.getString(R.string.season_number, seasonNumber),
                 episodeCount = season.episodeCount ?: 0,
                 posterPath = season.posterPath,
                 airDate = season.airDate
@@ -308,7 +309,7 @@ class MediaDetailsMapper @Inject constructor(
             
             avatarPath?.let {
                 if (it.contains("www.gravatar.com")) {
-                    finalAvatarUrl = it.subSequence(1, it.length - 1).toString()
+                    finalAvatarUrl = it.substring(1)
                 }
             }
 

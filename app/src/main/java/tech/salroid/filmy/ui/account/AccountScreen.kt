@@ -25,6 +25,8 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Public
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
@@ -51,14 +53,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.core.os.LocaleListCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -71,6 +76,7 @@ import tech.salroid.filmy.ui.common.components.CountrySelectionList
 import tech.salroid.filmy.ui.home.LoginViewModel
 import tech.salroid.filmy.utility.FilmyUtility
 import tech.salroid.filmy.utility.PreferenceHelper
+import tech.salroid.filmy.utility.SUPPORTED_LANGUAGES
 import androidx.core.net.toUri
 import androidx.compose.ui.tooling.preview.Preview
 import tech.salroid.filmy.ui.theme.AppTheme
@@ -207,6 +213,7 @@ fun PreferencesSection(
     onMyListsClick: () -> Unit = {}
 ) {
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
     var showRegionDialog by remember { mutableStateOf(false) }
 
     val modeNightNo = stringResource(R.string.mode_night_no)
@@ -218,6 +225,14 @@ fun PreferencesSection(
         modeNightYes -> stringResource(R.string.summary_dark)
         else -> stringResource(R.string.summary_system_default)
     }
+
+    val currentAppLocales = AppCompatDelegate.getApplicationLocales()
+    val currentLanguageTag = if (currentAppLocales.isEmpty) null else currentAppLocales.toLanguageTags()
+    // The "System Default" entry is the one label that should follow the app
+    // language; the real languages are always shown in their own script.
+    val currentLanguageSummary = SUPPORTED_LANGUAGES.firstOrNull { it.appTag == currentLanguageTag }
+        ?.takeIf { it.appTag != null }?.nativeName
+        ?: stringResource(R.string.summary_system_default)
 
     var selectedCountry by remember { mutableStateOf(PreferenceHelper.getSelectedCountry(context)) }
     val currentRegionSummary = remember(selectedCountry) {
@@ -232,9 +247,15 @@ fun PreferencesSection(
             onClick = { showThemeDialog = true }
         )
         PreferenceItem(
-            title = "Region",
-            summary = currentRegionSummary,
+            title = stringResource(R.string.language),
+            summary = currentLanguageSummary,
             icon = painterResource(R.drawable.ic_language_24dp),
+            onClick = { showLanguageDialog = true }
+        )
+        PreferenceItem(
+            title = stringResource(R.string.region),
+            summary = currentRegionSummary,
+            icon = rememberVectorPainter(Icons.Default.Public),
             onClick = { showRegionDialog = true }
         )
         PreferenceItem(
@@ -293,6 +314,22 @@ fun PreferencesSection(
             }
         )
     }
+
+    if (showLanguageDialog) {
+        LanguageSelectionDialog(
+            currentAppTag = currentLanguageTag,
+            onDismiss = { showLanguageDialog = false },
+            onLanguageSelected = { appTag ->
+                val localeList = if (appTag == null) {
+                    LocaleListCompat.getEmptyLocaleList()
+                } else {
+                    LocaleListCompat.forLanguageTags(appTag)
+                }
+                AppCompatDelegate.setApplicationLocales(localeList)
+                showLanguageDialog = false
+            }
+        )
+    }
 }
 
 @Composable
@@ -305,7 +342,7 @@ fun RegionSelectionDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "Region",
+                text = stringResource(R.string.region),
                 style = MaterialTheme.typography.titleLarge
             )
         },
@@ -325,6 +362,58 @@ fun RegionSelectionDialog(
 }
 
 @Composable
+fun LanguageSelectionDialog(
+    currentAppTag: String?,
+    onDismiss: () -> Unit,
+    onLanguageSelected: (String?) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(R.string.language),
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
+        text = {
+            Column(Modifier.selectableGroup()) {
+                SUPPORTED_LANGUAGES.forEach { option ->
+                    val selected = option.appTag == currentAppTag
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(56.dp)
+                            .selectable(
+                                selected = selected,
+                                onClick = { onLanguageSelected(option.appTag) },
+                                role = Role.RadioButton
+                            )
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(selected = selected, onClick = null)
+                        Text(
+                            text = if (option.appTag == null) {
+                                stringResource(R.string.summary_system_default)
+                            } else {
+                                option.nativeName
+                            },
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
 fun PreferenceItem(
     title: String,
     summary: String? = null,
@@ -334,7 +423,8 @@ fun PreferenceItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick, role = Role.Button)
+            .semantics(mergeDescendants = true) {}
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -505,7 +595,7 @@ fun LoginCard(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.ic_logout),
-                            contentDescription = "Logout",
+                            contentDescription = stringResource(R.string.logout),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }

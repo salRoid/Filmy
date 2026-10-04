@@ -22,6 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,7 +39,7 @@ import tech.salroid.filmy.data.local.model.Person
 import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.common.components.LoadingWidget
 import tech.salroid.filmy.ui.common.components.PaginatedPreviewList
-import tech.salroid.filmy.utility.toUserMessage
+import tech.salroid.filmy.utility.toUserMessageRes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,10 +55,10 @@ fun PeopleScreen(
         modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text("Popular People") },
+                title = { Text(stringResource(R.string.popular_people_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -80,7 +83,7 @@ private fun PeopleContent(
         is LoadState.Error -> {
             ErrorWidget(
                 modifier = Modifier.fillMaxSize(),
-                message = state.error.toUserMessage(),
+                message = stringResource(state.error.toUserMessageRes()),
                 onRetryClick = { people.retry() }
             )
         }
@@ -92,7 +95,7 @@ private fun PeopleContent(
             ) {
                 ErrorWidget(
                     modifier = Modifier.fillMaxSize(),
-                    message = "No people found",
+                    message = stringResource(R.string.no_people_found),
                     onRetryClick = { people.refresh() }
                 )
             } else {
@@ -113,7 +116,8 @@ private fun PersonItem(person: Person, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .width(100.dp)
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick, role = Role.Button)
+            .semantics(mergeDescendants = true) {},
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(

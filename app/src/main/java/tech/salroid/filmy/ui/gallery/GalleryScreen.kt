@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -80,10 +81,10 @@ fun GalleryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Photos") },
+                title = { Text(stringResource(R.string.photos)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -111,25 +112,30 @@ fun GalleryScreen(
                                     selected = selectedTab == 0,
                                     onClick = { selectedTab = 0 },
                                     shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2)
-                                ) { Text("Backdrops") }
+                                ) { Text(stringResource(R.string.backdrops)) }
                                 SegmentedButton(
                                     selected = selectedTab == 1,
                                     onClick = { selectedTab = 1 },
                                     shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2)
-                                ) { Text("Posters") }
+                                ) { Text(stringResource(R.string.posters)) }
                             }
                         }
                     ) { index ->
                         val image = currentList[index]
+                        val imageDescription = if (selectedTab == 0) {
+                            stringResource(R.string.cd_gallery_backdrop, index + 1)
+                        } else {
+                            stringResource(R.string.cd_gallery_poster, index + 1)
+                        }
                         AsyncImage(
                             model = "https://image.tmdb.org/t/p/w500${image.filePath}",
-                            contentDescription = null,
+                            contentDescription = imageDescription,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(if (selectedTab == 0) 16f / 9f else 2f / 3f)
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                                .clickable { fullScreenIndex = index },
+                                .clickable(role = Role.Button) { fullScreenIndex = index },
                             contentScale = ContentScale.Crop
                         )
                     }
@@ -167,7 +173,7 @@ private fun FullScreenImagePager(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_arrow_back),
-                contentDescription = "Close",
+                contentDescription = stringResource(R.string.close),
                 tint = Color.White
             )
         }

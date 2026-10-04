@@ -64,8 +64,8 @@ object FilmyUtility {
         myIntent.type = "text/plain"
         myIntent.putExtra(
             Intent.EXTRA_TEXT,
-            "Check out this awesome movie app.\n*filmy*\n$appShareDetails"
+            "${context.getString(R.string.share_app_message)}\n*filmy*\n$appShareDetails"
         )
-        context.startActivity(Intent.createChooser(myIntent, "Share with"))
+        context.startActivity(Intent.createChooser(myIntent, context.getString(R.string.share_with)))
     }
 }

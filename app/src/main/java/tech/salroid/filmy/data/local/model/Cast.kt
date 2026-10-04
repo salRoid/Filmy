@@ -1,44 +1,46 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 import java.io.Serializable
 
+@KSerializable
 data class Cast(
 
-    @SerializedName("adult")
+    @SerialName("adult")
     var adult: Boolean? = null,
 
-    @SerializedName("gender")
+    @SerialName("gender")
     var gender: Int? = null,
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("known_for_department")
+    @SerialName("known_for_department")
     var knownForDepartment: String? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("original_name")
+    @SerialName("original_name")
     var originalName: String? = null,
 
-    @SerializedName("popularity")
+    @SerialName("popularity")
     var popularity: Double? = null,
 
-    @SerializedName("profile_path")
+    @SerialName("profile_path")
     var profilePath: String? = null,
 
-    @SerializedName("cast_id")
+    @SerialName("cast_id")
     var castId: Int? = null,
 
-    @SerializedName("character")
+    @SerialName("character")
     var character: String? = null,
 
-    @SerializedName("credit_id")
+    @SerialName("credit_id")
     var creditId: String? = null,
 
-    @SerializedName("order")
+    @SerialName("order")
     var order: Int? = null
 
 ) : Serializable

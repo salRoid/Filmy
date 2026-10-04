@@ -1,9 +1,12 @@
 package tech.salroid.filmy.ui.movies.details.components
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tech.salroid.filmy.R
 import tech.salroid.filmy.ui.common.components.LoginRequiredDialog
 import tech.salroid.filmy.ui.details.MovieDetailsViewModel
 import tech.salroid.filmy.ui.home.LoginViewModel
@@ -17,6 +20,7 @@ import tech.salroid.filmy.ui.home.rememberLoginLauncher
  *
  * Compose this only while the flow is open; [onDismiss] closes it.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddToListFlow(
     mediaId: Int,
@@ -31,6 +35,8 @@ fun AddToListFlow(
     if (canManageLists) {
         val userLists by viewModel.userLists.collectAsStateWithLifecycle()
         val listMembership by viewModel.listMembership.collectAsStateWithLifecycle()
+        val isLoading by viewModel.userListsLoading.collectAsStateWithLifecycle()
+        val pendingListIds by viewModel.pendingListIds.collectAsStateWithLifecycle()
 
         LaunchedEffect(mediaId, isTv) {
             viewModel.loadUserLists(mediaId, isTv)
@@ -39,10 +45,12 @@ fun AddToListFlow(
         AddToListSheet(
             lists = userLists,
             membership = listMembership,
+            pendingListIds = pendingListIds,
+            isLoading = isLoading,
             onToggle = { listId, currentlyIn ->
                 viewModel.toggleListMembership(listId, mediaId, isTv, currentlyIn)
             },
-            onCreateList = { name -> viewModel.createList(name) },
+            onCreateList = { name -> viewModel.createList(name, mediaId, isTv) },
             onDismiss = onDismiss
         )
     } else {
@@ -50,9 +58,9 @@ fun AddToListFlow(
             // Someone with a session but no list access logged in before
             // lists could hold shows; one more login upgrades them.
             message = if (viewModel.isLoggedIn()) {
-                "Lists can now hold shows as well as movies. Log in to TMDB once more to keep using your lists."
+                stringResource(R.string.lists_relogin_required_message)
             } else {
-                "Log in to your TMDB account to add this to a list."
+                stringResource(R.string.login_required_add_to_list_message)
             },
             onLogin = startLogin,
             onDismiss = onDismiss

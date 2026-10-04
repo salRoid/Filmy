@@ -21,7 +21,9 @@ import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.model.MoviePreview
 import tech.salroid.filmy.ui.common.components.QuickActionState
+import tech.salroid.filmy.ui.home.AccountSyncRepository
 import tech.salroid.filmy.ui.home.MoviesRepository
+import tech.salroid.filmy.utility.ApiLanguage
 import tech.salroid.filmy.utility.ImageConfig
 import tech.salroid.filmy.utility.PreferenceHelper.selectedCountryFlow
 import javax.inject.Inject
@@ -31,6 +33,7 @@ import javax.inject.Inject
 class MoviesViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository,
     private val moviePreviewMapper: MoviePreviewMapper,
+    private val accountSyncRepository: AccountSyncRepository,
     sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
@@ -39,8 +42,9 @@ class MoviesViewModel @Inject constructor(
 
     val moviesPagingData: Flow<PagingData<MoviePreview>> = combine(
         _selectedCategory,
-        sharedPreferences.selectedCountryFlow()
-    ) { category, _ -> category }
+        sharedPreferences.selectedCountryFlow(),
+        ApiLanguage.tag
+    ) { category, _, _ -> category }
         .flatMapLatest { category ->
             moviesRepository.getMovies(
                 type = category.toApiTypeString(),
@@ -71,14 +75,22 @@ class MoviesViewModel @Inject constructor(
     fun quickToggleWatchlist(movie: MoviePreview) {
         viewModelScope.launch(Dispatchers.IO) {
             val merged = mergedLocalDetails(movie)
-            moviesRepository.addMovieDetailsToLocal(merged.copy(watchlist = !merged.watchlist))
+            val updated = merged.copy(watchlist = !merged.watchlist)
+            moviesRepository.addMovieDetailsToLocal(updated)
+            if (!accountSyncRepository.pushItemState(updated, previous = merged)) {
+                moviesRepository.addMovieDetailsToLocal(merged)
+            }
         }
     }
 
     fun quickToggleWatched(movie: MoviePreview) {
         viewModelScope.launch(Dispatchers.IO) {
             val merged = mergedLocalDetails(movie)
-            moviesRepository.addMovieDetailsToLocal(merged.copy(watched = !merged.watched))
+            val updated = merged.copy(watched = !merged.watched)
+            moviesRepository.addMovieDetailsToLocal(updated)
+            if (!accountSyncRepository.pushItemState(updated, previous = merged)) {
+                moviesRepository.addMovieDetailsToLocal(merged)
+            }
         }
     }
 

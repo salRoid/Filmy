@@ -1,36 +1,38 @@
 package tech.salroid.filmy.data.local.model.tv
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class EpisodeToAir(
 
-    @SerializedName("air_date")
+    @SerialName("air_date")
     var airDate: String? = null,
 
-    @SerializedName("episode_number")
+    @SerialName("episode_number")
     var episodeNumber: Int? = null,
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("overview")
+    @SerialName("overview")
     var overview: String? = null,
 
-    @SerializedName("production_code")
+    @SerialName("production_code")
     var productionCode: String? = null,
 
-    @SerializedName("season_number")
+    @SerialName("season_number")
     var seasonNumber: Int? = null,
 
-    @SerializedName("still_path")
+    @SerialName("still_path")
     var stillPath: String? = null,
 
-    @SerializedName("vote_average")
+    @SerialName("vote_average")
     var voteAverage: Double? = null,
 
-    @SerializedName("vote_count")
+    @SerialName("vote_count")
     var voteCount: Int? = null
 )

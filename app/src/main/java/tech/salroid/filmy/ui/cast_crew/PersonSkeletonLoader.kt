@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -51,24 +51,10 @@ fun PersonSkeletonLoader(modifier: Modifier = Modifier) {
     ) {
         Spacer(
             modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-                .background(shimmerColor)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Spacer(
-            modifier = Modifier
-                .width(160.dp)
-                .height(24.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(shimmerColor)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Spacer(
-            modifier = Modifier
-                .width(120.dp)
-                .height(16.dp)
-                .clip(RoundedCornerShape(4.dp))
+                .widthIn(max = PersonTitleCardMaxWidth)
+                .fillMaxWidth()
+                .aspectRatio(PersonTitleCardAspectRatio)
+                .clip(PersonTitleCardShape)
                 .background(shimmerColor)
         )
         Spacer(modifier = Modifier.height(24.dp))
@@ -102,7 +88,7 @@ fun PersonSkeletonLoader(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-private fun PersonSkeletonLoaderPreview() {
+internal fun PersonSkeletonLoaderPreview() {
     AppTheme {
         PersonSkeletonLoader()
     }

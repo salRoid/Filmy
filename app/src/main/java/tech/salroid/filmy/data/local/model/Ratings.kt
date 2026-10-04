@@ -1,11 +1,13 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Ratings(
-    @SerializedName("Source")
+    @SerialName("Source")
     var source: String? = null,
 
-    @SerializedName("Value")
+    @SerialName("Value")
     var value: String? = null
 )

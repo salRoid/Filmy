@@ -1,18 +1,20 @@
 package tech.salroid.filmy.data.local.model.watch_providers
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class WatchProviderCountry(
 
-    @SerializedName("link")
+    @SerialName("link")
     var link: String? = null,
 
-    @SerializedName("flatrate")
+    @SerialName("flatrate")
     var flatrate: ArrayList<FlatRate> = arrayListOf(),
 
-    @SerializedName("rent")
+    @SerialName("rent")
     var rent: ArrayList<Rent> = arrayListOf(),
 
-    @SerializedName("buy")
+    @SerialName("buy")
     var buy: ArrayList<Buy> = arrayListOf()
 )

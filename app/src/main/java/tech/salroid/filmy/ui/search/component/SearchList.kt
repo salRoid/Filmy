@@ -33,7 +33,7 @@ fun SearchList(
 
 @Preview(showBackground = true)
 @Composable
-private fun SearchListPreview() {
+internal fun SearchListPreview() {
     AppTheme {
         SearchList(
             searchPreviews = listOf(

@@ -1,49 +1,51 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CastCrewDetailsResponse(
 
-    @SerializedName("adult")
+    @SerialName("adult")
     var adult: Boolean? = null,
 
-    @SerializedName("also_known_as")
+    @SerialName("also_known_as")
     var alsoKnownAs: ArrayList<String> = arrayListOf(),
 
-    @SerializedName("biography")
+    @SerialName("biography")
     var biography: String? = null,
 
-    @SerializedName("birthday")
+    @SerialName("birthday")
     var birthday: String? = null,
 
-    @SerializedName("deathday")
+    @SerialName("deathday")
     var deathday: String? = null,
 
-    @SerializedName("gender")
+    @SerialName("gender")
     var gender: Int? = null,
 
-    @SerializedName("homepage")
+    @SerialName("homepage")
     var homepage: String? = null,
 
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
 
-    @SerializedName("imdb_id")
+    @SerialName("imdb_id")
     var imdbId: String? = null,
 
-    @SerializedName("known_for_department")
+    @SerialName("known_for_department")
     var knownForDepartment: String? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("place_of_birth")
+    @SerialName("place_of_birth")
     var placeOfBirth: String? = null,
 
-    @SerializedName("popularity")
+    @SerialName("popularity")
     var popularity: Double? = null,
 
-    @SerializedName("profile_path")
+    @SerialName("profile_path")
     var profilePath: String? = null
 
 )

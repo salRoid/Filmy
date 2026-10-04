@@ -31,6 +31,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -107,11 +109,11 @@ fun OnboardingScreen(
                         .padding(start = 20.dp, end = 20.dp, bottom = 16.dp)
                 ) {
                     Text(
-                        text = "Welcome to Filmy",
+                        text = stringResource(R.string.welcome_to_filmy),
                         style = MaterialTheme.typography.titleLarge
                     )
                     Text(
-                        text = "Set your country for accurate watch providers, ratings, and release dates.",
+                        text = stringResource(R.string.onboarding_country_subtitle),
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier
                             .alpha(0.7f)
@@ -120,7 +122,9 @@ fun OnboardingScreen(
 
                     OutlinedButton(
                         onClick = { showCountryDialog = true },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .semantics(mergeDescendants = true) {}
                     ) {
                         Icon(
                             imageVector = Icons.Default.Public,
@@ -136,7 +140,7 @@ fun OnboardingScreen(
                         )
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowRight,
-                            contentDescription = "Change country"
+                            contentDescription = null
                         )
                     }
 
@@ -150,7 +154,7 @@ fun OnboardingScreen(
                             .fillMaxWidth()
                             .padding(top = 12.dp)
                     ) {
-                        Text("Continue")
+                        Text(stringResource(R.string.continue_label))
                     }
                 }
             }

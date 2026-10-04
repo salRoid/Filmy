@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -81,7 +82,7 @@ fun ReviewsListScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text(text = "Reviews", style = MaterialTheme.typography.titleMedium)
+                        Text(text = stringResource(R.string.reviews), style = MaterialTheme.typography.titleMedium)
                         Text(
                             text = title,
                             style = MaterialTheme.typography.labelSmall,
@@ -93,7 +94,7 @@ fun ReviewsListScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -107,7 +108,7 @@ fun ReviewsListScreen(
                         .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("No reviews found.")
+                    Text(stringResource(R.string.no_reviews_found))
                 }
             } else {
                 LazyColumn(

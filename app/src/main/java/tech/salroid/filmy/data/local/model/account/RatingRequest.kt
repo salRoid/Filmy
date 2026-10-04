@@ -1,8 +1,10 @@
 package tech.salroid.filmy.data.local.model.account
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RatingRequest(
-    @SerializedName("value")
+    @SerialName("value")
     var value: Float
 )

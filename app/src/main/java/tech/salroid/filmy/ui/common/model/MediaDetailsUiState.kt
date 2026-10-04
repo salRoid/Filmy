@@ -31,6 +31,8 @@ data class MediaDetailsUiState(
     val collectionName: String? = null,
     val seasons: List<SeasonUiModel>? = null,
     val userRating: Float? = null,
+    /** Whether this title is in at least one of the user's TMDB lists. */
+    val isInList: Boolean = false,
     val awards: String? = null,
     val budget: Long? = null,
     val revenue: Long? = null,

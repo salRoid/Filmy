@@ -10,6 +10,7 @@ import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +20,9 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import tech.salroid.filmy.R
@@ -38,8 +42,9 @@ fun ExternalLinksSection(
     onLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val websiteLabel = stringResource(R.string.website)
     val links = buildList {
-        homepage?.let { add(ExternalLink("Website", it, R.drawable.ic_language_24dp)) }
+        homepage?.let { add(ExternalLink(websiteLabel, it, R.drawable.ic_language_24dp)) }
         imdbId?.let { add(ExternalLink("IMDb", "https://www.imdb.com/title/$it/", R.drawable.imdb)) }
         facebookId?.let { add(ExternalLink("Facebook", "https://www.facebook.com/$it", null)) }
         instagramId?.let { add(ExternalLink("Instagram", "https://www.instagram.com/$it", null)) }
@@ -95,8 +100,10 @@ private fun LinkTile(link: ExternalLink, onLinkClick: (String) -> Unit, modifier
 
     Row(
         modifier = modifier
+            .minimumInteractiveComponentSize()
             .clip(RoundedCornerShape(8.dp))
-            .clickable { onLinkClick(link.url) }
+            .clickable(role = Role.Button) { onLinkClick(link.url) }
+            .semantics(mergeDescendants = true) {}
             .padding(vertical = 13.dp, horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

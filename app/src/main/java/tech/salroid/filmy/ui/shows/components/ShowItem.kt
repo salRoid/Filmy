@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tech.salroid.filmy.R
 import tech.salroid.filmy.data.model.TvShowPreview
 import tech.salroid.filmy.ui.common.components.PreviewItem
 import tech.salroid.filmy.ui.common.components.QuickActionState
@@ -25,7 +27,7 @@ fun ShowItem(
         title = show.title,
         posterUrl = show.posterUrl,
         readableDate = show.firstAirReadableDate,
-        contentDescription = "${show.title} - Show Item",
+        contentDescription = stringResource(R.string.cd_show_poster, show.title),
         onItemClick = onShowClick,
         fetchQuickActionState = fetchQuickActionState,
         onToggleWatchlist = onToggleWatchlist,

@@ -22,7 +22,7 @@ import tech.salroid.filmy.utility.PreferenceHelper.addRecentSearch
 import tech.salroid.filmy.utility.PreferenceHelper.clearRecentSearches
 import tech.salroid.filmy.utility.PreferenceHelper.recentSearches
 import tech.salroid.filmy.utility.PreferenceHelper.removeRecentSearch
-import tech.salroid.filmy.utility.toUserMessage
+import tech.salroid.filmy.utility.toUserMessageRes
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,10 +62,10 @@ class SearchViewModel @Inject constructor(
                                 }.fold(onSuccess = { previews ->
                                     emit(SearchScreenState.Success(previews))
                                 }, onFailure = { exception ->
-                                    emit(SearchScreenState.Error(exception.toUserMessage()))
+                                    emit(SearchScreenState.Error(exception.toUserMessageRes()))
                                 })
                             }, onFailure = { exception ->
-                                emit(SearchScreenState.Error(exception.toUserMessage()))
+                                emit(SearchScreenState.Error(exception.toUserMessageRes()))
                             })
                         }
                 }

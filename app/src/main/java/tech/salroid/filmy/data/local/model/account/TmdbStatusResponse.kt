@@ -1,11 +1,13 @@
 package tech.salroid.filmy.data.local.model.account
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TmdbStatusResponse(
-    @SerializedName("status_code")
+    @SerialName("status_code")
     var statusCode: Int? = null,
 
-    @SerializedName("status_message")
+    @SerialName("status_message")
     var statusMessage: String? = null,
 )

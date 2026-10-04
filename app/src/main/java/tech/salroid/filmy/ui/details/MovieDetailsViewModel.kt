@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -70,6 +68,17 @@ class MovieDetailsViewModel @Inject constructor(
     private val _listMembership = MutableStateFlow<Map<Int, Boolean>>(emptyMap())
     val listMembership: StateFlow<Map<Int, Boolean>> = _listMembership.asStateFlow()
 
+    private val _userListsLoading = MutableStateFlow(false)
+    val userListsLoading: StateFlow<Boolean> = _userListsLoading.asStateFlow()
+
+    /**
+     * Lists with an add/remove still on its way to TMDB. Their rows are
+     * locked until it finishes: two overlapping requests for one list can
+     * land out of order and leave TMDB opposite to what is shown.
+     */
+    private val _pendingListIds = MutableStateFlow<Set<Int>>(emptySet())
+    val pendingListIds: StateFlow<Set<Int>> = _pendingListIds.asStateFlow()
+
     val uiStateMovieDetails: StateFlow<MovieDetails?> = _uiStateMovieDetails.asStateFlow()
     val uiStateTvDetails: StateFlow<TvDetails?> = _uiStateTvDetails.asStateFlow()
     val uiStateRatingResponse: StateFlow<RatingResponse?> = _uiStateRatings.asStateFlow()
@@ -81,51 +90,79 @@ class MovieDetailsViewModel @Inject constructor(
     val uiStateUpdateCollection: StateFlow<Triple<Int, String, Boolean>> =
         _uiStateUpdateCollection.asStateFlow()
 
-    val mediaDetailsUiState: StateFlow<MediaDetailsUiState?> = combine(
+    private data class CoreDetails(
+        val movie: MovieDetails?,
+        val tv: TvDetails?,
+        val reviews: ReviewResponse?,
+        val watchProviders: WatchProviderResponse?,
+        val cast: CastAndCrewResponse?
+    )
+
+    private data class RelatedDetails(
+        val similar: SimilarMoviesResponse?,
+        val recommendations: SimilarMoviesResponse?,
+        val ratings: RatingResponse?,
+        val releaseDates: ReleaseDatesResponse?,
+        val contentRatings: ContentRatingsResponse?
+    )
+
+    private data class ExtraDetails(
+        val keywords: List<Keyword>,
+        val images: ImagesResponse?,
+        val externalIds: ExternalIdsResponse?
+    )
+
+    private val coreDetails = combine(
         _uiStateMovieDetails,
         _uiStateTvDetails,
         _uiStateReviews,
         _uiStateWatchProviders,
         _uiStateCastAndCrew,
+        ::CoreDetails
+    )
+
+    private val relatedDetails = combine(
         _uiStateSimilar,
         _uiStateRecommendation,
         _uiStateRatings,
         _uiStateReleaseDates,
         _uiStateContentRatings,
+        ::RelatedDetails
+    )
+
+    private val extraDetails = combine(
         _uiStateKeywords,
         _uiStateImages,
-        _uiStateExternalIds
-    ) { args ->
-        val movie = args[0] as MovieDetails?
-        val tv = args[1] as TvDetails?
-        val reviews = args[2] as ReviewResponse?
-        val watchProviders = args[3] as WatchProviderResponse?
-        val cast = args[4] as CastAndCrewResponse?
-        val similar = args[5] as SimilarMoviesResponse?
-        val recommendations = args[6] as SimilarMoviesResponse?
-        val ratings = args[7] as RatingResponse?
-        val releaseDates = args[8] as ReleaseDatesResponse?
-        val contentRatings = args[9] as ContentRatingsResponse?
-        @Suppress("UNCHECKED_CAST")
-        val keywords = args[10] as List<Keyword>
-        val images = args[11] as ImagesResponse?
-        val externalIds = args[12] as ExternalIdsResponse?
+        _uiStateExternalIds,
+        ::ExtraDetails
+    )
 
+    /** Whether this title is in at least one of the user's lists, once [loadUserLists] has run. */
+    val isInAnyList: StateFlow<Boolean> = _listMembership
+        .map { membership -> membership.values.any { it } }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
+    val mediaDetailsUiState: StateFlow<MediaDetailsUiState?> = combine(
+        coreDetails,
+        relatedDetails,
+        extraDetails,
+        isInAnyList
+    ) { core, related, extra, inAnyList ->
         mediaDetailsMapper.map(
-            movie = movie,
-            tv = tv,
-            reviews = reviews,
-            watchProviders = watchProviders,
-            cast = cast,
-            similar = similar,
-            recommendations = recommendations,
-            ratings = ratings,
-            releaseDates = releaseDates,
-            contentRatings = contentRatings,
-            keywords = keywords,
-            images = images,
-            externalIds = externalIds
-        )
+            movie = core.movie,
+            tv = core.tv,
+            reviews = core.reviews,
+            watchProviders = core.watchProviders,
+            cast = core.cast,
+            similar = related.similar,
+            recommendations = related.recommendations,
+            ratings = related.ratings,
+            releaseDates = related.releaseDates,
+            contentRatings = related.contentRatings,
+            keywords = extra.keywords,
+            images = extra.images,
+            externalIds = extra.externalIds
+        )?.copy(isInList = inAnyList)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     fun fetchAllMovieDetails(movieId: String, movieType: Int, addToLocal: Boolean = false) {
@@ -412,7 +449,7 @@ class MovieDetailsViewModel @Inject constructor(
             moviesRepository.addMovieDetailsToLocal(movieDetails)
             _uiStateUpdateCollection.emit(Triple(movieDetails.id, message, remove))
 
-            val pushed = accountSyncRepository.pushItemState(movieDetails)
+            val pushed = accountSyncRepository.pushItemState(movieDetails, previous)
             if (!pushed) {
                 if (previous != null) {
                     moviesRepository.addMovieDetailsToLocal(previous)
@@ -497,40 +534,56 @@ class MovieDetailsViewModel @Inject constructor(
 
     /**
      * Fetches the user's TMDB lists and, for each, asks TMDB whether this
-     * movie or show is already a member.
+     * movie or show is already a member. [userListsLoading] covers the lists
+     * themselves; each list's membership then arrives on its own, and is
+     * absent from [listMembership] until it does.
+     *
+     * Runs when the details screen opens (to mark "Add to List" as already
+     * listed) and again when the sheet opens; that second run refreshes in
+     * place, without a loader or dropping what is already shown.
      */
     fun loadUserLists(mediaId: Int, isTv: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             if (!accountRepository.canManageLists()) return@launch
+            val isFirstLoad = _userLists.value.isEmpty()
+            _userListsLoading.value = isFirstLoad
             try {
                 val lists = accountRepository.getLists().first().results
                 _userLists.emit(lists)
+                _userListsLoading.value = false
+                // Forget lists that have since been deleted.
+                val listIds = lists.map { it.id }.toSet()
+                _listMembership.update { known -> known.filterKeys { it in listIds } }
 
-                val membership = coroutineScope {
-                    lists.map { list ->
-                        async {
-                            try {
-                                list.id to accountRepository.isInList(list.id, mediaId, isTv).first()
+                coroutineScope {
+                    lists.forEach { list ->
+                        launch {
+                            val isMember = try {
+                                accountRepository.isInList(list.id, mediaId, isTv).first()
                             } catch (e: Exception) {
+                                // Unknown is shown as "not in the list" so the row stays usable.
                                 e.printStackTrace()
-                                null
+                                false
                             }
+                            _listMembership.update { it + (list.id to isMember) }
                         }
-                    }.awaitAll().filterNotNull().toMap()
+                    }
                 }
-                _listMembership.emit(membership)
             } catch (e: Exception) {
                 e.printStackTrace()
+            } finally {
+                _userListsLoading.value = false
             }
         }
     }
 
     /**
-     * Optimistically flips [listId]'s membership checkbox, then pushes the
-     * add/remove to TMDB in the background - reverting the checkbox if it fails.
+     * Optimistically flips [listId]'s membership, then pushes the add/remove
+     * to TMDB in the background - reverting it if that fails.
      */
     fun toggleListMembership(listId: Int, mediaId: Int, isTv: Boolean, currentlyIn: Boolean) {
-        _listMembership.value = _listMembership.value + (listId to !currentlyIn)
+        if (!markPending(listId)) return
+        setMembership(listId, isMember = !currentlyIn)
 
         viewModelScope.launch(Dispatchers.IO) {
             val changed = try {
@@ -544,21 +597,62 @@ class MovieDetailsViewModel @Inject constructor(
                 false
             }
             if (!changed) {
-                _listMembership.value = _listMembership.value + (listId to currentlyIn)
+                setMembership(listId, isMember = currentlyIn)
             }
+            _pendingListIds.update { it - listId }
         }
     }
 
-    /** Creates a new list on TMDB and appends it to [userLists] on success. */
-    fun createList(name: String) {
+    /** False if [listId] already has a request in flight; otherwise marks it and returns true. */
+    private fun markPending(listId: Int): Boolean {
+        while (true) {
+            val current = _pendingListIds.value
+            if (listId in current) return false
+            if (_pendingListIds.compareAndSet(current, current + listId)) return true
+        }
+    }
+
+    /**
+     * Creates a new list on TMDB and puts this movie or show in it - creating
+     * a list from a title's "Add to List" is a request to list that title.
+     * If only the add fails, the list is still kept, without the title.
+     */
+    fun createList(name: String, mediaId: Int, isTv: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             if (!accountRepository.canManageLists()) return@launch
             try {
                 val response = accountRepository.createList(name).first()
                 val listId = response.listId ?: return@launch
+                _pendingListIds.update { it + listId }
                 _userLists.value = _userLists.value + TmdbList(id = listId, name = name, itemCount = 0)
+                _listMembership.update { it + (listId to false) }
+
+                val added = try {
+                    accountRepository.addToList(listId, mediaId, isTv).first().allSucceeded
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    false
+                }
+                if (added) {
+                    setMembership(listId, isMember = true)
+                }
+                _pendingListIds.update { it - listId }
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+        }
+    }
+
+    /** Records membership and keeps the list's shown item count in step with it. */
+    private fun setMembership(listId: Int, isMember: Boolean) {
+        val wasMember = _listMembership.value[listId] == true
+        _listMembership.update { it + (listId to isMember) }
+        if (wasMember != isMember) {
+            val delta = if (isMember) 1 else -1
+            _userLists.update { lists ->
+                lists.map {
+                    if (it.id == listId) it.copy(itemCount = ((it.itemCount ?: 0) + delta).coerceAtLeast(0)) else it
+                }
             }
         }
     }

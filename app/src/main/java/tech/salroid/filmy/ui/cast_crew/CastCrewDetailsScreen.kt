@@ -3,17 +3,15 @@ package tech.salroid.filmy.ui.cast_crew
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -21,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil3.compose.AsyncImage
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.CastCrewDetailsResponse
 import tech.salroid.filmy.data.local.model.CombinedCredit
@@ -94,7 +91,7 @@ fun CastCrewDetailsContent(
                 title = {},
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = "Back")
+                        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -140,21 +137,15 @@ fun CastCrewDetailsBody(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            message = "Couldn't load this person. Check your connection.",
+            message = stringResource(R.string.couldnt_load_person),
             onRetryClick = onRetryClick
         )
         return
     }
 
     details?.let { member ->
-        // A person can have both cast and crew credits (e.g. an actor who also
-        // directed) - de-duped by title+media type, cast role preferred over
-        // crew job when both exist for the same title, sorted by popularity so
-        // their most notable work leads.
-        val credits = remember(combinedCredits) {
-            val all = (combinedCredits?.cast.orEmpty() + combinedCredits?.crew.orEmpty())
-            all.distinctBy { "${it.id}-${it.mediaType}" }
-                .sortedByDescending { it.popularity ?: 0.0 }
+        val credits = remember(combinedCredits, member.name, member.knownForDepartment) {
+            rankKnownFor(combinedCredits, member.name, member.knownForDepartment)
         }
         val movieCount = credits.count { !it.isTv }
         val tvCount = credits.count { it.isTv }
@@ -167,48 +158,7 @@ fun CastCrewDetailsBody(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AsyncImage(
-                model = "https://image.tmdb.org/t/p/w500${member.profilePath}",
-                contentDescription = null,
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop,
-                placeholder = painterResource(R.drawable.default_avatar),
-                error = painterResource(R.drawable.default_avatar)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = member.name ?: "",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-
-            member.knownForDepartment?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            member.birthday?.let {
-                Text(
-                    text = it.toReadableDate(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            member.placeOfBirth?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            PersonTitleCard(member = member, creditCount = credits.size)
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -226,7 +176,10 @@ fun CastCrewDetailsBody(
                     textAlign = TextAlign.Justify,
                     maxLines = 5,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.clickable { showFullBiography = true }
+                    modifier = Modifier.clickable(
+                        onClickLabel = stringResource(R.string.cd_read_full_biography),
+                        role = Role.Button
+                    ) { showFullBiography = true }
                 )
             }
 
@@ -242,7 +195,7 @@ fun CastCrewDetailsBody(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Known For",
+                    text = stringResource(R.string.known_for),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.fillMaxWidth()

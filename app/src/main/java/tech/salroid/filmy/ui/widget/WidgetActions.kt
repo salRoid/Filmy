@@ -47,7 +47,7 @@ class MarkWatchedAction : ActionCallback {
         val updated = existing.copy(watched = true, watchlist = false)
         moviesRepository.addMovieDetailsToLocal(updated)
 
-        val pushed = accountSyncRepository.pushItemState(updated)
+        val pushed = accountSyncRepository.pushItemState(updated, previous = existing)
         if (!pushed) {
             moviesRepository.addMovieDetailsToLocal(existing)
         }

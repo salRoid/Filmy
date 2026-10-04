@@ -13,7 +13,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,7 +32,7 @@ fun SeasonsSection(
 ) {
     val visibleSeasons = seasons?.filter { it.episodeCount > 0 }
     if (!visibleSeasons.isNullOrEmpty()) {
-        DetailsSection(title = "Seasons") {
+        DetailsSection(title = stringResource(R.string.seasons)) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(visibleSeasons) { season ->
                     SeasonItem(season) { onSeasonClick(season.seasonNumber) }
@@ -47,7 +50,8 @@ private fun SeasonItem(
     Column(
         modifier = Modifier
             .width(100.dp)
-            .clickable { onClick() }
+            .clickable(role = Role.Button) { onClick() }
+            .semantics(mergeDescendants = true) {}
     ) {
         AsyncImage(
             model = stringResource(R.string.movie_poster_url, season.posterPath ?: ""),
@@ -61,13 +65,12 @@ private fun SeasonItem(
         Text(
             text = season.name,
             style = MaterialTheme.typography.labelSmall,
-            minLines = 2,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = 4.dp)
         )
         Text(
-            text = "${season.episodeCount} Episodes",
+            text = pluralStringResource(R.plurals.episode_count, season.episodeCount, season.episodeCount),
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.alpha(0.6f)
         )

@@ -1,18 +1,20 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Youtube(
 
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
 
-    @SerializedName("size")
+    @SerialName("size")
     var size: String? = null,
 
-    @SerializedName("source")
+    @SerialName("source")
     var source: String? = null,
 
-    @SerializedName("type")
+    @SerialName("type")
     var type: String? = null
 )

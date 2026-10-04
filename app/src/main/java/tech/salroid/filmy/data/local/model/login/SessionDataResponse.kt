@@ -1,11 +1,13 @@
 package tech.salroid.filmy.data.local.model.login
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class SessionDataResponse(
-    @SerializedName("success")
+    @SerialName("success")
     var success: Boolean? = null,
 
-    @SerializedName("session_id")
+    @SerialName("session_id")
     var sessionId: String? = null,
 )

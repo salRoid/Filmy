@@ -1,11 +1,13 @@
 package tech.salroid.filmy.data.local.model.login
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RequestTokenData(
-    @SerializedName("redirect_to")
+    @SerialName("redirect_to")
     var redirectTo: String? = null,
 
-    @SerializedName("request_token")
+    @SerialName("request_token")
     var requestToken: String? = null,
 )

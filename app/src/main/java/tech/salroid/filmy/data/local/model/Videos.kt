@@ -1,23 +1,26 @@
 package tech.salroid.filmy.data.local.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Videos(
-    @SerializedName("results")
+    @SerialName("results")
     val results: List<VideoResult> = emptyList()
 )
 
+@Serializable
 data class VideoResult(
-    @SerializedName("id")
+    @SerialName("id")
     val id: String? = null,
-    @SerializedName("key")
+    @SerialName("key")
     val key: String? = null,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String? = null,
-    @SerializedName("site")
+    @SerialName("site")
     val site: String? = null,
-    @SerializedName("size")
+    @SerialName("size")
     val size: Int? = null,
-    @SerializedName("type")
+    @SerialName("type")
     val type: String? = null
 )

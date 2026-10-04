@@ -22,7 +22,7 @@ import tech.salroid.filmy.databinding.FragmentTvBinding
 import tech.salroid.filmy.ui.adapters.TvAdapter
 import tech.salroid.filmy.ui.component.NavigationItemData
 import tech.salroid.filmy.ui.details.TvDetailsActivity
-import tech.salroid.filmy.ui.search.SearchViewModel
+import tech.salroid.filmy.ui.search.SearchViewModelLegacy
 import tech.salroid.filmy.utility.FilmyUtility.getGridLayoutManager
 import tech.salroid.filmy.utility.isDarkThemeActivated
 import tech.salroid.filmy.utility.showSnackBar
@@ -31,7 +31,7 @@ import tech.salroid.filmy.utility.showSnackBar
 class TvFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
-    private val viewModelSearch: SearchViewModel by activityViewModels()
+    private val viewModelSearch: SearchViewModelLegacy by activityViewModels()
     private var adapter: TvAdapter? = null
     private var _binding: FragmentTvBinding? = null
     private val binding get() = _binding!!

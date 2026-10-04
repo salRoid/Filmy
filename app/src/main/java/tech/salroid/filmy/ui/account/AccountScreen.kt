@@ -1,0 +1,573 @@
+package tech.salroid.filmy.ui.account
+
+import android.content.Context
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import coil3.compose.AsyncImage
+import tech.salroid.filmy.BuildConfig
+import tech.salroid.filmy.R
+import tech.salroid.filmy.data.local.db.entity.Profile
+import tech.salroid.filmy.ui.common.components.CountrySelectionList
+import tech.salroid.filmy.ui.home.LoginViewModel
+import tech.salroid.filmy.utility.FilmyUtility
+import tech.salroid.filmy.utility.PreferenceHelper
+import androidx.core.net.toUri
+import androidx.compose.ui.tooling.preview.Preview
+import tech.salroid.filmy.ui.theme.AppTheme
+
+@Composable
+fun AccountScreen(
+    onAboutClick: () -> Unit,
+    onLicenseClick: () -> Unit,
+    onMyListsClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val uiStateProfile by viewModel.uiStateProfile.collectAsState()
+    val uiStateToken by viewModel.uiStateToken.collectAsState()
+    val isLoggingOut by viewModel.isLoggingOut.collectAsState()
+    val isAuthenticating by viewModel.isAuthenticating.collectAsState()
+
+    var showLogoutDialog by remember { mutableStateOf(false) }
+
+    val customTabLauncher = rememberLauncherForActivityResult(
+        contract = object : ActivityResultContract<String, Int>() {
+            override fun createIntent(context: Context, input: String): Intent {
+                val customTabsIntent = CustomTabsIntent.Builder().build().intent
+                customTabsIntent.data = input.toUri()
+                return customTabsIntent
+            }
+
+            override fun parseResult(resultCode: Int, intent: Intent?): Int = resultCode
+        }
+    ) { }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                if (viewModel.requestToken != null && viewModel.sessionId == null) {
+                    viewModel.getAccessToken()
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    LaunchedEffect(uiStateToken) {
+        uiStateToken?.requestToken?.let { token ->
+            if (viewModel.accessToken == null) {
+                val url = "https://www.themoviedb.org/auth/access?request_token=$token"
+                customTabLauncher.launch(url)
+            }
+        }
+    }
+
+    AccountScreenContent(
+        profile = uiStateProfile,
+        isLoading = isAuthenticating || isLoggingOut,
+        showLoginCard = true,
+        onLoginClick = { viewModel.getRequestToken() },
+        onLogoutClick = { showLogoutDialog = true },
+        onAboutClick = onAboutClick,
+        onLicenseClick = onLicenseClick,
+        onMyListsClick = onMyListsClick,
+        modifier = modifier
+    )
+
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            text = { Text(stringResource(R.string.logout_confirmation)) },
+            confirmButton = {
+                Button(onClick = { showLogoutDialog = false }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showLogoutDialog = false
+                        viewModel.logout()
+                    }
+                ) {
+                    Text(stringResource(R.string.yes))
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun AccountScreenContent(
+    profile: Profile?,
+    isLoading: Boolean,
+    showLoginCard: Boolean = false,
+    onLoginClick: () -> Unit,
+    onLogoutClick: () -> Unit,
+    onAboutClick: () -> Unit,
+    onLicenseClick: () -> Unit,
+    onMyListsClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .verticalScroll(rememberScrollState())
+    ) {
+        if (showLoginCard) {
+            LoginCard(
+                profile = profile,
+                onLoginClick = onLoginClick,
+                onLogoutClick = onLogoutClick,
+                isLoading = isLoading
+            )
+        }
+
+        PreferencesSection(
+            context = context,
+            onAboutClick = onAboutClick,
+            onLicenseClick = onLicenseClick,
+            onMyListsClick = onMyListsClick
+        )
+    }
+}
+
+@Composable
+fun PreferencesSection(
+    context: Context,
+    onAboutClick: () -> Unit,
+    onLicenseClick: () -> Unit,
+    onMyListsClick: () -> Unit = {}
+) {
+    var showThemeDialog by remember { mutableStateOf(false) }
+    var showRegionDialog by remember { mutableStateOf(false) }
+
+    val modeNightNo = stringResource(R.string.mode_night_no)
+    val modeNightYes = stringResource(R.string.mode_night_yes)
+
+    val currentThemeMode = PreferenceHelper.getCurrentThemeMode(context)
+    val currentThemeSummary = when (currentThemeMode) {
+        modeNightNo -> stringResource(R.string.summary_light)
+        modeNightYes -> stringResource(R.string.summary_dark)
+        else -> stringResource(R.string.summary_system_default)
+    }
+
+    var selectedCountry by remember { mutableStateOf(PreferenceHelper.getSelectedCountry(context)) }
+    val currentRegionSummary = remember(selectedCountry) {
+        java.util.Locale("", selectedCountry).displayCountry
+    }
+
+    Column(modifier = Modifier.padding(8.dp)) {
+        PreferenceItem(
+            title = stringResource(R.string.theme),
+            summary = currentThemeSummary,
+            icon = painterResource(R.drawable.dark_mode),
+            onClick = { showThemeDialog = true }
+        )
+        PreferenceItem(
+            title = "Region",
+            summary = currentRegionSummary,
+            icon = painterResource(R.drawable.ic_language_24dp),
+            onClick = { showRegionDialog = true }
+        )
+        PreferenceItem(
+            title = stringResource(R.string.my_lists),
+            icon = painterResource(R.drawable.ic_collections_bookmark_24dp),
+            onClick = onMyListsClick
+        )
+        PreferenceItem(
+            title = stringResource(R.string.license),
+            icon = painterResource(R.drawable.ic_article),
+            onClick = onLicenseClick
+        )
+        PreferenceItem(
+            title = stringResource(R.string.version),
+            summary = BuildConfig.VERSION_NAME,
+            icon = painterResource(R.drawable.ic_document),
+            onClick = {}
+        )
+        PreferenceItem(
+            title = stringResource(R.string.shareappdetails),
+            icon = painterResource(R.drawable.twotone_share_24),
+            onClick = { FilmyUtility.startSharingIntent(context) }
+        )
+        PreferenceItem(
+            title = stringResource(R.string.about),
+            icon = painterResource(R.drawable.ic_face),
+            onClick = onAboutClick
+        )
+    }
+
+    if (showThemeDialog) {
+        ThemeSelectionDialog(
+            currentThemeMode = currentThemeMode,
+            onDismiss = { showThemeDialog = false },
+            onThemeSelected = { selectedValue ->
+                PreferenceHelper.setThemeMode(context, selectedValue)
+                val nightMode = when (selectedValue) {
+                    modeNightNo -> AppCompatDelegate.MODE_NIGHT_NO
+                    modeNightYes -> AppCompatDelegate.MODE_NIGHT_YES
+                    else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                }
+                AppCompatDelegate.setDefaultNightMode(nightMode)
+                showThemeDialog = false
+            }
+        )
+    }
+
+    if (showRegionDialog) {
+        RegionSelectionDialog(
+            selectedCountry = selectedCountry,
+            onDismiss = { showRegionDialog = false },
+            onCountrySelected = { code ->
+                PreferenceHelper.setSelectedCountry(context, code)
+                selectedCountry = code
+                showRegionDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+fun RegionSelectionDialog(
+    selectedCountry: String,
+    onDismiss: () -> Unit,
+    onCountrySelected: (String) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "Region",
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
+        text = {
+            CountrySelectionList(
+                selected = selectedCountry,
+                onSelect = { onCountrySelected(it.code) },
+                modifier = Modifier.heightIn(max = 400.dp)
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
+fun PreferenceItem(
+    title: String,
+    summary: String? = null,
+    icon: Painter? = null,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (icon != null) {
+            Icon(
+                painter = icon,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            if (summary != null) {
+                Text(
+                    text = summary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.alpha(0.6f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ThemeSelectionDialog(
+    currentThemeMode: String?,
+    onDismiss: () -> Unit,
+    onThemeSelected: (String) -> Unit
+) {
+    val entries = stringArrayResource(R.array.themeEntries)
+    val values = stringArrayResource(R.array.themeValues)
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(R.string.theme),
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
+        text = {
+            Column(Modifier.selectableGroup()) {
+                entries.forEachIndexed { index, item ->
+                    val value = values[index]
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(56.dp)
+                            .selectable(
+                                selected = (value == currentThemeMode),
+                                onClick = { onThemeSelected(value) },
+                                role = Role.RadioButton
+                            )
+                            .padding(horizontal = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = (value == currentThemeMode),
+                            onClick = null
+                        )
+                        Text(
+                            text = item,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
+fun LoginCard(
+    profile: Profile?,
+    onLoginClick: () -> Unit,
+    onLogoutClick: () -> Unit,
+    isLoading: Boolean,
+    modifier: Modifier = Modifier
+) {
+    ElevatedCard(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 32.dp)
+            .dropShadow(
+                shape = RoundedCornerShape(12.dp),
+                shadow = Shadow(
+                    radius = 16.dp,
+                    spread = 0.dp,
+                    offset = DpOffset(0.dp, 4.dp),
+                    alpha = 0.06f,
+                    color = MaterialTheme.colorScheme.scrim
+                )
+            ),
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val avatarUrl = profile?.let {
+                    it.avatar?.tmdb?.avatarPath?.let { path ->
+                        stringResource(R.string.member_profile_url, path)
+                    } ?: it.avatar?.gravatar?.getCompleteUrl()
+                }
+
+                AsyncImage(
+                    model = avatarUrl,
+                    contentDescription = null,
+                    placeholder = painterResource(R.drawable.default_avatar),
+                    error = painterResource(R.drawable.default_avatar),
+                    modifier = Modifier
+                        .size(62.dp)
+                        .padding(4.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(
+                    modifier = Modifier.weight(1.0f)
+                ) {
+                    Text(
+                        text = profile?.name ?: stringResource(R.string.login_message),
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier.alpha(0.9f)
+                    )
+                    Text(
+                        text = profile?.username ?: stringResource(R.string.login_message_benefit),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.alpha(0.6f)
+                    )
+
+                    if (profile == null) {
+                        Button(
+                            onClick = onLoginClick,
+                            modifier = Modifier
+                                .padding(top = 8.dp)
+                                .width(100.dp),
+                            contentPadding = PaddingValues(horizontal = 8.dp),
+                            enabled = !isLoading
+                        ) {
+                            Text(text = stringResource(R.string.login_now))
+                        }
+                    }
+                }
+
+                if (profile != null) {
+                    IconButton(
+                        onClick = onLogoutClick,
+                        enabled = !isLoading
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_logout),
+                            contentDescription = "Logout",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+            }
+
+            if (isLoading) {
+                LinearProgressIndicator(
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AccountScreenPreview() {
+    AppTheme {
+        AccountScreenContent(
+            profile = Profile(
+                name = "John Doe",
+                username = "johndoe123"
+            ),
+            isLoading = false,
+            showLoginCard = true,
+            onLoginClick = {},
+            onLogoutClick = {},
+            onAboutClick = {},
+            onLicenseClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AccountScreenLoadingPreview() {
+    AppTheme {
+        AccountScreenContent(
+            profile = null,
+            isLoading = true,
+            showLoginCard = true,
+            onLoginClick = {},
+            onLogoutClick = {},
+            onAboutClick = {},
+            onLicenseClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AccountScreenLoggedOutPreview() {
+    AppTheme {
+        AccountScreenContent(
+            profile = null,
+            isLoading = false,
+            showLoginCard = true,
+            onLoginClick = {},
+            onLogoutClick = {},
+            onAboutClick = {},
+            onLicenseClick = {}
+        )
+    }
+}

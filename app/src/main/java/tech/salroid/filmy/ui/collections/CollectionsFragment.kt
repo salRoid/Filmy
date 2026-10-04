@@ -35,9 +35,9 @@ class CollectionsFragment : Fragment() {
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = getString(R.string.favorite)
+                    tab.text = getString(R.string.watched)
                     tab.icon =
-                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_round_favorite_24)
+                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
                 }
                 1 -> {
                     tab.text = getString(R.string.watchlist)

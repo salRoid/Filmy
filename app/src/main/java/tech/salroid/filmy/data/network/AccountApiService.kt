@@ -3,10 +3,25 @@ package tech.salroid.filmy.data.network
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
+import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 import tech.salroid.filmy.data.local.db.entity.Profile
-import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.MoviesResponse
+import tech.salroid.filmy.data.local.model.TvShowResponse
+import tech.salroid.filmy.data.local.model.account.CreateListRequest
+import tech.salroid.filmy.data.local.model.account.CreateListResponse
+import tech.salroid.filmy.data.local.model.account.FavoriteRequest
+import tech.salroid.filmy.data.local.model.account.ListItemsRequest
+import tech.salroid.filmy.data.local.model.account.ListItemsResponse
+import tech.salroid.filmy.data.local.model.account.RatedResponse
+import tech.salroid.filmy.data.local.model.account.RatingRequest
+import tech.salroid.filmy.data.local.model.account.TmdbListDetailsResponse
+import tech.salroid.filmy.data.local.model.account.TmdbListsResponse
+import tech.salroid.filmy.data.local.model.account.TmdbStatusResponse
+import tech.salroid.filmy.data.local.model.account.WatchlistRequest
 import tech.salroid.filmy.data.local.model.login.*
 
 interface AccountApiService {
@@ -20,9 +35,147 @@ interface AccountApiService {
     @POST("authentication/session/convert/4")
     suspend fun getSession(@Body request: AccessTokenData): SessionDataResponse
 
+    @HTTP(method = "DELETE", path = "auth/access_token", hasBody = true)
+    suspend fun revokeAccessToken(@Body request: AccessTokenData): TmdbStatusResponse
+
     @DELETE("authentication/session")
-    suspend fun deleteSession(@Query("session_id") sessionId: String): DeleteSession
+    suspend fun deleteSession(@Body request: DeleteSession): DeleteSession
 
     @GET("account")
     suspend fun getProfile(@Query("session_id") sessionId: String): Profile
+
+    @POST("account/{account_id}/favorite")
+    suspend fun markAsFavorite(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Body request: FavoriteRequest
+    ): TmdbStatusResponse
+
+    @POST("account/{account_id}/watchlist")
+    suspend fun markAsWatchlist(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Body request: WatchlistRequest
+    ): TmdbStatusResponse
+
+    @GET("account/{account_id}/favorite/movies")
+    suspend fun getFavoriteMovies(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("page") page: Int
+    ): MoviesResponse
+
+    @GET("account/{account_id}/favorite/tv")
+    suspend fun getFavoriteTv(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("page") page: Int
+    ): TvShowResponse
+
+    @GET("account/{account_id}/watchlist/movies")
+    suspend fun getWatchlistMovies(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("page") page: Int
+    ): MoviesResponse
+
+    @GET("account/{account_id}/watchlist/tv")
+    suspend fun getWatchlistTv(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("page") page: Int
+    ): TvShowResponse
+
+    // Lists use TMDB's v4 API (the leading slash escapes the /3/ base path):
+    // unlike v3 lists, which are movie-only, v4 lists hold movies and shows.
+    // They are authorised with the user's own v4 access token.
+
+    @POST("/4/list")
+    suspend fun createList(
+        @Header("Authorization") authorization: String,
+        @Body request: CreateListRequest
+    ): CreateListResponse
+
+    @GET("/4/account/{account_object_id}/lists")
+    suspend fun getLists(
+        @Header("Authorization") authorization: String,
+        @Path("account_object_id") accountObjectId: String,
+        @Query("page") page: Int
+    ): TmdbListsResponse
+
+    @GET("/4/list/{list_id}")
+    suspend fun getListDetails(
+        @Header("Authorization") authorization: String,
+        @Path("list_id") listId: Int,
+        @Query("page") page: Int
+    ): TmdbListDetailsResponse
+
+    /** Succeeds when the item is in the list; TMDB answers 404 when it is not. */
+    @GET("/4/list/{list_id}/item_status")
+    suspend fun getListItemStatus(
+        @Header("Authorization") authorization: String,
+        @Path("list_id") listId: Int,
+        @Query("media_id") mediaId: Int,
+        @Query("media_type") mediaType: String
+    ): TmdbStatusResponse
+
+    @POST("/4/list/{list_id}/items")
+    suspend fun addToList(
+        @Header("Authorization") authorization: String,
+        @Path("list_id") listId: Int,
+        @Body request: ListItemsRequest
+    ): ListItemsResponse
+
+    @HTTP(method = "DELETE", path = "/4/list/{list_id}/items", hasBody = true)
+    suspend fun removeFromList(
+        @Header("Authorization") authorization: String,
+        @Path("list_id") listId: Int,
+        @Body request: ListItemsRequest
+    ): ListItemsResponse
+
+    @DELETE("/4/list/{list_id}")
+    suspend fun deleteList(
+        @Header("Authorization") authorization: String,
+        @Path("list_id") listId: Int
+    ): TmdbStatusResponse
+
+    @POST("movie/{movie_id}/rating")
+    suspend fun rateMovie(
+        @Path("movie_id") movieId: Int,
+        @Query("session_id") sessionId: String,
+        @Body request: RatingRequest
+    ): TmdbStatusResponse
+
+    @DELETE("movie/{movie_id}/rating")
+    suspend fun deleteMovieRating(
+        @Path("movie_id") movieId: Int,
+        @Query("session_id") sessionId: String
+    ): TmdbStatusResponse
+
+    @POST("tv/{tv_id}/rating")
+    suspend fun rateTv(
+        @Path("tv_id") tvId: Int,
+        @Query("session_id") sessionId: String,
+        @Body request: RatingRequest
+    ): TmdbStatusResponse
+
+    @DELETE("tv/{tv_id}/rating")
+    suspend fun deleteTvRating(
+        @Path("tv_id") tvId: Int,
+        @Query("session_id") sessionId: String
+    ): TmdbStatusResponse
+
+    @GET("account/{account_id}/rated/movies")
+    suspend fun getRatedMovies(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("page") page: Int
+    ): RatedResponse
+
+    @GET("account/{account_id}/rated/tv")
+    suspend fun getRatedTv(
+        @Path("account_id") accountId: Int,
+        @Query("session_id") sessionId: String,
+        @Query("page") page: Int
+    ): RatedResponse
 }

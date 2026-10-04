@@ -63,6 +63,7 @@ import tech.salroid.filmy.ui.similar_recommendation.SimilarRecommendationFragmen
 import tech.salroid.filmy.ui.similar_recommendation.SimilarRecommendationFragment.Companion.TAG_SIMILAR
 import tech.salroid.filmy.ui.similar_recommendation.SimilarRecommendationViewModel
 import tech.salroid.filmy.utility.*
+import tech.salroid.filmy.utility.PreferenceHelper
 import tech.salroid.filmy.utility.FilmyUtility.getNavigationBarHeight
 
 @AndroidEntryPoint
@@ -102,7 +103,7 @@ class MovieDetailsActivity : AppCompatActivity() {
     companion object {
         const val IMAGE_QUALITY_DEFAULT = "original"
         const val WATCHLIST = "watchlist"
-        const val FAVOURITES = "favorites"
+        const val WATCHED = "watched"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,7 +152,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 it?.let {
                     showMovieDetails(it)
                     isWatchlist = it.watchlist
-                    isFavourite = it.favorite
+                    isFavourite = it.watched
                     updateOptionsMenu()
                 }
             }
@@ -161,7 +162,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             viewModel.uiStateAddToCollection.collect { (addedToCollection, message) ->
                 if (addedToCollection) {
                     if (message == WATCHLIST) isWatchlist = true
-                    if (message == FAVOURITES) isFavourite = true
+                    if (message == WATCHED) isFavourite = true
                     binding.backdrop.showSnackBar("Movie added to $message")
                     updateOptionsMenu()
                 }
@@ -172,7 +173,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 if (updatedID > 0) {
                     if (remove) {
                         if (message == WATCHLIST) isWatchlist = false
-                        if (message == FAVOURITES) isFavourite = false
+                        if (message == WATCHED) isFavourite = false
 
                         binding.backdrop.showSnackBar(
                             "Movie removed from $message",
@@ -180,7 +181,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                         )
                     } else {
                         if (message == WATCHLIST) isWatchlist = true
-                        if (message == FAVOURITES) isFavourite = true
+                        if (message == WATCHED) isFavourite = true
                         binding.backdrop.showSnackBar("Movie added to $message")
                     }
 
@@ -413,7 +414,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 binding.main.visibility = View.INVISIBLE
                 binding.breathingProgress.visibility = View.VISIBLE
             }
-            viewModel.getMovieDetails(movieId, type)
+           // viewModel.getMovieDetails(movieId, type)
         }
     }
 
@@ -663,10 +664,10 @@ class MovieDetailsActivity : AppCompatActivity() {
         viewModel.getRatings(movieImdbId)
 
         // Get Reviews
-        viewModel.getReviews(movieId)
+        //viewModel.getReviews(movieId)
 
         // Get Watch Providers
-        viewModel.getWatchProviders(movieId)
+        //viewModel.getWatchProviders(movieId)
 
         // Get Cast, Crew and Similar Movies
         movieIdFinal?.let {
@@ -778,7 +779,7 @@ class MovieDetailsActivity : AppCompatActivity() {
          else {
              var smallTitle = movieTitleHyphen?.lowercase()
              smallTitle = smallTitle?.replace("[^\\d-a-z]".toRegex(), "")
-             val url = "http://www.metacritic.com/movie/$smallTitle"
+             val url = "https://www.metacritic.com/movie/$smallTitle"
 
              if (metaScoreRating != null) {
                  when {
@@ -823,9 +824,10 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun setWatchProviderInfo(watchProviderResponse: WatchProviderResponse) {
-        val watchProviderStream = watchProviderResponse.results?.IN?.flatrate?.firstOrNull()
-        val watchProviderBuy = watchProviderResponse.results?.IN?.buy?.firstOrNull()
-        val watchProviderRent = watchProviderResponse.results?.IN?.rent?.firstOrNull()
+        val regionProviders = watchProviderResponse.results[PreferenceHelper.getSelectedCountry(this)]
+        val watchProviderStream = regionProviders?.flatrate?.firstOrNull()
+        val watchProviderBuy = regionProviders?.buy?.firstOrNull()
+        val watchProviderRent = regionProviders?.rent?.firstOrNull()
 
         binding.watchProviderContainer.isVisible =
             watchProviderStream != null || watchProviderBuy != null || watchProviderRent != null
@@ -899,9 +901,9 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun addFavorite() {
-        movieDetails.favorite = true
+        movieDetails.watched = true
         movieDetails.type = type
-        viewModel.updateMovieDetailsInDb(movieDetails, FAVOURITES, false)
+        viewModel.updateMovieDetailsInDb(movieDetails, WATCHED, false)
     }
 
     private fun removeWatchlist() {
@@ -911,9 +913,9 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun removeFavorite() {
-        movieDetails.favorite = false
+        movieDetails.watched = false
         movieDetails.type = type
-        viewModel.updateMovieDetailsInDb(movieDetails, FAVOURITES, true)
+        viewModel.updateMovieDetailsInDb(movieDetails, WATCHED, true)
     }
 
     private fun openCustomTabIntent(url: String, color: Int) {

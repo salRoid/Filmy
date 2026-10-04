@@ -5,7 +5,7 @@
     android:layout_gravity="center_vertical">
 
     <!--
-     <tech.salroid.filmy.ui.component.FilmyTopNavigationBarItem
+     <tech.salroid.filmy.ui.navigation.components.FilmyTopNavigationBarItem
          android:id="@+id/trendingLabel"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"

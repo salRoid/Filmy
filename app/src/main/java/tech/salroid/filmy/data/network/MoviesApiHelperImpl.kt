@@ -6,11 +6,18 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import tech.salroid.filmy.BuildConfig.OMDB_API_KEY
+import tech.salroid.filmy.data.datasource.DiscoverMoviesPagingSource
+import tech.salroid.filmy.data.datasource.DiscoverTvPagingSource
 import tech.salroid.filmy.data.datasource.MoviesPagingSource
+import tech.salroid.filmy.data.datasource.PeoplePagingSource
 import tech.salroid.filmy.data.datasource.TvShowsPagingSource
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.collection.CollectionDetailsResponse
+import tech.salroid.filmy.data.local.model.discover.DiscoverFilters
+import tech.salroid.filmy.data.local.model.discover.GenreResponse
+import tech.salroid.filmy.data.local.model.tv.SeasonDetailsResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.data.network.MoviesApiService.Companion.BASE_URL_OMDB
@@ -31,6 +38,13 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
         }
     ).flow
 
+    override fun getMoviesFlow(
+        type: String,
+        isTrending: Boolean
+    ): Flow<MoviesResponse> = flow {
+        emit(apiService.getTrendingMovies("day", 1))
+    }
+
     override fun getTvShows(type: String, isTrending: Boolean): Flow<PagingData<TvShow>> = Pager(
         config = PagingConfig(
             pageSize = 20,
@@ -45,8 +59,15 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
         }
     ).flow
 
+    override fun getTvShowsFlow(
+        type: String,
+        isTrending: Boolean
+    ): Flow<TvShowResponse> = flow {
+        emit(apiService.getTrendingTvShows("day", 1))
+    }
+
     override fun getMovieDetails(id: String): Flow<MovieDetails> = flow {
-        emit(apiService.getMovieDetails(id))
+        emit(apiService.getMovieDetails(movieId = id))
     }
 
     override fun getTvShowDetails(id: String): Flow<TvDetails> = flow {
@@ -56,6 +77,12 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
     override fun getOMDBRatings(id: String): Flow<RatingResponse> = flow {
         emit(
             apiService.getOMDBRatings(BASE_URL_OMDB, id, OMDB_API_KEY, true, "json")
+        )
+    }
+
+    override fun getOMDBSeasonRatings(seriesImdbId: String, seasonNumber: Int): Flow<OmdbSeasonResponse> = flow {
+        emit(
+            apiService.getOMDBSeasonRatings(BASE_URL_OMDB, seriesImdbId, seasonNumber, OMDB_API_KEY, "json")
         )
     }
 
@@ -95,8 +122,20 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
         emit(apiService.getCastCrewTvShows(id))
     }
 
+    override fun getCombinedCredits(id: String): Flow<CombinedCreditsResponse> = flow {
+        emit(apiService.getCombinedCredits(id))
+    }
+
+    override fun getPersonExternalIds(id: String): Flow<ExternalIdsResponse> = flow {
+        emit(apiService.getPersonExternalIds(id))
+    }
+
     override fun searchMovies(query: String): Flow<SearchResultResponse> = flow {
         emit(apiService.searchMovies(query))
+    }
+
+    override fun searchMulti(query: String): Flow<SearchResultResponse> = flow {
+        emit(apiService.searchMulti(query))
     }
 
     override fun getReviews(id: String): Flow<ReviewResponse> = flow {
@@ -113,5 +152,83 @@ class MoviesApiHelperImpl(private val apiService: MoviesApiService) : MoviesApiH
 
     override fun getWatchProvidersTv(id: String): Flow<WatchProviderResponse> = flow {
         emit(apiService.getWatchProvidersTv(id))
+    }
+
+    override fun discoverMovies(filters: DiscoverFilters): Flow<PagingData<Movie>> = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            DiscoverMoviesPagingSource(apiService = apiService, filters = filters)
+        }
+    ).flow
+
+    override fun discoverTv(filters: DiscoverFilters): Flow<PagingData<TvShow>> = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            DiscoverTvPagingSource(apiService = apiService, filters = filters)
+        }
+    ).flow
+
+    override fun getMovieGenres(): Flow<GenreResponse> = flow {
+        emit(apiService.getMovieGenres())
+    }
+
+    override fun getTvGenres(): Flow<GenreResponse> = flow {
+        emit(apiService.getTvGenres())
+    }
+
+    override fun getPeople(): Flow<PagingData<Person>> = Pager(
+        config = PagingConfig(
+            pageSize = 20,
+            enablePlaceholders = false
+        ),
+        pagingSourceFactory = {
+            PeoplePagingSource(apiService = apiService)
+        }
+    ).flow
+
+    override fun getMovieCertification(id: String): Flow<ReleaseDatesResponse> = flow {
+        emit(apiService.getMovieReleaseDates(id))
+    }
+
+    override fun getTvCertification(id: String): Flow<ContentRatingsResponse> = flow {
+        emit(apiService.getTvContentRatings(id))
+    }
+
+    override fun getCollectionDetails(id: Int): Flow<CollectionDetailsResponse> = flow {
+        emit(apiService.getCollectionDetails(id))
+    }
+
+    override fun getSeasonDetails(tvId: String, seasonNumber: Int): Flow<SeasonDetailsResponse> = flow {
+        emit(apiService.getSeasonDetails(tvId, seasonNumber))
+    }
+
+    override fun getTvExternalIds(tvId: String): Flow<ExternalIdsResponse> = flow {
+        emit(apiService.getTvExternalIds(tvId))
+    }
+
+    override fun getMovieExternalIds(movieId: String): Flow<ExternalIdsResponse> = flow {
+        emit(apiService.getMovieExternalIds(movieId))
+    }
+
+    override fun getMovieImages(movieId: String): Flow<ImagesResponse> = flow {
+        emit(apiService.getMovieImages(movieId))
+    }
+
+    override fun getTvImages(tvId: String): Flow<ImagesResponse> = flow {
+        emit(apiService.getTvImages(tvId))
+    }
+
+    override fun getMovieKeywords(movieId: String): Flow<List<Keyword>> = flow {
+        emit(apiService.getMovieKeywords(movieId).keywords)
+    }
+
+    override fun getTvKeywords(tvId: String): Flow<List<Keyword>> = flow {
+        emit(apiService.getTvKeywords(tvId).results)
     }
 }

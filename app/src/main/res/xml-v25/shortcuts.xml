@@ -10,7 +10,7 @@
 
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="tech.salroid.filmy.ui.home.MainActivity"
+            android:targetClass="tech.salroid.filmy.ui.home.MainActivityCompose"
             android:targetPackage="tech.salroid.filmy">
             <extra
                 android:name="throughShortcut"

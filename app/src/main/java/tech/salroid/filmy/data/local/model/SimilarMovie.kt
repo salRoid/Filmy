@@ -22,6 +22,9 @@ data class SimilarMovie(
     @SerializedName("title")
     var title: String? = null,
 
+    @SerializedName("name")
+    var name: String? = null,
+
     @SerializedName("original_language")
     var originalLanguage: String? = null,
 
@@ -49,4 +52,10 @@ data class SimilarMovie(
     @SerializedName("vote_count")
     var voteCount: Int? = null
 
-)
+) {
+    // TMDB's tv/{id}/similar and /recommendations return `name`, not
+    // `title` - this fills in for TV results so callers don't need to
+    // know which field a given result actually populated.
+    val displayTitle: String?
+        get() = title ?: name
+}

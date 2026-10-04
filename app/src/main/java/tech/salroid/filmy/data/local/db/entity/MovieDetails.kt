@@ -35,7 +35,7 @@ data class MovieDetails(
     @SerializedName("original_language")
     var originalLanguage: String? = null,
 
-    @SerializedName("original_title")
+    @SerializedName(value = "original_title", alternate = ["original_name"])
     var originalTitle: String? = null,
 
     @SerializedName("overview")
@@ -53,7 +53,7 @@ data class MovieDetails(
     @SerializedName("production_countries")
     var productionCountries: ArrayList<ProductionCountries> = arrayListOf(),
 
-    @SerializedName("release_date")
+    @SerializedName(value = "release_date", alternate = ["first_air_date"])
     var releaseDate: String? = null,
 
     @SerializedName("revenue")
@@ -71,7 +71,7 @@ data class MovieDetails(
     @SerializedName("tagline")
     var tagline: String? = null,
 
-    @SerializedName("title")
+    @SerializedName(value = "title", alternate = ["name"])
     var title: String? = null,
 
     @SerializedName("video")
@@ -86,9 +86,14 @@ data class MovieDetails(
     @SerializedName("trailers")
     var trailers: Trailers? = Trailers(),
 
+    @SerializedName("videos")
+    var videos: Videos? = Videos(),
+
     var type: Int = 0,
 
-    var favorite: Boolean = false,
+    var watched: Boolean = false,
 
-    var watchlist: Boolean = false
+    var watchlist: Boolean = false,
+
+    var userRating: Float? = null
 )

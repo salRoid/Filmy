@@ -1,29 +1,74 @@
 package tech.salroid.filmy.ui.home
 
 import androidx.paging.PagingData
+import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import tech.salroid.filmy.data.local.db.FilmyDatabase
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.*
+import tech.salroid.filmy.data.local.model.collection.CollectionDetailsResponse
+import tech.salroid.filmy.data.local.model.discover.DiscoverFilters
+import tech.salroid.filmy.data.local.model.discover.GenreResponse
+import tech.salroid.filmy.data.local.model.tv.SeasonDetailsResponse
 import tech.salroid.filmy.data.local.model.tv.TvDetails
 import tech.salroid.filmy.data.local.model.watch_providers.WatchProviderResponse
 import tech.salroid.filmy.data.network.MoviesApiHelper
 import javax.inject.Inject
+import javax.inject.Singleton
+import kotlinx.coroutines.Dispatchers
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import tech.salroid.filmy.ui.widget.WidgetRefresher
 
+@Singleton
 class MoviesRepository @Inject constructor(
     private val filmyDatabase: FilmyDatabase,
-    private val moviesApiHelper: MoviesApiHelper
+    private val moviesApiHelper: MoviesApiHelper,
+    @param:ApplicationContext private val context: Context
 ) {
+    private val repositoryScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    private fun refreshWidget() {
+        repositoryScope.launch {
+            WidgetRefresher.refresh(context)
+        }
+    }
+
     fun getMovies(type: String, isTrending: Boolean): Flow<PagingData<Movie>> =
         moviesApiHelper.getMovies(type, isTrending)
+
+    fun getMoviesFlow(type: String, isTrending: Boolean): Flow<Result<MoviesResponse>> =
+        moviesApiHelper.getMoviesFlow(type, isTrending)
+            .map { response ->
+                Result.success(response)
+            }
+            .catch { throwable ->
+                emit(Result.failure(throwable))
+            }
 
     fun getTvShows(type: String, isTrending: Boolean): Flow<PagingData<TvShow>> =
         moviesApiHelper.getTvShows(type, isTrending)
 
+    fun getTvShowsFlow(type: String, isTrending: Boolean): Flow<Result<TvShowResponse>> =
+        moviesApiHelper.getTvShowsFlow(type, isTrending)
+            .map { response ->
+                Result.success(response)
+            }.catch { throwable ->
+                emit(Result.failure(throwable))
+            }
+
     fun getMovieDetailsFromLocal(id: Int, type: Int): MovieDetails? {
         return filmyDatabase.movieDetailsDao().getDetailsOfType(id, type)
     }
+
+    fun getMovieDetailsFlow(id: Int, type: Int): Flow<MovieDetails?> =
+        filmyDatabase.movieDetailsDao().getDetailsFlow(id, type)
 
     fun getRatings(id: String): Flow<RatingResponse> = moviesApiHelper.getOMDBRatings(id)
 
@@ -49,6 +94,12 @@ class MoviesRepository @Inject constructor(
     fun getCastCrewTvShows(id: String): Flow<CastCrewMoviesResponse> =
         moviesApiHelper.getCastCrewTvShows(id)
 
+    fun getCombinedCredits(id: String): Flow<CombinedCreditsResponse> =
+        moviesApiHelper.getCombinedCredits(id)
+
+    fun getPersonExternalIds(id: String): Flow<ExternalIdsResponse> =
+        moviesApiHelper.getPersonExternalIds(id)
+
     fun getSimilar(id: String): Flow<SimilarMoviesResponse> = moviesApiHelper.getSimilar(id)
 
     fun getSimilarTv(id: String): Flow<SimilarMoviesResponse> = moviesApiHelper.getSimilarTv(id)
@@ -62,16 +113,71 @@ class MoviesRepository @Inject constructor(
     fun searchMovies(query: String): Flow<SearchResultResponse> =
         moviesApiHelper.searchMovies(query)
 
+    fun searchMoviesFlow(query: String): Flow<Result<SearchResultResponse>> =
+        moviesApiHelper.searchMovies(query).map {
+            Result.success(it)
+        }.catch {
+            emit(Result.failure(it))
+        }
+
+    fun searchMultiFlow(query: String): Flow<Result<SearchResultResponse>> =
+        moviesApiHelper.searchMulti(query).map {
+            Result.success(it)
+        }.catch {
+            emit(Result.failure(it))
+        }
+
+    /**
+     * Upserts [movieDetails]: updates the existing row in place if one exists for
+     * this id+type, otherwise inserts a new one. Using a real UPDATE (rather than
+     * INSERT-with-REPLACE) for existing rows preserves their SQLite rowid, so
+     * re-saving an already-known item doesn't silently reshuffle list order.
+     */
     fun addMovieDetailsToLocal(movieDetails: MovieDetails) {
-        return filmyDatabase.movieDetailsDao().insert(movieDetails)
+        upsertMovieDetails(movieDetails)
+        refreshWidget()
     }
 
-    fun getFavorites(): List<MovieDetails> = filmyDatabase.movieDetailsDao().getAllFavorites()
+    /**
+     * Same upsert as [addMovieDetailsToLocal], but for many items at once inside a
+     * single DB transaction — Room's Flow observers (getWatched/getWatchlist) only
+     * get notified once, after everything commits, instead of once per item.
+     */
+    suspend fun saveMovieDetailsBatch(items: List<MovieDetails>) {
+        if (items.isEmpty()) return
+        filmyDatabase.withTransaction {
+            items.forEach { upsertMovieDetails(it) }
+        }
+        refreshWidget()
+    }
 
-    fun getWatchlist(): List<MovieDetails> = filmyDatabase.movieDetailsDao().getAllWatchlist()
+    private fun upsertMovieDetails(movieDetails: MovieDetails) {
+        val dao = filmyDatabase.movieDetailsDao()
+        if (dao.getDetailsOfType(movieDetails.id, movieDetails.type) != null) {
+            dao.updateDetails(movieDetails)
+        } else {
+            dao.insert(movieDetails)
+        }
+    }
 
-    fun updateMovieDetails(movieDetails: MovieDetails): Int =
-        filmyDatabase.movieDetailsDao().updateDetails(movieDetails)
+    fun deleteMovieDetailsFromLocal(movieDetails: MovieDetails) {
+        filmyDatabase.movieDetailsDao().delete(movieDetails)
+        refreshWidget()
+    }
+
+    fun getWatched(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllWatched()
+
+    fun getWatchlist(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllWatchlist()
+
+    fun getRated(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getAllRated()
+
+    fun getWatchedUnrated(): Flow<List<MovieDetails>> = filmyDatabase.movieDetailsDao().getWatchedUnrated()
+
+    fun updateMovieDetails(movieDetails: MovieDetails): Int {
+        val result = filmyDatabase.movieDetailsDao().updateDetails(movieDetails)
+        refreshWidget()
+        return result
+    }
 
     fun addAllMoviesToDb(movies: List<Movie>) {
         filmyDatabase.movieDao().insertAll(movies)
@@ -85,4 +191,49 @@ class MoviesRepository @Inject constructor(
 
     fun getWatchProvidersTv(id: String): Flow<WatchProviderResponse> =
         moviesApiHelper.getWatchProvidersTv(id)
+
+    fun discoverMovies(filters: DiscoverFilters): Flow<PagingData<Movie>> =
+        moviesApiHelper.discoverMovies(filters)
+
+    fun discoverTv(filters: DiscoverFilters): Flow<PagingData<TvShow>> =
+        moviesApiHelper.discoverTv(filters)
+
+    fun getMovieGenres(): Flow<GenreResponse> = moviesApiHelper.getMovieGenres()
+
+    fun getTvGenres(): Flow<GenreResponse> = moviesApiHelper.getTvGenres()
+
+    fun getPeople(): Flow<PagingData<Person>> = moviesApiHelper.getPeople()
+
+    fun getMovieCertification(id: String): Flow<ReleaseDatesResponse> =
+        moviesApiHelper.getMovieCertification(id)
+
+    fun getTvCertification(id: String): Flow<ContentRatingsResponse> =
+        moviesApiHelper.getTvCertification(id)
+
+    fun getCollectionDetails(id: Int): Flow<CollectionDetailsResponse> =
+        moviesApiHelper.getCollectionDetails(id)
+
+    fun getSeasonDetails(tvId: String, seasonNumber: Int): Flow<SeasonDetailsResponse> =
+        moviesApiHelper.getSeasonDetails(tvId, seasonNumber)
+
+    fun getSeasonRatings(seriesImdbId: String, seasonNumber: Int): Flow<OmdbSeasonResponse> =
+        moviesApiHelper.getOMDBSeasonRatings(seriesImdbId, seasonNumber)
+
+    fun getTvExternalIds(tvId: String): Flow<ExternalIdsResponse> =
+        moviesApiHelper.getTvExternalIds(tvId)
+
+    fun getMovieExternalIds(movieId: String): Flow<ExternalIdsResponse> =
+        moviesApiHelper.getMovieExternalIds(movieId)
+
+    fun getMovieImages(id: String): Flow<ImagesResponse> =
+        moviesApiHelper.getMovieImages(id)
+
+    fun getTvImages(id: String): Flow<ImagesResponse> =
+        moviesApiHelper.getTvImages(id)
+
+    fun getMovieKeywords(id: String): Flow<List<Keyword>> =
+        moviesApiHelper.getMovieKeywords(id)
+
+    fun getTvKeywords(id: String): Flow<List<Keyword>> =
+        moviesApiHelper.getTvKeywords(id)
 }

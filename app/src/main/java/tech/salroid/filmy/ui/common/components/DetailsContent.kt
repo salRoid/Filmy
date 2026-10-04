@@ -372,12 +372,12 @@ fun DetailsMainContent(
                 onReviewClick = onReviewClick
             )
             MediaSuggestionsSection(
-                title = if (state.isTvShow) "Similar Shows" else "Similar",
+                title = stringResource(if (state.isTvShow) R.string.similar_shows else R.string.similar),
                 response = state.similarMedia,
                 onMediaClick = actions.onMediaClick
             )
             MediaSuggestionsSection(
-                title = if (state.isTvShow) "Recommendations" else "Recommended",
+                title = stringResource(if (state.isTvShow) R.string.recommendations else R.string.recommended),
                 response = state.recommendations,
                 onMediaClick = actions.onMediaClick
             )

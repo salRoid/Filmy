@@ -15,8 +15,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tech.salroid.filmy.data.local.model.Keyword
+import tech.salroid.filmy.ui.theme.AppTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -56,5 +58,19 @@ fun KeywordsSection(
                 )
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun KeywordsSectionPreview() {
+    AppTheme {
+        KeywordsSection(
+            keywords = listOf(
+                Keyword(1, "dream"), Keyword(2, "heist"), Keyword(3, "subconscious"),
+                Keyword(4, "paris, france"), Keyword(5, "spy"), Keyword(6, "mind-bending")
+            ),
+            onKeywordClick = { _, _ -> }
+        )
     }
 }

@@ -158,7 +158,7 @@ fun AppSearchBar(
                 searchUiState is SearchScreenState.Error -> {
                     ErrorWidget(
                         modifier = Modifier.fillMaxSize(),
-                        message = searchUiState.errorMessage,
+                        message = stringResource(searchUiState.errorMessageRes),
                         onRetryClick = { onSearch(query) }
                     )
                 }

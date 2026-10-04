@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,8 +42,9 @@ fun ExternalLinksSection(
     onLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val websiteLabel = stringResource(R.string.website)
     val links = buildList {
-        homepage?.let { add(ExternalLink("Website", it, R.drawable.ic_language_24dp)) }
+        homepage?.let { add(ExternalLink(websiteLabel, it, R.drawable.ic_language_24dp)) }
         imdbId?.let { add(ExternalLink("IMDb", "https://www.imdb.com/title/$it/", R.drawable.imdb)) }
         facebookId?.let { add(ExternalLink("Facebook", "https://www.facebook.com/$it", null)) }
         instagramId?.let { add(ExternalLink("Instagram", "https://www.instagram.com/$it", null)) }

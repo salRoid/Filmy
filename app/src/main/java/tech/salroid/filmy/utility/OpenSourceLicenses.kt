@@ -53,21 +53,6 @@ val OPEN_SOURCE_LICENSES = listOf(
         url = "https://github.com/coil-kt/coil/blob/main/LICENSE.txt"
     ),
     OpenSourceLicense(
-        name = "PhotoView",
-        license = "Apache License 2.0",
-        url = "https://github.com/chrisbanes/PhotoView/blob/master/LICENSE"
-    ),
-    OpenSourceLicense(
-        name = "Shimmer for Android",
-        license = "BSD License",
-        url = "https://github.com/facebook/shimmer-android/blob/main/LICENSE"
-    ),
-    OpenSourceLicense(
-        name = "Lottie for Android",
-        license = "Apache License 2.0",
-        url = "https://github.com/airbnb/lottie-android/blob/master/LICENSE.txt"
-    ),
-    OpenSourceLicense(
         name = "Firebase (Analytics, Crashlytics)",
         license = "Apache License 2.0",
         url = "https://github.com/firebase/firebase-android-sdk/blob/master/LICENSE"

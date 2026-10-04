@@ -15,6 +15,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
@@ -102,6 +103,16 @@ class AccountListsApiTest {
 
         respond("""{"success":false,"status_code":34}""", code = 404)
         assertFalse(helper.isInList("user-token", 7, 1396, isTv = true).first())
+    }
+
+    @Test
+    fun `a membership check that fails for another reason is an error, not a no`() = runBlocking {
+        respond("""{"success":false,"status_code":7}""", code = 401)
+
+        val failure = runCatching { helper.isInList("expired-token", 7, 1396, isTv = true).first() }.exceptionOrNull()
+
+        assertTrue(failure is HttpException)
+        assertEquals(401, (failure as HttpException).code())
     }
 
     @Test

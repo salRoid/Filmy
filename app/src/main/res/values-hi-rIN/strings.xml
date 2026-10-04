@@ -170,4 +170,23 @@
     <string name="person_birthplace">जन्मस्थान</string>
     <string name="person_credits">क्रेडिट</string>
     <string name="lists_relogin_required_message">सूचियों में अब फ़िल्मों के साथ शो भी जोड़े जा सकते हैं। अपनी सूचियों का उपयोग जारी रखने के लिए TMDB में एक बार फिर लॉग इन करें।</string>
+    <string name="similar">मिलती-जुलती फ़िल्में</string>
+    <string name="similar_shows">मिलते-जुलते शो</string>
+    <string name="recommended">अनुशंसित</string>
+    <string name="recommendations">सुझाव</string>
+    <string name="retry">फिर से कोशिश करें</string>
+    <string name="season_number">सीज़न %1$d</string>
+    <string name="runtime_hours_minutes">%1$d घं %2$d मि</string>
+    <string name="runtime_minutes">%1$d मि</string>
+    <string name="rating_source_you">आप</string>
+    <string name="rating_source_generic">रेटिंग</string>
+    <string name="share_with">इसके साथ शेयर करें</string>
+    <string name="share_app_message">इस शानदार मूवी ऐप को देखें।</string>
+    <string name="error_timeout">अनुरोध का समय समाप्त हो गया। कृपया फिर से कोशिश करें।</string>
+    <string name="error_no_internet">इंटरनेट कनेक्शन नहीं है। अपना नेटवर्क जांचें और फिर से कोशिश करें।</string>
+    <string name="error_server">हमारी ओर से कुछ गड़बड़ी हुई। कृपया बाद में फिर से कोशिश करें।</string>
+    <string name="error_generic">कुछ गड़बड़ी हुई। कृपया फिर से कोशिश करें।</string>
+    <string name="remove">हटाएं</string>
+    <string name="collection_short_label">संग्रह</string>
+    <string name="collection_long_label">अपना संग्रह खोलें।</string>
 </resources>

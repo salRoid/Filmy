@@ -62,7 +62,9 @@ fun CollectionItem(
             .clip(RoundedCornerShape(12.dp))
             .combinedClickable(
                 onClick = onClick,
+                onClickLabel = stringResource(R.string.cd_open_details),
                 onLongClick = onLongClick,
+                onLongClickLabel = stringResource(R.string.remove_from_collection),
                 role = Role.Button
             )
             .semantics(mergeDescendants = true) {},

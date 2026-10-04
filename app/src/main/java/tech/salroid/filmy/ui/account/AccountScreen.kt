@@ -228,8 +228,11 @@ fun PreferencesSection(
 
     val currentAppLocales = AppCompatDelegate.getApplicationLocales()
     val currentLanguageTag = if (currentAppLocales.isEmpty) null else currentAppLocales.toLanguageTags()
-    val currentLanguageSummary = SUPPORTED_LANGUAGES.firstOrNull { it.appTag == currentLanguageTag }?.nativeName
-        ?: SUPPORTED_LANGUAGES.first().nativeName
+    // The "System Default" entry is the one label that should follow the app
+    // language; the real languages are always shown in their own script.
+    val currentLanguageSummary = SUPPORTED_LANGUAGES.firstOrNull { it.appTag == currentLanguageTag }
+        ?.takeIf { it.appTag != null }?.nativeName
+        ?: stringResource(R.string.summary_system_default)
 
     var selectedCountry by remember { mutableStateOf(PreferenceHelper.getSelectedCountry(context)) }
     val currentRegionSummary = remember(selectedCountry) {
@@ -390,7 +393,11 @@ fun LanguageSelectionDialog(
                     ) {
                         RadioButton(selected = selected, onClick = null)
                         Text(
-                            text = option.nativeName,
+                            text = if (option.appTag == null) {
+                                stringResource(R.string.summary_system_default)
+                            } else {
+                                option.nativeName
+                            },
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(start = 16.dp)
                         )

@@ -170,4 +170,23 @@
     <string name="person_birthplace">Origen</string>
     <string name="person_credits">Créditos</string>
     <string name="lists_relogin_required_message">Las listas ahora pueden incluir series además de películas. Inicia sesión en TMDB una vez más para seguir usando tus listas.</string>
+    <string name="similar">Similares</string>
+    <string name="similar_shows">Series similares</string>
+    <string name="recommended">Recomendadas</string>
+    <string name="recommendations">Recomendaciones</string>
+    <string name="retry">Reintentar</string>
+    <string name="season_number">Temporada %1$d</string>
+    <string name="runtime_hours_minutes">%1$d h %2$d min</string>
+    <string name="runtime_minutes">%1$d min</string>
+    <string name="rating_source_you">Tú</string>
+    <string name="rating_source_generic">Valoración</string>
+    <string name="share_with">Compartir con</string>
+    <string name="share_app_message">Echa un vistazo a esta increíble app de películas.</string>
+    <string name="error_timeout">Se agotó el tiempo de espera. Inténtalo de nuevo.</string>
+    <string name="error_no_internet">Sin conexión a Internet. Comprueba tu red e inténtalo de nuevo.</string>
+    <string name="error_server">Algo ha fallado por nuestra parte. Inténtalo de nuevo más tarde.</string>
+    <string name="error_generic">Algo ha salido mal. Inténtalo de nuevo.</string>
+    <string name="remove">Quitar</string>
+    <string name="collection_short_label">Colección</string>
+    <string name="collection_long_label">Abre tu colección.</string>
 </resources>

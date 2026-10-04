@@ -5,12 +5,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.window.core.layout.WindowSizeClass
 import tech.salroid.filmy.ui.LocalWindowSizeClass
-import tech.salroid.filmy.utility.toUserMessage
+import tech.salroid.filmy.utility.toUserMessageRes
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -134,7 +135,7 @@ fun <T : Any> PaginatedPreviewList(
                 is LoadState.Error -> {
                     ErrorWidget(
                         modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        message = state.error.toUserMessage(),
+                        message = stringResource(state.error.toUserMessageRes()),
                         onRetryClick = { items.retry() }
                     )
                 }

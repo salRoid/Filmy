@@ -3,6 +3,7 @@ package tech.salroid.filmy.utility
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import tech.salroid.filmy.R
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
@@ -66,27 +67,27 @@ class ExtensionsTest {
         assertEquals("", "".parseHtml())
     }
 
-    // --- toUserMessage ---
+    // --- toUserMessageRes ---
 
     @Test
-    fun `toUserMessage maps SocketTimeoutException to a timeout message`() {
-        assertEquals("Request timed out. Please try again.", SocketTimeoutException().toUserMessage())
+    fun `toUserMessageRes maps SocketTimeoutException to a timeout message`() {
+        assertEquals(R.string.error_timeout, SocketTimeoutException().toUserMessageRes())
     }
 
     @Test
-    fun `toUserMessage maps a generic IOException to a no-internet message`() {
-        assertEquals("No internet connection. Check your network and try again.", IOException().toUserMessage())
+    fun `toUserMessageRes maps a generic IOException to a no-internet message`() {
+        assertEquals(R.string.error_no_internet, IOException().toUserMessageRes())
     }
 
     @Test
-    fun `toUserMessage maps HttpException to a server-side message`() {
+    fun `toUserMessageRes maps HttpException to a server-side message`() {
         val httpException = HttpException(Response.error<Any>(500, "".toResponseBody(null)))
 
-        assertEquals("Something went wrong on our end. Please try again later.", httpException.toUserMessage())
+        assertEquals(R.string.error_server, httpException.toUserMessageRes())
     }
 
     @Test
-    fun `toUserMessage maps any other throwable to a generic message`() {
-        assertEquals("Something went wrong. Please try again.", RuntimeException("oops").toUserMessage())
+    fun `toUserMessageRes maps any other throwable to a generic message`() {
+        assertEquals(R.string.error_generic, RuntimeException("oops").toUserMessageRes())
     }
 }

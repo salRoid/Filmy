@@ -9,6 +9,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import tech.salroid.filmy.FakeSharedPreferences
 import tech.salroid.filmy.utility.PreferenceHelper
+import tech.salroid.filmy.utility.resolveImageLanguages
 
 /**
  * Exercises AppModule.provideOkhttpClient's interceptor chain end-to-end without
@@ -20,7 +21,11 @@ class AppModuleInterceptorTest {
 
     private lateinit var capturedRequest: Request
 
-    private fun executeAndCapture(url: String, prefs: FakeSharedPreferences = FakeSharedPreferences()) {
+    private fun executeAndCapture(
+        url: String,
+        prefs: FakeSharedPreferences = FakeSharedPreferences(),
+        userAuthorization: String? = null
+    ) {
         val client = AppModule.provideOkhttpClient(prefs)
             .newBuilder()
             .addInterceptor { chain ->
@@ -34,7 +39,9 @@ class AppModuleInterceptorTest {
             }
             .build()
 
-        client.newCall(Request.Builder().url(url).build()).execute().close()
+        val request = Request.Builder().url(url)
+        userAuthorization?.let { request.header("Authorization", it) }
+        client.newCall(request.build()).execute().close()
     }
 
     @Test
@@ -76,6 +83,42 @@ class AppModuleInterceptorTest {
         executeAndCapture("https://api.themoviedb.org/3/movie/popular", prefs)
 
         assertEquals("IN", capturedRequest.url.queryParameter("region"))
+    }
+
+    @Test
+    fun `a call made with the user's own token keeps it and gets no app token`() {
+        executeAndCapture("https://api.themoviedb.org/4/list/7", userAuthorization = "Bearer user-token")
+
+        assertEquals(listOf("Bearer user-token"), capturedRequest.headers("Authorization"))
+    }
+
+    @Test
+    fun `a region already on the request is replaced, not duplicated`() {
+        val prefs = FakeSharedPreferences()
+        prefs.edit().putString(PreferenceHelper.COUNTRY_KEY, "IN").apply()
+
+        executeAndCapture("https://api.themoviedb.org/3/movie/popular?region=US&language=xx", prefs)
+
+        assertEquals(listOf("IN"), capturedRequest.url.queryParameterValues("region"))
+        assertEquals(1, capturedRequest.url.queryParameterValues("language").size)
+    }
+
+    @Test
+    fun `image requests also ask for English and untagged images`() {
+        executeAndCapture("https://api.themoviedb.org/3/movie/550/images")
+
+        val language = capturedRequest.url.queryParameter("language")!!
+        assertEquals(
+            resolveImageLanguages(language),
+            capturedRequest.url.queryParameter("include_image_language")
+        )
+    }
+
+    @Test
+    fun `other requests carry no image language filter`() {
+        executeAndCapture("https://api.themoviedb.org/3/movie/550")
+
+        assertNull(capturedRequest.url.queryParameter("include_image_language"))
     }
 
     @Test

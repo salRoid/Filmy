@@ -4,8 +4,8 @@
     <string name="trailer_img_url" formatted="false" translatable="false">https://img.youtube.com/vi/%1$s/0.jpg</string>
     <string name="poster_prefix_500" translatable="false">https://image.tmdb.org/t/p/w1280</string>
 
-    <string name="collection_short_label" translatable="false">Collections</string>
-    <string name="collection_long_label" translatable="false">Open your collection.</string>
+    <string name="collection_short_label">Collections</string>
+    <string name="collection_long_label">Open your collection.</string>
 
 
     <string name="app_name">Filmy</string>
@@ -59,7 +59,7 @@
     <!-- New: TODO Finalise position -->
     <string name="movie_poster_url" formatted="false" translatable="false">https://image.tmdb.org/t/p/w500%1$s</string>
     <string name="member_profile_url" formatted="false" translatable="false">https://image.tmdb.org/t/p/w500%1$s</string>
-    <string name="remove" translatable="false">Remove</string>
+    <string name="remove">Remove</string>
     <string name="plus_more">+ More</string>
     <string name="discover_movies_title">Discover Movies</string>
     <string name="discover_shows_title">Discover Shows</string>
@@ -210,4 +210,20 @@
     <string name="person_age">Age</string>
     <string name="person_birthplace">Birthplace</string>
     <string name="person_credits">Credits</string>
+    <string name="similar">Similar</string>
+    <string name="similar_shows">Similar Shows</string>
+    <string name="recommended">Recommended</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="retry">Retry</string>
+    <string name="season_number">Season %1$d</string>
+    <string name="runtime_hours_minutes">%1$dh %2$dm</string>
+    <string name="runtime_minutes">%1$dm</string>
+    <string name="rating_source_you">You</string>
+    <string name="rating_source_generic">Rating</string>
+    <string name="share_with">Share with</string>
+    <string name="share_app_message">Check out this awesome movie app.</string>
+    <string name="error_timeout">Request timed out. Please try again.</string>
+    <string name="error_no_internet">No internet connection. Check your network and try again.</string>
+    <string name="error_server">Something went wrong on our end. Please try again later.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
 </resources>

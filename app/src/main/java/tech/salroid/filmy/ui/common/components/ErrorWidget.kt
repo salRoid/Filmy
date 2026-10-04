@@ -48,7 +48,7 @@ fun ErrorWidget(
                 onClick = onRetryClick
             ) {
                 Text(
-                    "RETRY",
+                    stringResource(R.string.retry).uppercase(),
                     style = MaterialTheme.typography.labelLarge.copy(
                         fontWeight = FontWeight.Bold,
                     ),

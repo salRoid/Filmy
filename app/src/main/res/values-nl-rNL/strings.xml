@@ -169,4 +169,23 @@
     <string name="person_birthplace">Geboorteplaats</string>
     <string name="person_credits">Titels</string>
     <string name="lists_relogin_required_message">Lijsten kunnen nu naast films ook series bevatten. Log nog één keer in bij TMDB om je lijsten te blijven gebruiken.</string>
+    <string name="similar">Vergelijkbaar</string>
+    <string name="similar_shows">Vergelijkbare series</string>
+    <string name="recommended">Aanbevolen</string>
+    <string name="recommendations">Aanbevelingen</string>
+    <string name="retry">Opnieuw proberen</string>
+    <string name="season_number">Seizoen %1$d</string>
+    <string name="runtime_hours_minutes">%1$d u %2$d min</string>
+    <string name="runtime_minutes">%1$d min</string>
+    <string name="rating_source_you">Jij</string>
+    <string name="rating_source_generic">Beoordeling</string>
+    <string name="share_with">Delen met</string>
+    <string name="share_app_message">Bekijk deze geweldige film-app.</string>
+    <string name="error_timeout">Time-out van het verzoek. Probeer het opnieuw.</string>
+    <string name="error_no_internet">Geen internetverbinding. Controleer je netwerk en probeer het opnieuw.</string>
+    <string name="error_server">Er ging iets mis aan onze kant. Probeer het later opnieuw.</string>
+    <string name="error_generic">Er ging iets mis. Probeer het opnieuw.</string>
+    <string name="remove">Verwijderen</string>
+    <string name="collection_short_label">Collectie</string>
+    <string name="collection_long_label">Open je collectie.</string>
 </resources>

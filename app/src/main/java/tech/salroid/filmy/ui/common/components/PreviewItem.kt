@@ -113,6 +113,7 @@ fun PreviewItem(
                         if (isFlipped) isFlipped = false else onItemClick()
                     },
                     onClickLabel = stringResource(R.string.cd_open_details),
+                    onLongClickLabel = if (hasQuickActions) stringResource(R.string.more_options) else null,
                     role = Role.Button,
                     onLongClick = if (hasQuickActions) {
                         // combinedClickable already performs LongPress haptic itself

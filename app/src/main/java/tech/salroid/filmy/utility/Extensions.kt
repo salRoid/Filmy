@@ -7,6 +7,7 @@ import android.content.Intent.ACTION_VIEW
 import android.content.res.Configuration
 import android.graphics.Color
 import android.util.TypedValue
+import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.view.WindowCompat
@@ -108,7 +109,7 @@ fun Context.shareMedia(title: String, tagline: String?, imdbId: String?, isTvSho
             "*$title*\n${tagline ?: ""}$link\n"
         )
     }
-    startActivity(Intent.createChooser(shareIntent, "Share with"))
+    startActivity(Intent.createChooser(shareIntent, getString(R.string.share_with)))
 }
 
 fun Context.openUrl(url: String) {
@@ -120,9 +121,10 @@ fun Context.openUrl(url: String) {
  * raw exception message (e.g. "Unable to resolve host ...") that Retrofit/
  * OkHttp throwables carry by default.
  */
-fun Throwable.toUserMessage(): String = when (this) {
-    is SocketTimeoutException -> "Request timed out. Please try again."
-    is IOException -> "No internet connection. Check your network and try again."
-    is HttpException -> "Something went wrong on our end. Please try again later."
-    else -> "Something went wrong. Please try again."
+@StringRes
+fun Throwable.toUserMessageRes(): Int = when (this) {
+    is SocketTimeoutException -> R.string.error_timeout
+    is IOException -> R.string.error_no_internet
+    is HttpException -> R.string.error_server
+    else -> R.string.error_generic
 }

@@ -181,8 +181,8 @@ fun RatingCard(
                         RatingSource.ROTTEN_TOMATOES -> "Rotten Tomatoes"
                         RatingSource.TMDB -> "TMDB"
                         RatingSource.METACRITIC -> "Metacritic"
-                        RatingSource.USER -> "You"
-                        else -> "Rating"
+                        RatingSource.USER -> stringResource(R.string.rating_source_you)
+                        else -> stringResource(R.string.rating_source_generic)
                     },
                     style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp),
                     lineHeight = 13.sp,

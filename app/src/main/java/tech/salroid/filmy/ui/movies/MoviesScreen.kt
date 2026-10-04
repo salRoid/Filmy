@@ -32,7 +32,7 @@ import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.common.icons.DropdownMenuIcon
 import tech.salroid.filmy.ui.movies.components.MoviesList
 import tech.salroid.filmy.ui.search.SearchScreenState
-import tech.salroid.filmy.utility.toUserMessage
+import tech.salroid.filmy.utility.toUserMessageRes
 
 private fun labelFor(category: Movie.MovieType): Int = when (category) {
     Movie.MovieType.TRENDING -> R.string.label_trending
@@ -128,7 +128,7 @@ fun MoviesScreen(
                 is LoadState.Error -> {
                     ErrorWidget(
                         modifier = Modifier.weight(1f),
-                        message = state.error.toUserMessage(),
+                        message = stringResource(state.error.toUserMessageRes()),
                         onRetryClick = { movies.retry() }
                     )
                 }

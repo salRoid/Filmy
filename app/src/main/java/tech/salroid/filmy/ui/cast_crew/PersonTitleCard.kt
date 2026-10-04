@@ -373,7 +373,7 @@ private fun String?.toYearMonthDay(): Triple<Int, Int, Int>? {
 
 @Preview
 @Composable
-private fun PersonTitleCardPreview() {
+internal fun PersonTitleCardPreview() {
     AppTheme {
         PersonTitleCard(
             member = CastCrewDetailsResponse(

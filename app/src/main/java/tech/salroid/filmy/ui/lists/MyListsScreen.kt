@@ -39,6 +39,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -47,6 +48,7 @@ import tech.salroid.filmy.data.local.model.account.TmdbList
 import tech.salroid.filmy.ui.common.components.LoadingWidget
 import tech.salroid.filmy.ui.home.LoginViewModel
 import tech.salroid.filmy.ui.home.rememberLoginLauncher
+import tech.salroid.filmy.ui.theme.AppTheme
 
 @Composable
 fun MyListsScreen(
@@ -257,7 +259,12 @@ private fun ListRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .combinedClickable(onClick = onClick, onLongClick = onLongClick, role = Role.Button)
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick,
+                onLongClickLabel = stringResource(R.string.remove),
+                role = Role.Button
+            )
             .semantics(mergeDescendants = true) {}
             .padding(horizontal = 16.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -310,4 +317,34 @@ private fun CreateListDialog(
             }
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun MyListsContentPreview() {
+    AppTheme {
+        MyListsContent(
+            lists = listOf(
+                TmdbList(id = 1, name = "Weekend watch", itemCount = 12),
+                TmdbList(id = 2, name = "Shows to finish", itemCount = 3)
+            ),
+            isLoading = false,
+            onListClick = { _, _ -> },
+            onCreateClick = {},
+            onListLongClick = {},
+            onBackClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun MyListsReloginPreview() {
+    AppTheme {
+        LoggedOutContent(
+            message = stringResource(R.string.lists_relogin_required_message),
+            onLoginClick = {},
+            onBackClick = {}
+        )
+    }
 }

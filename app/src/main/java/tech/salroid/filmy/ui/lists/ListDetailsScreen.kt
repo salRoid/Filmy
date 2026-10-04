@@ -21,7 +21,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +41,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -46,8 +49,10 @@ import androidx.compose.runtime.LaunchedEffect
 import coil3.compose.AsyncImage
 import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.account.TmdbListItem
+import tech.salroid.filmy.ui.LocalWindowSizeClass
 import tech.salroid.filmy.ui.common.components.LoadingWidget
 import tech.salroid.filmy.ui.common.components.PreviewList
+import tech.salroid.filmy.ui.theme.AppTheme
 import tech.salroid.filmy.utility.toReadableDate
 
 @Composable
@@ -167,7 +172,13 @@ private fun ListEntry(
     ) {
         Column(
             modifier = Modifier
-                .combinedClickable(onClick = onClick, onLongClick = onLongClick, role = Role.Button)
+                .combinedClickable(
+                    onClick = onClick,
+                    onClickLabel = stringResource(R.string.cd_open_details),
+                    onLongClick = onLongClick,
+                    onLongClickLabel = stringResource(R.string.remove),
+                    role = Role.Button
+                )
                 .semantics(mergeDescendants = true) {},
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -192,6 +203,28 @@ private fun ListEntry(
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
                 text = item.displayDate?.toReadableDate() ?: ""
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+internal fun ListDetailsContentPreview() {
+    val windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass
+    CompositionLocalProvider(LocalWindowSizeClass provides windowSizeClass) {
+        AppTheme {
+            ListDetailsContent(
+                title = "Weekend watch",
+                items = listOf(
+                    TmdbListItem(id = 550, mediaType = "movie", title = "Fight Club", releaseDate = "1999-10-15"),
+                    TmdbListItem(id = 1396, mediaType = "tv", name = "Breaking Bad", firstAirDate = "2008-01-20"),
+                    TmdbListItem(id = 27205, mediaType = "movie", title = "Inception", releaseDate = "2010-07-16")
+                ),
+                isLoading = false,
+                onItemClick = {},
+                onItemLongClick = {},
+                onBackClick = {}
             )
         }
     }

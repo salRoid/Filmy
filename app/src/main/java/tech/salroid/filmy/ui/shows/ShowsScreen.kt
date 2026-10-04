@@ -25,7 +25,7 @@ import tech.salroid.filmy.ui.common.components.LoadingWidget
 import tech.salroid.filmy.ui.common.components.QuickActionState
 import tech.salroid.filmy.ui.shows.components.ShowsList
 import tech.salroid.filmy.ui.search.SearchScreenState
-import tech.salroid.filmy.utility.toUserMessage
+import tech.salroid.filmy.utility.toUserMessageRes
 
 private fun labelFor(category: TvShow.ShowType): Int = when (category) {
     TvShow.ShowType.TRENDING -> R.string.tv_label_trending
@@ -93,7 +93,7 @@ fun ShowsScreen(
                 is LoadState.Error -> {
                     ErrorWidget(
                         modifier = Modifier.weight(1f),
-                        message = state.error.toUserMessage(),
+                        message = stringResource(state.error.toUserMessageRes()),
                         onRetryClick = { shows.retry() }
                     )
                 }

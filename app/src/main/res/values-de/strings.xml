@@ -170,4 +170,23 @@
     <string name="person_birthplace">Geburtsort</string>
     <string name="person_credits">Titel</string>
     <string name="lists_relogin_required_message">Listen können jetzt neben Filmen auch Serien enthalten. Melden Sie sich einmal erneut bei TMDB an, um Ihre Listen weiter zu nutzen.</string>
+    <string name="similar">Ähnliche Filme</string>
+    <string name="similar_shows">Ähnliche Serien</string>
+    <string name="recommended">Empfohlen</string>
+    <string name="recommendations">Empfehlungen</string>
+    <string name="retry">Erneut versuchen</string>
+    <string name="season_number">Staffel %1$d</string>
+    <string name="runtime_hours_minutes">%1$d Std. %2$d Min.</string>
+    <string name="runtime_minutes">%1$d Min.</string>
+    <string name="rating_source_you">Sie</string>
+    <string name="rating_source_generic">Bewertung</string>
+    <string name="share_with">Teilen mit</string>
+    <string name="share_app_message">Schauen Sie sich diese großartige Film-App an.</string>
+    <string name="error_timeout">Zeitüberschreitung der Anfrage. Bitte versuchen Sie es erneut.</string>
+    <string name="error_no_internet">Keine Internetverbindung. Überprüfen Sie Ihr Netzwerk und versuchen Sie es erneut.</string>
+    <string name="error_server">Bei uns ist etwas schiefgelaufen. Bitte versuchen Sie es später erneut.</string>
+    <string name="error_generic">Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.</string>
+    <string name="remove">Entfernen</string>
+    <string name="collection_short_label">Sammlung</string>
+    <string name="collection_long_label">Ihre Sammlung öffnen.</string>
 </resources>

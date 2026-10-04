@@ -15,6 +15,8 @@ object PreferenceHelper {
 
     private const val COLD_START = "coldStart"
     const val SESSION_ID = "sessionID"
+    const val USER_ACCESS_TOKEN = "userAccessToken"
+    const val ACCOUNT_OBJECT_ID = "accountObjectId"
     const val COUNTRY_KEY = "selectedCountry"
     private const val RECENT_SEARCHES_KEY = "recentSearches"
     private const val RECENT_SEARCHES_DELIMITER = ""

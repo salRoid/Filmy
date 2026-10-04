@@ -40,9 +40,19 @@ class LoginViewModel @Inject constructor(
     val uiStateProfile: StateFlow<Profile?> = accountRepository.getProfileFlow()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
+    /**
+     * Whether the user's own v4 access token is on hand, which lists need on
+     * top of the session. Reactive for the same reason as [uiStateProfile].
+     * False while logged in means the login predates lists moving to v4, and
+     * logging in once more fixes it.
+     */
+    val canManageLists: StateFlow<Boolean> = accountRepository.canManageListsFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), accountRepository.canManageLists())
+
     var requestToken: String? = null
     var accessToken: String? = null
     var sessionId: String? = null
+    private var accountObjectId: String? = null
 
     init {
         repairStaleLocalProfile()
@@ -79,6 +89,7 @@ class LoginViewModel @Inject constructor(
                     _isAuthenticating.value = false
                 }.collect {
                     accessToken = it.accessToken
+                    accountObjectId = it.accountId
                     getSession()
                 }
         }
@@ -93,8 +104,14 @@ class LoginViewModel @Inject constructor(
                     it.printStackTrace()
                     _isAuthenticating.value = false
                 }.collect {
+                    // Logging in again over an existing session (to pick up
+                    // list access) leaves the old one behind - revoke it.
+                    val previousSessionId = accountRepository.getSessionIdFromPref()
                     sessionId = it.sessionId
                     accountRepository.storeSessionId(sessionId)
+                    if (previousSessionId != null && previousSessionId != sessionId) {
+                        revokeSession(previousSessionId)
+                    }
                     sessionId?.let { session ->
                         getProfile(session)
                     }
@@ -116,8 +133,20 @@ class LoginViewModel @Inject constructor(
                     withContext(Dispatchers.IO) {
                         accountRepository.saveProfileToLocal(profile)
                     }
+                    // Stored last, so list access only ever appears alongside
+                    // a complete login.
+                    accountRepository.storeUserAccessToken(accessToken, accountObjectId)
                     _isAuthenticating.value = false
                 }
+        }
+    }
+
+    private fun revokeSession(sessionId: String) {
+        viewModelScope.launch {
+            accountRepository.deleteSession(sessionId)
+                .flowOn(Dispatchers.IO)
+                .catch { it.printStackTrace() }
+                .collect { }
         }
     }
 
@@ -138,6 +167,7 @@ class LoginViewModel @Inject constructor(
     fun logout() {
         viewModelScope.launch {
             val sessionId = accountRepository.getSessionIdFromPref()
+            val userAccessToken = accountRepository.getUserAccessToken()
             _isLoggingOut.value = true
 
             // Best-effort server-side revoke. Whether this succeeds, fails,
@@ -151,10 +181,18 @@ class LoginViewModel @Inject constructor(
                     .collect { }
             }
 
+            if (userAccessToken != null) {
+                accountRepository.revokeUserAccessToken(userAccessToken)
+                    .flowOn(Dispatchers.IO)
+                    .catch { it.printStackTrace() }
+                    .collect { }
+            }
+
             withContext(Dispatchers.IO) {
                 accountRepository.clearProfile()
             }
             accountRepository.storeSessionId(null)
+            accountRepository.storeUserAccessToken(null, null)
             _isLoggingOut.value = false
         }
     }

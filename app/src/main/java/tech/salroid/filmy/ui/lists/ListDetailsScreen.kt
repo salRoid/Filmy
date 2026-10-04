@@ -43,7 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.LaunchedEffect
 import coil3.compose.AsyncImage
 import tech.salroid.filmy.R
-import tech.salroid.filmy.data.local.db.entity.Movie
+import tech.salroid.filmy.data.local.model.account.TmdbListItem
 import tech.salroid.filmy.ui.common.components.LoadingWidget
 import tech.salroid.filmy.ui.common.components.PreviewList
 import tech.salroid.filmy.utility.toReadableDate
@@ -54,12 +54,13 @@ fun ListDetailsScreen(
     title: String,
     viewModel: ListDetailsViewModel = hiltViewModel(),
     onMovieClick: (Int) -> Unit,
+    onShowClick: (Int) -> Unit,
     onBackClick: () -> Unit
 ) {
     val items by viewModel.items.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
-    var movieToRemove by remember { mutableStateOf<Movie?>(null) }
+    var itemToRemove by remember { mutableStateOf<TmdbListItem?>(null) }
 
     LaunchedEffect(listId) {
         viewModel.loadListDetails(listId)
@@ -69,26 +70,26 @@ fun ListDetailsScreen(
         title = title,
         items = items,
         isLoading = isLoading,
-        onMovieClick = { onMovieClick(it.id) },
-        onMovieLongClick = { movieToRemove = it },
+        onItemClick = { if (it.isTv) onShowClick(it.id) else onMovieClick(it.id) },
+        onItemLongClick = { itemToRemove = it },
         onBackClick = onBackClick
     )
 
-    movieToRemove?.let { movie ->
+    itemToRemove?.let { item ->
         AlertDialog(
-            onDismissRequest = { movieToRemove = null },
+            onDismissRequest = { itemToRemove = null },
             title = { Text(stringResource(R.string.remove)) },
-            text = { Text(movie.title ?: "") },
+            text = { Text(item.displayTitle) },
             confirmButton = {
                 TextButton(onClick = {
-                    viewModel.removeItem(listId, movie)
-                    movieToRemove = null
+                    viewModel.removeItem(listId, item)
+                    itemToRemove = null
                 }) {
                     Text(stringResource(R.string.remove))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { movieToRemove = null }) {
+                TextButton(onClick = { itemToRemove = null }) {
                     Text(stringResource(android.R.string.cancel))
                 }
             }
@@ -100,10 +101,10 @@ fun ListDetailsScreen(
 @Composable
 fun ListDetailsContent(
     title: String,
-    items: List<Movie>,
+    items: List<TmdbListItem>,
     isLoading: Boolean,
-    onMovieClick: (Movie) -> Unit,
-    onMovieLongClick: (Movie) -> Unit,
+    onItemClick: (TmdbListItem) -> Unit,
+    onItemLongClick: (TmdbListItem) -> Unit,
     onBackClick: () -> Unit
 ) {
     Scaffold(
@@ -139,11 +140,11 @@ fun ListDetailsContent(
                         .padding(top = 16.dp),
                     items = items.size
                 ) { index ->
-                    val movie = items[index]
-                    ListMovieItem(
-                        movie = movie,
-                        onClick = { onMovieClick(movie) },
-                        onLongClick = { onMovieLongClick(movie) }
+                    val item = items[index]
+                    ListEntry(
+                        item = item,
+                        onClick = { onItemClick(item) },
+                        onLongClick = { onItemLongClick(item) }
                     )
                 }
             }
@@ -153,8 +154,8 @@ fun ListDetailsContent(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ListMovieItem(
-    movie: Movie,
+private fun ListEntry(
+    item: TmdbListItem,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
@@ -172,21 +173,21 @@ private fun ListMovieItem(
                     .height(170.dp)
                     .clip(RoundedCornerShape(corner = CornerSize(8.dp))),
                 contentScale = ContentScale.Crop,
-                model = stringResource(R.string.movie_poster_url, movie.posterPath ?: ""),
-                contentDescription = movie.title,
+                model = stringResource(R.string.movie_poster_url, item.posterPath ?: ""),
+                contentDescription = item.displayTitle,
                 error = painterResource(R.drawable.poster_error_placeholder)
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                text = movie.title ?: ""
+                text = item.displayTitle
             )
             Text(
                 modifier = Modifier.padding(top = 4.dp).alpha(0.8f),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
-                text = movie.releaseDate?.toReadableDate() ?: ""
+                text = item.displayDate?.toReadableDate() ?: ""
             )
         }
     }

@@ -5,6 +5,7 @@ import tech.salroid.filmy.data.local.db.entity.Profile
 import tech.salroid.filmy.data.local.model.MoviesResponse
 import tech.salroid.filmy.data.local.model.TvShowResponse
 import tech.salroid.filmy.data.local.model.account.CreateListResponse
+import tech.salroid.filmy.data.local.model.account.ListItemsResponse
 import tech.salroid.filmy.data.local.model.account.RatedResponse
 import tech.salroid.filmy.data.local.model.account.TmdbListDetailsResponse
 import tech.salroid.filmy.data.local.model.account.TmdbListsResponse
@@ -16,6 +17,7 @@ interface AccountApiHelper {
     fun getAccessToken(requestTokenData: RequestTokenData): Flow<RequestTokenResponse>
     fun getSession(accessTokenData: AccessTokenData): Flow<SessionDataResponse>
     fun deleteSession(sessionId: String): Flow<DeleteSession>
+    fun revokeAccessToken(accessToken: String): Flow<TmdbStatusResponse>
     fun getProfile(sessionId: String): Flow<Profile>
 
     fun markAsFavorite(
@@ -39,12 +41,14 @@ interface AccountApiHelper {
     fun getWatchlistMovies(accountId: Int, sessionId: String, page: Int): Flow<MoviesResponse>
     fun getWatchlistTv(accountId: Int, sessionId: String, page: Int): Flow<TvShowResponse>
 
-    fun createList(sessionId: String, name: String, description: String): Flow<CreateListResponse>
-    fun getLists(accountId: Int, sessionId: String, page: Int): Flow<TmdbListsResponse>
-    fun getListDetails(listId: Int, sessionId: String, page: Int): Flow<TmdbListDetailsResponse>
-    fun addToList(listId: Int, sessionId: String, mediaId: Int): Flow<TmdbStatusResponse>
-    fun removeFromList(listId: Int, sessionId: String, mediaId: Int): Flow<TmdbStatusResponse>
-    fun deleteList(listId: Int, sessionId: String): Flow<TmdbStatusResponse>
+    // Lists - TMDB v4, authorised with the user's own access token.
+    fun createList(accessToken: String, name: String, description: String): Flow<CreateListResponse>
+    fun getLists(accessToken: String, accountObjectId: String, page: Int): Flow<TmdbListsResponse>
+    fun getListDetails(accessToken: String, listId: Int, page: Int): Flow<TmdbListDetailsResponse>
+    fun isInList(accessToken: String, listId: Int, mediaId: Int, isTv: Boolean): Flow<Boolean>
+    fun addToList(accessToken: String, listId: Int, mediaId: Int, isTv: Boolean): Flow<ListItemsResponse>
+    fun removeFromList(accessToken: String, listId: Int, mediaId: Int, isTv: Boolean): Flow<ListItemsResponse>
+    fun deleteList(accessToken: String, listId: Int): Flow<TmdbStatusResponse>
 
     fun rateMovie(movieId: Int, sessionId: String, value: Float): Flow<TmdbStatusResponse>
     fun deleteMovieRating(movieId: Int, sessionId: String): Flow<TmdbStatusResponse>

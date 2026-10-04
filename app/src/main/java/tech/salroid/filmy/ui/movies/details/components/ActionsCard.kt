@@ -126,25 +126,23 @@ fun ActionsCard(
             modifier = Modifier.weight(1f)
         )
 
-        if (!state.isTvShow) {
-            VerticalDivider(
-                modifier = Modifier.height(24.dp),
-                thickness = 0.5.dp,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-            )
+        VerticalDivider(
+            modifier = Modifier.height(24.dp),
+            thickness = 0.5.dp,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+        )
 
-            // Add to List
-            ActionItem(
-                isSelected = false,
-                onIcon = painterResource(R.drawable.ic_collections_bookmark_24dp),
-                offIcon = painterResource(R.drawable.ic_collections_bookmark_24dp),
-                label = stringResource(R.string.add_to_list),
-                selectedColor = tint,
-                unselectedColor = unselectedColor,
-                onClick = actions.onAddToListClick,
-                modifier = Modifier.weight(1f)
-            )
-        }
+        // Add to List
+        ActionItem(
+            isSelected = false,
+            onIcon = painterResource(R.drawable.ic_collections_bookmark_24dp),
+            offIcon = painterResource(R.drawable.ic_collections_bookmark_24dp),
+            label = stringResource(R.string.add_to_list),
+            selectedColor = tint,
+            unselectedColor = unselectedColor,
+            onClick = actions.onAddToListClick,
+            modifier = Modifier.weight(1f)
+        )
     }
 }
 

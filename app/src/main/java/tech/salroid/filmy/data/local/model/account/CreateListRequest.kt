@@ -9,6 +9,6 @@ data class CreateListRequest(
     @SerializedName("description")
     var description: String = "",
 
-    @SerializedName("language")
+    @SerializedName("iso_639_1")
     var language: String = "en",
 )

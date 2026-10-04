@@ -475,6 +475,9 @@ private fun NavGraphBuilder.commonScreens(navController: NavHostController) {
             onMovieClick = { id ->
                 navController.navigate(AppRoute.MovieDetails.create(id))
             },
+            onShowClick = { id ->
+                navController.navigate(AppRoute.ShowDetails.create(id))
+            },
             onBackClick = { navController.popBackStack() }
         )
     }

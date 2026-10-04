@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
@@ -486,27 +489,31 @@ class MovieDetailsViewModel @Inject constructor(
     /** Synchronous - just a SharedPreferences read, safe to call right before a UI decision. */
     fun isLoggedIn(): Boolean = accountRepository.isLoggedIn()
 
+    /** Synchronous, like [isLoggedIn] - whether the list calls below can run. */
+    fun canManageLists(): Boolean = accountRepository.canManageLists()
+
     /**
-     * Fetches the user's TMDB lists and, for each, checks whether [movieId] is
-     * already a member (TMDB has no cheaper "is this movie in this list" lookup,
-     * so this fetches each list's items once - fine for a personal number of lists).
+     * Fetches the user's TMDB lists and, for each, asks TMDB whether this
+     * movie or show is already a member.
      */
-    fun loadUserLists(movieId: Int) {
+    fun loadUserLists(mediaId: Int, isTv: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            val sessionId = accountRepository.getSessionIdFromPref() ?: return@launch
-            val accountId = accountRepository.getProfileFromLocal()?.id ?: return@launch
+            if (!accountRepository.canManageLists()) return@launch
             try {
-                val lists = accountRepository.getLists(accountId, sessionId).first().results
+                val lists = accountRepository.getLists().first().results
                 _userLists.emit(lists)
 
-                val membership = mutableMapOf<Int, Boolean>()
-                lists.forEach { list ->
-                    try {
-                        val details = accountRepository.getListDetails(list.id, sessionId).first()
-                        membership[list.id] = details.items.any { it.id == movieId }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
+                val membership = coroutineScope {
+                    lists.map { list ->
+                        async {
+                            try {
+                                list.id to accountRepository.isInList(list.id, mediaId, isTv).first()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                null
+                            }
+                        }
+                    }.awaitAll().filterNotNull().toMap()
                 }
                 _listMembership.emit(membership)
             } catch (e: Exception) {
@@ -519,23 +526,21 @@ class MovieDetailsViewModel @Inject constructor(
      * Optimistically flips [listId]'s membership checkbox, then pushes the
      * add/remove to TMDB in the background - reverting the checkbox if it fails.
      */
-    fun toggleListMembership(listId: Int, movieId: Int, currentlyIn: Boolean) {
+    fun toggleListMembership(listId: Int, mediaId: Int, isTv: Boolean, currentlyIn: Boolean) {
         _listMembership.value = _listMembership.value + (listId to !currentlyIn)
 
         viewModelScope.launch(Dispatchers.IO) {
-            val sessionId = accountRepository.getSessionIdFromPref()
-            if (sessionId == null) {
-                _listMembership.value = _listMembership.value + (listId to currentlyIn)
-                return@launch
-            }
-            try {
-                if (currentlyIn) {
-                    accountRepository.removeFromList(listId, sessionId, movieId).first()
+            val changed = try {
+                accountRepository.canManageLists() && if (currentlyIn) {
+                    accountRepository.removeFromList(listId, mediaId, isTv).first().allSucceeded
                 } else {
-                    accountRepository.addToList(listId, sessionId, movieId).first()
+                    accountRepository.addToList(listId, mediaId, isTv).first().allSucceeded
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                false
+            }
+            if (!changed) {
                 _listMembership.value = _listMembership.value + (listId to currentlyIn)
             }
         }
@@ -544,9 +549,9 @@ class MovieDetailsViewModel @Inject constructor(
     /** Creates a new list on TMDB and appends it to [userLists] on success. */
     fun createList(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val sessionId = accountRepository.getSessionIdFromPref() ?: return@launch
+            if (!accountRepository.canManageLists()) return@launch
             try {
-                val response = accountRepository.createList(sessionId, name).first()
+                val response = accountRepository.createList(name).first()
                 val listId = response.listId ?: return@launch
                 _userLists.value = _userLists.value + TmdbList(id = listId, name = name, itemCount = 0)
             } catch (e: Exception) {

@@ -190,5 +190,5 @@ dependencies {
 
     // Compose
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
-    testImplementation("app.cash.turbine:turbine")
+    testImplementation("app.cash.turbine:turbine:1.2.0")
 }

@@ -3,7 +3,7 @@ package tech.salroid.filmy.data.local.model.account
 import com.google.gson.annotations.SerializedName
 
 data class CreateListResponse(
-    @SerializedName("list_id")
+    @SerializedName("id")
     var listId: Int? = null,
 
     @SerializedName("success")

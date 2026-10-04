@@ -13,6 +13,8 @@ import tech.salroid.filmy.ui.common.components.DetailsSkeletonLoader
 import tech.salroid.filmy.ui.common.components.ErrorWidget
 import tech.salroid.filmy.ui.details.MovieDetailsViewModel
 import tech.salroid.filmy.ui.common.model.DetailsActions
+import tech.salroid.filmy.ui.home.LoginViewModel
+import tech.salroid.filmy.ui.movies.details.components.AddToListFlow
 import tech.salroid.filmy.ui.movies.details.components.RateMediaSheet
 import tech.salroid.filmy.utility.openUrl
 import tech.salroid.filmy.utility.openYoutubeTrailer
@@ -23,6 +25,7 @@ fun ShowDetailsScreen(
     showId: Int,
     modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel = hiltViewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
     onViewAllCastClick: (Int, Boolean, String) -> Unit,
     onViewAllReviewsClick: (Int, Boolean, String) -> Unit,
     onMemberClick: (Int, Boolean) -> Unit,
@@ -38,6 +41,7 @@ fun ShowDetailsScreen(
     val isError by viewModel.uiStateError.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
+    var showAddToList by remember { mutableStateOf(false) }
     var showRateSheet by remember { mutableStateOf(false) }
 
     LaunchedEffect(showId) {
@@ -73,6 +77,7 @@ fun ShowDetailsScreen(
                     },
                     onBackNavigation = onBackNavigation,
                     onSeasonClick = onSeasonClick,
+                    onAddToListClick = { showAddToList = true },
                     onRateClick = { showRateSheet = true },
                     onGalleryClick = onGalleryClick,
                     onKeywordClick = onKeywordClick,
@@ -84,6 +89,16 @@ fun ShowDetailsScreen(
                     actions = actions,
                     modifier = modifier
                 )
+
+                if (showAddToList) {
+                    AddToListFlow(
+                        mediaId = showId,
+                        isTv = true,
+                        viewModel = viewModel,
+                        loginViewModel = loginViewModel,
+                        onDismiss = { showAddToList = false }
+                    )
+                }
 
                 if (showRateSheet) {
                     RateMediaSheet(

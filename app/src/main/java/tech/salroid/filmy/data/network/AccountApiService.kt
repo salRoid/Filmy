@@ -3,6 +3,8 @@ package tech.salroid.filmy.data.network
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -12,7 +14,8 @@ import tech.salroid.filmy.data.local.model.TvShowResponse
 import tech.salroid.filmy.data.local.model.account.CreateListRequest
 import tech.salroid.filmy.data.local.model.account.CreateListResponse
 import tech.salroid.filmy.data.local.model.account.FavoriteRequest
-import tech.salroid.filmy.data.local.model.account.ListItemRequest
+import tech.salroid.filmy.data.local.model.account.ListItemsRequest
+import tech.salroid.filmy.data.local.model.account.ListItemsResponse
 import tech.salroid.filmy.data.local.model.account.RatedResponse
 import tech.salroid.filmy.data.local.model.account.RatingRequest
 import tech.salroid.filmy.data.local.model.account.TmdbListDetailsResponse
@@ -31,6 +34,9 @@ interface AccountApiService {
 
     @POST("authentication/session/convert/4")
     suspend fun getSession(@Body request: AccessTokenData): SessionDataResponse
+
+    @HTTP(method = "DELETE", path = "auth/access_token", hasBody = true)
+    suspend fun revokeAccessToken(@Body request: AccessTokenData): TmdbStatusResponse
 
     @DELETE("authentication/session")
     suspend fun deleteSession(@Body request: DeleteSession): DeleteSession
@@ -80,44 +86,57 @@ interface AccountApiService {
         @Query("page") page: Int
     ): TvShowResponse
 
-    @POST("list")
+    // Lists use TMDB's v4 API (the leading slash escapes the /3/ base path):
+    // unlike v3 lists, which are movie-only, v4 lists hold movies and shows.
+    // They are authorised with the user's own v4 access token.
+
+    @POST("/4/list")
     suspend fun createList(
-        @Query("session_id") sessionId: String,
+        @Header("Authorization") authorization: String,
         @Body request: CreateListRequest
     ): CreateListResponse
 
-    @GET("account/{account_id}/lists")
+    @GET("/4/account/{account_object_id}/lists")
     suspend fun getLists(
-        @Path("account_id") accountId: Int,
-        @Query("session_id") sessionId: String,
+        @Header("Authorization") authorization: String,
+        @Path("account_object_id") accountObjectId: String,
         @Query("page") page: Int
     ): TmdbListsResponse
 
-    @GET("list/{list_id}")
+    @GET("/4/list/{list_id}")
     suspend fun getListDetails(
+        @Header("Authorization") authorization: String,
         @Path("list_id") listId: Int,
-        @Query("session_id") sessionId: String,
         @Query("page") page: Int
     ): TmdbListDetailsResponse
 
-    @POST("list/{list_id}/add_item")
+    /** Succeeds when the item is in the list; TMDB answers 404 when it is not. */
+    @GET("/4/list/{list_id}/item_status")
+    suspend fun getListItemStatus(
+        @Header("Authorization") authorization: String,
+        @Path("list_id") listId: Int,
+        @Query("media_id") mediaId: Int,
+        @Query("media_type") mediaType: String
+    ): TmdbStatusResponse
+
+    @POST("/4/list/{list_id}/items")
     suspend fun addToList(
+        @Header("Authorization") authorization: String,
         @Path("list_id") listId: Int,
-        @Query("session_id") sessionId: String,
-        @Body request: ListItemRequest
-    ): TmdbStatusResponse
+        @Body request: ListItemsRequest
+    ): ListItemsResponse
 
-    @POST("list/{list_id}/remove_item")
+    @HTTP(method = "DELETE", path = "/4/list/{list_id}/items", hasBody = true)
     suspend fun removeFromList(
+        @Header("Authorization") authorization: String,
         @Path("list_id") listId: Int,
-        @Query("session_id") sessionId: String,
-        @Body request: ListItemRequest
-    ): TmdbStatusResponse
+        @Body request: ListItemsRequest
+    ): ListItemsResponse
 
-    @DELETE("list/{list_id}")
+    @DELETE("/4/list/{list_id}")
     suspend fun deleteList(
-        @Path("list_id") listId: Int,
-        @Query("session_id") sessionId: String
+        @Header("Authorization") authorization: String,
+        @Path("list_id") listId: Int
     ): TmdbStatusResponse
 
     @POST("movie/{movie_id}/rating")

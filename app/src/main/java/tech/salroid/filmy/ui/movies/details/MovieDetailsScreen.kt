@@ -10,12 +10,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tech.salroid.filmy.ui.common.components.DetailsContent
 import tech.salroid.filmy.ui.common.components.DetailsSkeletonLoader
 import tech.salroid.filmy.ui.common.components.ErrorWidget
-import tech.salroid.filmy.ui.common.components.LoginRequiredDialog
 import tech.salroid.filmy.ui.details.MovieDetailsViewModel
 import tech.salroid.filmy.ui.common.model.DetailsActions
 import tech.salroid.filmy.ui.home.LoginViewModel
-import tech.salroid.filmy.ui.home.rememberLoginLauncher
-import tech.salroid.filmy.ui.movies.details.components.AddToListSheet
+import tech.salroid.filmy.ui.movies.details.components.AddToListFlow
 import tech.salroid.filmy.ui.movies.details.components.RateMediaSheet
 import tech.salroid.filmy.utility.openUrl
 import tech.salroid.filmy.utility.openYoutubeTrailer
@@ -39,28 +37,13 @@ fun MovieDetailsScreen(
     val state by viewModel.mediaDetailsUiState.collectAsStateWithLifecycle()
     val movieDetails by viewModel.uiStateMovieDetails.collectAsStateWithLifecycle()
     val isError by viewModel.uiStateError.collectAsStateWithLifecycle()
-    val userLists by viewModel.userLists.collectAsStateWithLifecycle()
-    val listMembership by viewModel.listMembership.collectAsStateWithLifecycle()
-    val loginProfile by loginViewModel.uiStateProfile.collectAsStateWithLifecycle()
-    val startLogin = rememberLoginLauncher(loginViewModel)
     val context = LocalContext.current
 
-    var showAddToListSheet by remember { mutableStateOf(false) }
+    var showAddToList by remember { mutableStateOf(false) }
     var showRateSheet by remember { mutableStateOf(false) }
-    var showLoginPrompt by remember { mutableStateOf(false) }
 
     LaunchedEffect(movieId) {
         viewModel.fetchAllMovieDetails(movieId.toString(), 0)
-    }
-
-    // Logging in here opens the list sheet right away with fresh data -
-    // no need to leave the details screen and come back.
-    LaunchedEffect(loginProfile) {
-        if (loginProfile != null && showLoginPrompt) {
-            showLoginPrompt = false
-            viewModel.loadUserLists(movieId)
-            showAddToListSheet = true
-        }
     }
 
     Crossfade(
@@ -89,14 +72,7 @@ fun MovieDetailsScreen(
                         )
                     },
                     onBackNavigation = onBackNavigation,
-                    onAddToListClick = {
-                        if (viewModel.isLoggedIn()) {
-                            viewModel.loadUserLists(movieId)
-                            showAddToListSheet = true
-                        } else {
-                            showLoginPrompt = true
-                        }
-                    },
+                    onAddToListClick = { showAddToList = true },
                     onCollectionClick = onCollectionClick,
                     onRateClick = { showRateSheet = true },
                     onGalleryClick = onGalleryClick,
@@ -110,15 +86,13 @@ fun MovieDetailsScreen(
                     modifier = modifier
                 )
 
-                if (showAddToListSheet) {
-                    AddToListSheet(
-                        lists = userLists,
-                        membership = listMembership,
-                        onToggle = { listId, currentlyIn ->
-                            viewModel.toggleListMembership(listId, movieId, currentlyIn)
-                        },
-                        onCreateList = { name -> viewModel.createList(name) },
-                        onDismiss = { showAddToListSheet = false }
+                if (showAddToList) {
+                    AddToListFlow(
+                        mediaId = movieId,
+                        isTv = false,
+                        viewModel = viewModel,
+                        loginViewModel = loginViewModel,
+                        onDismiss = { showAddToList = false }
                     )
                 }
 
@@ -147,13 +121,5 @@ fun MovieDetailsScreen(
         } else {
             DetailsSkeletonLoader(modifier = modifier)
         }
-    }
-
-    if (showLoginPrompt) {
-        LoginRequiredDialog(
-            message = "Log in to your TMDB account to add this to a list.",
-            onLogin = startLogin,
-            onDismiss = { showLoginPrompt = false }
-        )
     }
 }

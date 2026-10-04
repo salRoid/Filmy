@@ -30,11 +30,10 @@ class MyListsViewModel @Inject constructor(
 
     fun loadLists() {
         viewModelScope.launch(Dispatchers.IO) {
-            val sessionId = accountRepository.getSessionIdFromPref() ?: return@launch
-            val accountId = accountRepository.getProfileFromLocal()?.id ?: return@launch
+            if (!accountRepository.canManageLists()) return@launch
             _isLoading.emit(true)
             try {
-                val response = accountRepository.getLists(accountId, sessionId).first()
+                val response = accountRepository.getLists().first()
                 _lists.emit(response.results)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -46,9 +45,9 @@ class MyListsViewModel @Inject constructor(
 
     fun createList(name: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val sessionId = accountRepository.getSessionIdFromPref() ?: return@launch
+            if (!accountRepository.canManageLists()) return@launch
             try {
-                val response = accountRepository.createList(sessionId, name).first()
+                val response = accountRepository.createList(name).first()
                 val listId = response.listId ?: return@launch
                 _lists.value = _lists.value + TmdbList(id = listId, name = name, itemCount = 0)
             } catch (e: Exception) {
@@ -63,13 +62,12 @@ class MyListsViewModel @Inject constructor(
         _lists.value = _lists.value.filterNot { it.id == listId }
 
         viewModelScope.launch(Dispatchers.IO) {
-            val sessionId = accountRepository.getSessionIdFromPref()
-            if (sessionId == null) {
+            if (!accountRepository.canManageLists()) {
                 _lists.value = previous
                 return@launch
             }
             try {
-                accountRepository.deleteList(listId, sessionId).first()
+                accountRepository.deleteList(listId).first()
             } catch (e: Exception) {
                 e.printStackTrace()
                 _lists.value = previous

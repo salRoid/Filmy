@@ -56,6 +56,7 @@ fun MyListsScreen(
     val lists by viewModel.lists.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val profile by loginViewModel.uiStateProfile.collectAsStateWithLifecycle()
+    val canManageLists by loginViewModel.canManageLists.collectAsStateWithLifecycle()
     val startLogin = rememberLoginLauncher(loginViewModel)
 
     var showCreateDialog by remember { mutableStateOf(false) }
@@ -63,14 +64,21 @@ fun MyListsScreen(
 
     // Logging in here refreshes this same screen's lists immediately -
     // no need to leave and come back.
-    LaunchedEffect(profile) {
-        if (profile != null) {
+    LaunchedEffect(profile, canManageLists) {
+        if (profile != null && canManageLists) {
             viewModel.loadLists()
         }
     }
 
-    if (profile == null) {
+    if (profile == null || !canManageLists) {
         LoggedOutContent(
+            // Logged in, but from before lists could hold shows: one more
+            // login grants the access they need.
+            message = if (profile != null) {
+                "Lists can now hold shows as well as movies.\nLog in to TMDB once more to keep using your lists."
+            } else {
+                "Log in to your TMDB account to view\n and manage your lists"
+            },
             onLoginClick = startLogin,
             onBackClick = onBackClick
         )
@@ -199,6 +207,7 @@ fun MyListsContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LoggedOutContent(
+    message: String,
     onLoginClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
@@ -223,7 +232,7 @@ private fun LoggedOutContent(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Log in to your TMDB account to view\n and manage your lists",
+                text = message,
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant

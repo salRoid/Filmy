@@ -37,7 +37,11 @@ object AppModule {
 
             val requestBuilder = it.request().newBuilder().url(url)
                 .addHeader("content-type", "application/json")
-                .addHeader("authorization", "Bearer ${BuildConfig.TMDB_ACCESS_TOKEN}")
+            // Calls made on the user's behalf (v4 lists) carry the user's own
+            // access token; everything else is authorised as the app.
+            if (original.header("Authorization") == null) {
+                requestBuilder.addHeader("authorization", "Bearer ${BuildConfig.TMDB_ACCESS_TOKEN}")
+            }
             val request = requestBuilder.build()
             it.proceed(request)
 
@@ -65,6 +69,8 @@ object AppModule {
             Log.d("OkHttp", it)
         }.apply {
             level = HttpLoggingInterceptor.Level.HEADERS
+            // Requests can now carry the user's own access token.
+            redactHeader("Authorization")
         }).build()
 
     @Provides

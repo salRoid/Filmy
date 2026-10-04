@@ -2,13 +2,16 @@ package tech.salroid.filmy.data.network
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
 import tech.salroid.filmy.data.local.db.entity.Profile
 import tech.salroid.filmy.data.local.model.MoviesResponse
 import tech.salroid.filmy.data.local.model.TvShowResponse
 import tech.salroid.filmy.data.local.model.account.CreateListRequest
 import tech.salroid.filmy.data.local.model.account.CreateListResponse
 import tech.salroid.filmy.data.local.model.account.FavoriteRequest
-import tech.salroid.filmy.data.local.model.account.ListItemRequest
+import tech.salroid.filmy.data.local.model.account.ListItemRef
+import tech.salroid.filmy.data.local.model.account.ListItemsRequest
+import tech.salroid.filmy.data.local.model.account.ListItemsResponse
 import tech.salroid.filmy.data.local.model.account.RatedResponse
 import tech.salroid.filmy.data.local.model.account.RatingRequest
 import tech.salroid.filmy.data.local.model.account.TmdbListDetailsResponse
@@ -17,7 +20,14 @@ import tech.salroid.filmy.data.local.model.account.TmdbStatusResponse
 import tech.salroid.filmy.data.local.model.account.WatchlistRequest
 import tech.salroid.filmy.data.local.model.login.*
 
+private const val HTTP_NOT_FOUND = 404
+
 class AccountApiHelperImpl(private val accountApiService: AccountApiService) : AccountApiHelper {
+
+    private fun bearer(accessToken: String) = "Bearer $accessToken"
+
+    private fun listItemsOf(mediaId: Int, isTv: Boolean) =
+        ListItemsRequest(listOf(ListItemRef(ListItemRef.mediaTypeOf(isTv), mediaId)))
 
     override fun getRequestToken(requestTokenData: RequestTokenData): Flow<RequestTokenResponse> =
         flow {
@@ -37,6 +47,11 @@ class AccountApiHelperImpl(private val accountApiService: AccountApiService) : A
     override fun deleteSession(sessionId: String): Flow<DeleteSession> =
         flow {
             emit(accountApiService.deleteSession(DeleteSession(sessionId = sessionId)))
+        }
+
+    override fun revokeAccessToken(accessToken: String): Flow<TmdbStatusResponse> =
+        flow {
+            emit(accountApiService.revokeAccessToken(AccessTokenData(accessToken = accessToken)))
         }
 
     override fun getProfile(sessionId: String): Flow<Profile> =
@@ -98,39 +113,53 @@ class AccountApiHelperImpl(private val accountApiService: AccountApiService) : A
             emit(accountApiService.getWatchlistTv(accountId, sessionId, page))
         }
 
-    override fun createList(sessionId: String, name: String, description: String): Flow<CreateListResponse> =
+    override fun createList(accessToken: String, name: String, description: String): Flow<CreateListResponse> =
         flow {
             emit(
                 accountApiService.createList(
-                    sessionId,
+                    bearer(accessToken),
                     CreateListRequest(name = name, description = description)
                 )
             )
         }
 
-    override fun getLists(accountId: Int, sessionId: String, page: Int): Flow<TmdbListsResponse> =
+    override fun getLists(accessToken: String, accountObjectId: String, page: Int): Flow<TmdbListsResponse> =
         flow {
-            emit(accountApiService.getLists(accountId, sessionId, page))
+            emit(accountApiService.getLists(bearer(accessToken), accountObjectId, page))
         }
 
-    override fun getListDetails(listId: Int, sessionId: String, page: Int): Flow<TmdbListDetailsResponse> =
+    override fun getListDetails(accessToken: String, listId: Int, page: Int): Flow<TmdbListDetailsResponse> =
         flow {
-            emit(accountApiService.getListDetails(listId, sessionId, page))
+            emit(accountApiService.getListDetails(bearer(accessToken), listId, page))
         }
 
-    override fun addToList(listId: Int, sessionId: String, mediaId: Int): Flow<TmdbStatusResponse> =
+    override fun isInList(accessToken: String, listId: Int, mediaId: Int, isTv: Boolean): Flow<Boolean> =
         flow {
-            emit(accountApiService.addToList(listId, sessionId, ListItemRequest(mediaId = mediaId)))
+            val isMember = try {
+                accountApiService.getListItemStatus(
+                    bearer(accessToken), listId, mediaId, ListItemRef.mediaTypeOf(isTv)
+                )
+                true
+            } catch (e: HttpException) {
+                // 404 is TMDB's "not in this list"; anything else is a real failure.
+                if (e.code() == HTTP_NOT_FOUND) false else throw e
+            }
+            emit(isMember)
         }
 
-    override fun removeFromList(listId: Int, sessionId: String, mediaId: Int): Flow<TmdbStatusResponse> =
+    override fun addToList(accessToken: String, listId: Int, mediaId: Int, isTv: Boolean): Flow<ListItemsResponse> =
         flow {
-            emit(accountApiService.removeFromList(listId, sessionId, ListItemRequest(mediaId = mediaId)))
+            emit(accountApiService.addToList(bearer(accessToken), listId, listItemsOf(mediaId, isTv)))
         }
 
-    override fun deleteList(listId: Int, sessionId: String): Flow<TmdbStatusResponse> =
+    override fun removeFromList(accessToken: String, listId: Int, mediaId: Int, isTv: Boolean): Flow<ListItemsResponse> =
         flow {
-            emit(accountApiService.deleteList(listId, sessionId))
+            emit(accountApiService.removeFromList(bearer(accessToken), listId, listItemsOf(mediaId, isTv)))
+        }
+
+    override fun deleteList(accessToken: String, listId: Int): Flow<TmdbStatusResponse> =
+        flow {
+            emit(accountApiService.deleteList(bearer(accessToken), listId))
         }
 
     override fun rateMovie(movieId: Int, sessionId: String, value: Float): Flow<TmdbStatusResponse> =

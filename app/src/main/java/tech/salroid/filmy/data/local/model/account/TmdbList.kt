@@ -12,7 +12,7 @@ data class TmdbList(
     @SerializedName("description")
     var description: String? = null,
 
-    @SerializedName("item_count")
+    @SerializedName("number_of_items")
     var itemCount: Int? = null,
 
     @SerializedName("poster_path")

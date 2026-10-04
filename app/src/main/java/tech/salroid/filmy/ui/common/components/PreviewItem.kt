@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -156,9 +157,12 @@ fun PreviewItem(
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 isFlipped = false
                             },
+                            // The 24dp circle sits centred in the 48dp touch target, 12dp
+                            // in from its edges; shifting the target 8dp outwards puts the
+                            // circle 4dp from the card's top-right corner.
                             modifier = Modifier
                                 .align(Alignment.TopEnd)
-                                .padding(4.dp)
+                                .offset(x = 8.dp, y = (-8).dp)
                         ) {
                             Box(
                                 modifier = Modifier

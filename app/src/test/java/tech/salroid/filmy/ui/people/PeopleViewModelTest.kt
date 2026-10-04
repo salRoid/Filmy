@@ -1,11 +1,9 @@
 package tech.salroid.filmy.ui.people
 
-import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -14,6 +12,7 @@ import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.ui.home.MoviesRepository
 
 class PeopleViewModelTest {
@@ -25,7 +24,7 @@ class PeopleViewModelTest {
 
     @After
     fun tearDown() {
-        createdViewModel?.viewModelScope?.cancel()
+        createdViewModel?.cancelScopeAndJoin()
     }
 
     @Test

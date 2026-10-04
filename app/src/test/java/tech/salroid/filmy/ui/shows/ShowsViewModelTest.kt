@@ -6,7 +6,6 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -19,6 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.FakeSharedPreferences
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.data.local.model.TvShow
 import tech.salroid.filmy.data.model.TvShowPreview
@@ -56,7 +56,7 @@ class ShowsViewModelTest {
     // during a later test.
     @After
     fun tearDown() {
-        viewModel.viewModelScope.cancel()
+        viewModel.cancelScopeAndJoin()
     }
 
     @Test

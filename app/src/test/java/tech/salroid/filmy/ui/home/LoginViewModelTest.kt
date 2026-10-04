@@ -1,6 +1,5 @@
 package tech.salroid.filmy.ui.home
 
-import androidx.lifecycle.viewModelScope
 import app.cash.turbine.test
 import io.mockk.coEvery
 import io.mockk.every
@@ -9,7 +8,6 @@ import io.mockk.verify
 import io.mockk.verifyOrder
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -19,6 +17,7 @@ import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.db.entity.Profile
 import tech.salroid.filmy.data.local.model.login.DeleteSession
 import tech.salroid.filmy.data.local.model.login.RequestTokenResponse
@@ -56,7 +55,7 @@ class LoginViewModelTest {
     // MainDispatcherRule resets Main.
     @After
     fun tearDown() {
-        createdViewModel?.viewModelScope?.cancel()
+        createdViewModel?.cancelScopeAndJoin()
     }
 
     @Test

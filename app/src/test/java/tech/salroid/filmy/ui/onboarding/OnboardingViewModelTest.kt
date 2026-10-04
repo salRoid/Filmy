@@ -1,10 +1,8 @@
 package tech.salroid.filmy.ui.onboarding
 
-import androidx.lifecycle.viewModelScope
 import app.cash.turbine.test
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -12,6 +10,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.db.entity.Movie
 import tech.salroid.filmy.data.local.model.MoviesResponse
 import tech.salroid.filmy.ui.home.MoviesRepository
@@ -35,7 +34,7 @@ class OnboardingViewModelTest {
     // "main looper is not available" crash from an unrelated later test.
     @After
     fun tearDown() {
-        viewModel?.viewModelScope?.cancel()
+        viewModel?.cancelScopeAndJoin()
     }
 
     @Test

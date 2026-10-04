@@ -6,8 +6,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -16,6 +14,7 @@ import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.FakeSharedPreferences
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.model.SearchResult
 import tech.salroid.filmy.data.local.model.SearchResultResponse
 import tech.salroid.filmy.ui.home.MoviesRepository
@@ -42,7 +41,7 @@ class SearchViewModelTest {
 
     @After
     fun tearDown() {
-        viewModel.viewModelScope.cancel()
+        viewModel.cancelScopeAndJoin()
     }
 
     @Test

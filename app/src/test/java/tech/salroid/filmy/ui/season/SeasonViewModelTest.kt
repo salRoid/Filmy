@@ -1,10 +1,8 @@
 package tech.salroid.filmy.ui.season
 
-import androidx.lifecycle.viewModelScope
 import app.cash.turbine.test
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -14,6 +12,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.model.ExternalIdsResponse
 import tech.salroid.filmy.data.local.model.OmdbEpisodeRating
 import tech.salroid.filmy.data.local.model.OmdbSeasonResponse
@@ -56,7 +55,7 @@ class SeasonViewModelTest {
     // MainDispatcherRule has already reset it.
     @After
     fun tearDown() {
-        viewModel.viewModelScope.cancel()
+        viewModel.cancelScopeAndJoin()
     }
 
     @Test

@@ -1,6 +1,5 @@
 package tech.salroid.filmy.ui.lists
 
-import androidx.lifecycle.viewModelScope
 import app.cash.turbine.test
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -9,7 +8,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -19,6 +17,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.model.account.CreateListResponse
 import tech.salroid.filmy.data.local.model.account.TmdbList
 import tech.salroid.filmy.data.local.model.account.TmdbListDetailsResponse
@@ -47,7 +46,7 @@ class MyListsViewModelTest {
     // next test's MainDispatcherRule resets Main.
     @After
     fun tearDown() {
-        createdViewModel?.viewModelScope?.cancel()
+        createdViewModel?.cancelScopeAndJoin()
     }
 
     @Test

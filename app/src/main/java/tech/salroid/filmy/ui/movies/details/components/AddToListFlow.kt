@@ -36,6 +36,7 @@ fun AddToListFlow(
         val userLists by viewModel.userLists.collectAsStateWithLifecycle()
         val listMembership by viewModel.listMembership.collectAsStateWithLifecycle()
         val isLoading by viewModel.userListsLoading.collectAsStateWithLifecycle()
+        val pendingListIds by viewModel.pendingListIds.collectAsStateWithLifecycle()
 
         LaunchedEffect(mediaId, isTv) {
             viewModel.loadUserLists(mediaId, isTv)
@@ -44,6 +45,7 @@ fun AddToListFlow(
         AddToListSheet(
             lists = userLists,
             membership = listMembership,
+            pendingListIds = pendingListIds,
             isLoading = isLoading,
             onToggle = { listId, currentlyIn ->
                 viewModel.toggleListMembership(listId, mediaId, isTv, currentlyIn)

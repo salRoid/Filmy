@@ -92,11 +92,11 @@ class CollectionsViewModelTest {
     @Test
     fun `removeWatched writes the local change and keeps it when the push succeeds`() = runTest {
         every { moviesRepository.addMovieDetailsToLocal(any()) } returns Unit
-        coEvery { accountSyncRepository.pushItemState(any()) } returns true
+        coEvery { accountSyncRepository.pushItemState(any(), any()) } returns true
 
         viewModel.removeWatched(watchedItem)
 
-        coVerify(timeout = 1000) { accountSyncRepository.pushItemState(watchedItem.copy(watched = false)) }
+        coVerify(timeout = 1000) { accountSyncRepository.pushItemState(watchedItem.copy(watched = false), any()) }
         verify(exactly = 1) { moviesRepository.addMovieDetailsToLocal(watchedItem.copy(watched = false)) }
         verify(exactly = 0) { moviesRepository.addMovieDetailsToLocal(watchedItem) }
     }
@@ -104,7 +104,7 @@ class CollectionsViewModelTest {
     @Test
     fun `removeWatched rolls back the local change when the push fails`() = runTest {
         every { moviesRepository.addMovieDetailsToLocal(any()) } returns Unit
-        coEvery { accountSyncRepository.pushItemState(any()) } returns false
+        coEvery { accountSyncRepository.pushItemState(any(), any()) } returns false
 
         viewModel.removeWatched(watchedItem)
 
@@ -115,7 +115,7 @@ class CollectionsViewModelTest {
     @Test
     fun `removeWatchlist rolls back the local change when the push fails`() = runTest {
         every { moviesRepository.addMovieDetailsToLocal(any()) } returns Unit
-        coEvery { accountSyncRepository.pushItemState(any()) } returns false
+        coEvery { accountSyncRepository.pushItemState(any(), any()) } returns false
 
         viewModel.removeWatchlist(watchlistItem)
 

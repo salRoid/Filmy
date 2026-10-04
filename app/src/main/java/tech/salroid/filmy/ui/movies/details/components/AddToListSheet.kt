@@ -63,6 +63,7 @@ fun AddToListSheet(
     onToggle: (listId: Int, currentlyIn: Boolean) -> Unit,
     onCreateList: (name: String) -> Unit,
     onDismiss: () -> Unit,
+    pendingListIds: Set<Int> = emptySet(),
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 ) {
     ModalBottomSheet(
@@ -72,6 +73,7 @@ fun AddToListSheet(
         AddToListContent(
             lists = lists,
             membership = membership,
+            pendingListIds = pendingListIds,
             isLoading = isLoading,
             onToggle = onToggle,
             onCreateList = onCreateList
@@ -85,6 +87,8 @@ fun AddToListSheet(
  *
  * [membership] has no entry for a list until TMDB has said whether the title
  * is in it; that row shows a small spinner and can't be toggled until then.
+ * Rows in [pendingListIds] have a change on its way to TMDB and are locked
+ * the same way until it lands.
  */
 @Composable
 internal fun AddToListContent(
@@ -92,7 +96,8 @@ internal fun AddToListContent(
     membership: Map<Int, Boolean>,
     isLoading: Boolean,
     onToggle: (listId: Int, currentlyIn: Boolean) -> Unit,
-    onCreateList: (name: String) -> Unit
+    onCreateList: (name: String) -> Unit,
+    pendingListIds: Set<Int> = emptySet()
 ) {
     var showCreateDialog by remember { mutableStateOf(false) }
 
@@ -141,6 +146,7 @@ internal fun AddToListContent(
                         ListToggleRow(
                             list = list,
                             isMember = isMember,
+                            isBusy = isMember == null || list.id in pendingListIds,
                             onToggle = { onToggle(list.id, isMember == true) }
                         )
                     }
@@ -172,11 +178,16 @@ internal fun AddToListContent(
     }
 }
 
-/** [isMember] is null while that list's membership is still being checked. */
+/**
+ * [isMember] is null while that list's membership is still being checked.
+ * While [isBusy] the row keeps its (optimistic) colour but shows a spinner
+ * and ignores taps.
+ */
 @Composable
 private fun ListToggleRow(
     list: TmdbList,
     isMember: Boolean?,
+    isBusy: Boolean,
     onToggle: () -> Unit
 ) {
     val selected = isMember == true
@@ -197,7 +208,7 @@ private fun ListToggleRow(
             .background(containerColor)
             .toggleable(
                 value = selected,
-                enabled = isMember != null,
+                enabled = !isBusy,
                 role = Role.Checkbox,
                 onValueChange = { onToggle() }
             )
@@ -221,7 +232,7 @@ private fun ListToggleRow(
         }
         Spacer(modifier = Modifier.width(12.dp))
         Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-            Crossfade(targetState = isMember, label = "list_row_state") { state ->
+            Crossfade(targetState = if (isBusy) null else isMember, label = "list_row_state") { state ->
                 when (state) {
                     null -> CircularProgressIndicator(
                         modifier = Modifier.size(18.dp),

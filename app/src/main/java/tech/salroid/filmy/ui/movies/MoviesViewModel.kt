@@ -77,7 +77,7 @@ class MoviesViewModel @Inject constructor(
             val merged = mergedLocalDetails(movie)
             val updated = merged.copy(watchlist = !merged.watchlist)
             moviesRepository.addMovieDetailsToLocal(updated)
-            if (!accountSyncRepository.pushItemState(updated)) {
+            if (!accountSyncRepository.pushItemState(updated, previous = merged)) {
                 moviesRepository.addMovieDetailsToLocal(merged)
             }
         }
@@ -88,7 +88,7 @@ class MoviesViewModel @Inject constructor(
             val merged = mergedLocalDetails(movie)
             val updated = merged.copy(watched = !merged.watched)
             moviesRepository.addMovieDetailsToLocal(updated)
-            if (!accountSyncRepository.pushItemState(updated)) {
+            if (!accountSyncRepository.pushItemState(updated, previous = merged)) {
                 moviesRepository.addMovieDetailsToLocal(merged)
             }
         }

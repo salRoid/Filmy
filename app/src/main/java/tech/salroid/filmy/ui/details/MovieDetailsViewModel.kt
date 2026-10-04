@@ -71,6 +71,14 @@ class MovieDetailsViewModel @Inject constructor(
     private val _userListsLoading = MutableStateFlow(false)
     val userListsLoading: StateFlow<Boolean> = _userListsLoading.asStateFlow()
 
+    /**
+     * Lists with an add/remove still on its way to TMDB. Their rows are
+     * locked until it finishes: two overlapping requests for one list can
+     * land out of order and leave TMDB opposite to what is shown.
+     */
+    private val _pendingListIds = MutableStateFlow<Set<Int>>(emptySet())
+    val pendingListIds: StateFlow<Set<Int>> = _pendingListIds.asStateFlow()
+
     val uiStateMovieDetails: StateFlow<MovieDetails?> = _uiStateMovieDetails.asStateFlow()
     val uiStateTvDetails: StateFlow<TvDetails?> = _uiStateTvDetails.asStateFlow()
     val uiStateRatingResponse: StateFlow<RatingResponse?> = _uiStateRatings.asStateFlow()
@@ -441,7 +449,7 @@ class MovieDetailsViewModel @Inject constructor(
             moviesRepository.addMovieDetailsToLocal(movieDetails)
             _uiStateUpdateCollection.emit(Triple(movieDetails.id, message, remove))
 
-            val pushed = accountSyncRepository.pushItemState(movieDetails)
+            val pushed = accountSyncRepository.pushItemState(movieDetails, previous)
             if (!pushed) {
                 if (previous != null) {
                     moviesRepository.addMovieDetailsToLocal(previous)
@@ -574,6 +582,7 @@ class MovieDetailsViewModel @Inject constructor(
      * to TMDB in the background - reverting it if that fails.
      */
     fun toggleListMembership(listId: Int, mediaId: Int, isTv: Boolean, currentlyIn: Boolean) {
+        if (!markPending(listId)) return
         setMembership(listId, isMember = !currentlyIn)
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -590,6 +599,16 @@ class MovieDetailsViewModel @Inject constructor(
             if (!changed) {
                 setMembership(listId, isMember = currentlyIn)
             }
+            _pendingListIds.update { it - listId }
+        }
+    }
+
+    /** False if [listId] already has a request in flight; otherwise marks it and returns true. */
+    private fun markPending(listId: Int): Boolean {
+        while (true) {
+            val current = _pendingListIds.value
+            if (listId in current) return false
+            if (_pendingListIds.compareAndSet(current, current + listId)) return true
         }
     }
 
@@ -604,6 +623,7 @@ class MovieDetailsViewModel @Inject constructor(
             try {
                 val response = accountRepository.createList(name).first()
                 val listId = response.listId ?: return@launch
+                _pendingListIds.update { it + listId }
                 _userLists.value = _userLists.value + TmdbList(id = listId, name = name, itemCount = 0)
                 _listMembership.update { it + (listId to false) }
 
@@ -616,6 +636,7 @@ class MovieDetailsViewModel @Inject constructor(
                 if (added) {
                     setMembership(listId, isMember = true)
                 }
+                _pendingListIds.update { it - listId }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

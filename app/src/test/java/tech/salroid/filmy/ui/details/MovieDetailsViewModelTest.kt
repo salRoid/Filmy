@@ -148,11 +148,11 @@ class MovieDetailsViewModelTest {
     fun `toggleWatched flips watched and writes it optimistically`() = runTest {
         val movie = MovieDetails(id = 3, type = 0, watched = false)
         every { moviesRepository.addMovieDetailsToLocal(any()) } returns Unit
-        coEvery { accountSyncRepository.pushItemState(any()) } returns true
+        coEvery { accountSyncRepository.pushItemState(any(), any()) } returns true
 
         viewModel.toggleWatched(movie)
 
-        coVerify(timeout = 1000) { accountSyncRepository.pushItemState(movie.copy(watched = true)) }
+        coVerify(timeout = 1000) { accountSyncRepository.pushItemState(movie.copy(watched = true), any()) }
         verify { moviesRepository.addMovieDetailsToLocal(movie.copy(watched = true)) }
     }
 
@@ -165,11 +165,11 @@ class MovieDetailsViewModelTest {
         val previous = MovieDetails(id = 4, type = 0, watched = false)
         val updated = previous.copy(watched = true)
         every { moviesRepository.addMovieDetailsToLocal(any()) } returns Unit
-        coEvery { accountSyncRepository.pushItemState(updated) } returns false
+        coEvery { accountSyncRepository.pushItemState(updated, any()) } returns false
 
         viewModel.updateMovieDetailsInDb(updated, "watched", remove = false, previous = previous)
 
-        coVerify(timeout = 1000) { accountSyncRepository.pushItemState(updated) }
+        coVerify(timeout = 1000) { accountSyncRepository.pushItemState(updated, any()) }
         verify(timeout = 1000) { moviesRepository.addMovieDetailsToLocal(previous) }
         assertEquals(Triple(4, "watched", true), viewModel.uiStateUpdateCollection.value)
     }
@@ -179,7 +179,7 @@ class MovieDetailsViewModelTest {
         val updated = MovieDetails(id = 5, type = 0, watched = true)
         every { moviesRepository.addMovieDetailsToLocal(any()) } returns Unit
         every { moviesRepository.deleteMovieDetailsFromLocal(any()) } returns Unit
-        coEvery { accountSyncRepository.pushItemState(updated) } returns false
+        coEvery { accountSyncRepository.pushItemState(updated, any()) } returns false
 
         viewModel.updateMovieDetailsInDb(updated, "watched", remove = false, previous = null)
 
@@ -190,11 +190,11 @@ class MovieDetailsViewModelTest {
     fun `updateMovieDetailsInDb keeps the optimistic write when the push succeeds`() = runTest {
         val updated = MovieDetails(id = 6, type = 0, watched = true)
         every { moviesRepository.addMovieDetailsToLocal(any()) } returns Unit
-        coEvery { accountSyncRepository.pushItemState(updated) } returns true
+        coEvery { accountSyncRepository.pushItemState(updated, any()) } returns true
 
         viewModel.updateMovieDetailsInDb(updated, "watched", remove = false, previous = null)
 
-        coVerify(timeout = 1000) { accountSyncRepository.pushItemState(updated) }
+        coVerify(timeout = 1000) { accountSyncRepository.pushItemState(updated, any()) }
         verify(exactly = 0) { moviesRepository.deleteMovieDetailsFromLocal(any()) }
         verify(exactly = 1) { moviesRepository.addMovieDetailsToLocal(updated) }
     }
@@ -358,9 +358,34 @@ class MovieDetailsViewModelTest {
 
         viewModel.toggleListMembership(10, 55, isTv = false, currentlyIn = false)
         assertEquals(4, viewModel.userLists.value.single().itemCount)
+        // The row is locked until the add has landed.
+        waitFor { viewModel.pendingListIds.value.isEmpty() }
 
         viewModel.toggleListMembership(10, 55, isTv = false, currentlyIn = true)
         assertEquals(3, viewModel.userLists.value.single().itemCount)
+    }
+
+    @Test
+    fun `a list with a change in flight ignores further taps until it lands`() = runTest {
+        every { accountRepository.canManageLists() } returns true
+        val gate = kotlinx.coroutines.CompletableDeferred<Unit>()
+        coEvery { accountRepository.addToList(10, 55, false) } returns flow {
+            gate.await()
+            emit(ListItemsResponse(success = true))
+        }
+
+        viewModel.toggleListMembership(10, 55, isTv = false, currentlyIn = false)
+        assertEquals(setOf(10), viewModel.pendingListIds.value)
+
+        // A second tap while the add is still on its way must not start a remove.
+        viewModel.toggleListMembership(10, 55, isTv = false, currentlyIn = true)
+        assertEquals(true, viewModel.listMembership.value[10])
+
+        gate.complete(Unit)
+        waitFor { viewModel.pendingListIds.value.isEmpty() }
+        assertEquals(emptySet<Int>(), viewModel.pendingListIds.value)
+        assertEquals(true, viewModel.listMembership.value[10])
+        coVerify(exactly = 0) { accountRepository.removeFromList(any(), any(), any()) }
     }
 
     // --- createList ---

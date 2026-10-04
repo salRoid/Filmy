@@ -45,6 +45,18 @@
             </intent-filter>
         </activity>
 
+        <!-- Android 13+ stores the per-app language itself (see localeConfig);
+             on older versions AppCompat only persists and re-applies it when
+             this opt-in is present. -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
+
         <receiver
             android:name=".ui.widget.WatchlistWidgetReceiver"
             android:exported="true">

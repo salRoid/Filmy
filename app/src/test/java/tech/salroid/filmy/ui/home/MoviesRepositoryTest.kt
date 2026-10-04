@@ -90,6 +90,29 @@ class MoviesRepositoryTest {
     }
 
     @Test
+    fun `rating an already-watched title refreshes the widgets`() {
+        // To Rate lists watched titles without a rating, so a rating changes it
+        // even though watched and watchlist stay the same.
+        val existing = MovieDetails(id = 1, type = 0, watched = true, userRating = null)
+        every { movieDetailsDao.getDetailsOfType(1, 0) } returns existing
+
+        repository.addMovieDetailsToLocal(existing.copy(userRating = 8f))
+
+        coVerify(timeout = 1000, exactly = 1) { WidgetRefresher.refresh(any()) }
+    }
+
+    @Test
+    fun `a metadata-only save leaves the widgets alone`() {
+        val existing = MovieDetails(id = 1, type = 0, watched = true, userRating = 8f, title = "Old title")
+        every { movieDetailsDao.getDetailsOfType(1, 0) } returns existing
+
+        repository.addMovieDetailsToLocal(existing.copy(title = "New title"))
+
+        verify(timeout = 1000) { movieDetailsDao.updateDetails(any()) }
+        coVerify(exactly = 0) { WidgetRefresher.refresh(any()) }
+    }
+
+    @Test
     fun `getMovieDetailsFromLocal delegates straight to the DAO`() {
         val details = MovieDetails(id = 42, type = 1)
         every { movieDetailsDao.getDetailsOfType(42, 1) } returns details

@@ -59,7 +59,7 @@ class CollectionsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val updated = movie.copy(watched = false)
             moviesRepository.addMovieDetailsToLocal(updated)
-            val pushed = accountSyncRepository.pushItemState(updated)
+            val pushed = accountSyncRepository.pushItemState(updated, previous = movie)
             if (!pushed) {
                 moviesRepository.addMovieDetailsToLocal(movie)
             }
@@ -71,7 +71,7 @@ class CollectionsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val updated = movie.copy(watchlist = false)
             moviesRepository.addMovieDetailsToLocal(updated)
-            val pushed = accountSyncRepository.pushItemState(updated)
+            val pushed = accountSyncRepository.pushItemState(updated, previous = movie)
             if (!pushed) {
                 moviesRepository.addMovieDetailsToLocal(movie)
             }

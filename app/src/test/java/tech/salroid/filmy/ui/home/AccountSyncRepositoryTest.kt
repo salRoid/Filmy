@@ -2,6 +2,7 @@ package tech.salroid.filmy.ui.home
 
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -200,27 +201,69 @@ class AccountSyncRepositoryTest {
     }
 
     @Test
-    fun `pushItemState pushes both favorite and watchlist state and returns true on success`() = runTest {
-        val details = MovieDetails(id = 5, type = 0, watched = true, watchlist = false)
-        coEvery { accountRepository.markFavorite(ACCOUNT_ID, SESSION_ID, "movie", 5, true) } returns
+    fun `pushItemState pushes only the field that changed`() = runTest {
+        val previous = MovieDetails(id = 5, type = 0, watched = true, watchlist = false)
+        val updated = previous.copy(watchlist = true)
+        coEvery { accountRepository.markWatchlist(ACCOUNT_ID, SESSION_ID, "movie", 5, true) } returns
             flowOf(TmdbStatusResponse())
-        coEvery { accountRepository.markWatchlist(ACCOUNT_ID, SESSION_ID, "movie", 5, false) } returns
+
+        val result = repository.pushItemState(updated, previous)
+
+        assertTrue(result)
+        coVerify(exactly = 1) { accountRepository.markWatchlist(ACCOUNT_ID, SESSION_ID, "movie", 5, true) }
+        // An unrelated favorite request can no longer fail a watchlist toggle.
+        coVerify(exactly = 0) { accountRepository.markFavorite(any(), any(), any(), any(), any()) }
+    }
+
+    @Test
+    fun `pushItemState treats a missing previous row as neither watched nor watchlisted`() = runTest {
+        val details = MovieDetails(id = 5, type = 1, watched = true, watchlist = false)
+        coEvery { accountRepository.markFavorite(ACCOUNT_ID, SESSION_ID, "tv", 5, true) } returns
             flowOf(TmdbStatusResponse())
 
         val result = repository.pushItemState(details)
 
         assertTrue(result)
-        coVerify(exactly = 1) { accountRepository.markFavorite(ACCOUNT_ID, SESSION_ID, "movie", 5, true) }
-        coVerify(exactly = 1) { accountRepository.markWatchlist(ACCOUNT_ID, SESSION_ID, "movie", 5, false) }
+        coVerify(exactly = 1) { accountRepository.markFavorite(ACCOUNT_ID, SESSION_ID, "tv", 5, true) }
+        coVerify(exactly = 0) { accountRepository.markWatchlist(any(), any(), any(), any(), any()) }
+    }
+
+    @Test
+    fun `pushItemState makes no request when nothing changed`() = runTest {
+        val row = MovieDetails(id = 5, type = 0, watched = true, watchlist = true)
+
+        assertTrue(repository.pushItemState(row.copy(title = "Renamed"), previous = row))
+
+        coVerify(exactly = 0) { accountRepository.markFavorite(any(), any(), any(), any(), any()) }
+        coVerify(exactly = 0) { accountRepository.markWatchlist(any(), any(), any(), any(), any()) }
     }
 
     @Test
     fun `pushItemState returns false when the push fails`() = runTest {
         every { accountRepository.markFavorite(any(), any(), any(), any(), any()) } throws RuntimeException("network error")
 
-        val result = repository.pushItemState(MovieDetails(id = 5, type = 0))
+        val result = repository.pushItemState(MovieDetails(id = 5, type = 0, watched = true))
 
         assertFalse(result)
+    }
+
+    @Test
+    fun `pushItemState undoes the half that went through when the other half fails`() = runTest {
+        // The widget's "mark watched" changes both: watched on, watchlist off.
+        val previous = MovieDetails(id = 5, type = 0, watched = false, watchlist = true)
+        val updated = previous.copy(watched = true, watchlist = false)
+        coEvery { accountRepository.markFavorite(ACCOUNT_ID, SESSION_ID, "movie", 5, any()) } returns
+            flowOf(TmdbStatusResponse())
+        every { accountRepository.markWatchlist(any(), any(), any(), any(), any()) } throws RuntimeException("network error")
+
+        val result = repository.pushItemState(updated, previous)
+
+        assertFalse(result)
+        // Favorite was applied, then put back so TMDB matches the local rollback.
+        coVerifyOrder {
+            accountRepository.markFavorite(ACCOUNT_ID, SESSION_ID, "movie", 5, true)
+            accountRepository.markFavorite(ACCOUNT_ID, SESSION_ID, "movie", 5, false)
+        }
     }
 
     // --- pushRating ---

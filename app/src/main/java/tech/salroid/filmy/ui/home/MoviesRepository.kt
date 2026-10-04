@@ -158,10 +158,10 @@ class MoviesRepository @Inject constructor(
     /**
      * Upserts [movieDetails] atomically (check-then-act wrapped in a transaction,
      * so two concurrent callers for the same id+type can't both see "no existing
-     * row" and insert duplicates). Returns whether the row's watched/watchlist
-     * state actually changed, so callers can skip refreshing the home-screen
-     * widgets (which only ever show watched/watchlist items) for pure
-     * metadata-refresh saves that don't affect what the widgets display.
+     * row" and insert duplicates). Returns whether anything the home-screen
+     * widgets show actually changed - watched, watchlist, or the rating (the
+     * To Rate widget lists watched titles without one) - so callers can skip
+     * refreshing them for pure metadata-refresh saves.
      */
     private fun upsertMovieDetails(movieDetails: MovieDetails): Boolean {
         val dao = filmyDatabase.movieDetailsDao()
@@ -171,7 +171,8 @@ class MoviesRepository @Inject constructor(
             if (existing != null) {
                 dao.updateDetails(movieDetails)
                 watchStateChanged = existing.watched != movieDetails.watched ||
-                    existing.watchlist != movieDetails.watchlist
+                    existing.watchlist != movieDetails.watchlist ||
+                    existing.userRating != movieDetails.userRating
             } else {
                 dao.insert(movieDetails)
                 watchStateChanged = movieDetails.watched || movieDetails.watchlist

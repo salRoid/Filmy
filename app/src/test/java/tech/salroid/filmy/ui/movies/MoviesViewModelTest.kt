@@ -141,7 +141,7 @@ class MoviesViewModelTest {
         )
         every { moviesRepository.getMovieDetailsFromLocal(1, 0) } returns null
         every { moviesRepository.addMovieDetailsToLocal(any()) } returns Unit
-        coEvery { accountSyncRepository.pushItemState(any()) } returns true
+        coEvery { accountSyncRepository.pushItemState(any(), any()) } returns true
 
         viewModel.quickToggleWatchlist(preview)
 
@@ -160,7 +160,7 @@ class MoviesViewModelTest {
         val existing = MovieDetails(id = 1, title = "A Movie", posterPath = "/p.jpg", watched = false)
         every { moviesRepository.getMovieDetailsFromLocal(1, 0) } returns existing
         every { moviesRepository.addMovieDetailsToLocal(any()) } returns Unit
-        coEvery { accountSyncRepository.pushItemState(any()) } returns false
+        coEvery { accountSyncRepository.pushItemState(any(), any()) } returns false
 
         viewModel.quickToggleWatched(preview)
 

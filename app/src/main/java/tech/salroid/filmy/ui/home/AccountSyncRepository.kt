@@ -268,38 +268,49 @@ class AccountSyncRepository @Inject constructor(
     }
 
     /**
-     * Pushes [movieDetails]'s current watched(->favorite)/watchlist state to TMDB.
-     * No-ops (returns true) if the user isn't logged in — there's nothing to sync,
-     * so callers shouldn't treat that as a failure worth rolling back for.
-     * Returns false only when a logged-in push actually fails (network/API error),
-     * so callers can roll back their optimistic local write.
+     * Pushes the watched(->favorite)/watchlist state of [movieDetails] to TMDB -
+     * only the fields that differ from [previous], the row as it was before
+     * this change (null when there was none, i.e. neither watched nor
+     * watchlisted). A watchlist-only toggle therefore never fails, and gets
+     * rolled back by its caller, because of an unrelated favorite request.
+     *
+     * No-ops (returns true) if the user isn't logged in - there's nothing to
+     * sync, so callers shouldn't treat that as a failure worth rolling back for.
+     * Returns false when a logged-in push fails, so callers can roll back their
+     * optimistic local write. If both fields changed and only one push went
+     * through, that one is put back on TMDB first (best effort), so the remote
+     * state matches the local rollback.
      */
-    suspend fun pushItemState(movieDetails: MovieDetails): Boolean {
+    suspend fun pushItemState(movieDetails: MovieDetails, previous: MovieDetails? = null): Boolean {
         if (!accountRepository.isLoggedIn()) return true
         val sessionId = accountRepository.getSessionIdFromPref() ?: return true
         val accountId = accountRepository.getProfileFromLocal()?.id ?: return true
 
-        return try {
-            val type = mediaType(movieDetails.type)
-            coroutineScope {
-                val favorite = async {
-                    accountRepository.markFavorite(
-                        accountId, sessionId, type, movieDetails.id, movieDetails.watched
-                    ).first()
-                }
-                val watchlist = async {
-                    accountRepository.markWatchlist(
-                        accountId, sessionId, type, movieDetails.id, movieDetails.watchlist
-                    ).first()
-                }
-                favorite.await()
-                watchlist.await()
-            }
-            true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
+        val wasWatched = previous?.watched ?: false
+        val wasWatchlisted = previous?.watchlist ?: false
+        val watchedChanged = movieDetails.watched != wasWatched
+        val watchlistChanged = movieDetails.watchlist != wasWatchlisted
+        if (!watchedChanged && !watchlistChanged) return true
+
+        val type = mediaType(movieDetails.type)
+        suspend fun pushFavorite(value: Boolean): Boolean = runCatching {
+            accountRepository.markFavorite(accountId, sessionId, type, movieDetails.id, value).first()
+        }.onFailure { it.printStackTrace() }.isSuccess
+
+        suspend fun pushWatchlist(value: Boolean): Boolean = runCatching {
+            accountRepository.markWatchlist(accountId, sessionId, type, movieDetails.id, value).first()
+        }.onFailure { it.printStackTrace() }.isSuccess
+
+        val (favoritePushed, watchlistPushed) = coroutineScope {
+            val favorite = async { if (watchedChanged) pushFavorite(movieDetails.watched) else true }
+            val watchlist = async { if (watchlistChanged) pushWatchlist(movieDetails.watchlist) else true }
+            favorite.await() to watchlist.await()
         }
+        if (favoritePushed && watchlistPushed) return true
+
+        if (watchedChanged && favoritePushed) pushFavorite(wasWatched)
+        if (watchlistChanged && watchlistPushed) pushWatchlist(wasWatchlisted)
+        return false
     }
 
     /**

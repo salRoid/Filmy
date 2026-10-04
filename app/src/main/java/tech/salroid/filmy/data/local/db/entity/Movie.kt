@@ -67,12 +67,3 @@ data class Movie(
     }
 }
 
-fun String.toMovieType() = when (this) {
-    "movie_trending" -> Movie.MovieType.TRENDING
-    "movie_popular" -> Movie.MovieType.POPULAR
-    "movie_now_playing" -> Movie.MovieType.NOW_PLAYING
-    "movie_upcoming" -> Movie.MovieType.UPCOMING
-    "movie_top_rated" -> Movie.MovieType.TOP_RATED
-    else -> null
-}
-

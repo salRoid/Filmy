@@ -7,30 +7,16 @@ import android.content.Intent.ACTION_VIEW
 import android.content.res.Configuration
 import android.graphics.Color
 import android.util.TypedValue
-import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.text.HtmlCompat
 import androidx.core.view.WindowCompat
 import com.google.android.material.elevation.SurfaceColors
-import com.google.android.material.snackbar.Snackbar
 import retrofit2.HttpException
 import tech.salroid.filmy.R
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
 import java.util.*
-
-fun View.showSnackBar(message: String, positive: Boolean = true) {
-    Snackbar.make(this, message, Snackbar.LENGTH_SHORT).run {
-        setBackgroundTint(
-            if (positive) ContextCompat.getColor(context, R.color.colorMore) else
-                ContextCompat.getColor(context, R.color.tomatoRed)
-        )
-        setTextColor(ContextCompat.getColor(context, R.color.white))
-        show()
-    }
-}
 
 fun String.toReadableDate(): String {
     if (this.isEmpty()) return this

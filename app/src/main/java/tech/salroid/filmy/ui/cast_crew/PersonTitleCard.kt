@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +23,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,11 +53,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -68,6 +69,7 @@ import tech.salroid.filmy.R
 import tech.salroid.filmy.data.local.model.CastCrewDetailsResponse
 import tech.salroid.filmy.ui.common.shiftedUntil
 import tech.salroid.filmy.ui.theme.AppTheme
+import tech.salroid.filmy.ui.theme.titleFontFamily
 import tech.salroid.filmy.utility.toReadableDate
 import java.util.Calendar
 import kotlin.math.roundToInt
@@ -121,8 +123,6 @@ internal fun Palette.titleCardColors(): TitleCardColors? {
     )
 }
 
-private val CardTitleFontFamily = FontFamily(Font(R.font.barlow_black, FontWeight.Black))
-
 internal val PersonTitleCardShape = RoundedCornerShape(24.dp)
 // Widescreen, like the frame the title card would be projected on.
 internal const val PersonTitleCardAspectRatio = 16f / 9f
@@ -153,6 +153,9 @@ fun PersonTitleCard(
         mutableStateOf(if (startSettled) fallbackColors else null)
     }
     val colors = resolvedColors ?: fallbackColors
+    // No photo to show: the portrait side becomes a tinted panel with a
+    // silhouette, in the card's own colours.
+    var portraitMissing by remember(member.profilePath) { mutableStateOf(startSettled) }
     val placeholderColor = scheme.surfaceContainerHigh
     val colorShift = tween<Color>(COLOR_SHIFT_DURATION_MS)
     val backdropTop by animateColorAsState(
@@ -225,8 +228,10 @@ fun PersonTitleCard(
                     },
                 contentScale = ContentScale.Crop,
                 alignment = Alignment.TopCenter,
-                error = painterResource(R.drawable.default_avatar),
-                onError = { resolvedColors = fallbackColors },
+                onError = {
+                    portraitMissing = true
+                    resolvedColors = fallbackColors
+                },
                 onSuccess = { imageState ->
                     val drawable = imageState.result.image.asDrawable(context.resources)
                     if (drawable is BitmapDrawable) {
@@ -238,6 +243,22 @@ fun PersonTitleCard(
                     }
                 }
             )
+            if (portraitMissing) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer { alpha = reveal.value }
+                        .background(colors.accent.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Person,
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxWidth(0.5f).aspectRatio(1f),
+                        tint = colors.accent.copy(alpha = 0.6f)
+                    )
+                }
+            }
         }
 
         Column(
@@ -265,8 +286,8 @@ fun PersonTitleCard(
 
             Text(
                 text = member.name.orEmpty().uppercase(),
-                fontFamily = CardTitleFontFamily,
-                fontWeight = FontWeight.Black,
+                fontFamily = titleFontFamily,
+                fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
                 lineHeight = 26.sp,
                 letterSpacing = 1.sp,

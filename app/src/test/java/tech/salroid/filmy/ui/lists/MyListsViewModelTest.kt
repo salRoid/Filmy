@@ -60,7 +60,7 @@ class MyListsViewModelTest {
         // reaches a Turbine subscription, so asserting an "initial empty" first
         // item would race. Synchronize on the network call instead.
         val viewModel = viewModel()
-        coVerify(timeout = 1000) { accountRepository.getLists() }
+        waitFor { viewModel.lists.value.isNotEmpty() }
 
         assertEquals(listOf(list), viewModel.lists.value)
     }
@@ -196,7 +196,9 @@ class MyListsViewModelTest {
         coEvery { accountRepository.deleteList(9) } returns flowOf(TmdbStatusResponse())
 
         val viewModel = viewModel()
-        verify(timeout = 1000) { accountRepository.getLists() }
+        // getLists() having been called doesn't mean its result has reached
+        // the StateFlow yet - a late load would undo the optimistic removal.
+        waitFor { viewModel.lists.value == listOf(list) && !viewModel.isLoading.value }
 
         viewModel.deleteList(9)
 
@@ -214,7 +216,9 @@ class MyListsViewModelTest {
             flowOf(TmdbListsResponse(results = listOf(list)))
 
         val viewModel = viewModel()
-        verify(timeout = 1000) { accountRepository.getLists() }
+        // getLists() having been called doesn't mean its result has reached
+        // the StateFlow yet - a late load would undo the optimistic removal.
+        waitFor { viewModel.lists.value == listOf(list) && !viewModel.isLoading.value }
 
         every { accountRepository.canManageLists() } returns false
         viewModel.deleteList(9)
@@ -223,6 +227,7 @@ class MyListsViewModelTest {
         // 2nd call overall (1st was init's loadLists) - waiting for it confirms
         // the rollback branch has run to completion.
         verify(timeout = 1000, exactly = 2) { accountRepository.canManageLists() }
+        waitFor { viewModel.lists.value.isNotEmpty() }
         assertEquals(listOf(list), viewModel.lists.value)
     }
 }

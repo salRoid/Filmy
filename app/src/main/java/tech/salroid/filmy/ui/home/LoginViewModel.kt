@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import tech.salroid.filmy.data.local.db.entity.Profile
 import tech.salroid.filmy.data.local.model.login.*
 import javax.inject.Inject
+import tech.salroid.filmy.utility.reportNonFatal
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -65,7 +66,7 @@ class LoginViewModel @Inject constructor(
             accountRepository.getRequestToken(requestTokenData)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                     _isAuthenticating.value = false
                 }.collect {
                     requestToken = it.requestToken
@@ -84,7 +85,7 @@ class LoginViewModel @Inject constructor(
                     // approving the request token - exchanging it then
                     // fails. Clear it so a later, unrelated app resume
                     // doesn't keep retrying a dead token.
-                    it.printStackTrace()
+                    it.reportNonFatal()
                     requestToken = null
                     _isAuthenticating.value = false
                 }.collect {
@@ -101,7 +102,7 @@ class LoginViewModel @Inject constructor(
             accountRepository.getSession(accessTokenData)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                     _isAuthenticating.value = false
                 }.collect {
                     // Logging in again over an existing session (to pick up
@@ -124,7 +125,7 @@ class LoginViewModel @Inject constructor(
             accountRepository.getProfile(sessionId)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                     _isAuthenticating.value = false
                 }.collect { profile ->
                     // Writing here is enough - uiStateProfile is reactive to
@@ -145,7 +146,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             accountRepository.deleteSession(sessionId)
                 .flowOn(Dispatchers.IO)
-                .catch { it.printStackTrace() }
+                .catch { it.reportNonFatal() }
                 .collect { }
         }
     }
@@ -177,14 +178,14 @@ class LoginViewModel @Inject constructor(
             if (sessionId != null) {
                 accountRepository.deleteSession(sessionId)
                     .flowOn(Dispatchers.IO)
-                    .catch { it.printStackTrace() }
+                    .catch { it.reportNonFatal() }
                     .collect { }
             }
 
             if (userAccessToken != null) {
                 accountRepository.revokeUserAccessToken(userAccessToken)
                     .flowOn(Dispatchers.IO)
-                    .catch { it.printStackTrace() }
+                    .catch { it.reportNonFatal() }
                     .collect { }
             }
 

@@ -26,8 +26,8 @@ android {
         compileSdk = 37
         minSdk 24
         targetSdk 37
-        versionCode 24
-        versionName "3.1.0"
+        versionCode 25
+        versionName "4.0.0"
         multiDexEnabled true
         resourceConfigurations += ['en', 'de', 'es-rES', 'hi-rIN', 'nl-rNL']
     }

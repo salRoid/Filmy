@@ -18,13 +18,14 @@ import tech.salroid.filmy.data.local.model.account.TmdbListsResponse
 import tech.salroid.filmy.data.local.model.account.TmdbStatusResponse
 import tech.salroid.filmy.data.local.model.login.*
 import tech.salroid.filmy.data.network.AccountApiHelper
+import tech.salroid.filmy.di.AccountPrefs
 import tech.salroid.filmy.utility.PreferenceHelper.ACCOUNT_OBJECT_ID
 import tech.salroid.filmy.utility.PreferenceHelper.SESSION_ID
 import tech.salroid.filmy.utility.PreferenceHelper.USER_ACCESS_TOKEN
 import javax.inject.Inject
 
 class AccountRepository @Inject constructor(
-    private val appPref: SharedPreferences,
+    @AccountPrefs private val appPref: SharedPreferences,
     private val filmyDatabase: FilmyDatabase,
     private val accountApiHelper: AccountApiHelper
 ) {

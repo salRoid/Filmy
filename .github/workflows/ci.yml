@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - development
+      - 'release/**'
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: ./gradlew :app:lintRelease
+      - name: Upload lint report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: app/build/reports/lint-results-release.html
+
+  test:
+    name: Unit and screenshot tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - name: Unit tests
+        run: ./gradlew :app:testDebugUnitTest
+      - name: Screenshot tests
+        # Still runs when a unit test fails, so one push reports both.
+        if: success() || failure()
+        run: ./gradlew :app:validateDebugScreenshotTest
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            app/build/reports/tests/
+            app/build/reports/screenshotTest/
+            app/build/outputs/screenshotTest-results/
+            app/build/test-results/
+
+  build:
+    name: Release build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      # The release bundle is the build that runs R8, so this catches
+      # shrinking breakage that a debug build would miss. It is unsigned.
+      - run: ./gradlew :app:bundleRelease

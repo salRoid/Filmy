@@ -1,21 +1,23 @@
 package tech.salroid.filmy.ui.lists
 
-import androidx.lifecycle.viewModelScope
 import app.cash.turbine.test
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.cancel
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.model.account.CreateListResponse
 import tech.salroid.filmy.data.local.model.account.TmdbList
 import tech.salroid.filmy.data.local.model.account.TmdbListDetailsResponse
@@ -44,7 +46,7 @@ class MyListsViewModelTest {
     // next test's MainDispatcherRule resets Main.
     @After
     fun tearDown() {
-        createdViewModel?.viewModelScope?.cancel()
+        createdViewModel?.cancelScopeAndJoin()
     }
 
     @Test
@@ -60,7 +62,7 @@ class MyListsViewModelTest {
         // reaches a Turbine subscription, so asserting an "initial empty" first
         // item would race. Synchronize on the network call instead.
         val viewModel = viewModel()
-        coVerify(timeout = 1000) { accountRepository.getLists() }
+        waitFor { viewModel.lists.value.isNotEmpty() }
 
         assertEquals(listOf(list), viewModel.lists.value)
     }
@@ -70,6 +72,7 @@ class MyListsViewModelTest {
     private fun waitFor(condition: () -> Boolean) {
         val deadline = System.currentTimeMillis() + 2000
         while (!condition() && System.currentTimeMillis() < deadline) Thread.sleep(10)
+        assertTrue("Timed out waiting for the expected state", condition())
     }
 
     @Test
@@ -196,7 +199,7 @@ class MyListsViewModelTest {
         coEvery { accountRepository.deleteList(9) } returns flowOf(TmdbStatusResponse())
 
         val viewModel = viewModel()
-        verify(timeout = 1000) { accountRepository.getLists() }
+        waitFor { viewModel.lists.value == listOf(list) && !viewModel.isLoading.value }
 
         viewModel.deleteList(9)
 
@@ -214,15 +217,21 @@ class MyListsViewModelTest {
             flowOf(TmdbListsResponse(results = listOf(list)))
 
         val viewModel = viewModel()
-        verify(timeout = 1000) { accountRepository.getLists() }
+        waitFor { viewModel.lists.value == listOf(list) && !viewModel.isLoading.value }
 
-        every { accountRepository.canManageLists() } returns false
+        val pushGate = CountDownLatch(1)
+        every { accountRepository.canManageLists() } answers {
+            pushGate.await(2, TimeUnit.SECONDS)
+            false
+        }
         viewModel.deleteList(9)
 
         assertEquals(emptyList<TmdbList>(), viewModel.lists.value)
+        pushGate.countDown()
         // 2nd call overall (1st was init's loadLists) - waiting for it confirms
         // the rollback branch has run to completion.
         verify(timeout = 1000, exactly = 2) { accountRepository.canManageLists() }
+        waitFor { viewModel.lists.value.isNotEmpty() }
         assertEquals(listOf(list), viewModel.lists.value)
     }
 }

@@ -1,0 +1,25 @@
+name: Update screenshot references
+
+# The reference images are rendered on Linux, to match the CI runner; macOS
+# renders differ by a level or two per pixel. Run this manually after an
+# intended UI change, then download the artifact and commit its contents over
+# app/src/screenshotTestDebug/reference/.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    name: Render references
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+      - run: ./gradlew :app:updateDebugScreenshotTest
+      - uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-references
+          path: app/src/screenshotTestDebug/reference/

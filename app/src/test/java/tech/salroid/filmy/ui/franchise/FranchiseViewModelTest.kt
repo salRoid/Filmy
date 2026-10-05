@@ -3,11 +3,10 @@ package tech.salroid.filmy.ui.franchise
 import app.cash.turbine.test
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -15,6 +14,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.model.collection.CollectionDetailsResponse
 import tech.salroid.filmy.ui.home.MoviesRepository
 
@@ -34,7 +34,7 @@ class FranchiseViewModelTest {
 
     @After
     fun tearDown() {
-        viewModel.viewModelScope.cancel()
+        viewModel.cancelScopeAndJoin()
     }
 
     // loadCollection's repository call goes through .flowOn(Dispatchers.IO), a
@@ -57,7 +57,9 @@ class FranchiseViewModelTest {
 
     @Test
     fun `loadCollection clears isLoading even when the fetch fails`() = runTest {
+        val fetchGate = CompletableDeferred<Unit>()
         every { moviesRepository.getCollectionDetails(10) } returns flow {
+            fetchGate.await()
             throw RuntimeException("network error")
         }
 
@@ -65,6 +67,7 @@ class FranchiseViewModelTest {
             assertEquals(false, awaitItem())
             viewModel.loadCollection(10)
             assertEquals(true, awaitItem())
+            fetchGate.complete(Unit)
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }

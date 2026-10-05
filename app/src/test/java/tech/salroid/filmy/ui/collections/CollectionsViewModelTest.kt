@@ -6,19 +6,19 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.db.entity.MovieDetails
 import tech.salroid.filmy.ui.home.AccountSyncRepository
 import tech.salroid.filmy.ui.home.MoviesRepository
@@ -50,7 +50,7 @@ class CollectionsViewModelTest {
 
     @After
     fun tearDown() {
-        viewModel.viewModelScope.cancel()
+        viewModel.cancelScopeAndJoin()
     }
 
     @Test
@@ -77,12 +77,14 @@ class CollectionsViewModelTest {
 
     @Test
     fun `trySync delegates to AccountSyncRepository and clears isSyncing`() = runTest {
-        coEvery { accountSyncRepository.syncIfNeeded() } returns Unit
+        val syncGate = CompletableDeferred<Unit>()
+        coEvery { accountSyncRepository.syncIfNeeded() } coAnswers { syncGate.await() }
 
         viewModel.isSyncing.test {
             assertEquals(false, awaitItem())
             viewModel.trySync()
             assertEquals(true, awaitItem())
+            syncGate.complete(Unit)
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }

@@ -8,8 +8,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -17,6 +15,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.model.Genre
 import tech.salroid.filmy.data.local.model.discover.DiscoverFilters
 import tech.salroid.filmy.data.local.model.discover.GenreResponse
@@ -42,7 +41,7 @@ class DiscoverViewModelTest {
 
     @After
     fun tearDown() {
-        viewModel.viewModelScope.cancel()
+        viewModel.cancelScopeAndJoin()
     }
 
     @Test

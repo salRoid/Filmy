@@ -1,13 +1,14 @@
 package tech.salroid.filmy.ui.home
 
-import androidx.lifecycle.viewModelScope
 import app.cash.turbine.test
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import io.mockk.verifyOrder
-import kotlinx.coroutines.cancel
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -17,6 +18,7 @@ import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.db.entity.Profile
 import tech.salroid.filmy.data.local.model.login.DeleteSession
 import tech.salroid.filmy.data.local.model.login.RequestTokenResponse
@@ -54,7 +56,7 @@ class LoginViewModelTest {
     // MainDispatcherRule resets Main.
     @After
     fun tearDown() {
-        createdViewModel?.viewModelScope?.cancel()
+        createdViewModel?.cancelScopeAndJoin()
     }
 
     @Test
@@ -99,12 +101,17 @@ class LoginViewModelTest {
     fun `getRequestToken clears isAuthenticating on failure`() = runTest {
         accountRepository = mockk()
         val viewModel = viewModel()
-        coEvery { accountRepository.getRequestToken(any()) } returns flow { throw RuntimeException("boom") }
+        val requestGate = CompletableDeferred<Unit>()
+        coEvery { accountRepository.getRequestToken(any()) } returns flow {
+            requestGate.await()
+            throw RuntimeException("boom")
+        }
 
         viewModel.isAuthenticating.test {
             assertEquals(false, awaitItem())
             viewModel.getRequestToken()
             assertEquals(true, awaitItem())
+            requestGate.complete(Unit)
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
@@ -198,7 +205,11 @@ class LoginViewModelTest {
         val viewModel = viewModel()
         every { accountRepository.getSessionIdFromPref() } returns null
         every { accountRepository.getUserAccessToken() } returns null
-        every { accountRepository.clearProfile() } returns 0
+        val cleanupGate = CountDownLatch(1)
+        every { accountRepository.clearProfile() } answers {
+            cleanupGate.await(2, TimeUnit.SECONDS)
+            0
+        }
         every { accountRepository.storeSessionId(null) } returns Unit
         every { accountRepository.storeUserAccessToken(null, null) } returns Unit
 
@@ -206,6 +217,7 @@ class LoginViewModelTest {
             assertEquals(false, awaitItem())
             viewModel.logout()
             assertEquals(true, awaitItem())
+            cleanupGate.countDown()
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
@@ -223,7 +235,11 @@ class LoginViewModelTest {
         coEvery { accountRepository.deleteSession("session-id") } returns flowOf(DeleteSession(success = true))
         // A failed revoke must not stop the local logout.
         coEvery { accountRepository.revokeUserAccessToken("access-token") } returns flow { throw RuntimeException("offline") }
-        every { accountRepository.clearProfile() } returns 0
+        val cleanupGate = CountDownLatch(1)
+        every { accountRepository.clearProfile() } answers {
+            cleanupGate.await(2, TimeUnit.SECONDS)
+            0
+        }
         every { accountRepository.storeSessionId(null) } returns Unit
         every { accountRepository.storeUserAccessToken(null, null) } returns Unit
 
@@ -231,6 +247,7 @@ class LoginViewModelTest {
             assertEquals(false, awaitItem())
             viewModel.logout()
             assertEquals(true, awaitItem())
+            cleanupGate.countDown()
             assertEquals(false, awaitItem())
             cancelAndIgnoreRemainingEvents()
         }

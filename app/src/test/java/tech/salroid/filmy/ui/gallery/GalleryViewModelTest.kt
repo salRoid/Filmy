@@ -6,8 +6,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -15,6 +13,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import tech.salroid.filmy.MainDispatcherRule
+import tech.salroid.filmy.cancelScopeAndJoin
 import tech.salroid.filmy.data.local.model.ImagesResponse
 import tech.salroid.filmy.ui.home.MoviesRepository
 
@@ -34,7 +33,7 @@ class GalleryViewModelTest {
 
     @After
     fun tearDown() {
-        viewModel.viewModelScope.cancel()
+        viewModel.cancelScopeAndJoin()
     }
 
     @Test

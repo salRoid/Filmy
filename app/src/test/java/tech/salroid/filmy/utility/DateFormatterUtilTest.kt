@@ -16,4 +16,12 @@ class DateFormatterUtilTest {
         assertEquals("", formatReleaseDate("1999"))
         assertEquals("", formatReleaseDate("not a date"))
     }
+
+    @Test
+    fun `formatReleaseDate rejects dates that are not strictly yyyy-MM-dd`() {
+        assertEquals("", formatReleaseDate("1999-1-5"))
+        assertEquals("", formatReleaseDate("99-10-15"))
+        assertEquals("", formatReleaseDate("1999-10-15T00:00:00"))
+        assertEquals("", formatReleaseDate("1999-13-40"))
+    }
 }

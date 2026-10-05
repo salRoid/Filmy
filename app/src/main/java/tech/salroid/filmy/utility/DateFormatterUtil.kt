@@ -1,11 +1,14 @@
 package tech.salroid.filmy.utility
 
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Locale
+
+private val ISO_DATE = Regex("""\d{4}-\d{2}-\d{2}""")
 
 fun formatReleaseDate(raw: String): String {
-    return runCatching {
-        LocalDate.parse(raw)
-            .format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
-    }.getOrElse { "" }
+    if (!ISO_DATE.matches(raw)) return ""
+    val date = runCatching {
+        SimpleDateFormat("yyyy-MM-dd", Locale.US).apply { isLenient = false }.parse(raw)
+    }.getOrNull() ?: return ""
+    return SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(date)
 }

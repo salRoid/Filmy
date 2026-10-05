@@ -4,7 +4,8 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 /**
- * Renames `movie_details.favorite` to `watched` and adds the `videos` column.
+ * Renames `movie_details.favorite` to `watched`, adds the `videos` column and
+ * creates the `profile` table.
  * SQLite's ALTER TABLE RENAME COLUMN needs SQLite 3.25+, which isn't guaranteed
  * on this app's minSdk 24 devices, so the rename is done via the portable
  * rebuild-table pattern instead. Column list/types are copied verbatim from
@@ -50,6 +51,17 @@ val MIGRATION_2_4 = object : Migration(2, 4) {
         )
         db.execSQL("DROP TABLE movie_details")
         db.execSQL("ALTER TABLE movie_details_new RENAME TO movie_details")
+        // The `profile` table was also added after v2. IF NOT EXISTS keeps this
+        // safe for development builds that already created it at v4.
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS `profile` (
+                `avatar` TEXT, `id` INTEGER, `iso6391` TEXT, `iso31661` TEXT,
+                `name` TEXT, `includeAdult` INTEGER, `username` TEXT,
+                PRIMARY KEY(`id`)
+            )
+            """.trimIndent()
+        )
     }
 }
 

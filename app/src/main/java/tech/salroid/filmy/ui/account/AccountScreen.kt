@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -77,6 +78,7 @@ import tech.salroid.filmy.ui.home.LoginViewModel
 import tech.salroid.filmy.utility.FilmyUtility
 import tech.salroid.filmy.utility.PreferenceHelper
 import tech.salroid.filmy.utility.SUPPORTED_LANGUAGES
+import tech.salroid.filmy.utility.openUrl
 import androidx.core.net.toUri
 import androidx.compose.ui.tooling.preview.Preview
 import tech.salroid.filmy.ui.theme.AppTheme
@@ -239,6 +241,8 @@ fun PreferencesSection(
         java.util.Locale("", selectedCountry).displayCountry
     }
 
+    val privacyPolicyUrl = stringResource(R.string.privacy_policy_url)
+
     Column(modifier = Modifier.padding(8.dp)) {
         PreferenceItem(
             title = stringResource(R.string.theme),
@@ -267,6 +271,11 @@ fun PreferencesSection(
             title = stringResource(R.string.license),
             icon = painterResource(R.drawable.ic_article),
             onClick = onLicenseClick
+        )
+        PreferenceItem(
+            title = stringResource(R.string.privacy_policy),
+            icon = rememberVectorPainter(Icons.Default.PrivacyTip),
+            onClick = { context.openUrl(privacyPolicyUrl) }
         )
         PreferenceItem(
             title = stringResource(R.string.version),

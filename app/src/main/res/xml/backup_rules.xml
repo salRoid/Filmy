@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 11 and lower; see data_extraction_rules.xml. -->
+<full-backup-content>
+    <exclude
+        domain="sharedpref"
+        path="filmy_account.xml" />
+</full-backup-content>

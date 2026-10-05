@@ -148,4 +148,10 @@ object AppModule {
     fun provideAppPreference(@ApplicationContext appContext: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(appContext)
     }
+
+    @Provides
+    @AccountPrefs
+    fun provideAccountPreference(@ApplicationContext appContext: Context): SharedPreferences {
+        return PreferenceHelper.accountPreferences(appContext)
+    }
 }

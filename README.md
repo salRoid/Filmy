@@ -9,7 +9,7 @@
 
 An open-sourced, beautifully material-designed **movie app** powered by TMDB.
 
-<img src="http://www.salroid.me/android/filmy_launcher.png" height="128" width="128">
+<img src="img/logo.png" alt="Filmy app icon" height="128" width="128">
 
 ---
 

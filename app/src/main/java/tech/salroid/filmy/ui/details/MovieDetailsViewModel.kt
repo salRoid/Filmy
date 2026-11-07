@@ -25,6 +25,7 @@ import tech.salroid.filmy.ui.home.AccountSyncRepository
 import tech.salroid.filmy.ui.home.MoviesRepository
 import tech.salroid.filmy.ui.common.model.MediaDetailsUiState
 import javax.inject.Inject
+import tech.salroid.filmy.utility.reportNonFatal
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
@@ -283,7 +284,7 @@ class MovieDetailsViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 moviesRepository.getMovieDetailsFromNetwork(movieId)
                     .catch {
-                        it.printStackTrace()
+                        it.reportNonFatal()
                         if (moviesRepository.getMovieDetailsFromLocal(id, movieType) == null) {
                             _uiStateError.emit(true)
                         }
@@ -322,7 +323,7 @@ class MovieDetailsViewModel @Inject constructor(
             viewModelScope.launch(Dispatchers.IO) {
                 moviesRepository.getTvShowDetailsFromNetwork(showId)
                     .catch {
-                        it.printStackTrace()
+                        it.reportNonFatal()
                         if (moviesRepository.getMovieDetailsFromLocal(id, movieType) == null) {
                             _uiStateError.emit(true)
                         }
@@ -562,7 +563,7 @@ class MovieDetailsViewModel @Inject constructor(
                                 accountRepository.isInList(list.id, mediaId, isTv).first()
                             } catch (e: Exception) {
                                 // Unknown is shown as "not in the list" so the row stays usable.
-                                e.printStackTrace()
+                                e.reportNonFatal()
                                 false
                             }
                             _listMembership.update { it + (list.id to isMember) }
@@ -570,7 +571,7 @@ class MovieDetailsViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
             } finally {
                 _userListsLoading.value = false
             }
@@ -593,7 +594,7 @@ class MovieDetailsViewModel @Inject constructor(
                     accountRepository.addToList(listId, mediaId, isTv).first().allSucceeded
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
                 false
             }
             if (!changed) {
@@ -630,7 +631,7 @@ class MovieDetailsViewModel @Inject constructor(
                 val added = try {
                     accountRepository.addToList(listId, mediaId, isTv).first().allSucceeded
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    e.reportNonFatal()
                     false
                 }
                 if (added) {
@@ -638,7 +639,7 @@ class MovieDetailsViewModel @Inject constructor(
                 }
                 _pendingListIds.update { it - listId }
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
             }
         }
     }

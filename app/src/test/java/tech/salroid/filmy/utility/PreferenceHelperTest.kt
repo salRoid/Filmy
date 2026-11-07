@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import tech.salroid.filmy.FakeSharedPreferences
 import tech.salroid.filmy.utility.PreferenceHelper.addRecentSearch
 import tech.salroid.filmy.utility.PreferenceHelper.clearRecentSearches
 import tech.salroid.filmy.utility.PreferenceHelper.recentSearches
@@ -178,5 +179,39 @@ class PreferenceHelperTest {
         PreferenceHelper.setThemeMode(context, nightMode)
 
         assertEquals(nightMode, PreferenceHelper.getCurrentThemeMode(context))
+    }
+
+    // --- account credentials ---
+
+    @Test
+    fun `accountPreferences moves credentials stored by older versions out of the default file`() {
+        prefs.edit()
+            .putString(PreferenceHelper.SESSION_ID, "session")
+            .putString(PreferenceHelper.USER_ACCESS_TOKEN, "token")
+            .putString(PreferenceHelper.ACCOUNT_OBJECT_ID, "account-object-id")
+            .putString(PreferenceHelper.COUNTRY_KEY, "IN")
+            .commit()
+
+        val accountPrefs = PreferenceHelper.accountPreferences(context)
+
+        assertEquals("session", accountPrefs.getString(PreferenceHelper.SESSION_ID, null))
+        assertEquals("token", accountPrefs.getString(PreferenceHelper.USER_ACCESS_TOKEN, null))
+        assertEquals("account-object-id", accountPrefs.getString(PreferenceHelper.ACCOUNT_OBJECT_ID, null))
+        assertFalse(prefs.contains(PreferenceHelper.SESSION_ID))
+        assertFalse(prefs.contains(PreferenceHelper.USER_ACCESS_TOKEN))
+        assertFalse(prefs.contains(PreferenceHelper.ACCOUNT_OBJECT_ID))
+        // Settings stay where they are.
+        assertEquals("IN", prefs.getString(PreferenceHelper.COUNTRY_KEY, null))
+    }
+
+    @Test
+    fun `migrateAccountKeys never overwrites a newer login with a stale legacy one`() {
+        val defaultPrefs = FakeSharedPreferences(mapOf(PreferenceHelper.SESSION_ID to "stale"))
+        val accountPrefs = FakeSharedPreferences(mapOf(PreferenceHelper.SESSION_ID to "current"))
+
+        PreferenceHelper.migrateAccountKeys(defaultPrefs, accountPrefs)
+
+        assertEquals("current", accountPrefs.getString(PreferenceHelper.SESSION_ID, null))
+        assertFalse(defaultPrefs.contains(PreferenceHelper.SESSION_ID))
     }
 }

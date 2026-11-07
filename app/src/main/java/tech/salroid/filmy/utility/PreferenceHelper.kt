@@ -18,9 +18,38 @@ object PreferenceHelper {
     const val USER_ACCESS_TOKEN = "userAccessToken"
     const val ACCOUNT_OBJECT_ID = "accountObjectId"
     const val COUNTRY_KEY = "selectedCountry"
+    // Kept in sync with the exclusions in res/xml/data_extraction_rules.xml
+    // and res/xml/backup_rules.xml.
+    private const val ACCOUNT_PREFS_NAME = "filmy_account"
+    private val ACCOUNT_KEYS = listOf(SESSION_ID, USER_ACCESS_TOKEN, ACCOUNT_OBJECT_ID)
     private const val RECENT_SEARCHES_KEY = "recentSearches"
     private const val RECENT_SEARCHES_DELIMITER = ""
     private const val RECENT_SEARCHES_LIMIT = 8
+
+    /**
+     * The TMDB session and access token get a preferences file of their own,
+     * which is excluded from cloud backup and device transfer - unlike the
+     * default preferences, which hold only settings and are backed up.
+     */
+    fun accountPreferences(context: Context): SharedPreferences {
+        val accountPrefs = context.getSharedPreferences(ACCOUNT_PREFS_NAME, Context.MODE_PRIVATE)
+        migrateAccountKeys(PreferenceManager.getDefaultSharedPreferences(context), accountPrefs)
+        return accountPrefs
+    }
+
+    /**
+     * Up to 3.1.0 the credentials were stored in the default preferences;
+     * moves them across so an updating user stays logged in.
+     */
+    fun migrateAccountKeys(defaultPrefs: SharedPreferences, accountPrefs: SharedPreferences) {
+        val legacyKeys = ACCOUNT_KEYS.filter { defaultPrefs.contains(it) }
+        if (legacyKeys.isEmpty()) return
+        accountPrefs.edit(commit = true) {
+            legacyKeys.filterNot { accountPrefs.contains(it) }
+                .forEach { putString(it, defaultPrefs.getString(it, null)) }
+        }
+        defaultPrefs.edit(commit = true) { legacyKeys.forEach { remove(it) } }
+    }
 
     fun getSelectedCountry(context: Context): String =
         PreferenceManager.getDefaultSharedPreferences(context).getString(COUNTRY_KEY, null)

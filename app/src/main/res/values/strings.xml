@@ -17,6 +17,8 @@
     <string name="tab_account">Account</string>
     <string name="cast">Cast</string>
     <string name="license">License</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="privacy_policy_url" translatable="false">https://github.com/salRoid/Filmy/blob/development/PRIVACY.md</string>
     <string name="version">Version</string>
     <string name="about">About</string>
     <string name="about_screen_tittle">Made for Cinephiles</string>

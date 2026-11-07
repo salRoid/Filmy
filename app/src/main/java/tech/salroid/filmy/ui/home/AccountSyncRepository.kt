@@ -11,6 +11,7 @@ import tech.salroid.filmy.data.local.model.TvShowResponse
 import tech.salroid.filmy.ui.details.toMovieDetails
 import javax.inject.Inject
 import javax.inject.Singleton
+import tech.salroid.filmy.utility.reportNonFatal
 
 /** (id, type) keys TMDB already has favorited/watchlisted/rated, after pulling them locally. */
 private data class PulledKeys(
@@ -50,7 +51,7 @@ class AccountSyncRepository @Inject constructor(
             val pulled = pullFavoritesAndWatchlist(accountId, sessionId)
             pushLocalOnlyEntries(accountId, sessionId, pulled)
         } catch (e: Exception) {
-            e.printStackTrace()
+            e.reportNonFatal()
         }
     }
 
@@ -166,7 +167,7 @@ class AccountSyncRepository @Inject constructor(
                     )
                 )
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
             }
         }
 
@@ -186,7 +187,7 @@ class AccountSyncRepository @Inject constructor(
                         .copy(userRating = flags.rating)
                 )
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
             }
         }
 
@@ -226,7 +227,7 @@ class AccountSyncRepository @Inject constructor(
                                 accountId, sessionId, mediaType(movie.type), movie.id, favorite = true
                             ).first()
                         } catch (e: Exception) {
-                            e.printStackTrace()
+                            e.reportNonFatal()
                         }
                     }
                 }
@@ -240,7 +241,7 @@ class AccountSyncRepository @Inject constructor(
                                 accountId, sessionId, mediaType(movie.type), movie.id, watchlist = true
                             ).first()
                         } catch (e: Exception) {
-                            e.printStackTrace()
+                            e.reportNonFatal()
                         }
                     }
                 }
@@ -258,7 +259,7 @@ class AccountSyncRepository @Inject constructor(
                                     accountRepository.rateMovie(movie.id, sessionId, rating).first()
                                 }
                             } catch (e: Exception) {
-                                e.printStackTrace()
+                                e.reportNonFatal()
                             }
                         }
                     }
@@ -295,11 +296,11 @@ class AccountSyncRepository @Inject constructor(
         val type = mediaType(movieDetails.type)
         suspend fun pushFavorite(value: Boolean): Boolean = runCatching {
             accountRepository.markFavorite(accountId, sessionId, type, movieDetails.id, value).first()
-        }.onFailure { it.printStackTrace() }.isSuccess
+        }.onFailure { it.reportNonFatal() }.isSuccess
 
         suspend fun pushWatchlist(value: Boolean): Boolean = runCatching {
             accountRepository.markWatchlist(accountId, sessionId, type, movieDetails.id, value).first()
-        }.onFailure { it.printStackTrace() }.isSuccess
+        }.onFailure { it.reportNonFatal() }.isSuccess
 
         val (favoritePushed, watchlistPushed) = coroutineScope {
             val favorite = async { if (watchedChanged) pushFavorite(movieDetails.watched) else true }
@@ -341,7 +342,7 @@ class AccountSyncRepository @Inject constructor(
             }
             true
         } catch (e: Exception) {
-            e.printStackTrace()
+            e.reportNonFatal()
             false
         }
     }

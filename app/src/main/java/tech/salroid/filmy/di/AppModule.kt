@@ -87,7 +87,13 @@ object AppModule {
         }.addInterceptor(HttpLoggingInterceptor {
             Log.d("OkHttp", it)
         }.apply {
-            level = HttpLoggingInterceptor.Level.HEADERS
+            // Request URLs carry session_id / apikey query parameters, so
+            // nothing is logged outside debug builds.
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.HEADERS
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
             // Requests can now carry the user's own access token.
             redactHeader("Authorization")
         }).build()
@@ -141,5 +147,11 @@ object AppModule {
     @Provides
     fun provideAppPreference(@ApplicationContext appContext: Context): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(appContext)
+    }
+
+    @Provides
+    @AccountPrefs
+    fun provideAccountPreference(@ApplicationContext appContext: Context): SharedPreferences {
+        return PreferenceHelper.accountPreferences(appContext)
     }
 }

@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import tech.salroid.filmy.data.local.model.account.TmdbList
 import tech.salroid.filmy.ui.home.AccountRepository
 import javax.inject.Inject
+import tech.salroid.filmy.utility.reportNonFatal
 
 /** How many titles a list card shows before "+N more". */
 internal const val PREVIEW_TITLE_COUNT = 4
@@ -51,7 +52,7 @@ class MyListsViewModel @Inject constructor(
                 _isLoading.emit(false)
                 loadItemPreviews(response.results)
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
             } finally {
                 _isLoading.emit(false)
             }
@@ -73,7 +74,7 @@ class MyListsViewModel @Inject constructor(
                         .take(PREVIEW_TITLE_COUNT)
                     _itemPreviews.update { it + (list.id to titles) }
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    e.reportNonFatal()
                 }
             }
         }
@@ -87,7 +88,7 @@ class MyListsViewModel @Inject constructor(
                 val listId = response.listId ?: return@launch
                 _lists.value = _lists.value + TmdbList(id = listId, name = name, itemCount = 0)
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
             }
         }
     }
@@ -108,7 +109,7 @@ class MyListsViewModel @Inject constructor(
             try {
                 accountRepository.deleteList(listId).first()
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
                 _lists.value = previous
                 _itemPreviews.value = previousPreviews
             }

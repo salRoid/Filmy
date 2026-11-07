@@ -13,6 +13,7 @@ import tech.salroid.filmy.data.local.model.CombinedCreditsResponse
 import tech.salroid.filmy.data.local.model.ExternalIdsResponse
 import tech.salroid.filmy.ui.home.MoviesRepository
 import javax.inject.Inject
+import tech.salroid.filmy.utility.reportNonFatal
 
 @HiltViewModel
 class CastCrewViewModel @Inject constructor(
@@ -41,7 +42,7 @@ class CastCrewViewModel @Inject constructor(
             moviesRepository.getCastAndCrew(movieId)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                 }.collect { castAndCrew ->
                     _uiStateCastAndCrew.emit(castAndCrew)
                 }
@@ -53,7 +54,7 @@ class CastCrewViewModel @Inject constructor(
             moviesRepository.getCastAndCrewTv(tvId)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                 }.collect { castAndCrew ->
                     _uiStateCastAndCrew.emit(castAndCrew)
                 }
@@ -66,7 +67,7 @@ class CastCrewViewModel @Inject constructor(
             moviesRepository.getCastCrewDetails(memberId)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                     _uiStateError.emit(true)
                 }.collect { castCrewDetails ->
                     _uiStateCastCrewDetails.emit(castCrewDetails)
@@ -79,7 +80,7 @@ class CastCrewViewModel @Inject constructor(
             moviesRepository.getCastCrewMovies(memberId)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                 }.collect { castCrewMovies ->
                     _uiStateCastCrewMovies.emit(castCrewMovies)
                 }
@@ -91,7 +92,7 @@ class CastCrewViewModel @Inject constructor(
             moviesRepository.getCastCrewTvShows(memberId)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                 }.collect { castCrewMovies ->
                     _uiStateCastCrewMovies.emit(castCrewMovies)
                 }
@@ -103,7 +104,7 @@ class CastCrewViewModel @Inject constructor(
             moviesRepository.getCombinedCredits(memberId)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                 }.collect { combinedCredits ->
                     _uiStateCombinedCredits.emit(combinedCredits)
                 }
@@ -115,7 +116,7 @@ class CastCrewViewModel @Inject constructor(
             moviesRepository.getPersonExternalIds(memberId)
                 .flowOn(Dispatchers.IO)
                 .catch {
-                    it.printStackTrace()
+                    it.reportNonFatal()
                 }.collect { externalIds ->
                     _uiStateExternalIds.emit(externalIds)
                 }

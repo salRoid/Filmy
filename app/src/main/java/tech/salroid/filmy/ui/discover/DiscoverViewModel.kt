@@ -22,6 +22,7 @@ import tech.salroid.filmy.ui.home.MoviesRepository
 import tech.salroid.filmy.ui.movies.MoviePreviewMapper
 import tech.salroid.filmy.ui.shows.TvShowsPreviewMapper
 import javax.inject.Inject
+import tech.salroid.filmy.utility.reportNonFatal
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -69,7 +70,7 @@ class DiscoverViewModel @Inject constructor(
                 }
                 _genres.value = response.genres
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
             }
         }
     }

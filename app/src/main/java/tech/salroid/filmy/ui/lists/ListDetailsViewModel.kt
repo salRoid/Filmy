@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import tech.salroid.filmy.data.local.model.account.TmdbListItem
 import tech.salroid.filmy.ui.home.AccountRepository
 import javax.inject.Inject
+import tech.salroid.filmy.utility.reportNonFatal
 
 // TMDB serves list items 20 to a page; this is a guard against a runaway
 // loop, not a limit anyone's personal list should reach.
@@ -43,7 +44,7 @@ class ListDetailsViewModel @Inject constructor(
                 } while (page <= totalPages && page <= MAX_LIST_PAGES)
                 _items.emit(loaded)
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
             } finally {
                 _isLoading.emit(false)
             }
@@ -61,7 +62,7 @@ class ListDetailsViewModel @Inject constructor(
                 accountRepository.canManageLists() &&
                     accountRepository.removeFromList(listId, item.id, item.isTv).first().allSucceeded
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.reportNonFatal()
                 false
             }
             if (!removed) {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+. The TMDB session and access token live in filmy_account.xml
+     and must never leave the device; everything else is still backed up. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude
+            domain="sharedpref"
+            path="filmy_account.xml" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude
+            domain="sharedpref"
+            path="filmy_account.xml" />
+    </device-transfer>
+</data-extraction-rules>
